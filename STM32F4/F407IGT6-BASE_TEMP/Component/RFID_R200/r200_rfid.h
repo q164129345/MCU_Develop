@@ -41,7 +41,7 @@ typedef struct r200_rfid_reader {
     /* ·½·¨ */
     void (*Link_Usart_Drive) (struct r200_rfid_reader* const me, Usart_Drive* const usartDrive);
     void (*Find_The_RFID_Tag_Once) (struct r200_rfid_reader* const me);
-    void (*Parsing_Received_Data_Frame) (struct r200_rfid_reader* const me);
+    void (*Parsing_Received_Data_Frame) (struct r200_rfid_reader* const me, uint8_t byte);
     void (*Timeout_Counter_1S) (struct r200_rfid_reader* const me);
 }R200_Rfid_Reader;
     
