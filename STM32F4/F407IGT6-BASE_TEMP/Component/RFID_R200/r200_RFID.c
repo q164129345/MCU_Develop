@@ -74,21 +74,25 @@ static void R200_Parse_Received_Data_Frame(struct r200_rfid_reader* const me)
     } else if (frame_type == 0x02 && command == 0x22) {
         uint8_t rssi = data[5];
         uint16_t pc = (data[6] << 8) | data[7];
-        uint8_t epc_length = parameter_length - 3;  // EPC长度
+        uint8_t epc_length = parameter_length - 5;  // EPC长度
+        if (epc_length > EPC_MAX_LENGTH) {
+            printf("EPC length exceeds max length\n");
+            me->state = STATE_WAIT_HEADER;  // 重置状态机
+            return;
+        }
         uint8_t epc[EPC_MAX_LENGTH];
 
         memcpy(epc, &data[8], epc_length);
 
         // 打印解析后的数据
-        printf("RSSI: %d dBm", (int8_t)rssi);
-        printf("PC: 0x%04X", pc);
+        printf("RSSI: %d dBm ", (int8_t)rssi);
+        printf("PC: 0x%04X ", pc);
         printf("EPC: ");
         for (uint8_t i = 0; i < epc_length; i++) {
             printf("%02X ", epc[i]);
         }
         printf("\n");
 
-        me->flagFoundRfidCard = 1;
     } else {
         printf("Unknown frame received\n");
     }
@@ -181,7 +185,6 @@ void R200_RFID_Reader_Object_Init(struct r200_rfid_reader* const me)
 {
     if (me == NULL) return;
     /* 成员初始化 */
-    me->flagFoundRfidCard = 0;
     me->CommTimeOut = R200_TIMEOUT_COUNT;
     me->state = STATE_WAIT_HEADER;
     me->frameIndex = 0; // 初始化帧索引

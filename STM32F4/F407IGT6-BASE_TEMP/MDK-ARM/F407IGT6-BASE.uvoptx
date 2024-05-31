@@ -197,6 +197,11 @@
           <WinNumber>2</WinNumber>
           <ItemText>g_Usart1,0x0A</ItemText>
         </Ww>
+        <Ww>
+          <count>2</count>
+          <WinNumber>2</WinNumber>
+          <ItemText>g_R200_Reader</ItemText>
+        </Ww>
       </WatchWindow2>
       <ScvdPack>
         <Filename>C:\Users\wallACE.ZHANG\AppData\Local\Arm\Packs\Keil\ARM_Compiler\1.7.2\EventRecorder.scvd</Filename>

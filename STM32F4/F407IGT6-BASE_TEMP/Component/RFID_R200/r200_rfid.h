@@ -32,7 +32,6 @@ typedef enum {
 typedef struct r200_rfid_reader {
     /* 成员 */
     Usart_Drive* usartDrive;
-    volatile uint8_t flagFoundRfidCard;
     volatile uint8_t CommTimeOut;
     
     volatile FSM_State state; // FSM当前状态
