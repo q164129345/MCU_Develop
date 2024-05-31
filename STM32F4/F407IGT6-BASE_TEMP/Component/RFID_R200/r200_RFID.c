@@ -150,24 +150,6 @@ static void R200_FSM_Parse_Byte(struct r200_rfid_reader* const me, uint8_t byte)
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * @brief 初始化R200 RFID读卡器对象
  * 
@@ -185,7 +167,7 @@ void R200_RFID_Reader_Object_Init(struct r200_rfid_reader* const me)
     me->Link_Usart_Drive = R200_Link_Usart_Drive;
     me->Find_The_RFID_Tag_Once = R200_Find_The_RFID_Tag_Once;
     me->Timeout_Counter_1S = R200_Timeout_Counter_1S;
-    
+    me->Parsing_Received_Data_Frame = R200_Parse_Received_Data_Frame;
 }
 
 

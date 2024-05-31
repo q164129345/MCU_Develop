@@ -98,7 +98,16 @@ static void USER_UART_IDLE_Callback(struct usart_drive* me)
                 me->receivedBytes = 0; // 重置接收字节数
             }
             // 处理接收到的数据，将数据放入ringbuffer或者RTOS的消息队列，不要在中断里解析报文，并运行其他程序
-            
+            if (me->receivedBytes > 0) {
+                uint16_t freeSpace = Q_BUFFER_SIZE - Queue_Count(&me->queueHandler); // 计算剩余空间
+                if (me->receivedBytes > freeSpace) {
+                    printf("Ringbuffer is full and needs to be emptied.\n");
+                    Queue_Clear(&me->queueHandler); // 复位ringbuffer读写指针
+                    memset((uint8_t*)me->queueBuffer, 0, Q_BUFFER_SIZE); // ringbuffer缓存清0（可选）
+                }
+                uint8_t pushNum = Queue_Push_Array(&me->queueHandler, (uint8_t*)me->rxData, me->receivedBytes);
+                printf(" %d bytes data push into ringbuffer.\n", pushNum);
+            }
             // 可以根据项目需求添加数据处理逻辑
             USART_Start_DMA_Receive(me); // 重新启动DMA接收
         }
@@ -125,6 +134,7 @@ void Usart_Drive_Object_Init(struct usart_drive* me, UART_HandleTypeDef *huart)
     me->Set_Flag_Tx_Complete = USART_Set_Flag_Tx_Complete;
     me->User_IDLE_Callback = USER_UART_IDLE_Callback;
     
+    Queue_Init(&me->queueHandler, (uint8_t*)me->queueBuffer, Q_BUFFER_SIZE);
     __HAL_UART_ENABLE_IT(me->huart, UART_IT_IDLE); // 开启接收空闲中断
     USART_Start_DMA_Receive(me); // 启动DMA接收
 }
