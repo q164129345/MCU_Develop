@@ -341,7 +341,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Component/UART;..\Component\RFID_R200;..\Component\Queue</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Component/UART;..\Component\RFID_R200</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -676,27 +676,22 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Component/UART</GroupName>
+          <Files>
+            <File>
+              <FileName>usart_drive.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Component\UART\usart_drive.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>Component</GroupName>
           <Files>
             <File>
               <FileName>r200_rfid.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Component\RFID_R200\r200_rfid.c</FilePath>
-            </File>
-            <File>
-              <FileName>queue.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Component\Queue\queue.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>Component/Drive</GroupName>
-          <Files>
-            <File>
-              <FileName>usart_drive.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Component\UART\usart_drive.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -7,7 +7,7 @@
 #include "stdlib.h"
 #include "string.h"
 #include "stdbool.h"
-#include "queue.h"
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -20,7 +20,7 @@ typedef struct usart_drive{
     UART_HandleTypeDef* huart;                  // HAL对象句柄
     volatile uint8_t    rxData[USART_RX_BUF_SIZE]; // DMA接收缓存区
     volatile uint8_t    flagTxComplete;         // 标志位：发送完成
-    volatile int16_t    receivedBytes;          // 接收的字节数
+    volatile int16_t    receivedBytes;         // 接收的字节数
     
     /* 方法 */
     void (*User_IDLE_Callback) (struct usart_drive* me); // 空闲中断处理

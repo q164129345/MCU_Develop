@@ -63,10 +63,10 @@ static void R200_Parse_Received_Data_Frame(struct r200_rfid_reader* const me)
     uint16_t parameter_length = (data[3] << 8) | data[4];
 
     // 处理不同的指令代码
-    if (frame_type == 0x01 && command == 0xFF && parameter_length == 0x01) { // 没有找到卡
+    if (frame_type == 0x01 && command == 0xFF && parameter_length == 0x01) {
         uint8_t parameter = data[5];
         printf("No RFID tag found, parameter: 0x%02X", parameter);
-    } else if (frame_type == 0x02 && command == 0x22) { // 找到卡
+    } else if (frame_type == 0x02 && command == 0x22) {
         uint8_t rssi = data[5];
         uint16_t pc = (data[6] << 8) | data[7];
         uint8_t epc_length = parameter_length - 3;  // EPC长度
@@ -150,6 +150,24 @@ static void R200_FSM_Parse_Byte(struct r200_rfid_reader* const me, uint8_t byte)
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * @brief 初始化R200 RFID读卡器对象
  * 
@@ -167,7 +185,7 @@ void R200_RFID_Reader_Object_Init(struct r200_rfid_reader* const me)
     me->Link_Usart_Drive = R200_Link_Usart_Drive;
     me->Find_The_RFID_Tag_Once = R200_Find_The_RFID_Tag_Once;
     me->Timeout_Counter_1S = R200_Timeout_Counter_1S;
-    me->Parsing_Received_Data_Frame = R200_FSM_Parse_Byte;
+    
 }
 
 
