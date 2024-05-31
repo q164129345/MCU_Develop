@@ -115,6 +115,17 @@ static void USER_UART_IDLE_Callback(struct usart_drive* me)
 }
 
 /**
+ * @brief 获取ringbuffer里的消息数量
+ * 
+ * @param me usart_drive对象指针
+ * @@return uint16_t ringbuffer的消息数量
+ */
+static uint16_t Usart_Get_The_Number_Of_Data_In_Queue(struct usart_drive* me)
+{
+    return Queue_Count(&me->queueHandler);
+}
+
+/**
  * @brief USART驱动对象初始化
  * 
  * @param me usart_drive对象指针
@@ -133,6 +144,7 @@ void Usart_Drive_Object_Init(struct usart_drive* me, UART_HandleTypeDef *huart)
     me->Get_Flag_Tx_Complete = USART_Get_Flag_Tx_Complete;
     me->Set_Flag_Tx_Complete = USART_Set_Flag_Tx_Complete;
     me->User_IDLE_Callback = USER_UART_IDLE_Callback;
+    me->Get_The_Number_Of_Data_In_Queue = Usart_Get_The_Number_Of_Data_In_Queue;
     
     Queue_Init(&me->queueHandler, (uint8_t*)me->queueBuffer, Q_BUFFER_SIZE);
     __HAL_UART_ENABLE_IT(me->huart, UART_IT_IDLE); // 开启接收空闲中断

@@ -32,7 +32,12 @@ static void R200_Link_Usart_Drive(struct r200_rfid_reader* const me, Usart_Drive
 static void R200_Timeout_Counter_1S(struct r200_rfid_reader* const me)
 {
     if (me == NULL) return;
-    if (me->CommTimeOut > 0) me->CommTimeOut--;
+    if (me->CommTimeOut > 0) {
+        me->CommTimeOut--;
+    } else {
+        me->state = STATE_WAIT_HEADER; // 超时重置状态机
+        me->frameIndex = 0;
+    }
 }
 
 /**
@@ -65,7 +70,7 @@ static void R200_Parse_Received_Data_Frame(struct r200_rfid_reader* const me)
     // 处理不同的指令代码
     if (frame_type == 0x01 && command == 0xFF && parameter_length == 0x01) {
         uint8_t parameter = data[5];
-        printf("No RFID tag found, parameter: 0x%02X", parameter);
+        printf("No RFID tag found\n");
     } else if (frame_type == 0x02 && command == 0x22) {
         uint8_t rssi = data[5];
         uint16_t pc = (data[6] << 8) | data[7];
@@ -102,6 +107,8 @@ static void R200_FSM_Parse_Byte(struct r200_rfid_reader* const me, uint8_t byte)
     switch (me->state) {
         case STATE_WAIT_HEADER:
             if (byte == 0xBB) {
+                memset((uint8_t*)me->frameBuffer, 0, FRAME_BUFFER_SIZE);
+                me->paramterCount = 0;
                 me->frameBuffer[0] = byte;
                 me->frameIndex = 1;
                 me->state = STATE_WAIT_TYPE;
@@ -125,7 +132,9 @@ static void R200_FSM_Parse_Byte(struct r200_rfid_reader* const me, uint8_t byte)
             break;
         case STATE_WAIT_PARAMETER:
             me->frameBuffer[me->frameIndex++] = byte;
-            if (me->frameIndex == (5 + (me->frameBuffer[3] << 8 | me->frameBuffer[4]) + 2)) {
+            me->paramterCount++;
+            uint16_t PL = me->frameBuffer[3] << 8 | me->frameBuffer[4]; // 计算PL
+            if (PL == me->paramterCount) {
                 me->state = STATE_WAIT_CHECKSUM;
             }
             break;
@@ -150,6 +159,19 @@ static void R200_FSM_Parse_Byte(struct r200_rfid_reader* const me, uint8_t byte)
 }
 
 
+static void R200_RFID_Run(struct r200_rfid_reader* const me)
+{
+    if (me == NULL) return;
+    uint8_t byte;
+    // 只要ringbuffer有数据，就要一直运行FSM状态机解包
+    while(me->usartDrive->Get_The_Number_Of_Data_In_Queue(me->usartDrive) > 0) {
+        if (Queue_Pop(&me->usartDrive->queueHandler, &byte) == QUEUE_OK) {
+            R200_FSM_Parse_Byte(me, byte);
+        }
+    }
+}
+
+
 /**
  * @brief 初始化R200 RFID读卡器对象
  * 
@@ -162,12 +184,15 @@ void R200_RFID_Reader_Object_Init(struct r200_rfid_reader* const me)
     me->flagFoundRfidCard = 0;
     me->CommTimeOut = R200_TIMEOUT_COUNT;
     me->state = STATE_WAIT_HEADER;
+    me->frameIndex = 0; // 初始化帧索引
+    me->paramterCount = 0; // 初始化参数长度
     
     /* 对象方法初始化 */
     me->Link_Usart_Drive = R200_Link_Usart_Drive;
     me->Find_The_RFID_Tag_Once = R200_Find_The_RFID_Tag_Once;
     me->Timeout_Counter_1S = R200_Timeout_Counter_1S;
     me->Parsing_Received_Data_Frame = R200_Parse_Received_Data_Frame;
+    me->Run = R200_RFID_Run;
 }
 
 

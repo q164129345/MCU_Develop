@@ -39,7 +39,7 @@ extern UART_HandleTypeDef huart1;
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-volatile uint32_t fre = 0;
+volatile uint64_t fre = 0;
 
 Usart_Drive g_Usart1;
 R200_Rfid_Reader g_R200_Reader;
@@ -113,15 +113,20 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    HAL_GPIO_TogglePin(LD1_GPIO_Port,LD1_Pin);
-    HAL_GPIO_TogglePin(LD2_GPIO_Port,LD2_Pin);
-    HAL_GPIO_TogglePin(LD3_GPIO_Port,LD3_Pin);
-      
-    if (0x00 == fre % 10) g_R200_Reader.Find_The_RFID_Tag_Once(&g_R200_Reader);
-    if (0x00 == fre % 5) g_R200_Reader.Timeout_Counter_1S(&g_R200_Reader);
-      
+    if(0x00 == fre % 200) {
+        HAL_GPIO_TogglePin(LD1_GPIO_Port,LD1_Pin);
+        HAL_GPIO_TogglePin(LD2_GPIO_Port,LD2_Pin);
+        HAL_GPIO_TogglePin(LD3_GPIO_Port,LD3_Pin);
+    }
+    if (0x00 == fre % 50) g_R200_Reader.Run(&g_R200_Reader); // ‘À––RFIDΩ‚Œˆ
+    if (0x00 == fre % 2000) g_R200_Reader.Find_The_RFID_Tag_Once(&g_R200_Reader);
+    if (0x00 == fre % 1000) {
+        g_R200_Reader.Timeout_Counter_1S(&g_R200_Reader);
+        printf("queue has data:%d\n", g_Usart1.Get_The_Number_Of_Data_In_Queue(&g_Usart1));
+    }
+
     fre++;
-    HAL_Delay(200);
+    HAL_Delay(1);
   }
   /* USER CODE END 3 */
 }

@@ -31,9 +31,10 @@ typedef struct usart_drive{
     HAL_StatusTypeDef (*DMA_Sent) (struct usart_drive* me, uint8_t *pData, uint16_t Size); // DMA发送
     
     // 设置器
-    void (*Set_Flag_Tx_Complete) (struct usart_drive* me, uint8_t flag); // 设置标志位(发送完成）
+    void (*Set_Flag_Tx_Complete) (struct usart_drive* me, uint8_t flag);  // 设置标志位(发送完成）
     // 获取器
-    uint8_t (*Get_Flag_Tx_Complete) (struct usart_drive* me); // 获取标志位（发送完成）
+    uint8_t (*Get_Flag_Tx_Complete) (struct usart_drive* me);             // 获取标志位（发送完成）
+    uint16_t (*Get_The_Number_Of_Data_In_Queue) (struct usart_drive* me); // 获取ringbuffer里的消息数量
     
 }Usart_Drive;
 
