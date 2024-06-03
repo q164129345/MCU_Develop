@@ -12,8 +12,10 @@ extern "C" {
 #endif
 
 #define R200_TIMEOUT_COUNT 10U
-#define EPC_MAX_LENGTH 12U // 卡号长度12bytes（其他长度的RFID卡，不要管）
+#define EPC_LENGTH 12U // 卡号长度12bytes（其他长度的RFID卡，不要管）
 #define FRAME_BUFFER_SIZE 40U // FSM组包的缓存大小
+#define MAX_RFID_CARDS 10U
+
 
 // FSM解包状态机
 typedef enum {
@@ -27,8 +29,6 @@ typedef enum {
     STATE_WAIT_END,
 }FSM_State;
 
-
-
 typedef struct r200_rfid_reader {
     /* 成员 */
     Usart_Drive* usartDrive;
@@ -38,6 +38,8 @@ typedef struct r200_rfid_reader {
     volatile uint8_t frameBuffer[FRAME_BUFFER_SIZE]; // 存储接收到的帧数据
     volatile uint16_t frameIndex; // 当前帧的索引
     volatile uint16_t paramterCount; // 累计参数区的长度
+    volatile uint8_t storedEPCs[MAX_RFID_CARDS][EPC_LENGTH]; // 存储EPC的二维数组
+    volatile uint8_t epcCount; // ECP计数器
     
     /* 方法 */
     void (*Link_Usart_Drive) (struct r200_rfid_reader* const me, Usart_Drive* const usartDrive);

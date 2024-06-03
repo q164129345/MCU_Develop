@@ -1,6 +1,13 @@
 #include "usart_drive.h"
 #include "usart.h"
 
+#define DEBUG 1
+#if DEBUG == 1
+#define usart_printf printf
+#else
+#define usart_printf(format, ...)
+#endif
+
 /**
  * @brief 启动USART DMA接收
  * 
@@ -80,18 +87,20 @@ static void USER_UART_IDLE_Callback(struct usart_drive* me)
             
             // 检查接收到的字节数是否超过缓冲区大小
             if (me->receivedBytes > 0 && me->receivedBytes <= USART_RX_BUF_SIZE) {
+#if DEBUG == 1
                 // 打印调试信息
                 char tempBuffer[USART_RX_BUF_SIZE + 1];
                 memcpy(tempBuffer, (unsigned char*)me->rxData, me->receivedBytes);
                 tempBuffer[me->receivedBytes] = '\0'; // 确保字符串以空字符结尾
-                printf("Msg number:%d \n",++msgNum);
-                printf("Received string: %s, Bytes: %d\n", tempBuffer, me->receivedBytes); // 打印字符串
+                usart_printf("Msg number:%d \n",++msgNum);
+                usart_printf("Received string: %s, Bytes: %d\n", tempBuffer, me->receivedBytes); // 打印字符串
                 // 以16进制打印出来
-                printf("Received data in hex: ");
+                usart_printf("Received data in hex: ");
                 for (uint16_t i = 0; i < me->receivedBytes; i++) {
-                    printf("%02X ", tempBuffer[i]);
+                    usart_printf("%02X ", tempBuffer[i]);
                 }
-                printf("\n");
+                usart_printf("\n");
+#endif
             } else {
                 // 处理接收溢出情况
                 printf("Received data overflow! Bytes: %d\n", me->receivedBytes);

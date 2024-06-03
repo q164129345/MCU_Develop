@@ -1,5 +1,13 @@
 #include "r200_rfid.h"
 
+#define DEBUG 1
+#if DEBUG == 1
+#define rfid_printf printf
+#else
+#define rfid_printf(format, ...)
+#endif
+
+
 static const uint8_t cmdFindCardOnce[7] = {0xBB,0x00,0x22,0x00,0x00,0x22,0x7E}; // 单次轮询指令
 /**
  * @brief 执行一次RFID标签的轮询
@@ -9,6 +17,10 @@ static const uint8_t cmdFindCardOnce[7] = {0xBB,0x00,0x22,0x00,0x00,0x22,0x7E}; 
 static void R200_Find_The_RFID_Tag_Once(struct r200_rfid_reader* const me)
 {
     if(me == NULL) return;
+    
+    // 清零storedEPCs数组 和 epcCount
+    memset((uint8_t*)me->storedEPCs, 0, sizeof(me->storedEPCs));
+    me->epcCount = 0;
     me->usartDrive->DMA_Sent(me->usartDrive, (uint8_t*)cmdFindCardOnce, sizeof(cmdFindCardOnce));
 }
 
@@ -58,7 +70,7 @@ static void R200_Parse_Received_Data_Frame(struct r200_rfid_reader* const me)
         checksum += data[i];
     }
     if (checksum != data[length - 2]) {
-        printf("Checksum error\n");
+        rfid_printf("Checksum error\n");
         me->state = STATE_WAIT_HEADER;  // 重置状态机
         return;
     }
@@ -67,34 +79,42 @@ static void R200_Parse_Received_Data_Frame(struct r200_rfid_reader* const me)
     uint8_t command = data[2];
     uint16_t parameter_length = (data[3] << 8) | data[4];
 
-    // 处理不同的指令代码
-    if (frame_type == 0x01 && command == 0xFF && parameter_length == 0x01) {
-        uint8_t parameter = data[5];
-        printf("No RFID tag found\n");
-    } else if (frame_type == 0x02 && command == 0x22) {
-        uint8_t rssi = data[5];
-        uint16_t pc = (data[6] << 8) | data[7];
-        uint8_t epc_length = parameter_length - 5;  // EPC长度
-        if (epc_length > EPC_MAX_LENGTH) {
-            printf("EPC length exceeds max length\n");
-            me->state = STATE_WAIT_HEADER;  // 重置状态机
-            return;
-        }
-        uint8_t epc[EPC_MAX_LENGTH];
-
-        memcpy(epc, &data[8], epc_length);
-
-        // 打印解析后的数据
-        printf("RSSI: %d dBm ", (int8_t)rssi);
-        printf("PC: 0x%04X ", pc);
-        printf("EPC: ");
-        for (uint8_t i = 0; i < epc_length; i++) {
-            printf("%02X ", epc[i]);
-        }
-        printf("\n");
-
-    } else {
-        printf("Unknown frame received\n");
+    /* 处理不同的指令代码 */
+    switch (frame_type) {
+        case 0x01:
+            if (command == 0xFF && parameter_length == 0x01) {
+                uint8_t parameter = data[5];
+                rfid_printf("No RFID tag found\n");
+            }
+            break;
+        case 0x02:
+            if (command == 0x22) {
+                uint8_t rssi = data[5];
+                uint16_t pc = (data[6] << 8) | data[7];
+                uint8_t epc_length = parameter_length - 5;  // EPC长度
+                if (epc_length > EPC_LENGTH) {
+                    rfid_printf("EPC length exceeds max length\n");
+                    me->state = STATE_WAIT_HEADER;  // 重置状态机
+                    return;
+                }
+                if (me->epcCount < MAX_RFID_CARDS) {
+                    uint8_t epc[EPC_LENGTH] = {0,};
+                    memcpy(epc, &data[8], epc_length);
+                    memcpy((uint8_t*)me->storedEPCs[me->epcCount], epc, EPC_LENGTH);
+                    me->epcCount++;
+                    rfid_printf("Stored EPC: ");
+                    for (uint8_t i = 0; i < epc_length; i++) {
+                        rfid_printf("%02X ", epc[i]);
+                    }
+                    rfid_printf("\n");
+                } else {
+                    rfid_printf("RFID storage full\n");
+                }
+            }
+            break;
+        default:
+            rfid_printf("Unknown frame received\n");
+            break;
     }
 
     me->state = STATE_WAIT_HEADER;  // 重置状态机
@@ -149,6 +169,7 @@ static void R200_FSM_Parse_Byte(struct r200_rfid_reader* const me, uint8_t byte)
         case STATE_WAIT_END:
             if (byte == 0x7E) {
                 me->frameBuffer[me->frameIndex++] = byte;
+                
                 // 完整帧接收完毕，解析帧
                 R200_Parse_Received_Data_Frame(me);
             } else {
@@ -189,6 +210,7 @@ void R200_RFID_Reader_Object_Init(struct r200_rfid_reader* const me)
     me->state = STATE_WAIT_HEADER;
     me->frameIndex = 0; // 初始化帧索引
     me->paramterCount = 0; // 初始化参数长度
+    me->epcCount = 0;
     
     /* 对象方法初始化 */
     me->Link_Usart_Drive = R200_Link_Usart_Drive;
