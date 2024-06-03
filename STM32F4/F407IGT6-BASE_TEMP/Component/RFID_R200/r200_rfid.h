@@ -14,7 +14,7 @@ extern "C" {
 #define R200_TIMEOUT_COUNT 10U
 #define EPC_LENGTH 12U // 卡号长度12bytes（其他长度的RFID卡，不要管）
 #define FRAME_BUFFER_SIZE 40U // FSM组包的缓存大小
-#define MAX_RFID_CARDS 10U
+#define MAX_RFID_CARDS 15U
 
 
 // FSM解包状态机
