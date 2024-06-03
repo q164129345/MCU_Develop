@@ -118,11 +118,8 @@ int main(void)
         HAL_GPIO_TogglePin(LD2_GPIO_Port,LD2_Pin);
         HAL_GPIO_TogglePin(LD3_GPIO_Port,LD3_Pin);
     }
-    if (0x00 == fre % 20) g_R200_Reader.Run(&g_R200_Reader); // 运行RFID解析
-    if (0x00 == fre % 2000) g_R200_Reader.Find_The_RFID_Tag_Once(&g_R200_Reader);
-    if (0x00 == fre % 1000) {
-        g_R200_Reader.Timeout_Counter_1S(&g_R200_Reader);
-    }
+    
+    if (0x00 == fre % 10) g_R200_Reader.Run_10ms(&g_R200_Reader); // 运行RFID模块
 
     fre++;
     HAL_Delay(1);

@@ -57,12 +57,22 @@ static uint8_t USART_Get_Flag_Tx_Complete(struct usart_drive* me)
 static HAL_StatusTypeDef USART_Start_DMA_Transmit(struct usart_drive* me, uint8_t *pData, uint16_t Size)
 {
     if (NULL == me) return HAL_ERROR;
+    HAL_StatusTypeDef result;
+    uint32_t startTick = HAL_GetTick(); // 获取当前时间戳
+    
     if (me->flagTxComplete == 0) {
         // 上一次传输还未完成
         return HAL_BUSY;
     }
     me->flagTxComplete = 0;  // 清除标志位
-    return HAL_UART_Transmit_DMA(me->huart, pData, Size);
+    result = HAL_UART_Transmit_DMA(me->huart, pData, Size);
+    
+    while(0 == me->flagTxComplete) {
+        if((HAL_GetTick() - startTick) > 2000U) { // 超时时间2S
+            return HAL_TIMEOUT; // 超时处理
+        }
+    }
+    return result;
 }
 
 /**
@@ -115,7 +125,7 @@ static void USER_UART_IDLE_Callback(struct usart_drive* me)
                     memset((uint8_t*)me->queueBuffer, 0, Q_BUFFER_SIZE); // ringbuffer缓存清0（可选）
                 }
                 uint8_t pushNum = Queue_Push_Array(&me->queueHandler, (uint8_t*)me->rxData, me->receivedBytes);
-                printf(" %d bytes data push into ringbuffer.\n", pushNum);
+                //printf(" %d bytes data push into ringbuffer.\n", pushNum);
             }
             // 可以根据项目需求添加数据处理逻辑
             USART_Start_DMA_Receive(me); // 重新启动DMA接收

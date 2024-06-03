@@ -8,7 +8,9 @@
 #endif
 
 
-static const uint8_t cmdFindCardOnce[7] = {0xBB,0x00,0x22,0x00,0x00,0x22,0x7E}; // 单次轮询指令
+static const uint8_t cmdFindCardOnce[7] = {0xBB, 0x00, 0x22, 0x00, 0x00, 0x22, 0x7E}; // 单次轮询指令
+static const uint8_t cmdGetTransmittingPower[7] = {0xBB, 0x00, 0xB7, 0x00, 0x00, 0xB7, 0x7E}; // 获取发射功率
+static uint8_t cmdSetTransmittingPower[9] = {0xBB, 0x00, 0xB6, 0x00, 0x02, 0x07, 0xD0, 0x8F, 0x7E}; // 设置发射功率
 
 /**
  * @brief 执行一次RFID标签的轮询
@@ -24,6 +26,36 @@ static void R200_Find_The_RFID_Tag_Once(struct r200_rfid_reader* const me)
     me->epcCount = 0;
     me->usartDrive->DMA_Sent(me->usartDrive, (uint8_t*)cmdFindCardOnce, sizeof(cmdFindCardOnce));
 }
+
+/**
+ * @brief 获取发射功率
+ * 
+ * @param me 指向r200_rfid_reader对象的指针
+ */
+static void R200_Get_Transmitting_Power(struct r200_rfid_reader* const me)
+{
+    if(me == NULL) return;
+    me->usartDrive->DMA_Sent(me->usartDrive, (uint8_t*)cmdGetTransmittingPower, sizeof(cmdGetTransmittingPower));
+}
+
+/**
+ * @brief 设置发射功率
+ * 
+ * @param me 指向r200_rfid_reader对象的指针
+ * @param power_dBm 发射功率，单位为dBm（比如设置20，相当于20dBm)
+ */
+static void R200_Set_Transmitting_Power(struct r200_rfid_reader* const me, uint16_t power)
+{
+    if(me == NULL) return;
+    uint16_t powerX100 = power * 100; // 转换为协议中对应的功率值
+    cmdSetTransmittingPower[5] = (powerX100 >> 8) & 0xFF;
+    cmdSetTransmittingPower[6] = powerX100 & 0xFF;
+    cmdSetTransmittingPower[7] = 0xB6 + cmdSetTransmittingPower[3] + cmdSetTransmittingPower[4] + cmdSetTransmittingPower[5] + cmdSetTransmittingPower[6];
+    cmdSetTransmittingPower[8] = 0x7E;
+    
+    me->usartDrive->DMA_Sent(me->usartDrive, cmdSetTransmittingPower, sizeof(cmdSetTransmittingPower));
+}
+
 
 /**
  * @brief 关联USART驱动对象
@@ -75,7 +107,8 @@ static void R200_Parse_Received_Data_Frame(struct r200_rfid_reader* const me)
         me->state = STATE_WAIT_HEADER;  // 重置状态机
         return;
     }
-
+    
+    me->CommTimeOut = R200_TIMEOUT_COUNT;
     uint8_t frame_type = data[1];
     uint8_t command = data[2];
     uint16_t parameter_length = (data[3] << 8) | data[4];
@@ -86,6 +119,13 @@ static void R200_Parse_Received_Data_Frame(struct r200_rfid_reader* const me)
             if (command == 0xFF && parameter_length == 0x01) {
                 uint8_t parameter = data[5];
                 rfid_printf("No RFID tag found\n");
+            } else if (command == 0xB7 && parameter_length == 0x02) {
+                uint16_t power = (data[5] << 8) | data[6];
+                me->current_Power = power / 100;
+                rfid_printf("Transmitting power: %d dBm\n", me->current_Power); // 将功率转换为dBm显示
+            } else if (command == 0xB6 && parameter_length == 0x01) {
+                uint8_t status = data[5];
+                rfid_printf("Set Power status: 0x%02X\n", status);
             }
             break;
         case 0x02:
@@ -187,14 +227,38 @@ static void R200_FSM_Parse_Byte(struct r200_rfid_reader* const me, uint8_t byte)
 
 static void R200_RFID_Run(struct r200_rfid_reader* const me)
 {
-    if (me == NULL) return;
+    static uint32_t fre = 0;
     uint8_t byte;
-    // 只要ringbuffer有数据，就要一直运行FSM状态机解包
-    while(me->usartDrive->Get_The_Number_Of_Data_In_Queue(me->usartDrive) > 0) {
-        if (Queue_Pop(&me->usartDrive->queueHandler, &byte) == QUEUE_OK) {
-            R200_FSM_Parse_Byte(me, byte);
+    if (me == NULL) return;
+    
+    // 20ms
+    if (0 == fre % 2U) {
+        // 只要ringbuffer有数据，就要一直运行FSM状态机解包
+        while(me->usartDrive->Get_The_Number_Of_Data_In_Queue(me->usartDrive) > 0) {
+            if (Queue_Pop(&me->usartDrive->queueHandler, &byte) == QUEUE_OK) {
+                R200_FSM_Parse_Byte(me, byte);
+            }
         }
     }
+    // 1s
+    if (0 == fre % 100U) {
+        R200_Timeout_Counter_1S(me); // 计算通讯超时
+    }
+    // 2s
+    if (0 == fre % 200U) {
+        R200_Find_The_RFID_Tag_Once(me); // 请求一次寻找RFID卡
+    }
+    // 5S
+    if (0 == fre % 500U) {
+        if (me->setting_Power != me->current_Power) {
+            rfid_printf("R200:Transmitting power is not equial to setting power,Need to Set the power %d.\n", me->setting_Power);
+            R200_Get_Transmitting_Power(me);     // 获取一次发射功率
+            R200_Set_Transmitting_Power(me,me->setting_Power); // 修改发射功率(28dBm)
+        }
+    }
+
+    
+    fre++;
 }
 
 
@@ -212,13 +276,12 @@ void R200_RFID_Reader_Object_Init(struct r200_rfid_reader* const me)
     me->frameIndex = 0; // 初始化帧索引
     me->paramterCount = 0; // 初始化参数长度
     me->epcCount = 0;
+    me->setting_Power = MAX_TRANSMITTING_POWER;
     
     /* 对象方法初始化 */
     me->Link_Usart_Drive = R200_Link_Usart_Drive;
     me->Find_The_RFID_Tag_Once = R200_Find_The_RFID_Tag_Once;
-    me->Timeout_Counter_1S = R200_Timeout_Counter_1S;
-    me->Parsing_Received_Data_Frame = R200_Parse_Received_Data_Frame;
-    me->Run = R200_RFID_Run;
+    me->Run_10ms = R200_RFID_Run;
 }
 
 
