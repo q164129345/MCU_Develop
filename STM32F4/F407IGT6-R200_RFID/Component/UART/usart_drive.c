@@ -23,6 +23,17 @@ static void USART_Start_DMA_Receive(struct usart_drive* me)
 }
 
 /**
+ * @brief 获取串口外设的内存地址
+ * 
+ * @param me usart_drive对象指针
+ * @@return USART_TypeDef* 串口外设的内存地址
+ */
+static USART_TypeDef* Usart_Get_Huart_Instance(struct usart_drive* me)
+{
+    return me->huartInstance;
+}
+
+/**
  * @brief 设置发送完成标志位
  * 
  * @param me usart_drive对象指针
@@ -76,6 +87,20 @@ static HAL_StatusTypeDef USART_Start_DMA_Transmit(struct usart_drive* me, uint8_
 }
 
 /**
+ * @brief 启动USART 串行发送
+ * 
+ * @param me usart_drive对象指针
+ * @param pData 指向数据缓冲区的指针
+ * @param Size 数据大小
+ * @return HAL_StatusTypeDef HAL状态
+ */
+static HAL_StatusTypeDef USART_Start_Transmit(struct usart_drive* me, uint8_t *pData, uint16_t Size)
+{
+    if (NULL == me) return HAL_ERROR;
+    return HAL_UART_Transmit(me->huart, pData, Size, 0xFFFFFFFF);
+}
+
+/**
  * @brief UART空闲中断回调函数
  * 
  * @param me usart_drive对象指针
@@ -84,7 +109,7 @@ static void USER_UART_IDLE_Callback(struct usart_drive* me)
 {
     if (NULL == me) return;
     static uint32_t msgNum = 0;
-    if (me->huart->Instance == USART1)
+    if (me->huart->Instance == me->huartInstance)
     {
         if (RESET != __HAL_UART_GET_FLAG(me->huart, UART_FLAG_IDLE)) // 判断是不是空闲中断
         {
@@ -150,20 +175,25 @@ static uint16_t Usart_Get_The_Number_Of_Data_In_Queue(struct usart_drive* me)
  * @param me usart_drive对象指针
  * @param huart UART句柄
  */
-void Usart_Drive_Object_Init(struct usart_drive* me, UART_HandleTypeDef *huart)
+void Usart_Drive_Object_Init(struct usart_drive* me, UART_HandleTypeDef *huart, USART_TypeDef* const instance)
 {
     if (huart == NULL) return;
     
     me->huart = huart; // 对象句柄
     
     me->flagTxComplete = 0x01;
+    me->huartInstance = instance;
     
     /* 对象方法初始化 */
     me->DMA_Sent = USART_Start_DMA_Transmit;
-    me->Get_Flag_Tx_Complete = USART_Get_Flag_Tx_Complete;
-    me->Set_Flag_Tx_Complete = USART_Set_Flag_Tx_Complete;
+    me->Serial_Sent = USART_Start_Transmit;
     me->User_IDLE_Callback = USER_UART_IDLE_Callback;
+    // 设置器
+    me->Set_Flag_Tx_Complete = USART_Set_Flag_Tx_Complete;
+    // 获取器
+    me->Get_Flag_Tx_Complete = USART_Get_Flag_Tx_Complete;
     me->Get_The_Number_Of_Data_In_Queue = Usart_Get_The_Number_Of_Data_In_Queue;
+    me->Get_Huart_Instance = Usart_Get_Huart_Instance;
     
     Queue_Init(&me->queueHandler, (uint8_t*)me->queueBuffer, Q_BUFFER_SIZE);
     __HAL_UART_ENABLE_IT(me->huart, UART_IT_IDLE); // 开启接收空闲中断

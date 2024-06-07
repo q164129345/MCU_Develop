@@ -101,7 +101,7 @@ int main(void)
   EventRecorderInitialize(EventRecordAll,1U);
   EventRecorderStart();
   
-  Usart_Drive_Object_Init(&g_Usart1, &huart1); // 实例化串口1
+  Usart_Drive_Object_Init(&g_Usart1, &huart1, USART1); // 实例化串口1
   R200_RFID_Reader_Object_Init(&g_R200_Reader); // 实例化R200 RFID读卡器
   g_R200_Reader.Link_Usart_Drive(&g_R200_Reader, &g_Usart1); // 连接串口驱动
   /* USER CODE END 2 */
@@ -176,7 +176,7 @@ void SystemClock_Config(void)
 
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
-    if (huart->Instance == USART1)
+    if (huart->Instance == g_Usart1.Get_Huart_Instance(&g_Usart1))
     {
         // 发送完成后的处理逻辑，可以根据项目需求添加
         g_Usart1.Set_Flag_Tx_Complete(&g_Usart1, 0x01);

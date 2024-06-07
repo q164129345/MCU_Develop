@@ -19,6 +19,7 @@ extern "C" {
 typedef struct usart_drive{
     /* 成员 */
     UART_HandleTypeDef* huart;                  // HAL对象句柄
+    USART_TypeDef*      huartInstance;          // 串口外设内存地址
     volatile uint8_t    rxData[USART_RX_BUF_SIZE]; // DMA接收缓存区
     volatile uint8_t    flagTxComplete;         // 标志位：发送完成
     volatile int16_t    receivedBytes;          // 接收的字节数
@@ -29,17 +30,19 @@ typedef struct usart_drive{
     /* 方法 */
     void (*User_IDLE_Callback) (struct usart_drive* me); // 空闲中断处理
     HAL_StatusTypeDef (*DMA_Sent) (struct usart_drive* me, uint8_t *pData, uint16_t Size); // DMA发送
+    HAL_StatusTypeDef (*Serial_Sent) (struct usart_drive* me, uint8_t *pData, uint16_t Size); // 串行发送
     
     // 设置器
     void (*Set_Flag_Tx_Complete) (struct usart_drive* me, uint8_t flag);  // 设置标志位(发送完成）
     // 获取器
     uint8_t (*Get_Flag_Tx_Complete) (struct usart_drive* me);             // 获取标志位（发送完成）
     uint16_t (*Get_The_Number_Of_Data_In_Queue) (struct usart_drive* me); // 获取ringbuffer里的消息数量
+    USART_TypeDef* (*Get_Huart_Instance) (struct usart_drive* me);        // 获取串口外设的内存地址
     
 }Usart_Drive;
 
 // 对象实例化
-void Usart_Drive_Object_Init(struct usart_drive* me, UART_HandleTypeDef *huart);
+void Usart_Drive_Object_Init(struct usart_drive* me, UART_HandleTypeDef *huart, USART_TypeDef* const instance);
 
 
 #ifdef __cplusplus

@@ -575,19 +575,21 @@ Section Cross References
     system_stm32f4xx.o(.text.SystemCoreClockUpdate) refers to system_stm32f4xx.o(.data.SystemCoreClock) for SystemCoreClock
     system_stm32f4xx.o(.text.SystemCoreClockUpdate) refers to system_stm32f4xx.o(.rodata.AHBPrescTable) for AHBPrescTable
     system_stm32f4xx.o(.ARM.exidx.text.SystemCoreClockUpdate) refers to system_stm32f4xx.o(.text.SystemCoreClockUpdate) for [Anonymous Symbol]
-    usart_drive.o(.text.Usart_Drive_Object_Init) refers to usart_drive.o(.text.USART_Start_DMA_Transmit) for USART_Start_DMA_Transmit
-    usart_drive.o(.text.Usart_Drive_Object_Init) refers to usart_drive.o(.text.USART_Get_Flag_Tx_Complete) for USART_Get_Flag_Tx_Complete
-    usart_drive.o(.text.Usart_Drive_Object_Init) refers to usart_drive.o(.text.USART_Set_Flag_Tx_Complete) for USART_Set_Flag_Tx_Complete
     usart_drive.o(.text.Usart_Drive_Object_Init) refers to usart_drive.o(.text.USER_UART_IDLE_Callback) for USER_UART_IDLE_Callback
+    usart_drive.o(.text.Usart_Drive_Object_Init) refers to usart_drive.o(.text.USART_Set_Flag_Tx_Complete) for USART_Set_Flag_Tx_Complete
+    usart_drive.o(.text.Usart_Drive_Object_Init) refers to usart_drive.o(.text.USART_Get_Flag_Tx_Complete) for USART_Get_Flag_Tx_Complete
     usart_drive.o(.text.Usart_Drive_Object_Init) refers to usart_drive.o(.text.Usart_Get_The_Number_Of_Data_In_Queue) for Usart_Get_The_Number_Of_Data_In_Queue
+    usart_drive.o(.text.Usart_Drive_Object_Init) refers to usart_drive.o(.text.Usart_Get_Huart_Instance) for Usart_Get_Huart_Instance
+    usart_drive.o(.text.Usart_Drive_Object_Init) refers to usart_drive.o(.text.USART_Start_DMA_Transmit) for USART_Start_DMA_Transmit
+    usart_drive.o(.text.Usart_Drive_Object_Init) refers to usart_drive.o(.text.USART_Start_Transmit) for USART_Start_Transmit
     usart_drive.o(.text.Usart_Drive_Object_Init) refers to queue.o(.text.Queue_Init) for Queue_Init
     usart_drive.o(.text.Usart_Drive_Object_Init) refers to usart_drive.o(.text.USART_Start_DMA_Receive) for USART_Start_DMA_Receive
     usart_drive.o(.ARM.exidx.text.Usart_Drive_Object_Init) refers to usart_drive.o(.text.Usart_Drive_Object_Init) for [Anonymous Symbol]
     usart_drive.o(.text.USART_Start_DMA_Transmit) refers to stm32f4xx_hal.o(.text.HAL_GetTick) for HAL_GetTick
     usart_drive.o(.text.USART_Start_DMA_Transmit) refers to stm32f4xx_hal_uart.o(.text.HAL_UART_Transmit_DMA) for HAL_UART_Transmit_DMA
     usart_drive.o(.ARM.exidx.text.USART_Start_DMA_Transmit) refers to usart_drive.o(.text.USART_Start_DMA_Transmit) for [Anonymous Symbol]
-    usart_drive.o(.ARM.exidx.text.USART_Get_Flag_Tx_Complete) refers to usart_drive.o(.text.USART_Get_Flag_Tx_Complete) for [Anonymous Symbol]
-    usart_drive.o(.ARM.exidx.text.USART_Set_Flag_Tx_Complete) refers to usart_drive.o(.text.USART_Set_Flag_Tx_Complete) for [Anonymous Symbol]
+    usart_drive.o(.text.USART_Start_Transmit) refers to stm32f4xx_hal_uart.o(.text.HAL_UART_Transmit) for HAL_UART_Transmit
+    usart_drive.o(.ARM.exidx.text.USART_Start_Transmit) refers to usart_drive.o(.text.USART_Start_Transmit) for [Anonymous Symbol]
     usart_drive.o(.text.USER_UART_IDLE_Callback) refers to stm32f4xx_hal_uart.o(.text.HAL_UART_DMAStop) for HAL_UART_DMAStop
     usart_drive.o(.text.USER_UART_IDLE_Callback) refers to memcpya.o(.text) for __aeabi_memcpy4
     usart_drive.o(.text.USER_UART_IDLE_Callback) refers to usart_drive.o(.bss.USER_UART_IDLE_Callback.msgNum) for USER_UART_IDLE_Callback.msgNum
@@ -601,8 +603,11 @@ Section Cross References
     usart_drive.o(.text.USER_UART_IDLE_Callback) refers to queue.o(.text.Queue_Push_Array) for Queue_Push_Array
     usart_drive.o(.text.USER_UART_IDLE_Callback) refers to usart_drive.o(.text.USART_Start_DMA_Receive) for USART_Start_DMA_Receive
     usart_drive.o(.ARM.exidx.text.USER_UART_IDLE_Callback) refers to usart_drive.o(.text.USER_UART_IDLE_Callback) for [Anonymous Symbol]
+    usart_drive.o(.ARM.exidx.text.USART_Set_Flag_Tx_Complete) refers to usart_drive.o(.text.USART_Set_Flag_Tx_Complete) for [Anonymous Symbol]
+    usart_drive.o(.ARM.exidx.text.USART_Get_Flag_Tx_Complete) refers to usart_drive.o(.text.USART_Get_Flag_Tx_Complete) for [Anonymous Symbol]
     usart_drive.o(.text.Usart_Get_The_Number_Of_Data_In_Queue) refers to queue.o(.text.Queue_Count) for Queue_Count
     usart_drive.o(.ARM.exidx.text.Usart_Get_The_Number_Of_Data_In_Queue) refers to usart_drive.o(.text.Usart_Get_The_Number_Of_Data_In_Queue) for [Anonymous Symbol]
+    usart_drive.o(.ARM.exidx.text.Usart_Get_Huart_Instance) refers to usart_drive.o(.text.Usart_Get_Huart_Instance) for [Anonymous Symbol]
     usart_drive.o(.text.USART_Start_DMA_Receive) refers to stm32f4xx_hal_uart.o(.text.HAL_UART_Receive_DMA) for HAL_UART_Receive_DMA
     usart_drive.o(.text.USART_Start_DMA_Receive) refers to main.o(.text.Error_Handler) for Error_Handler
     usart_drive.o(.ARM.exidx.text.USART_Start_DMA_Receive) refers to usart_drive.o(.text.USART_Start_DMA_Receive) for [Anonymous Symbol]
@@ -1032,9 +1037,7 @@ Removing Unused input sections from the image.
     Removing stm32f4xx_hal_uart.o(.ARM.exidx.text.HAL_UART_DeInit), (8 bytes).
     Removing stm32f4xx_hal_uart.o(.text.HAL_UART_MspDeInit), (2 bytes).
     Removing stm32f4xx_hal_uart.o(.ARM.exidx.text.HAL_UART_MspDeInit), (8 bytes).
-    Removing stm32f4xx_hal_uart.o(.text.HAL_UART_Transmit), (186 bytes).
     Removing stm32f4xx_hal_uart.o(.ARM.exidx.text.HAL_UART_Transmit), (8 bytes).
-    Removing stm32f4xx_hal_uart.o(.text.UART_WaitOnFlagUntilTimeout), (128 bytes).
     Removing stm32f4xx_hal_uart.o(.ARM.exidx.text.UART_WaitOnFlagUntilTimeout), (8 bytes).
     Removing stm32f4xx_hal_uart.o(.text.HAL_UART_Receive), (194 bytes).
     Removing stm32f4xx_hal_uart.o(.ARM.exidx.text.HAL_UART_Receive), (8 bytes).
@@ -1409,10 +1412,12 @@ Removing Unused input sections from the image.
     Removing usart_drive.o(.text), (0 bytes).
     Removing usart_drive.o(.ARM.exidx.text.Usart_Drive_Object_Init), (8 bytes).
     Removing usart_drive.o(.ARM.exidx.text.USART_Start_DMA_Transmit), (8 bytes).
-    Removing usart_drive.o(.ARM.exidx.text.USART_Get_Flag_Tx_Complete), (8 bytes).
-    Removing usart_drive.o(.ARM.exidx.text.USART_Set_Flag_Tx_Complete), (8 bytes).
+    Removing usart_drive.o(.ARM.exidx.text.USART_Start_Transmit), (8 bytes).
     Removing usart_drive.o(.ARM.exidx.text.USER_UART_IDLE_Callback), (8 bytes).
+    Removing usart_drive.o(.ARM.exidx.text.USART_Set_Flag_Tx_Complete), (8 bytes).
+    Removing usart_drive.o(.ARM.exidx.text.USART_Get_Flag_Tx_Complete), (8 bytes).
     Removing usart_drive.o(.ARM.exidx.text.Usart_Get_The_Number_Of_Data_In_Queue), (8 bytes).
+    Removing usart_drive.o(.ARM.exidx.text.Usart_Get_Huart_Instance), (8 bytes).
     Removing usart_drive.o(.ARM.exidx.text.USART_Start_DMA_Receive), (8 bytes).
     Removing queue.o(.text), (0 bytes).
     Removing queue.o(.ARM.exidx.text.Queue_Init), (8 bytes).
@@ -1470,7 +1475,7 @@ Removing Unused input sections from the image.
     Removing cdrcmple.o(.text), (48 bytes).
     Removing depilogue.o(.text), (186 bytes).
 
-486 unused section(s) (total 19998 bytes) removed from the image.
+486 unused section(s) (total 19700 bytes) removed from the image.
 
 ==============================================================================
 
@@ -1627,107 +1632,114 @@ Image Symbol Table
     [Anonymous Symbol]                       0x0800205c   Section        0  stm32f4xx_hal_uart.o(.text.HAL_UART_Receive_DMA)
     [Anonymous Symbol]                       0x0800208c   Section        0  stm32f4xx_hal_uart.o(.text.HAL_UART_RxCpltCallback)
     [Anonymous Symbol]                       0x0800208e   Section        0  stm32f4xx_hal_uart.o(.text.HAL_UART_RxHalfCpltCallback)
-    [Anonymous Symbol]                       0x08002090   Section        0  stm32f4xx_hal_uart.o(.text.HAL_UART_Transmit_DMA)
-    [Anonymous Symbol]                       0x08002118   Section        0  main.o(.text.HAL_UART_TxCpltCallback)
-    [Anonymous Symbol]                       0x08002138   Section        0  stm32f4xx_hal_uart.o(.text.HAL_UART_TxHalfCpltCallback)
-    [Anonymous Symbol]                       0x0800213c   Section        0  stm32f4xx_it.o(.text.HardFault_Handler)
-    [Anonymous Symbol]                       0x0800213e   Section        0  dma.o(.text.MX_DMA_Init)
-    [Anonymous Symbol]                       0x08002186   Section        0  gpio.o(.text.MX_GPIO_Init)
-    [Anonymous Symbol]                       0x0800224e   Section        0  usart.o(.text.MX_USART1_UART_Init)
-    [Anonymous Symbol]                       0x08002288   Section        0  stm32f4xx_it.o(.text.MemManage_Handler)
-    [Anonymous Symbol]                       0x0800228c   Section        0  stm32f4xx_it.o(.text.NMI_Handler)
-    [Anonymous Symbol]                       0x0800228e   Section        0  stm32f4xx_it.o(.text.PendSV_Handler)
-    [Anonymous Symbol]                       0x08002290   Section        0  queue.o(.text.Queue_Clear)
-    [Anonymous Symbol]                       0x08002298   Section        0  queue.o(.text.Queue_Count)
-    [Anonymous Symbol]                       0x080022a8   Section        0  queue.o(.text.Queue_Init)
-    [Anonymous Symbol]                       0x080022b4   Section        0  queue.o(.text.Queue_Pop)
-    [Anonymous Symbol]                       0x080022dc   Section        0  queue.o(.text.Queue_Push_Array)
-    R200_Find_The_RFID_Tag_Once              0x08002321   Thumb Code    44  r200_rfid.o(.text.R200_Find_The_RFID_Tag_Once)
-    [Anonymous Symbol]                       0x08002320   Section        0  r200_rfid.o(.text.R200_Find_The_RFID_Tag_Once)
-    R200_Link_Usart_Drive                    0x0800234d   Thumb Code     8  r200_rfid.o(.text.R200_Link_Usart_Drive)
-    [Anonymous Symbol]                       0x0800234c   Section        0  r200_rfid.o(.text.R200_Link_Usart_Drive)
-    [Anonymous Symbol]                       0x08002354   Section        0  r200_rfid.o(.text.R200_RFID_Reader_Object_Init)
-    R200_RFID_Run                            0x080023a5   Thumb Code  1064  r200_rfid.o(.text.R200_RFID_Run)
-    [Anonymous Symbol]                       0x080023a4   Section        0  r200_rfid.o(.text.R200_RFID_Run)
-    [Anonymous Symbol]                       0x08002860   Section        0  stm32f4xx_it.o(.text.SVC_Handler)
-    [Anonymous Symbol]                       0x08002862   Section        0  stm32f4xx_it.o(.text.SysTick_Handler)
-    [Anonymous Symbol]                       0x08002868   Section        0  main.o(.text.SystemClock_Config)
-    [Anonymous Symbol]                       0x08002916   Section        0  system_stm32f4xx.o(.text.SystemInit)
-    UART_DMAAbortOnError                     0x08002929   Thumb Code    12  stm32f4xx_hal_uart.o(.text.UART_DMAAbortOnError)
-    [Anonymous Symbol]                       0x08002928   Section        0  stm32f4xx_hal_uart.o(.text.UART_DMAAbortOnError)
-    UART_DMAError                            0x08002935   Thumb Code   100  stm32f4xx_hal_uart.o(.text.UART_DMAError)
-    [Anonymous Symbol]                       0x08002934   Section        0  stm32f4xx_hal_uart.o(.text.UART_DMAError)
-    UART_DMAReceiveCplt                      0x08002999   Thumb Code   124  stm32f4xx_hal_uart.o(.text.UART_DMAReceiveCplt)
-    [Anonymous Symbol]                       0x08002998   Section        0  stm32f4xx_hal_uart.o(.text.UART_DMAReceiveCplt)
-    UART_DMARxHalfCplt                       0x08002a15   Thumb Code    20  stm32f4xx_hal_uart.o(.text.UART_DMARxHalfCplt)
-    [Anonymous Symbol]                       0x08002a14   Section        0  stm32f4xx_hal_uart.o(.text.UART_DMARxHalfCplt)
-    UART_DMATransmitCplt                     0x08002a29   Thumb Code    62  stm32f4xx_hal_uart.o(.text.UART_DMATransmitCplt)
-    [Anonymous Symbol]                       0x08002a28   Section        0  stm32f4xx_hal_uart.o(.text.UART_DMATransmitCplt)
-    UART_DMATxHalfCplt                       0x08002a67   Thumb Code     6  stm32f4xx_hal_uart.o(.text.UART_DMATxHalfCplt)
-    [Anonymous Symbol]                       0x08002a66   Section        0  stm32f4xx_hal_uart.o(.text.UART_DMATxHalfCplt)
-    UART_EndRxTransfer                       0x08002a6d   Thumb Code    80  stm32f4xx_hal_uart.o(.text.UART_EndRxTransfer)
-    [Anonymous Symbol]                       0x08002a6c   Section        0  stm32f4xx_hal_uart.o(.text.UART_EndRxTransfer)
-    UART_Receive_IT                          0x08002abd   Thumb Code   190  stm32f4xx_hal_uart.o(.text.UART_Receive_IT)
-    [Anonymous Symbol]                       0x08002abc   Section        0  stm32f4xx_hal_uart.o(.text.UART_Receive_IT)
-    UART_SetConfig                           0x08002b7b   Thumb Code   340  stm32f4xx_hal_uart.o(.text.UART_SetConfig)
-    [Anonymous Symbol]                       0x08002b7a   Section        0  stm32f4xx_hal_uart.o(.text.UART_SetConfig)
-    [Anonymous Symbol]                       0x08002cd0   Section        0  stm32f4xx_hal_uart.o(.text.UART_Start_Receive_DMA)
-    [Anonymous Symbol]                       0x08002d66   Section        0  stm32f4xx_it.o(.text.USART1_IRQHandler)
-    USART_Get_Flag_Tx_Complete               0x08002d87   Thumb Code    12  usart_drive.o(.text.USART_Get_Flag_Tx_Complete)
-    [Anonymous Symbol]                       0x08002d86   Section        0  usart_drive.o(.text.USART_Get_Flag_Tx_Complete)
-    USART_Set_Flag_Tx_Complete               0x08002d93   Thumb Code    14  usart_drive.o(.text.USART_Set_Flag_Tx_Complete)
-    [Anonymous Symbol]                       0x08002d92   Section        0  usart_drive.o(.text.USART_Set_Flag_Tx_Complete)
-    USART_Start_DMA_Receive                  0x08002da1   Thumb Code    28  usart_drive.o(.text.USART_Start_DMA_Receive)
-    [Anonymous Symbol]                       0x08002da0   Section        0  usart_drive.o(.text.USART_Start_DMA_Receive)
-    USART_Start_DMA_Transmit                 0x08002dbd   Thumb Code    78  usart_drive.o(.text.USART_Start_DMA_Transmit)
-    [Anonymous Symbol]                       0x08002dbc   Section        0  usart_drive.o(.text.USART_Start_DMA_Transmit)
-    USER_UART_IDLE_Callback                  0x08002e0d   Thumb Code   292  usart_drive.o(.text.USER_UART_IDLE_Callback)
-    [Anonymous Symbol]                       0x08002e0c   Section        0  usart_drive.o(.text.USER_UART_IDLE_Callback)
-    [Anonymous Symbol]                       0x08002fa4   Section        0  stm32f4xx_it.o(.text.UsageFault_Handler)
-    [Anonymous Symbol]                       0x08002fa6   Section        0  usart_drive.o(.text.Usart_Drive_Object_Init)
-    Usart_Get_The_Number_Of_Data_In_Queue    0x08003011   Thumb Code    12  usart_drive.o(.text.Usart_Get_The_Number_Of_Data_In_Queue)
-    [Anonymous Symbol]                       0x08003010   Section        0  usart_drive.o(.text.Usart_Get_The_Number_Of_Data_In_Queue)
-    [Anonymous Symbol]                       0x0800301c   Section        0  main.o(.text.assert_failed)
-    [Anonymous Symbol]                       0x0800301e   Section        0  retarget_io.o(.text.fputc)
-    [Anonymous Symbol]                       0x0800306c   Section        0  main.o(.text.main)
-    i.__0printf$8                            0x080031a0   Section        0  printf8.o(i.__0printf$8)
-    i.__scatterload_copy                     0x080031c0   Section       14  handlers.o(i.__scatterload_copy)
-    i.__scatterload_null                     0x080031ce   Section        2  handlers.o(i.__scatterload_null)
-    i.__scatterload_zeroinit                 0x080031d0   Section       14  handlers.o(i.__scatterload_zeroinit)
-    _printf_core                             0x080031e1   Thumb Code   996  printf8.o(i._printf_core)
-    i._printf_core                           0x080031e0   Section        0  printf8.o(i._printf_core)
-    _printf_post_padding                     0x080035f1   Thumb Code    36  printf8.o(i._printf_post_padding)
-    i._printf_post_padding                   0x080035f0   Section        0  printf8.o(i._printf_post_padding)
-    _printf_pre_padding                      0x08003615   Thumb Code    46  printf8.o(i._printf_pre_padding)
-    i._printf_pre_padding                    0x08003614   Section        0  printf8.o(i._printf_pre_padding)
-    i.putchar                                0x08003644   Section        0  putchar.o(i.putchar)
-    i.puts                                   0x08003650   Section        0  puts.o(i.puts)
-    __tagsym$$used.0                         0x0800368c   Number         0  eventrecorder.o(.rodata.EventRecorderInfo)
-    cmdFindCardOnce                          0x080036a4   Data           7  r200_rfid.o(.rodata.cmdFindCardOnce)
-    [Anonymous Symbol]                       0x080036a4   Section        0  r200_rfid.o(.rodata.cmdFindCardOnce)
-    cmdGetTransmittingPower                  0x080036ab   Data           7  r200_rfid.o(.rodata.cmdGetTransmittingPower)
-    [Anonymous Symbol]                       0x080036ab   Section        0  r200_rfid.o(.rodata.cmdGetTransmittingPower)
-    DMA_CalcBaseAndBitshift.flagBitshiftOffset 0x080036b2   Data           8  stm32f4xx_hal_dma.o(.rodata.cst8)
-    [Anonymous Symbol]                       0x080036b2   Section        0  stm32f4xx_hal_dma.o(.rodata.cst8)
-    .L.str                                   0x080036ba   Data          57  stm32f4xx_hal_uart.o(.rodata.str1.1)
-    [Anonymous Symbol]                       0x080036ba   Section        0  stm32f4xx_hal_uart.o(.rodata.str1.1)
-    .L.str                                   0x080036f3   Data          56  stm32f4xx_hal_rcc.o(.rodata.str1.1)
-    [Anonymous Symbol]                       0x080036f3   Section        0  stm32f4xx_hal_rcc.o(.rodata.str1.1)
-    .L.str                                   0x0800372b   Data          57  stm32f4xx_hal_gpio.o(.rodata.str1.1)
-    [Anonymous Symbol]                       0x0800372b   Section        0  stm32f4xx_hal_gpio.o(.rodata.str1.1)
-    .L.str                                   0x08003764   Data          56  stm32f4xx_hal_dma.o(.rodata.str1.1)
-    [Anonymous Symbol]                       0x08003764   Section        0  stm32f4xx_hal_dma.o(.rodata.str1.1)
-    .L.str                                   0x0800379c   Data          59  stm32f4xx_hal_cortex.o(.rodata.str1.1)
-    [Anonymous Symbol]                       0x0800379c   Section        0  stm32f4xx_hal_cortex.o(.rodata.str1.1)
-    .Lstr                                    0x080037d7   Data          44  usart_drive.o(.rodata.str1.1)
-    [Anonymous Symbol]                       0x080037d7   Section        0  usart_drive.o(.rodata.str1.1)
-    .L.str.1                                 0x08003803   Data          82  r200_rfid.o(.rodata.str1.1)
-    [Anonymous Symbol]                       0x08003803   Section        0  r200_rfid.o(.rodata.str1.1)
-    .L.str.12                                0x08003855   Data          26  r200_rfid.o(.rodata.str1.1)
-    .L.str.13                                0x0800386f   Data          30  r200_rfid.o(.rodata.str1.1)
-    .Lstr                                    0x0800388d   Data          18  r200_rfid.o(.rodata.str1.1)
-    .Lstr.17                                 0x0800389f   Data          23  r200_rfid.o(.rodata.str1.1)
-    .Lstr.16                                 0x080038b6   Data          18  r200_rfid.o(.rodata.str1.1)
+    [Anonymous Symbol]                       0x08002090   Section        0  stm32f4xx_hal_uart.o(.text.HAL_UART_Transmit)
+    [Anonymous Symbol]                       0x0800214c   Section        0  stm32f4xx_hal_uart.o(.text.HAL_UART_Transmit_DMA)
+    [Anonymous Symbol]                       0x080021d4   Section        0  main.o(.text.HAL_UART_TxCpltCallback)
+    [Anonymous Symbol]                       0x080021fc   Section        0  stm32f4xx_hal_uart.o(.text.HAL_UART_TxHalfCpltCallback)
+    [Anonymous Symbol]                       0x08002200   Section        0  stm32f4xx_it.o(.text.HardFault_Handler)
+    [Anonymous Symbol]                       0x08002202   Section        0  dma.o(.text.MX_DMA_Init)
+    [Anonymous Symbol]                       0x0800224a   Section        0  gpio.o(.text.MX_GPIO_Init)
+    [Anonymous Symbol]                       0x08002312   Section        0  usart.o(.text.MX_USART1_UART_Init)
+    [Anonymous Symbol]                       0x0800234c   Section        0  stm32f4xx_it.o(.text.MemManage_Handler)
+    [Anonymous Symbol]                       0x08002350   Section        0  stm32f4xx_it.o(.text.NMI_Handler)
+    [Anonymous Symbol]                       0x08002352   Section        0  stm32f4xx_it.o(.text.PendSV_Handler)
+    [Anonymous Symbol]                       0x08002354   Section        0  queue.o(.text.Queue_Clear)
+    [Anonymous Symbol]                       0x0800235c   Section        0  queue.o(.text.Queue_Count)
+    [Anonymous Symbol]                       0x0800236c   Section        0  queue.o(.text.Queue_Init)
+    [Anonymous Symbol]                       0x08002378   Section        0  queue.o(.text.Queue_Pop)
+    [Anonymous Symbol]                       0x080023a0   Section        0  queue.o(.text.Queue_Push_Array)
+    R200_Find_The_RFID_Tag_Once              0x080023e5   Thumb Code    44  r200_rfid.o(.text.R200_Find_The_RFID_Tag_Once)
+    [Anonymous Symbol]                       0x080023e4   Section        0  r200_rfid.o(.text.R200_Find_The_RFID_Tag_Once)
+    R200_Link_Usart_Drive                    0x08002411   Thumb Code     8  r200_rfid.o(.text.R200_Link_Usart_Drive)
+    [Anonymous Symbol]                       0x08002410   Section        0  r200_rfid.o(.text.R200_Link_Usart_Drive)
+    [Anonymous Symbol]                       0x08002418   Section        0  r200_rfid.o(.text.R200_RFID_Reader_Object_Init)
+    R200_RFID_Run                            0x08002469   Thumb Code  1064  r200_rfid.o(.text.R200_RFID_Run)
+    [Anonymous Symbol]                       0x08002468   Section        0  r200_rfid.o(.text.R200_RFID_Run)
+    [Anonymous Symbol]                       0x08002924   Section        0  stm32f4xx_it.o(.text.SVC_Handler)
+    [Anonymous Symbol]                       0x08002926   Section        0  stm32f4xx_it.o(.text.SysTick_Handler)
+    [Anonymous Symbol]                       0x0800292c   Section        0  main.o(.text.SystemClock_Config)
+    [Anonymous Symbol]                       0x080029da   Section        0  system_stm32f4xx.o(.text.SystemInit)
+    UART_DMAAbortOnError                     0x080029ed   Thumb Code    12  stm32f4xx_hal_uart.o(.text.UART_DMAAbortOnError)
+    [Anonymous Symbol]                       0x080029ec   Section        0  stm32f4xx_hal_uart.o(.text.UART_DMAAbortOnError)
+    UART_DMAError                            0x080029f9   Thumb Code   100  stm32f4xx_hal_uart.o(.text.UART_DMAError)
+    [Anonymous Symbol]                       0x080029f8   Section        0  stm32f4xx_hal_uart.o(.text.UART_DMAError)
+    UART_DMAReceiveCplt                      0x08002a5d   Thumb Code   124  stm32f4xx_hal_uart.o(.text.UART_DMAReceiveCplt)
+    [Anonymous Symbol]                       0x08002a5c   Section        0  stm32f4xx_hal_uart.o(.text.UART_DMAReceiveCplt)
+    UART_DMARxHalfCplt                       0x08002ad9   Thumb Code    20  stm32f4xx_hal_uart.o(.text.UART_DMARxHalfCplt)
+    [Anonymous Symbol]                       0x08002ad8   Section        0  stm32f4xx_hal_uart.o(.text.UART_DMARxHalfCplt)
+    UART_DMATransmitCplt                     0x08002aed   Thumb Code    62  stm32f4xx_hal_uart.o(.text.UART_DMATransmitCplt)
+    [Anonymous Symbol]                       0x08002aec   Section        0  stm32f4xx_hal_uart.o(.text.UART_DMATransmitCplt)
+    UART_DMATxHalfCplt                       0x08002b2b   Thumb Code     6  stm32f4xx_hal_uart.o(.text.UART_DMATxHalfCplt)
+    [Anonymous Symbol]                       0x08002b2a   Section        0  stm32f4xx_hal_uart.o(.text.UART_DMATxHalfCplt)
+    UART_EndRxTransfer                       0x08002b31   Thumb Code    80  stm32f4xx_hal_uart.o(.text.UART_EndRxTransfer)
+    [Anonymous Symbol]                       0x08002b30   Section        0  stm32f4xx_hal_uart.o(.text.UART_EndRxTransfer)
+    UART_Receive_IT                          0x08002b81   Thumb Code   190  stm32f4xx_hal_uart.o(.text.UART_Receive_IT)
+    [Anonymous Symbol]                       0x08002b80   Section        0  stm32f4xx_hal_uart.o(.text.UART_Receive_IT)
+    UART_SetConfig                           0x08002c3f   Thumb Code   340  stm32f4xx_hal_uart.o(.text.UART_SetConfig)
+    [Anonymous Symbol]                       0x08002c3e   Section        0  stm32f4xx_hal_uart.o(.text.UART_SetConfig)
+    [Anonymous Symbol]                       0x08002d94   Section        0  stm32f4xx_hal_uart.o(.text.UART_Start_Receive_DMA)
+    UART_WaitOnFlagUntilTimeout              0x08002e2d   Thumb Code   128  stm32f4xx_hal_uart.o(.text.UART_WaitOnFlagUntilTimeout)
+    [Anonymous Symbol]                       0x08002e2c   Section        0  stm32f4xx_hal_uart.o(.text.UART_WaitOnFlagUntilTimeout)
+    [Anonymous Symbol]                       0x08002eac   Section        0  stm32f4xx_it.o(.text.USART1_IRQHandler)
+    USART_Get_Flag_Tx_Complete               0x08002ecd   Thumb Code    12  usart_drive.o(.text.USART_Get_Flag_Tx_Complete)
+    [Anonymous Symbol]                       0x08002ecc   Section        0  usart_drive.o(.text.USART_Get_Flag_Tx_Complete)
+    USART_Set_Flag_Tx_Complete               0x08002ed9   Thumb Code    14  usart_drive.o(.text.USART_Set_Flag_Tx_Complete)
+    [Anonymous Symbol]                       0x08002ed8   Section        0  usart_drive.o(.text.USART_Set_Flag_Tx_Complete)
+    USART_Start_DMA_Receive                  0x08002ee7   Thumb Code    28  usart_drive.o(.text.USART_Start_DMA_Receive)
+    [Anonymous Symbol]                       0x08002ee6   Section        0  usart_drive.o(.text.USART_Start_DMA_Receive)
+    USART_Start_DMA_Transmit                 0x08002f05   Thumb Code    78  usart_drive.o(.text.USART_Start_DMA_Transmit)
+    [Anonymous Symbol]                       0x08002f04   Section        0  usart_drive.o(.text.USART_Start_DMA_Transmit)
+    USART_Start_Transmit                     0x08002f53   Thumb Code    16  usart_drive.o(.text.USART_Start_Transmit)
+    [Anonymous Symbol]                       0x08002f52   Section        0  usart_drive.o(.text.USART_Start_Transmit)
+    USER_UART_IDLE_Callback                  0x08002f65   Thumb Code   292  usart_drive.o(.text.USER_UART_IDLE_Callback)
+    [Anonymous Symbol]                       0x08002f64   Section        0  usart_drive.o(.text.USER_UART_IDLE_Callback)
+    [Anonymous Symbol]                       0x080030fc   Section        0  stm32f4xx_it.o(.text.UsageFault_Handler)
+    [Anonymous Symbol]                       0x080030fe   Section        0  usart_drive.o(.text.Usart_Drive_Object_Init)
+    Usart_Get_Huart_Instance                 0x0800317f   Thumb Code     4  usart_drive.o(.text.Usart_Get_Huart_Instance)
+    [Anonymous Symbol]                       0x0800317e   Section        0  usart_drive.o(.text.Usart_Get_Huart_Instance)
+    Usart_Get_The_Number_Of_Data_In_Queue    0x08003183   Thumb Code    12  usart_drive.o(.text.Usart_Get_The_Number_Of_Data_In_Queue)
+    [Anonymous Symbol]                       0x08003182   Section        0  usart_drive.o(.text.Usart_Get_The_Number_Of_Data_In_Queue)
+    [Anonymous Symbol]                       0x0800318e   Section        0  main.o(.text.assert_failed)
+    [Anonymous Symbol]                       0x08003190   Section        0  retarget_io.o(.text.fputc)
+    [Anonymous Symbol]                       0x080031e0   Section        0  main.o(.text.main)
+    i.__0printf$8                            0x0800330c   Section        0  printf8.o(i.__0printf$8)
+    i.__scatterload_copy                     0x0800332c   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x0800333a   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x0800333c   Section       14  handlers.o(i.__scatterload_zeroinit)
+    _printf_core                             0x0800334d   Thumb Code   996  printf8.o(i._printf_core)
+    i._printf_core                           0x0800334c   Section        0  printf8.o(i._printf_core)
+    _printf_post_padding                     0x0800375d   Thumb Code    36  printf8.o(i._printf_post_padding)
+    i._printf_post_padding                   0x0800375c   Section        0  printf8.o(i._printf_post_padding)
+    _printf_pre_padding                      0x08003781   Thumb Code    46  printf8.o(i._printf_pre_padding)
+    i._printf_pre_padding                    0x08003780   Section        0  printf8.o(i._printf_pre_padding)
+    i.putchar                                0x080037b0   Section        0  putchar.o(i.putchar)
+    i.puts                                   0x080037bc   Section        0  puts.o(i.puts)
+    __tagsym$$used.0                         0x080037f8   Number         0  eventrecorder.o(.rodata.EventRecorderInfo)
+    cmdFindCardOnce                          0x08003810   Data           7  r200_rfid.o(.rodata.cmdFindCardOnce)
+    [Anonymous Symbol]                       0x08003810   Section        0  r200_rfid.o(.rodata.cmdFindCardOnce)
+    cmdGetTransmittingPower                  0x08003817   Data           7  r200_rfid.o(.rodata.cmdGetTransmittingPower)
+    [Anonymous Symbol]                       0x08003817   Section        0  r200_rfid.o(.rodata.cmdGetTransmittingPower)
+    DMA_CalcBaseAndBitshift.flagBitshiftOffset 0x0800381e   Data           8  stm32f4xx_hal_dma.o(.rodata.cst8)
+    [Anonymous Symbol]                       0x0800381e   Section        0  stm32f4xx_hal_dma.o(.rodata.cst8)
+    .L.str                                   0x08003826   Data          57  stm32f4xx_hal_uart.o(.rodata.str1.1)
+    [Anonymous Symbol]                       0x08003826   Section        0  stm32f4xx_hal_uart.o(.rodata.str1.1)
+    .L.str                                   0x0800385f   Data          56  stm32f4xx_hal_rcc.o(.rodata.str1.1)
+    [Anonymous Symbol]                       0x0800385f   Section        0  stm32f4xx_hal_rcc.o(.rodata.str1.1)
+    .L.str                                   0x08003897   Data          57  stm32f4xx_hal_gpio.o(.rodata.str1.1)
+    [Anonymous Symbol]                       0x08003897   Section        0  stm32f4xx_hal_gpio.o(.rodata.str1.1)
+    .L.str                                   0x080038d0   Data          56  stm32f4xx_hal_dma.o(.rodata.str1.1)
+    [Anonymous Symbol]                       0x080038d0   Section        0  stm32f4xx_hal_dma.o(.rodata.str1.1)
+    .L.str                                   0x08003908   Data          59  stm32f4xx_hal_cortex.o(.rodata.str1.1)
+    [Anonymous Symbol]                       0x08003908   Section        0  stm32f4xx_hal_cortex.o(.rodata.str1.1)
+    .Lstr                                    0x08003943   Data          44  usart_drive.o(.rodata.str1.1)
+    [Anonymous Symbol]                       0x08003943   Section        0  usart_drive.o(.rodata.str1.1)
+    .L.str.1                                 0x0800396f   Data          82  r200_rfid.o(.rodata.str1.1)
+    [Anonymous Symbol]                       0x0800396f   Section        0  r200_rfid.o(.rodata.str1.1)
+    .L.str.12                                0x080039c1   Data          26  r200_rfid.o(.rodata.str1.1)
+    .L.str.13                                0x080039db   Data          30  r200_rfid.o(.rodata.str1.1)
+    .Lstr                                    0x080039f9   Data          18  r200_rfid.o(.rodata.str1.1)
+    .Lstr.17                                 0x08003a0b   Data          23  r200_rfid.o(.rodata.str1.1)
+    .Lstr.16                                 0x08003a22   Data          18  r200_rfid.o(.rodata.str1.1)
     .data                                    0x20000000   Section        4  stdout.o(.data)
     cmdSetTransmittingPower                  0x20000008   Data           9  r200_rfid.o(.data.cmdSetTransmittingPower)
     [Anonymous Symbol]                       0x20000008   Section        0  r200_rfid.o(.data.cmdSetTransmittingPower)
@@ -1735,11 +1747,11 @@ Image Symbol Table
     [Anonymous Symbol]                       0x20000018   Section        0  r200_rfid.o(.bss.R200_RFID_Run.fre)
     USER_UART_IDLE_Callback.msgNum           0x2000001c   Data           4  usart_drive.o(.bss.USER_UART_IDLE_Callback.msgNum)
     [Anonymous Symbol]                       0x2000001c   Section        0  usart_drive.o(.bss.USER_UART_IDLE_Callback.msgNum)
-    stdout_putchar.buffer                    0x2000048c   Data           8  retarget_io.o(.bss.stdout_putchar.buffer)
-    [Anonymous Symbol]                       0x2000048c   Section        0  retarget_io.o(.bss.stdout_putchar.buffer)
-    stdout_putchar.index                     0x20000494   Data           4  retarget_io.o(.bss.stdout_putchar.index)
-    [Anonymous Symbol]                       0x20000494   Section        0  retarget_io.o(.bss.stdout_putchar.index)
-    STACK                                    0x200004a0   Section     8192  startup_stm32f407xx.o(STACK)
+    stdout_putchar.buffer                    0x20000498   Data           8  retarget_io.o(.bss.stdout_putchar.buffer)
+    [Anonymous Symbol]                       0x20000498   Section        0  retarget_io.o(.bss.stdout_putchar.buffer)
+    stdout_putchar.index                     0x200004a0   Data           4  retarget_io.o(.bss.stdout_putchar.index)
+    [Anonymous Symbol]                       0x200004a0   Section        0  retarget_io.o(.bss.stdout_putchar.index)
+    STACK                                    0x200004a8   Section     8192  startup_stm32f407xx.o(STACK)
     TS_OverflowLock                          0x2001c000   Data           1  eventrecorder.o(.bss.TS_OverflowLock)
     [Anonymous Symbol]                       0x2001c000   Section        0  eventrecorder.o(.bss.TS_OverflowLock)
     EventBuffer                              0x2001c040   Data        8192  eventrecorder.o(.bss.noinit)
@@ -1950,58 +1962,59 @@ Image Symbol Table
     HAL_UART_Receive_DMA                     0x0800205d   Thumb Code    48  stm32f4xx_hal_uart.o(.text.HAL_UART_Receive_DMA)
     HAL_UART_RxCpltCallback                  0x0800208d   Thumb Code     2  stm32f4xx_hal_uart.o(.text.HAL_UART_RxCpltCallback)
     HAL_UART_RxHalfCpltCallback              0x0800208f   Thumb Code     2  stm32f4xx_hal_uart.o(.text.HAL_UART_RxHalfCpltCallback)
-    HAL_UART_Transmit_DMA                    0x08002091   Thumb Code   136  stm32f4xx_hal_uart.o(.text.HAL_UART_Transmit_DMA)
-    HAL_UART_TxCpltCallback                  0x08002119   Thumb Code    32  main.o(.text.HAL_UART_TxCpltCallback)
-    HAL_UART_TxHalfCpltCallback              0x08002139   Thumb Code     2  stm32f4xx_hal_uart.o(.text.HAL_UART_TxHalfCpltCallback)
-    HardFault_Handler                        0x0800213d   Thumb Code     2  stm32f4xx_it.o(.text.HardFault_Handler)
-    MX_DMA_Init                              0x0800213f   Thumb Code    72  dma.o(.text.MX_DMA_Init)
-    MX_GPIO_Init                             0x08002187   Thumb Code   200  gpio.o(.text.MX_GPIO_Init)
-    MX_USART1_UART_Init                      0x0800224f   Thumb Code    58  usart.o(.text.MX_USART1_UART_Init)
-    MemManage_Handler                        0x08002289   Thumb Code     2  stm32f4xx_it.o(.text.MemManage_Handler)
-    NMI_Handler                              0x0800228d   Thumb Code     2  stm32f4xx_it.o(.text.NMI_Handler)
-    PendSV_Handler                           0x0800228f   Thumb Code     2  stm32f4xx_it.o(.text.PendSV_Handler)
-    Queue_Clear                              0x08002291   Thumb Code     8  queue.o(.text.Queue_Clear)
-    Queue_Count                              0x08002299   Thumb Code    16  queue.o(.text.Queue_Count)
-    Queue_Init                               0x080022a9   Thumb Code    12  queue.o(.text.Queue_Init)
-    Queue_Pop                                0x080022b5   Thumb Code    38  queue.o(.text.Queue_Pop)
-    Queue_Push_Array                         0x080022dd   Thumb Code    68  queue.o(.text.Queue_Push_Array)
-    R200_RFID_Reader_Object_Init             0x08002355   Thumb Code    80  r200_rfid.o(.text.R200_RFID_Reader_Object_Init)
-    SVC_Handler                              0x08002861   Thumb Code     2  stm32f4xx_it.o(.text.SVC_Handler)
-    SysTick_Handler                          0x08002863   Thumb Code     4  stm32f4xx_it.o(.text.SysTick_Handler)
-    SystemClock_Config                       0x08002869   Thumb Code   174  main.o(.text.SystemClock_Config)
-    SystemInit                               0x08002917   Thumb Code    18  system_stm32f4xx.o(.text.SystemInit)
-    UART_Start_Receive_DMA                   0x08002cd1   Thumb Code   150  stm32f4xx_hal_uart.o(.text.UART_Start_Receive_DMA)
-    USART1_IRQHandler                        0x08002d67   Thumb Code    32  stm32f4xx_it.o(.text.USART1_IRQHandler)
-    UsageFault_Handler                       0x08002fa5   Thumb Code     2  stm32f4xx_it.o(.text.UsageFault_Handler)
-    Usart_Drive_Object_Init                  0x08002fa7   Thumb Code   106  usart_drive.o(.text.Usart_Drive_Object_Init)
-    assert_failed                            0x0800301d   Thumb Code     2  main.o(.text.assert_failed)
-    fputc                                    0x0800301f   Thumb Code    78  retarget_io.o(.text.fputc)
-    main                                     0x0800306d   Thumb Code   306  main.o(.text.main)
-    __0printf$8                              0x080031a1   Thumb Code    22  printf8.o(i.__0printf$8)
-    __1printf$8                              0x080031a1   Thumb Code     0  printf8.o(i.__0printf$8)
-    __2printf                                0x080031a1   Thumb Code     0  printf8.o(i.__0printf$8)
-    __scatterload_copy                       0x080031c1   Thumb Code    14  handlers.o(i.__scatterload_copy)
-    __scatterload_null                       0x080031cf   Thumb Code     2  handlers.o(i.__scatterload_null)
-    __scatterload_zeroinit                   0x080031d1   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
-    putchar                                  0x08003645   Thumb Code     6  putchar.o(i.putchar)
-    puts                                     0x08003651   Thumb Code    30  puts.o(i.puts)
-    AHBPrescTable                            0x08003674   Data          16  system_stm32f4xx.o(.rodata.AHBPrescTable)
-    APBPrescTable                            0x08003684   Data           8  system_stm32f4xx.o(.rodata.APBPrescTable)
-    EventRecorderInfo                        0x0800368c   Data          24  eventrecorder.o(.rodata.EventRecorderInfo)
-    Region$$Table$$Base                      0x080038c8   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x080038e8   Number         0  anon$$obj.o(Region$$Table)
+    HAL_UART_Transmit                        0x08002091   Thumb Code   186  stm32f4xx_hal_uart.o(.text.HAL_UART_Transmit)
+    HAL_UART_Transmit_DMA                    0x0800214d   Thumb Code   136  stm32f4xx_hal_uart.o(.text.HAL_UART_Transmit_DMA)
+    HAL_UART_TxCpltCallback                  0x080021d5   Thumb Code    40  main.o(.text.HAL_UART_TxCpltCallback)
+    HAL_UART_TxHalfCpltCallback              0x080021fd   Thumb Code     2  stm32f4xx_hal_uart.o(.text.HAL_UART_TxHalfCpltCallback)
+    HardFault_Handler                        0x08002201   Thumb Code     2  stm32f4xx_it.o(.text.HardFault_Handler)
+    MX_DMA_Init                              0x08002203   Thumb Code    72  dma.o(.text.MX_DMA_Init)
+    MX_GPIO_Init                             0x0800224b   Thumb Code   200  gpio.o(.text.MX_GPIO_Init)
+    MX_USART1_UART_Init                      0x08002313   Thumb Code    58  usart.o(.text.MX_USART1_UART_Init)
+    MemManage_Handler                        0x0800234d   Thumb Code     2  stm32f4xx_it.o(.text.MemManage_Handler)
+    NMI_Handler                              0x08002351   Thumb Code     2  stm32f4xx_it.o(.text.NMI_Handler)
+    PendSV_Handler                           0x08002353   Thumb Code     2  stm32f4xx_it.o(.text.PendSV_Handler)
+    Queue_Clear                              0x08002355   Thumb Code     8  queue.o(.text.Queue_Clear)
+    Queue_Count                              0x0800235d   Thumb Code    16  queue.o(.text.Queue_Count)
+    Queue_Init                               0x0800236d   Thumb Code    12  queue.o(.text.Queue_Init)
+    Queue_Pop                                0x08002379   Thumb Code    38  queue.o(.text.Queue_Pop)
+    Queue_Push_Array                         0x080023a1   Thumb Code    68  queue.o(.text.Queue_Push_Array)
+    R200_RFID_Reader_Object_Init             0x08002419   Thumb Code    80  r200_rfid.o(.text.R200_RFID_Reader_Object_Init)
+    SVC_Handler                              0x08002925   Thumb Code     2  stm32f4xx_it.o(.text.SVC_Handler)
+    SysTick_Handler                          0x08002927   Thumb Code     4  stm32f4xx_it.o(.text.SysTick_Handler)
+    SystemClock_Config                       0x0800292d   Thumb Code   174  main.o(.text.SystemClock_Config)
+    SystemInit                               0x080029db   Thumb Code    18  system_stm32f4xx.o(.text.SystemInit)
+    UART_Start_Receive_DMA                   0x08002d95   Thumb Code   150  stm32f4xx_hal_uart.o(.text.UART_Start_Receive_DMA)
+    USART1_IRQHandler                        0x08002ead   Thumb Code    32  stm32f4xx_it.o(.text.USART1_IRQHandler)
+    UsageFault_Handler                       0x080030fd   Thumb Code     2  stm32f4xx_it.o(.text.UsageFault_Handler)
+    Usart_Drive_Object_Init                  0x080030ff   Thumb Code   128  usart_drive.o(.text.Usart_Drive_Object_Init)
+    assert_failed                            0x0800318f   Thumb Code     2  main.o(.text.assert_failed)
+    fputc                                    0x08003191   Thumb Code    78  retarget_io.o(.text.fputc)
+    main                                     0x080031e1   Thumb Code   298  main.o(.text.main)
+    __0printf$8                              0x0800330d   Thumb Code    22  printf8.o(i.__0printf$8)
+    __1printf$8                              0x0800330d   Thumb Code     0  printf8.o(i.__0printf$8)
+    __2printf                                0x0800330d   Thumb Code     0  printf8.o(i.__0printf$8)
+    __scatterload_copy                       0x0800332d   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x0800333b   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x0800333d   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    putchar                                  0x080037b1   Thumb Code     6  putchar.o(i.putchar)
+    puts                                     0x080037bd   Thumb Code    30  puts.o(i.puts)
+    AHBPrescTable                            0x080037e0   Data          16  system_stm32f4xx.o(.rodata.AHBPrescTable)
+    APBPrescTable                            0x080037f0   Data           8  system_stm32f4xx.o(.rodata.APBPrescTable)
+    EventRecorderInfo                        0x080037f8   Data          24  eventrecorder.o(.rodata.EventRecorderInfo)
+    Region$$Table$$Base                      0x08003a34   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x08003a54   Number         0  anon$$obj.o(Region$$Table)
     __stdout                                 0x20000000   Data           4  stdout.o(.data)
     SystemCoreClock                          0x20000004   Data           4  system_stm32f4xx.o(.data.SystemCoreClock)
     uwTickFreq                               0x20000011   Data           1  stm32f4xx_hal.o(.data.uwTickFreq)
     uwTickPrio                               0x20000014   Data           4  stm32f4xx_hal.o(.data.uwTickPrio)
     fre                                      0x20000020   Data           8  main.o(.bss.fre)
     g_R200_Reader                            0x20000028   Data         436  main.o(.bss.g_R200_Reader)
-    g_Usart1                                 0x200001dc   Data         428  main.o(.bss.g_Usart1)
-    hdma_usart1_rx                           0x20000388   Data          96  usart.o(.bss.hdma_usart1_rx)
-    hdma_usart1_tx                           0x200003e8   Data          96  usart.o(.bss.hdma_usart1_tx)
-    huart1                                   0x20000448   Data          68  usart.o(.bss.huart1)
-    uwTick                                   0x20000498   Data           4  stm32f4xx_hal.o(.bss.uwTick)
-    __initial_sp                             0x200024a0   Data           0  startup_stm32f407xx.o(STACK)
+    g_Usart1                                 0x200001dc   Data         440  main.o(.bss.g_Usart1)
+    hdma_usart1_rx                           0x20000394   Data          96  usart.o(.bss.hdma_usart1_rx)
+    hdma_usart1_tx                           0x200003f4   Data          96  usart.o(.bss.hdma_usart1_tx)
+    huart1                                   0x20000454   Data          68  usart.o(.bss.huart1)
+    uwTick                                   0x200004a4   Data           4  stm32f4xx_hal.o(.bss.uwTick)
+    __initial_sp                             0x200024a8   Data           0  startup_stm32f407xx.o(STACK)
 
 
 
@@ -2011,44 +2024,44 @@ Memory Map of the image
 
   Image Entry point : 0x08000189
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00003900, Max: 0x00100000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00003a70, Max: 0x00100000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x000038e8, Max: 0x00100000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00003a54, Max: 0x00100000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x08000000   0x08000000   0x00000188   Data   RO            3    RESET               startup_stm32f407xx.o
-    0x08000188   0x08000188   0x00000000   Code   RO          781  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
-    0x08000188   0x08000188   0x00000004   Code   RO         1065    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
-    0x0800018c   0x0800018c   0x00000004   Code   RO         1068    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
-    0x08000190   0x08000190   0x00000000   Code   RO         1070    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
-    0x08000190   0x08000190   0x00000000   Code   RO         1072    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
-    0x08000190   0x08000190   0x00000008   Code   RO         1073    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
-    0x08000198   0x08000198   0x00000000   Code   RO         1075    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
-    0x08000198   0x08000198   0x00000000   Code   RO         1077    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
-    0x08000198   0x08000198   0x00000004   Code   RO         1066    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
+    0x08000188   0x08000188   0x00000000   Code   RO          785  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
+    0x08000188   0x08000188   0x00000004   Code   RO         1069    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
+    0x0800018c   0x0800018c   0x00000004   Code   RO         1072    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
+    0x08000190   0x08000190   0x00000000   Code   RO         1074    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
+    0x08000190   0x08000190   0x00000000   Code   RO         1076    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
+    0x08000190   0x08000190   0x00000008   Code   RO         1077    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
+    0x08000198   0x08000198   0x00000000   Code   RO         1079    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
+    0x08000198   0x08000198   0x00000000   Code   RO         1081    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
+    0x08000198   0x08000198   0x00000004   Code   RO         1070    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
     0x0800019c   0x0800019c   0x00000024   Code   RO            4    .text               startup_stm32f407xx.o
-    0x080001c0   0x080001c0   0x00000062   Code   RO          796    .text               mc_w.l(uldiv.o)
-    0x08000222   0x08000222   0x00000024   Code   RO          798    .text               mc_w.l(memcpya.o)
-    0x08000246   0x08000246   0x00000024   Code   RO          800    .text               mc_w.l(memseta.o)
-    0x0800026a   0x0800026a   0x0000001e   Code   RO         1090    .text               mc_w.l(llshl.o)
-    0x08000288   0x08000288   0x00000020   Code   RO         1092    .text               mc_w.l(llushr.o)
-    0x080002a8   0x080002a8   0x00000030   Code   RO         1105    .text               mc_w.l(init.o)
+    0x080001c0   0x080001c0   0x00000062   Code   RO          800    .text               mc_w.l(uldiv.o)
+    0x08000222   0x08000222   0x00000024   Code   RO          802    .text               mc_w.l(memcpya.o)
+    0x08000246   0x08000246   0x00000024   Code   RO          804    .text               mc_w.l(memseta.o)
+    0x0800026a   0x0800026a   0x0000001e   Code   RO         1094    .text               mc_w.l(llshl.o)
+    0x08000288   0x08000288   0x00000020   Code   RO         1096    .text               mc_w.l(llushr.o)
+    0x080002a8   0x080002a8   0x00000030   Code   RO         1109    .text               mc_w.l(init.o)
     0x080002d8   0x080002d8   0x00000002   Code   RO           75    .text.BusFault_Handler  stm32f4xx_it.o
     0x080002da   0x080002da   0x0000000c   Code   RO           89    .text.DMA2_Stream2_IRQHandler  stm32f4xx_it.o
     0x080002e6   0x080002e6   0x0000000c   Code   RO           91    .text.DMA2_Stream7_IRQHandler  stm32f4xx_it.o
     0x080002f2   0x080002f2   0x00000002   Code   RO           81    .text.DebugMon_Handler  stm32f4xx_it.o
     0x080002f4   0x080002f4   0x0000000a   Code   RO           15    .text.Error_Handler  main.o
     0x080002fe   0x080002fe   0x00000002   PAD
-    0x08000300   0x08000300   0x0000005c   Code   RO          733    .text.EventGetTS    eventrecorder.o
-    0x0800035c   0x0800035c   0x0000011c   Code   RO          745    .text.EventRecordData  eventrecorder.o
-    0x08000478   0x08000478   0x00000110   Code   RO          735    .text.EventRecordItem  eventrecorder.o
-    0x08000588   0x08000588   0x0000006c   Code   RO          731    .text.EventRecorderEnable  eventrecorder.o
-    0x080005f4   0x080005f4   0x00000130   Code   RO          729    .text.EventRecorderInitialize  eventrecorder.o
-    0x08000724   0x08000724   0x00000030   Code   RO          737    .text.EventRecorderStart  eventrecorder.o
-    0x08000754   0x08000754   0x0000000c   Code   RO          727    .text.EventRecorderTimerGetCount  eventrecorder.o
-    0x08000760   0x08000760   0x0000000c   Code   RO          725    .text.EventRecorderTimerGetFreq  eventrecorder.o
-    0x0800076c   0x0800076c   0x00000024   Code   RO          723    .text.EventRecorderTimerSetup  eventrecorder.o
+    0x08000300   0x08000300   0x0000005c   Code   RO          737    .text.EventGetTS    eventrecorder.o
+    0x0800035c   0x0800035c   0x0000011c   Code   RO          749    .text.EventRecordData  eventrecorder.o
+    0x08000478   0x08000478   0x00000110   Code   RO          739    .text.EventRecordItem  eventrecorder.o
+    0x08000588   0x08000588   0x0000006c   Code   RO          735    .text.EventRecorderEnable  eventrecorder.o
+    0x080005f4   0x080005f4   0x00000130   Code   RO          733    .text.EventRecorderInitialize  eventrecorder.o
+    0x08000724   0x08000724   0x00000030   Code   RO          741    .text.EventRecorderStart  eventrecorder.o
+    0x08000754   0x08000754   0x0000000c   Code   RO          731    .text.EventRecorderTimerGetCount  eventrecorder.o
+    0x08000760   0x08000760   0x0000000c   Code   RO          729    .text.EventRecorderTimerGetFreq  eventrecorder.o
+    0x0800076c   0x0800076c   0x00000024   Code   RO          727    .text.EventRecorderTimerSetup  eventrecorder.o
     0x08000790   0x08000790   0x00000080   Code   RO          409    .text.HAL_DMA_Abort  stm32f4xx_hal_dma.o
     0x08000810   0x08000810   0x00000024   Code   RO          411    .text.HAL_DMA_Abort_IT  stm32f4xx_hal_dma.o
     0x08000834   0x08000834   0x00000186   Code   RO          415    .text.HAL_DMA_IRQHandler  stm32f4xx_hal_dma.o
@@ -2083,117 +2096,124 @@ Memory Map of the image
     0x0800205c   0x0800205c   0x00000030   Code   RO          146    .text.HAL_UART_Receive_DMA  stm32f4xx_hal_uart.o
     0x0800208c   0x0800208c   0x00000002   Code   RO          204    .text.HAL_UART_RxCpltCallback  stm32f4xx_hal_uart.o
     0x0800208e   0x0800208e   0x00000002   Code   RO          206    .text.HAL_UART_RxHalfCpltCallback  stm32f4xx_hal_uart.o
-    0x08002090   0x08002090   0x00000088   Code   RO          138    .text.HAL_UART_Transmit_DMA  stm32f4xx_hal_uart.o
-    0x08002118   0x08002118   0x00000020   Code   RO           17    .text.HAL_UART_TxCpltCallback  main.o
-    0x08002138   0x08002138   0x00000002   Code   RO          202    .text.HAL_UART_TxHalfCpltCallback  stm32f4xx_hal_uart.o
-    0x0800213a   0x0800213a   0x00000002   PAD
-    0x0800213c   0x0800213c   0x00000002   Code   RO           71    .text.HardFault_Handler  stm32f4xx_it.o
-    0x0800213e   0x0800213e   0x00000048   Code   RO           43    .text.MX_DMA_Init   dma.o
-    0x08002186   0x08002186   0x000000c8   Code   RO           33    .text.MX_GPIO_Init  gpio.o
-    0x0800224e   0x0800224e   0x0000003a   Code   RO           52    .text.MX_USART1_UART_Init  usart.o
-    0x08002288   0x08002288   0x00000002   Code   RO           73    .text.MemManage_Handler  stm32f4xx_it.o
-    0x0800228a   0x0800228a   0x00000002   PAD
-    0x0800228c   0x0800228c   0x00000002   Code   RO           69    .text.NMI_Handler   stm32f4xx_it.o
-    0x0800228e   0x0800228e   0x00000002   Code   RO           83    .text.PendSV_Handler  stm32f4xx_it.o
-    0x08002290   0x08002290   0x00000008   Code   RO          678    .text.Queue_Clear   queue.o
-    0x08002298   0x08002298   0x00000010   Code   RO          680    .text.Queue_Count   queue.o
-    0x080022a8   0x080022a8   0x0000000c   Code   RO          676    .text.Queue_Init    queue.o
-    0x080022b4   0x080022b4   0x00000026   Code   RO          686    .text.Queue_Pop     queue.o
-    0x080022da   0x080022da   0x00000002   PAD
-    0x080022dc   0x080022dc   0x00000044   Code   RO          684    .text.Queue_Push_Array  queue.o
-    0x08002320   0x08002320   0x0000002c   Code   RO          706    .text.R200_Find_The_RFID_Tag_Once  r200_rfid.o
-    0x0800234c   0x0800234c   0x00000008   Code   RO          704    .text.R200_Link_Usart_Drive  r200_rfid.o
-    0x08002354   0x08002354   0x00000050   Code   RO          702    .text.R200_RFID_Reader_Object_Init  r200_rfid.o
-    0x080023a4   0x080023a4   0x000004bc   Code   RO          708    .text.R200_RFID_Run  r200_rfid.o
-    0x08002860   0x08002860   0x00000002   Code   RO           79    .text.SVC_Handler   stm32f4xx_it.o
-    0x08002862   0x08002862   0x00000004   Code   RO           85    .text.SysTick_Handler  stm32f4xx_it.o
-    0x08002866   0x08002866   0x00000002   PAD
-    0x08002868   0x08002868   0x000000ae   Code   RO           13    .text.SystemClock_Config  main.o
-    0x08002916   0x08002916   0x00000012   Code   RO          637    .text.SystemInit    system_stm32f4xx.o
-    0x08002928   0x08002928   0x0000000c   Code   RO          194    .text.UART_DMAAbortOnError  stm32f4xx_hal_uart.o
-    0x08002934   0x08002934   0x00000064   Code   RO          144    .text.UART_DMAError  stm32f4xx_hal_uart.o
-    0x08002998   0x08002998   0x0000007c   Code   RO          222    .text.UART_DMAReceiveCplt  stm32f4xx_hal_uart.o
-    0x08002a14   0x08002a14   0x00000014   Code   RO          224    .text.UART_DMARxHalfCplt  stm32f4xx_hal_uart.o
-    0x08002a28   0x08002a28   0x0000003e   Code   RO          140    .text.UART_DMATransmitCplt  stm32f4xx_hal_uart.o
-    0x08002a66   0x08002a66   0x00000006   Code   RO          142    .text.UART_DMATxHalfCplt  stm32f4xx_hal_uart.o
-    0x08002a6c   0x08002a6c   0x00000050   Code   RO          156    .text.UART_EndRxTransfer  stm32f4xx_hal_uart.o
-    0x08002abc   0x08002abc   0x000000be   Code   RO          192    .text.UART_Receive_IT  stm32f4xx_hal_uart.o
-    0x08002b7a   0x08002b7a   0x00000154   Code   RO          114    .text.UART_SetConfig  stm32f4xx_hal_uart.o
-    0x08002cce   0x08002cce   0x00000002   PAD
-    0x08002cd0   0x08002cd0   0x00000096   Code   RO          148    .text.UART_Start_Receive_DMA  stm32f4xx_hal_uart.o
-    0x08002d66   0x08002d66   0x00000020   Code   RO           87    .text.USART1_IRQHandler  stm32f4xx_it.o
-    0x08002d86   0x08002d86   0x0000000c   Code   RO          656    .text.USART_Get_Flag_Tx_Complete  usart_drive.o
-    0x08002d92   0x08002d92   0x0000000e   Code   RO          658    .text.USART_Set_Flag_Tx_Complete  usart_drive.o
-    0x08002da0   0x08002da0   0x0000001c   Code   RO          664    .text.USART_Start_DMA_Receive  usart_drive.o
-    0x08002dbc   0x08002dbc   0x0000004e   Code   RO          654    .text.USART_Start_DMA_Transmit  usart_drive.o
-    0x08002e0a   0x08002e0a   0x00000002   PAD
-    0x08002e0c   0x08002e0c   0x00000198   Code   RO          660    .text.USER_UART_IDLE_Callback  usart_drive.o
-    0x08002fa4   0x08002fa4   0x00000002   Code   RO           77    .text.UsageFault_Handler  stm32f4xx_it.o
-    0x08002fa6   0x08002fa6   0x0000006a   Code   RO          652    .text.Usart_Drive_Object_Init  usart_drive.o
-    0x08003010   0x08003010   0x0000000c   Code   RO          662    .text.Usart_Get_The_Number_Of_Data_In_Queue  usart_drive.o
-    0x0800301c   0x0800301c   0x00000002   Code   RO           19    .text.assert_failed  main.o
-    0x0800301e   0x0800301e   0x0000004e   Code   RO          762    .text.fputc         retarget_io.o
-    0x0800306c   0x0800306c   0x00000132   Code   RO           11    .text.main          main.o
-    0x0800319e   0x0800319e   0x00000002   PAD
-    0x080031a0   0x080031a0   0x00000020   Code   RO         1011    i.__0printf$8       mc_w.l(printf8.o)
-    0x080031c0   0x080031c0   0x0000000e   Code   RO         1113    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x080031ce   0x080031ce   0x00000002   Code   RO         1114    i.__scatterload_null  mc_w.l(handlers.o)
-    0x080031d0   0x080031d0   0x0000000e   Code   RO         1115    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x08002090   0x08002090   0x000000ba   Code   RO          126    .text.HAL_UART_Transmit  stm32f4xx_hal_uart.o
+    0x0800214a   0x0800214a   0x00000002   PAD
+    0x0800214c   0x0800214c   0x00000088   Code   RO          138    .text.HAL_UART_Transmit_DMA  stm32f4xx_hal_uart.o
+    0x080021d4   0x080021d4   0x00000028   Code   RO           17    .text.HAL_UART_TxCpltCallback  main.o
+    0x080021fc   0x080021fc   0x00000002   Code   RO          202    .text.HAL_UART_TxHalfCpltCallback  stm32f4xx_hal_uart.o
+    0x080021fe   0x080021fe   0x00000002   PAD
+    0x08002200   0x08002200   0x00000002   Code   RO           71    .text.HardFault_Handler  stm32f4xx_it.o
+    0x08002202   0x08002202   0x00000048   Code   RO           43    .text.MX_DMA_Init   dma.o
+    0x0800224a   0x0800224a   0x000000c8   Code   RO           33    .text.MX_GPIO_Init  gpio.o
+    0x08002312   0x08002312   0x0000003a   Code   RO           52    .text.MX_USART1_UART_Init  usart.o
+    0x0800234c   0x0800234c   0x00000002   Code   RO           73    .text.MemManage_Handler  stm32f4xx_it.o
+    0x0800234e   0x0800234e   0x00000002   PAD
+    0x08002350   0x08002350   0x00000002   Code   RO           69    .text.NMI_Handler   stm32f4xx_it.o
+    0x08002352   0x08002352   0x00000002   Code   RO           83    .text.PendSV_Handler  stm32f4xx_it.o
+    0x08002354   0x08002354   0x00000008   Code   RO          682    .text.Queue_Clear   queue.o
+    0x0800235c   0x0800235c   0x00000010   Code   RO          684    .text.Queue_Count   queue.o
+    0x0800236c   0x0800236c   0x0000000c   Code   RO          680    .text.Queue_Init    queue.o
+    0x08002378   0x08002378   0x00000026   Code   RO          690    .text.Queue_Pop     queue.o
+    0x0800239e   0x0800239e   0x00000002   PAD
+    0x080023a0   0x080023a0   0x00000044   Code   RO          688    .text.Queue_Push_Array  queue.o
+    0x080023e4   0x080023e4   0x0000002c   Code   RO          710    .text.R200_Find_The_RFID_Tag_Once  r200_rfid.o
+    0x08002410   0x08002410   0x00000008   Code   RO          708    .text.R200_Link_Usart_Drive  r200_rfid.o
+    0x08002418   0x08002418   0x00000050   Code   RO          706    .text.R200_RFID_Reader_Object_Init  r200_rfid.o
+    0x08002468   0x08002468   0x000004bc   Code   RO          712    .text.R200_RFID_Run  r200_rfid.o
+    0x08002924   0x08002924   0x00000002   Code   RO           79    .text.SVC_Handler   stm32f4xx_it.o
+    0x08002926   0x08002926   0x00000004   Code   RO           85    .text.SysTick_Handler  stm32f4xx_it.o
+    0x0800292a   0x0800292a   0x00000002   PAD
+    0x0800292c   0x0800292c   0x000000ae   Code   RO           13    .text.SystemClock_Config  main.o
+    0x080029da   0x080029da   0x00000012   Code   RO          637    .text.SystemInit    system_stm32f4xx.o
+    0x080029ec   0x080029ec   0x0000000c   Code   RO          194    .text.UART_DMAAbortOnError  stm32f4xx_hal_uart.o
+    0x080029f8   0x080029f8   0x00000064   Code   RO          144    .text.UART_DMAError  stm32f4xx_hal_uart.o
+    0x08002a5c   0x08002a5c   0x0000007c   Code   RO          222    .text.UART_DMAReceiveCplt  stm32f4xx_hal_uart.o
+    0x08002ad8   0x08002ad8   0x00000014   Code   RO          224    .text.UART_DMARxHalfCplt  stm32f4xx_hal_uart.o
+    0x08002aec   0x08002aec   0x0000003e   Code   RO          140    .text.UART_DMATransmitCplt  stm32f4xx_hal_uart.o
+    0x08002b2a   0x08002b2a   0x00000006   Code   RO          142    .text.UART_DMATxHalfCplt  stm32f4xx_hal_uart.o
+    0x08002b30   0x08002b30   0x00000050   Code   RO          156    .text.UART_EndRxTransfer  stm32f4xx_hal_uart.o
+    0x08002b80   0x08002b80   0x000000be   Code   RO          192    .text.UART_Receive_IT  stm32f4xx_hal_uart.o
+    0x08002c3e   0x08002c3e   0x00000154   Code   RO          114    .text.UART_SetConfig  stm32f4xx_hal_uart.o
+    0x08002d92   0x08002d92   0x00000002   PAD
+    0x08002d94   0x08002d94   0x00000096   Code   RO          148    .text.UART_Start_Receive_DMA  stm32f4xx_hal_uart.o
+    0x08002e2a   0x08002e2a   0x00000002   PAD
+    0x08002e2c   0x08002e2c   0x00000080   Code   RO          128    .text.UART_WaitOnFlagUntilTimeout  stm32f4xx_hal_uart.o
+    0x08002eac   0x08002eac   0x00000020   Code   RO           87    .text.USART1_IRQHandler  stm32f4xx_it.o
+    0x08002ecc   0x08002ecc   0x0000000c   Code   RO          662    .text.USART_Get_Flag_Tx_Complete  usart_drive.o
+    0x08002ed8   0x08002ed8   0x0000000e   Code   RO          660    .text.USART_Set_Flag_Tx_Complete  usart_drive.o
+    0x08002ee6   0x08002ee6   0x0000001c   Code   RO          668    .text.USART_Start_DMA_Receive  usart_drive.o
+    0x08002f02   0x08002f02   0x00000002   PAD
+    0x08002f04   0x08002f04   0x0000004e   Code   RO          654    .text.USART_Start_DMA_Transmit  usart_drive.o
+    0x08002f52   0x08002f52   0x00000010   Code   RO          656    .text.USART_Start_Transmit  usart_drive.o
+    0x08002f62   0x08002f62   0x00000002   PAD
+    0x08002f64   0x08002f64   0x00000198   Code   RO          658    .text.USER_UART_IDLE_Callback  usart_drive.o
+    0x080030fc   0x080030fc   0x00000002   Code   RO           77    .text.UsageFault_Handler  stm32f4xx_it.o
+    0x080030fe   0x080030fe   0x00000080   Code   RO          652    .text.Usart_Drive_Object_Init  usart_drive.o
+    0x0800317e   0x0800317e   0x00000004   Code   RO          666    .text.Usart_Get_Huart_Instance  usart_drive.o
+    0x08003182   0x08003182   0x0000000c   Code   RO          664    .text.Usart_Get_The_Number_Of_Data_In_Queue  usart_drive.o
+    0x0800318e   0x0800318e   0x00000002   Code   RO           19    .text.assert_failed  main.o
+    0x08003190   0x08003190   0x0000004e   Code   RO          766    .text.fputc         retarget_io.o
     0x080031de   0x080031de   0x00000002   PAD
-    0x080031e0   0x080031e0   0x00000410   Code   RO         1018    i._printf_core      mc_w.l(printf8.o)
-    0x080035f0   0x080035f0   0x00000024   Code   RO         1019    i._printf_post_padding  mc_w.l(printf8.o)
-    0x08003614   0x08003614   0x0000002e   Code   RO         1020    i._printf_pre_padding  mc_w.l(printf8.o)
-    0x08003642   0x08003642   0x00000002   PAD
-    0x08003644   0x08003644   0x0000000c   Code   RO          788    i.putchar           mc_w.l(putchar.o)
-    0x08003650   0x08003650   0x00000024   Code   RO          786    i.puts              mc_w.l(puts.o)
-    0x08003674   0x08003674   0x00000010   Data   RO          642    .rodata.AHBPrescTable  system_stm32f4xx.o
-    0x08003684   0x08003684   0x00000008   Data   RO          643    .rodata.APBPrescTable  system_stm32f4xx.o
-    0x0800368c   0x0800368c   0x00000018   Data   RO          752    .rodata.EventRecorderInfo  eventrecorder.o
-    0x080036a4   0x080036a4   0x00000007   Data   RO          710    .rodata.cmdFindCardOnce  r200_rfid.o
-    0x080036ab   0x080036ab   0x00000007   Data   RO          713    .rodata.cmdGetTransmittingPower  r200_rfid.o
-    0x080036b2   0x080036b2   0x00000008   Data   RO          426    .rodata.cst8        stm32f4xx_hal_dma.o
-    0x080036ba   0x080036ba   0x00000039   Data   RO          226    .rodata.str1.1      stm32f4xx_hal_uart.o
-    0x080036f3   0x080036f3   0x00000038   Data   RO          263    .rodata.str1.1      stm32f4xx_hal_rcc.o
-    0x0800372b   0x0800372b   0x00000039   Data   RO          377    .rodata.str1.1      stm32f4xx_hal_gpio.o
-    0x08003764   0x08003764   0x00000038   Data   RO          425    .rodata.str1.1      stm32f4xx_hal_dma.o
-    0x0800379c   0x0800379c   0x0000003b   Data   RO          536    .rodata.str1.1      stm32f4xx_hal_cortex.o
-    0x080037d7   0x080037d7   0x0000002c   Data   RO          667    .rodata.str1.1      usart_drive.o
-    0x08003803   0x08003803   0x000000c5   Data   RO          712    .rodata.str1.1      r200_rfid.o
-    0x080038c8   0x080038c8   0x00000020   Data   RO         1112    Region$$Table       anon$$obj.o
+    0x080031e0   0x080031e0   0x0000012a   Code   RO           11    .text.main          main.o
+    0x0800330a   0x0800330a   0x00000002   PAD
+    0x0800330c   0x0800330c   0x00000020   Code   RO         1015    i.__0printf$8       mc_w.l(printf8.o)
+    0x0800332c   0x0800332c   0x0000000e   Code   RO         1117    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x0800333a   0x0800333a   0x00000002   Code   RO         1118    i.__scatterload_null  mc_w.l(handlers.o)
+    0x0800333c   0x0800333c   0x0000000e   Code   RO         1119    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x0800334a   0x0800334a   0x00000002   PAD
+    0x0800334c   0x0800334c   0x00000410   Code   RO         1022    i._printf_core      mc_w.l(printf8.o)
+    0x0800375c   0x0800375c   0x00000024   Code   RO         1023    i._printf_post_padding  mc_w.l(printf8.o)
+    0x08003780   0x08003780   0x0000002e   Code   RO         1024    i._printf_pre_padding  mc_w.l(printf8.o)
+    0x080037ae   0x080037ae   0x00000002   PAD
+    0x080037b0   0x080037b0   0x0000000c   Code   RO          792    i.putchar           mc_w.l(putchar.o)
+    0x080037bc   0x080037bc   0x00000024   Code   RO          790    i.puts              mc_w.l(puts.o)
+    0x080037e0   0x080037e0   0x00000010   Data   RO          642    .rodata.AHBPrescTable  system_stm32f4xx.o
+    0x080037f0   0x080037f0   0x00000008   Data   RO          643    .rodata.APBPrescTable  system_stm32f4xx.o
+    0x080037f8   0x080037f8   0x00000018   Data   RO          756    .rodata.EventRecorderInfo  eventrecorder.o
+    0x08003810   0x08003810   0x00000007   Data   RO          714    .rodata.cmdFindCardOnce  r200_rfid.o
+    0x08003817   0x08003817   0x00000007   Data   RO          717    .rodata.cmdGetTransmittingPower  r200_rfid.o
+    0x0800381e   0x0800381e   0x00000008   Data   RO          426    .rodata.cst8        stm32f4xx_hal_dma.o
+    0x08003826   0x08003826   0x00000039   Data   RO          226    .rodata.str1.1      stm32f4xx_hal_uart.o
+    0x0800385f   0x0800385f   0x00000038   Data   RO          263    .rodata.str1.1      stm32f4xx_hal_rcc.o
+    0x08003897   0x08003897   0x00000039   Data   RO          377    .rodata.str1.1      stm32f4xx_hal_gpio.o
+    0x080038d0   0x080038d0   0x00000038   Data   RO          425    .rodata.str1.1      stm32f4xx_hal_dma.o
+    0x08003908   0x08003908   0x0000003b   Data   RO          536    .rodata.str1.1      stm32f4xx_hal_cortex.o
+    0x08003943   0x08003943   0x0000002c   Data   RO          671    .rodata.str1.1      usart_drive.o
+    0x0800396f   0x0800396f   0x000000c5   Data   RO          716    .rodata.str1.1      r200_rfid.o
+    0x08003a34   0x08003a34   0x00000020   Data   RO         1116    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x080038e8, Size: 0x000024a0, Max: 0x0001c000, ABSOLUTE)
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08003a58, Size: 0x000024a8, Max: 0x0001c000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x080038e8   0x00000004   Data   RW          794    .data               mc_w.l(stdout.o)
-    0x20000004   0x080038ec   0x00000004   Data   RW          641    .data.SystemCoreClock  system_stm32f4xx.o
-    0x20000008   0x080038f0   0x00000009   Data   RW          714    .data.cmdSetTransmittingPower  r200_rfid.o
-    0x20000011   0x080038f9   0x00000001   Data   RW          600    .data.uwTickFreq    stm32f4xx_hal.o
-    0x20000012   0x080038fa   0x00000002   PAD
-    0x20000014   0x080038fc   0x00000004   Data   RW          599    .data.uwTickPrio    stm32f4xx_hal.o
-    0x20000018        -       0x00000004   Zero   RW          711    .bss.R200_RFID_Run.fre  r200_rfid.o
-    0x2000001c        -       0x00000004   Zero   RW          666    .bss.USER_UART_IDLE_Callback.msgNum  usart_drive.o
+    0x20000000   0x08003a58   0x00000004   Data   RW          798    .data               mc_w.l(stdout.o)
+    0x20000004   0x08003a5c   0x00000004   Data   RW          641    .data.SystemCoreClock  system_stm32f4xx.o
+    0x20000008   0x08003a60   0x00000009   Data   RW          718    .data.cmdSetTransmittingPower  r200_rfid.o
+    0x20000011   0x08003a69   0x00000001   Data   RW          600    .data.uwTickFreq    stm32f4xx_hal.o
+    0x20000012   0x08003a6a   0x00000002   PAD
+    0x20000014   0x08003a6c   0x00000004   Data   RW          599    .data.uwTickPrio    stm32f4xx_hal.o
+    0x20000018        -       0x00000004   Zero   RW          715    .bss.R200_RFID_Run.fre  r200_rfid.o
+    0x2000001c        -       0x00000004   Zero   RW          670    .bss.USER_UART_IDLE_Callback.msgNum  usart_drive.o
     0x20000020        -       0x00000008   Zero   RW           21    .bss.fre            main.o
     0x20000028        -       0x000001b4   Zero   RW           23    .bss.g_R200_Reader  main.o
-    0x200001dc        -       0x000001ac   Zero   RW           22    .bss.g_Usart1       main.o
-    0x20000388        -       0x00000060   Zero   RW           59    .bss.hdma_usart1_rx  usart.o
-    0x200003e8        -       0x00000060   Zero   RW           60    .bss.hdma_usart1_tx  usart.o
-    0x20000448        -       0x00000044   Zero   RW           58    .bss.huart1         usart.o
-    0x2000048c        -       0x00000008   Zero   RW          773    .bss.stdout_putchar.buffer  retarget_io.o
-    0x20000494        -       0x00000004   Zero   RW          772    .bss.stdout_putchar.index  retarget_io.o
-    0x20000498        -       0x00000004   Zero   RW          601    .bss.uwTick         stm32f4xx_hal.o
-    0x2000049c   0x08003900   0x00000004   PAD
-    0x200004a0        -       0x00002000   Zero   RW            1    STACK               startup_stm32f407xx.o
+    0x200001dc        -       0x000001b8   Zero   RW           22    .bss.g_Usart1       main.o
+    0x20000394        -       0x00000060   Zero   RW           59    .bss.hdma_usart1_rx  usart.o
+    0x200003f4        -       0x00000060   Zero   RW           60    .bss.hdma_usart1_tx  usart.o
+    0x20000454        -       0x00000044   Zero   RW           58    .bss.huart1         usart.o
+    0x20000498        -       0x00000008   Zero   RW          777    .bss.stdout_putchar.buffer  retarget_io.o
+    0x200004a0        -       0x00000004   Zero   RW          776    .bss.stdout_putchar.index  retarget_io.o
+    0x200004a4        -       0x00000004   Zero   RW          601    .bss.uwTick         stm32f4xx_hal.o
+    0x200004a8        -       0x00002000   Zero   RW            1    STACK               startup_stm32f407xx.o
 
 
-    Execution Region RW_IRAM2 (Exec base: 0x2001c000, Load base: 0x08003900, Size: 0x000020e4, Max: 0x00004000, ABSOLUTE, UNINIT)
+    Execution Region RW_IRAM2 (Exec base: 0x2001c000, Load base: 0x08003a70, Size: 0x000020e4, Max: 0x00004000, ABSOLUTE, UNINIT)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x2001c000        -       0x00000001   Zero   RW          753    .bss.TS_OverflowLock  eventrecorder.o
-    0x2001c001   0x08003900   0x0000003f   PAD
-    0x2001c040        -       0x000020a4   Zero   RW          751    .bss.noinit         eventrecorder.o
+    0x2001c000        -       0x00000001   Zero   RW          757    .bss.TS_OverflowLock  eventrecorder.o
+    0x2001c001   0x08003a70   0x0000003f   PAD
+    0x2001c040        -       0x000020a4   Zero   RW          755    .bss.noinit         eventrecorder.o
 
 
 ==============================================================================
@@ -2206,9 +2226,9 @@ Image component sizes
         72          0          0          0          0       3474   dma.o
       1168          0         24          0       8357      10376   eventrecorder.o
        200          0          0          0          0       2429   gpio.o
-       524          0          0          0        872       7735   main.o
+       524          0          0          0        884       7844   main.o
        142          0          0          0          0       3658   queue.o
-      1344        156        211          9          4       9015   r200_rfid.o
+      1344        156        211          9          4       9114   r200_rfid.o
         78          0          0          0         12       2492   retarget_io.o
         36          8        392          0       8192        844   startup_stm32f407xx.o
        212          0          0          5          4       7382   stm32f4xx_hal.o
@@ -2217,16 +2237,16 @@ Image component sizes
        820         64         57          0          0       5618   stm32f4xx_hal_gpio.o
         56          0          0          0          0       1462   stm32f4xx_hal_msp.o
       1928          0         56          0          0       7525   stm32f4xx_hal_rcc.o
-      2438          0         57          0          0      25702   stm32f4xx_hal_uart.o
+      2752          0         57          0          0      25702   stm32f4xx_hal_uart.o
         76          0          0          0          0       3336   stm32f4xx_it.o
         18          0         24          4          0       2651   system_stm32f4xx.o
        336          0          0          0        260       7252   usart.o
-       658        116         44          0          4       6474   usart_drive.o
+       700        116         44          0          4       7131   usart_drive.o
 
     ----------------------------------------------------------------------
-     12012        348       1020         20      17772     128463   Object Totals
+     12376        348       1020         20      17780     129328   Object Totals
          0          0         32          0          0          0   (incl. Generated)
-        20          0          0          2         67          0   (incl. Padding)
+        28          0          0          2         63          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -2272,15 +2292,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     13548        432       1020         24      17772     128831   Grand Totals
-     13548        432       1020         24      17772     128831   ELF Image Totals
-     13548        432       1020         24          0          0   ROM Totals
+     13912        432       1020         24      17780     129696   Grand Totals
+     13912        432       1020         24      17780     129696   ELF Image Totals
+     13912        432       1020         24          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                14568 (  14.23kB)
-    Total RW  Size (RW Data + ZI Data)             17796 (  17.38kB)
-    Total ROM Size (Code + RO Data + RW Data)      14592 (  14.25kB)
+    Total RO  Size (Code + RO Data)                14932 (  14.58kB)
+    Total RW  Size (RW Data + ZI Data)             17804 (  17.39kB)
+    Total ROM Size (Code + RO Data + RW Data)      14956 (  14.61kB)
 
 ==============================================================================
 
