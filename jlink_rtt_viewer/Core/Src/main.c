@@ -26,12 +26,12 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-uint32_t gCount = 0;
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+volatile uint8_t RTT_BufferUp0[1024] = {0,};
+volatile uint8_t RTT_BufferDown0[1024] = {0,};
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -96,15 +96,15 @@ int main(void)
   // 配置MCU -> PC缓冲区（上行缓存区）
   SEGGER_RTT_ConfigUpBuffer(0,                              // 通道0
                             "Buffer0Up",                    // 通道名字
-                            NULL,                           // 缓存地址
-                            0,                              // 缓存大小
+                            (uint8_t*)&RTT_BufferUp0[0],    // 缓存地址
+                            sizeof(RTT_BufferUp0),          // 缓存大小
                             SEGGER_RTT_MODE_NO_BLOCK_SKIP); // 非阻塞
   
   // 配置PC -> MCU缓冲区（下行缓存区）
   SEGGER_RTT_ConfigDownBuffer(0,                            // 通道0
                              "Buffer0Down",                 // 通道名字
-                             NULL,                          // 缓存地址
-                             0,                             // 缓存大小
+                             (uint8_t*)&RTT_BufferDown0[0], // 缓存地址
+                             sizeof(RTT_BufferDown0),       // 缓存大小
                              SEGGER_RTT_MODE_NO_BLOCK_SKIP);// 非阻塞
   
   /* USER CODE END 2 */
@@ -117,7 +117,6 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     HAL_GPIO_TogglePin(RUN_LED_GPIO_Port,RUN_LED_Pin);
-    gCount++; // 累加
 
     // 终端号0打印
     SEGGER_RTT_SetTerminal(0);                           // 设置终端0
