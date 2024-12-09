@@ -31,7 +31,6 @@
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 volatile uint8_t RTT_BufferUp0[1024] = {0,};
-volatile uint8_t RTT_BufferDown0[1024] = {0,};
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -99,14 +98,6 @@ int main(void)
                             (uint8_t*)&RTT_BufferUp0[0],    // 缓存地址
                             sizeof(RTT_BufferUp0),          // 缓存大小
                             SEGGER_RTT_MODE_NO_BLOCK_SKIP); // 非阻塞
-  
-  // 配置PC -> MCU缓冲区（下行缓存区）
-  SEGGER_RTT_ConfigDownBuffer(0,                            // 通道0
-                             "Buffer0Down",                 // 通道名字
-                             (uint8_t*)&RTT_BufferDown0[0], // 缓存地址
-                             sizeof(RTT_BufferDown0),       // 缓存大小
-                             SEGGER_RTT_MODE_NO_BLOCK_SKIP);// 非阻塞
-  
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -121,15 +112,6 @@ int main(void)
     // 终端号0打印
     SEGGER_RTT_SetTerminal(0);                           // 设置终端0
     SEGGER_RTT_printf(0, "SysTick:%d\n", HAL_GetTick()); // 往通道0写入消息
-    
-    // 终端号1打印
-    SEGGER_RTT_SetTerminal(1);                           // 设置终端1
-    SEGGER_RTT_printf(0, "SysTiclk:%d\n", HAL_GetTick());// 往通道0写入消息（重点：前面初始化程序，只设置了通道0缓存区！不要把终端号与通道号混淆！！）
-    
-    // 终端号2打印（带颜色）
-    SEGGER_RTT_SetTerminal(2);
-    SEGGER_RTT_printf(0, RTT_CTRL_RESET"SysTick:%d ", HAL_GetTick());
-    SEGGER_RTT_WriteString(0, RTT_CTRL_TEXT_RED"ERROR: System Has error\n"); // SEGGER_RTT_WriteString()支持修改字体颜色，但不支持动态输入%d,$s等 
     HAL_Delay(100);
   }
   /* USER CODE END 3 */
