@@ -2574,7 +2574,7 @@ Image component sizes
        466        100          0          0       2048       6552   main.o
       1640          0         25          0       1209      30893   segger_rtt.o
       2054        114          0          0          0       9257   segger_rtt_printf.o
-        36          8        392          0       1024        828   startup_stm32f405xx.o
+        36          8        392          0       1024        832   startup_stm32f405xx.o
        212          0          0          5          4       7239   stm32f4xx_hal.o
        196          0          0          0          0      10406   stm32f4xx_hal_cortex.o
        934          4          8          0          0      10402   stm32f4xx_hal_dma.o
@@ -2591,7 +2591,7 @@ Image component sizes
        248          0          0          0        164       7095   usart.o
 
     ----------------------------------------------------------------------
-     11472        226        482         12       4612     275538   Object Totals
+     11472        226        482         12       4612     275542   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         86          0          1          3          7          0   (incl. Padding)
 
@@ -2636,8 +2636,8 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     11818        244        482         12       4612     275746   Grand Totals
-     11818        244        482         12       4612     275746   ELF Image Totals
+     11818        244        482         12       4612     275750   Grand Totals
+     11818        244        482         12       4612     275750   ELF Image Totals
      11818        244        482         12          0          0   ROM Totals
 
 ==============================================================================
