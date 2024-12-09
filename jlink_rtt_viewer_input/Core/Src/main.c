@@ -117,19 +117,15 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     HAL_GPIO_TogglePin(RUN_LED_GPIO_Port,RUN_LED_Pin);
-
-    // 终端号0打印
-    SEGGER_RTT_SetTerminal(0);                           // 设置终端0
-    SEGGER_RTT_printf(0, "SysTick:%d\n", HAL_GetTick()); // 往通道0写入消息
-    
-    // 终端号1打印
-    SEGGER_RTT_SetTerminal(1);                           // 设置终端1
-    SEGGER_RTT_printf(0, "SysTick:%d\n", HAL_GetTick());// 往通道0写入消息（重点：前面初始化程序，只设置了通道0缓存区！不要把终端号与通道号混淆！！）
     
     // 终端号2回环打印
     if(SEGGER_RTT_HasKey()) {
+        char key = SEGGER_RTT_GetKey();
         SEGGER_RTT_SetTerminal(2);                       // 切换终端2
-        SEGGER_RTT_printf(0, "Get Key:%c\n", SEGGER_RTT_GetKey());
+        SEGGER_RTT_printf(0, "Get Key:%c\n", key);
+        if (key == '\n') {
+            SEGGER_RTT_WriteString(0, "get the end of char\n");
+        }
     }
     HAL_Delay(100);
   }
