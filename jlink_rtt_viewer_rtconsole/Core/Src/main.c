@@ -18,20 +18,17 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "dma.h"
-#include "i2c.h"
-#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-volatile uint8_t RTT_BufferUp0[1024] = {0,};
-volatile uint8_t RTT_BufferDown0[1024] = {0,};
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -88,25 +85,9 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_DMA_Init();
-  MX_USART1_UART_Init();
-  MX_I2C1_Init();
-  MX_TIM14_Init();
+  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  // 配置MCU -> PC缓冲区（上行缓存区）
-  SEGGER_RTT_ConfigUpBuffer(0,                              // 通道0
-                            "Buffer0Up",                    // 通道名字
-                            (uint8_t*)&RTT_BufferUp0[0],    // 缓存地址
-                            sizeof(RTT_BufferUp0),          // 缓存大小
-                            SEGGER_RTT_MODE_NO_BLOCK_SKIP); // 非阻塞
-  
-  // 配置PC -> MCU缓冲区（下行缓存区）
-  SEGGER_RTT_ConfigDownBuffer(0,                            // 通道0
-                             "Buffer0Down",                 // 通道名字
-                             (uint8_t*)&RTT_BufferDown0[0], // 缓存地址
-                             sizeof(RTT_BufferDown0),       // 缓存大小
-                             SEGGER_RTT_MODE_NO_BLOCK_SKIP);// 非阻塞
-  
+   
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -117,17 +98,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     HAL_GPIO_TogglePin(RUN_LED_GPIO_Port,RUN_LED_Pin);
-    
-    // 终端号2回环打印
-    if(SEGGER_RTT_HasKey()) {
-        char key = SEGGER_RTT_GetKey();
-        SEGGER_RTT_SetTerminal(2);                       // 切换终端2
-        SEGGER_RTT_printf(0, "Get Key:%c\n", key);
-        if (key == '\n') {
-            SEGGER_RTT_WriteString(0, "get the end of char\n");
-        }
-    }
-    HAL_Delay(100);
+    rt_thread_delay(100);
   }
   /* USER CODE END 3 */
 }
@@ -178,14 +149,29 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+/* USER CODE END 4 */
+
+/**
+  * @brief  Period elapsed callback in non blocking mode
+  * @note   This function is called  when TIM14 interrupt took place, inside
+  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
+  * a global variable "uwTick" used as application time base.
+  * @param  htim : TIM handle
+  * @retval None
+  */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-    if (htim == (&htim14))
-    {
-        // 添加定时器14的中断执行
-    }
+  /* USER CODE BEGIN Callback 0 */
+
+  /* USER CODE END Callback 0 */
+  if (htim->Instance == TIM14) {
+    HAL_IncTick();
+  }
+  /* USER CODE BEGIN Callback 1 */
+
+  /* USER CODE END Callback 1 */
 }
-/* USER CODE END 4 */
 
 /**
   * @brief  This function is executed in case of error occurrence.

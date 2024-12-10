@@ -31,6 +31,7 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "rtthread.h"
 #include "SEGGER_RTT.h"
 /* USER CODE END Includes */
 
@@ -57,8 +58,6 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define Test_Run_Pin GPIO_PIN_3
-#define Test_Run_GPIO_Port GPIOA
 #define RUN_LED_Pin GPIO_PIN_2
 #define RUN_LED_GPIO_Port GPIOD
 /* USER CODE BEGIN Private defines */
