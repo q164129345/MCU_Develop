@@ -89,7 +89,7 @@ static int uart_init(void)
     }
     return 0;
 }
-INIT_BOARD_EXPORT(uart_init);
+//INIT_BOARD_EXPORT(uart_init);
 
 void rt_hw_console_output(const char *str)
 {
