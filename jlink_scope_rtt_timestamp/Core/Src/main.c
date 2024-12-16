@@ -30,7 +30,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-volatile uint8_t JS_RTT_BufferUp1[4096] = {0,};
+volatile uint8_t JS_RTT_BufferUp1[2048] = {0,};
 const uint8_t JS_RTT_Channel = 1;
 /* USER CODE END PTD */
 

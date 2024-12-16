@@ -2193,11 +2193,11 @@ Image Symbol Table
     [Anonymous Symbol]                       0x080024a6   Section        0  stm32f4xx_hal_dma.o(.rodata.cst8)
     .L.str                                   0x08002512   Data           9  segger_rtt.o(.rodata.str1.1)
     [Anonymous Symbol]                       0x08002512   Section        0  segger_rtt.o(.rodata.str1.1)
-    _acDownBuffer                            0x200010b8   Data          16  segger_rtt.o(.bss._acDownBuffer)
-    [Anonymous Symbol]                       0x200010b8   Section        0  segger_rtt.o(.bss._acDownBuffer)
-    _acUpBuffer                              0x200010c8   Data        1024  segger_rtt.o(.bss._acUpBuffer)
-    [Anonymous Symbol]                       0x200010c8   Section        0  segger_rtt.o(.bss._acUpBuffer)
-    STACK                                    0x20001628   Section     1024  startup_stm32f405xx.o(STACK)
+    _acDownBuffer                            0x200008b8   Data          16  segger_rtt.o(.bss._acDownBuffer)
+    [Anonymous Symbol]                       0x200008b8   Section        0  segger_rtt.o(.bss._acDownBuffer)
+    _acUpBuffer                              0x200008c8   Data        1024  segger_rtt.o(.bss._acUpBuffer)
+    [Anonymous Symbol]                       0x200008c8   Section        0  segger_rtt.o(.bss._acUpBuffer)
+    STACK                                    0x20000e28   Section     1024  startup_stm32f405xx.o(STACK)
 
     Global Symbols
 
@@ -2392,19 +2392,19 @@ Image Symbol Table
     SystemCoreClock                          0x20000000   Data           4  system_stm32f4xx.o(.data.SystemCoreClock)
     uwTickFreq                               0x20000004   Data           1  stm32f4xx_hal.o(.data.uwTickFreq)
     uwTickPrio                               0x20000008   Data           4  stm32f4xx_hal.o(.data.uwTickPrio)
-    JS_RTT_BufferUp1                         0x20000010   Data        4096  main.o(.bss.JS_RTT_BufferUp1)
-    _SEGGER_RTT                              0x20001010   Data         168  segger_rtt.o(.bss._SEGGER_RTT)
-    gTimestamp                               0x200014c8   Data           4  main.o(.bss.gTimestamp)
-    hdma_usart1_rx                           0x200014cc   Data          96  usart.o(.bss.hdma_usart1_rx)
-    hi2c1                                    0x2000152c   Data          84  i2c.o(.bss.hi2c1)
-    htim14                                   0x20001580   Data          72  tim.o(.bss.htim14)
-    huart1                                   0x200015c8   Data          68  usart.o(.bss.huart1)
-    numbool                                  0x2000160c   Data           1  main.o(.bss.numbool)
-    rtt_JsMsg                                0x20001610   Data          12  main.o(.bss.rtt_JsMsg)
-    sineIndex                                0x2000161c   Data           1  main.o(.bss.sineIndex)
-    sineValue                                0x20001620   Data           4  main.o(.bss.sineValue)
-    uwTick                                   0x20001624   Data           4  stm32f4xx_hal.o(.bss.uwTick)
-    __initial_sp                             0x20001a28   Data           0  startup_stm32f405xx.o(STACK)
+    JS_RTT_BufferUp1                         0x20000010   Data        2048  main.o(.bss.JS_RTT_BufferUp1)
+    _SEGGER_RTT                              0x20000810   Data         168  segger_rtt.o(.bss._SEGGER_RTT)
+    gTimestamp                               0x20000cc8   Data           4  main.o(.bss.gTimestamp)
+    hdma_usart1_rx                           0x20000ccc   Data          96  usart.o(.bss.hdma_usart1_rx)
+    hi2c1                                    0x20000d2c   Data          84  i2c.o(.bss.hi2c1)
+    htim14                                   0x20000d80   Data          72  tim.o(.bss.htim14)
+    huart1                                   0x20000dc8   Data          68  usart.o(.bss.huart1)
+    numbool                                  0x20000e0c   Data           1  main.o(.bss.numbool)
+    rtt_JsMsg                                0x20000e10   Data          12  main.o(.bss.rtt_JsMsg)
+    sineIndex                                0x20000e1c   Data           1  main.o(.bss.sineIndex)
+    sineValue                                0x20000e20   Data           4  main.o(.bss.sineValue)
+    uwTick                                   0x20000e24   Data           4  stm32f4xx_hal.o(.bss.uwTick)
+    __initial_sp                             0x20001228   Data           0  startup_stm32f405xx.o(STACK)
 
 
 
@@ -2557,7 +2557,7 @@ Memory Map of the image
     0x0800251c   0x0800251c   0x00000020   Data   RO         1256    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08002540, Size: 0x00001a28, Max: 0x0001c000, ABSOLUTE)
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08002540, Size: 0x00001228, Max: 0x0001c000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -2566,23 +2566,23 @@ Memory Map of the image
     0x20000005   0x08002545   0x00000003   PAD
     0x20000008   0x08002548   0x00000004   Data   RW          619    .data.uwTickPrio    stm32f4xx_hal.o
     0x2000000c   0x0800254c   0x00000004   PAD
-    0x20000010        -       0x00001000   Zero   RW           19    .bss.JS_RTT_BufferUp1  main.o
-    0x20001010        -       0x000000a8   Zero   RW         1172    .bss._SEGGER_RTT    segger_rtt.o
-    0x200010b8        -       0x00000010   Zero   RW         1177    .bss._acDownBuffer  segger_rtt.o
-    0x200010c8        -       0x00000400   Zero   RW         1176    .bss._acUpBuffer    segger_rtt.o
-    0x200014c8        -       0x00000004   Zero   RW           26    .bss.gTimestamp     main.o
-    0x200014cc        -       0x00000060   Zero   RW           93    .bss.hdma_usart1_rx  usart.o
-    0x2000152c        -       0x00000054   Zero   RW           62    .bss.hi2c1          i2c.o
-    0x20001580        -       0x00000048   Zero   RW           77    .bss.htim14         tim.o
-    0x200015c8        -       0x00000044   Zero   RW           92    .bss.huart1         usart.o
-    0x2000160c        -       0x00000001   Zero   RW           25    .bss.numbool        main.o
-    0x2000160d   0x0800254c   0x00000003   PAD
-    0x20001610        -       0x0000000c   Zero   RW           27    .bss.rtt_JsMsg      main.o
-    0x2000161c        -       0x00000001   Zero   RW           23    .bss.sineIndex      main.o
-    0x2000161d   0x0800254c   0x00000003   PAD
-    0x20001620        -       0x00000004   Zero   RW           24    .bss.sineValue      main.o
-    0x20001624        -       0x00000004   Zero   RW          621    .bss.uwTick         stm32f4xx_hal.o
-    0x20001628        -       0x00000400   Zero   RW            1    STACK               startup_stm32f405xx.o
+    0x20000010        -       0x00000800   Zero   RW           19    .bss.JS_RTT_BufferUp1  main.o
+    0x20000810        -       0x000000a8   Zero   RW         1172    .bss._SEGGER_RTT    segger_rtt.o
+    0x200008b8        -       0x00000010   Zero   RW         1177    .bss._acDownBuffer  segger_rtt.o
+    0x200008c8        -       0x00000400   Zero   RW         1176    .bss._acUpBuffer    segger_rtt.o
+    0x20000cc8        -       0x00000004   Zero   RW           26    .bss.gTimestamp     main.o
+    0x20000ccc        -       0x00000060   Zero   RW           93    .bss.hdma_usart1_rx  usart.o
+    0x20000d2c        -       0x00000054   Zero   RW           62    .bss.hi2c1          i2c.o
+    0x20000d80        -       0x00000048   Zero   RW           77    .bss.htim14         tim.o
+    0x20000dc8        -       0x00000044   Zero   RW           92    .bss.huart1         usart.o
+    0x20000e0c        -       0x00000001   Zero   RW           25    .bss.numbool        main.o
+    0x20000e0d   0x0800254c   0x00000003   PAD
+    0x20000e10        -       0x0000000c   Zero   RW           27    .bss.rtt_JsMsg      main.o
+    0x20000e1c        -       0x00000001   Zero   RW           23    .bss.sineIndex      main.o
+    0x20000e1d   0x0800254c   0x00000003   PAD
+    0x20000e20        -       0x00000004   Zero   RW           24    .bss.sineValue      main.o
+    0x20000e24        -       0x00000004   Zero   RW          621    .bss.uwTick         stm32f4xx_hal.o
+    0x20000e28        -       0x00000400   Zero   RW            1    STACK               startup_stm32f405xx.o
 
 
     Execution Region RW_IRAM2 (Exec base: 0x2001c000, Load base: 0x08002550, Size: 0x00000000, Max: 0x00004000, ABSOLUTE)
@@ -2600,7 +2600,7 @@ Image component sizes
         56          0          0          0          0       3416   dma.o
        184          0          0          0          0       2411   gpio.o
        174          0          0          0         84       5426   i2c.o
-       424         16        100          0       4118       6981   main.o
+       424         16        100          0       2070       6981   main.o
        742          0          9          0       1208      30902   segger_rtt.o
         36          8        392          0       1024        840   startup_stm32f405xx.o
        212          0          0          5          4       7248   stm32f4xx_hal.o
@@ -2619,7 +2619,7 @@ Image component sizes
        248          0          0          0        164       7104   usart.o
 
     ----------------------------------------------------------------------
-      8636         28        566         12       6684     266884   Object Totals
+      8636         28        566         12       4636     266884   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         76          0          1          3         10          0   (incl. Padding)
 
@@ -2663,14 +2663,14 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      8966         46        566         12       6684     267044   Grand Totals
-      8966         46        566         12       6684     267044   ELF Image Totals
+      8966         46        566         12       4636     267044   Grand Totals
+      8966         46        566         12       4636     267044   ELF Image Totals
       8966         46        566         12          0          0   ROM Totals
 
 ==============================================================================
 
     Total RO  Size (Code + RO Data)                 9532 (   9.31kB)
-    Total RW  Size (RW Data + ZI Data)              6696 (   6.54kB)
+    Total RW  Size (RW Data + ZI Data)              4648 (   4.54kB)
     Total ROM Size (Code + RO Data + RW Data)       9544 (   9.32kB)
 
 ==============================================================================
