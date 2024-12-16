@@ -55,7 +55,7 @@ const uint8_t sineTable[SINE_TABLE_SIZE] = {
     10,  13,  16,  19,  23,  27,  32,  37,  42,  48,  54,  60,  67,  74,  81,  89,  96, 104, 112, 120
 }; // 预先计算的正弦波数据
 
-// JScope_u1i1的数据结构
+// JScope_t4u4u4的数据结构
 typedef struct {
     volatile uint32_t timestamp;
     volatile uint32_t msg1;
@@ -64,7 +64,7 @@ typedef struct {
 
 const uint8_t JscopeChannel = 1; // 通道1（J-Scope不能用通道0）
 volatile uint8_t sineIndex = 0;
-volatile uint32_t sineValue = 0;
+volatile uint8_t sineValue = 0;
 volatile uint8_t numbool = 0;
 volatile uint32_t gTimestamp = 0;
 RTT_MSG_U1I1 rtt_JsMsg;
@@ -117,7 +117,7 @@ int main(void)
   // 配置MCU -> PC缓冲区（上行缓存区）
   SEGGER_RTT_ConfigUpBuffer(JscopeChannel,                  // 通道号
                             // 通道名字（命名有意义的，一定要按照官方文档“RTT channel naming convention”的规范来）
-                            "JScope_t4u4u4",                // 数据包含1个32位的时间戳与1个uint8_t变量与1个int8_t变量
+                            "JScope_t4u4u4",                // 数据包含1个32位的时间戳与1个uint32_t变量与1个uint32_t变量
                             (uint8_t*)&JS_RTT_BufferUp1[0], // 缓存地址
                             sizeof(JS_RTT_BufferUp1),       // 缓存大小
                             SEGGER_RTT_MODE_NO_BLOCK_SKIP); // 非阻塞

@@ -2402,8 +2402,8 @@ Image Symbol Table
     numbool                                  0x20000e0c   Data           1  main.o(.bss.numbool)
     rtt_JsMsg                                0x20000e10   Data          12  main.o(.bss.rtt_JsMsg)
     sineIndex                                0x20000e1c   Data           1  main.o(.bss.sineIndex)
-    sineValue                                0x20000e20   Data           4  main.o(.bss.sineValue)
-    uwTick                                   0x20000e24   Data           4  stm32f4xx_hal.o(.bss.uwTick)
+    sineValue                                0x20000e1d   Data           1  main.o(.bss.sineValue)
+    uwTick                                   0x20000e20   Data           4  stm32f4xx_hal.o(.bss.uwTick)
     __initial_sp                             0x20001228   Data           0  startup_stm32f405xx.o(STACK)
 
 
@@ -2579,9 +2579,10 @@ Memory Map of the image
     0x20000e0d   0x0800254c   0x00000003   PAD
     0x20000e10        -       0x0000000c   Zero   RW           27    .bss.rtt_JsMsg      main.o
     0x20000e1c        -       0x00000001   Zero   RW           23    .bss.sineIndex      main.o
-    0x20000e1d   0x0800254c   0x00000003   PAD
-    0x20000e20        -       0x00000004   Zero   RW           24    .bss.sineValue      main.o
-    0x20000e24        -       0x00000004   Zero   RW          621    .bss.uwTick         stm32f4xx_hal.o
+    0x20000e1d        -       0x00000001   Zero   RW           24    .bss.sineValue      main.o
+    0x20000e1e   0x0800254c   0x00000002   PAD
+    0x20000e20        -       0x00000004   Zero   RW          621    .bss.uwTick         stm32f4xx_hal.o
+    0x20000e24   0x0800254c   0x00000004   PAD
     0x20000e28        -       0x00000400   Zero   RW            1    STACK               startup_stm32f405xx.o
 
 
@@ -2600,7 +2601,7 @@ Image component sizes
         56          0          0          0          0       3416   dma.o
        184          0          0          0          0       2411   gpio.o
        174          0          0          0         84       5426   i2c.o
-       424         16        100          0       2070       6981   main.o
+       424         16        100          0       2067       6981   main.o
        742          0          9          0       1208      30902   segger_rtt.o
         36          8        392          0       1024        840   startup_stm32f405xx.o
        212          0          0          5          4       7248   stm32f4xx_hal.o
@@ -2621,7 +2622,7 @@ Image component sizes
     ----------------------------------------------------------------------
       8636         28        566         12       4636     266884   Object Totals
          0          0         32          0          0          0   (incl. Generated)
-        76          0          1          3         10          0   (incl. Padding)
+        76          0          1          3         13          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
