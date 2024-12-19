@@ -129,8 +129,8 @@
     ]
   },
   "outDir": "build",
-  "deviceName": null,
-  "packDir": null,
+  "deviceName": "STM32F407IGTx",
+  "packDir": ".pack/Keil/STM32F4xx_DFP.2.14.0",
   "miscInfo": {
     "uid": "878c4e91888237a88e031bbd48e8d6fc"
   },
@@ -251,17 +251,12 @@
         },
         "options": "null"
       },
-      "uploader": "JLink",
+      "uploader": "OpenOCD",
       "uploadConfig": {
         "bin": "",
-        "baseAddr": "",
-        "cpuInfo": {
-          "vendor": "ST",
-          "cpuName": "STM32F407IG"
-        },
-        "proType": 1,
-        "speed": 8000,
-        "otherCmds": ""
+        "target": "stm32f4x",
+        "interface": "cmsis-dap",
+        "baseAddr": "0x08000000"
       },
       "uploadConfigMap": {
         "JLink": {
