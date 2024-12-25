@@ -23,7 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "user_main.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -89,6 +89,7 @@ int main(void)
   MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
   DWT_Timer_Init(); // 初始化DWT定时器
+  main_Cpp();       // 跳转C++环境
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -98,9 +99,6 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    HAL_GPIO_TogglePin(run_led_GPIO_Port,run_led_Pin); // 心跳灯跑起来
-    SEGGER_RTT_printf(0,"Dwt_time_us:%d\n",DWT_Get_Microsecond()); // 打印DWT定时器的us级时间戳，看看有没有问题
-    DWT_Delay_us(100000U); // 延时100ms
   }
   /* USER CODE END 3 */
 }

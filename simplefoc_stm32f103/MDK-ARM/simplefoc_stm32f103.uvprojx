@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xB</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;..\SEGGER_RTT;..\simplefoc\common;..\simplefoc\common\base_classes;..\components\DWT</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;..\SEGGER_RTT;..\simplefoc\common;..\simplefoc\common\base_classes;..\components\DWT;..\user</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -598,6 +598,16 @@
               <FileName>dwt_timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\components\DWT\dwt_timer.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>user</GroupName>
+          <Files>
+            <File>
+              <FileName>user_main.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\user\user_main.cpp</FilePath>
             </File>
           </Files>
         </Group>

@@ -31,6 +31,7 @@
 "simplefoc_stm32f103\focmotor.o"
 "simplefoc_stm32f103\sensor.o"
 "simplefoc_stm32f103\dwt_timer.o"
+"simplefoc_stm32f103\user_main.o"
 --strict --scatter "simplefoc_stm32f103\simplefoc_stm32f103.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
