@@ -10,8 +10,8 @@ AS5600_I2C AS5600_1(AS5600_I2C_Config); // 创建AS5600_I2C对象
 
 void SEGGER_Printf_Float(float value){
     char buffer[50];
-    sprintf(buffer, "Value: %.2f\n", value); // 格式化为字符串
-    SEGGER_RTT_printf(0, "AS5600_Angle:%s", buffer); // 打印字符串
+    sprintf(buffer, "%.4f\n", value); // 格式化为字符串
+    SEGGER_RTT_printf(0, "motor_velocity:%s", buffer); // 打印字符串
 }
 
 /**
@@ -24,9 +24,10 @@ void main_Cpp(void)
     HAL_Delay(1000); // 延时1s
     while(1) {
         HAL_GPIO_TogglePin(run_led_GPIO_Port,run_led_Pin); // 心跳灯跑起来
-        SEGGER_RTT_printf(0,"Dwt_time_us:%u\n",_micros()); // 打印DWT定时器的us级时间戳，看看有没有问题
-        SEGGER_Printf_Float(AS5600_1.getSensorAngle());    // 打印电机角度
-        delayMicroseconds(100000U); // 延时100ms
+        //SEGGER_RTT_printf(0,"Dwt_time_us:%u\n",_micros()); // 打印DWT定时器的us级时间戳，看看有没有问题
+        AS5600_1.update(); // 更新位置，获取速度
+        SEGGER_Printf_Float(AS5600_1.getVelocity());    // 打印电机速度
+        delayMicroseconds(50000U); // 延时100ms
     }
 }
 
