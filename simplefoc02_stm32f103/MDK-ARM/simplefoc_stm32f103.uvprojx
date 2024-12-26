@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xB</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;..\SEGGER_RTT;..\simplefoc\common;..\simplefoc\common\base_classes;..\components\DWT;..\user</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;..\SEGGER_RTT;..\simplefoc\common;..\simplefoc\common\base_classes;..\components\DWT;..\user;..\simplefoc\sensors</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -588,6 +588,21 @@
               <FileName>Sensor.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\simplefoc\common\base_classes\Sensor.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>simplefoc/sensors</GroupName>
+          <Files>
+            <File>
+              <FileName>AS5600_I2C.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\simplefoc\sensors\AS5600_I2C.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>AS5600_I2C.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\simplefoc\sensors\AS5600_I2C.h</FilePath>
             </File>
           </Files>
         </Group>
