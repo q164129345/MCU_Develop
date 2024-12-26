@@ -27,68 +27,12 @@ Project File Date:  12/26/2024
 <h2>Output:</h2>
 *** Using Compiler 'V6.21', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Build target 'simplefoc_stm32f103'
-../simplefoc/sensors/AS5600_I2C.cpp(1): warning: In file included from...
-../simplefoc/sensors/AS5600_I2C.h(47): error: unknown type name 'byte'
-   47 |     int checkBus(byte sda_pin , byte scl_pin );
-      |                  ^
-../simplefoc/sensors/AS5600_I2C.h(47): error: unknown type name 'byte'
-   47 |     int checkBus(byte sda_pin , byte scl_pin );
-      |                                 ^
-../simplefoc/sensors/AS5600_I2C.h(73): error: unknown type name 'TwoWire'
-   73 |     TwoWire* wire;
-      |     ^
-../simplefoc/sensors/AS5600_I2C.cpp(42): error: use of undeclared identifier 'Wire'
-   42 |   wire = &Wire;
-      |           ^
-../simplefoc/sensors/AS5600_I2C.cpp(58): error: use of undeclared identifier 'Wire'
-   58 |   wire = &Wire;
-      |           ^
-../simplefoc/sensors/AS5600_I2C.cpp(61): error: unknown type name 'TwoWire'
-   61 | void MagneticSensorI2C::init(TwoWire* _wire){
-      |                              ^
-../simplefoc/sensors/AS5600_I2C.cpp(68): error: cannot initialize object parameter of type 'Sensor' with an expression of type 'MagneticSensorI2C'
-   68 |   this->Sensor::init(); // call base class init
-      |   ^~~~
-../simplefoc/sensors/AS5600_I2C.cpp(93): error: unknown type name 'byte'
-   93 |         byte readArray[2];
-      |         ^
-../simplefoc/sensors/AS5600_I2C.cpp(102): error: unknown type name 'byte'
-  102 |         for (byte i=0; i < 2; i++) {
-      |              ^
-../simplefoc/sensors/AS5600_I2C.cpp(122): error: unknown type name 'byte'
-  122 | int MagneticSensorI2C::checkBus(byte sda_pin, byte scl_pin) {
-      |                                 ^
-../simplefoc/sensors/AS5600_I2C.cpp(122): error: unknown type name 'byte'
-  122 | int MagneticSensorI2C::checkBus(byte sda_pin, byte scl_pin) {
-      |                                               ^
-../simplefoc/sensors/AS5600_I2C.cpp(124): error: use of undeclared identifier 'INPUT_PULLUP'
-  124 |   pinMode(scl_pin, INPUT_PULLUP);
-      |                    ^
-../simplefoc/sensors/AS5600_I2C.cpp(125): error: use of undeclared identifier 'INPUT_PULLUP'
-  125 |   pinMode(sda_pin, INPUT_PULLUP);
-      |                    ^
-../simplefoc/sensors/AS5600_I2C.cpp(128): error: use of undeclared identifier 'LOW'
-  128 |   if (digitalRead(scl_pin) == LOW) {
-      |                               ^
-../simplefoc/sensors/AS5600_I2C.cpp(133): error: use of undeclared identifier 'LOW'
-  133 |   if(digitalRead(sda_pin) == LOW) {
-      |                              ^
-../simplefoc/sensors/AS5600_I2C.cpp(135): error: use of undeclared identifier 'OUTPUT'
-  135 |     pinMode(scl_pin, OUTPUT);
-      |                      ^
-../simplefoc/sensors/AS5600_I2C.cpp(136): error: unknown type name 'byte'
-  136 |     for (byte i = 0; i < 16; i++) {
-      |          ^
-../simplefoc/sensors/AS5600_I2C.cpp(138): error: use of undeclared identifier 'LOW'
-  138 |       digitalWrite(scl_pin, LOW);
-      |                             ^
-../simplefoc/sensors/AS5600_I2C.cpp(140): error: use of undeclared identifier 'HIGH'
-  140 |       digitalWrite(scl_pin, HIGH);
-      |                             ^
-fatal error: too many errors emitted, stopping now [-ferror-limit=]
-20 errors generated.
+compiling user_main.cpp...
 compiling AS5600_I2C.cpp...
-"simplefoc_stm32f103\simplefoc_stm32f103.axf" - 19 Error(s), 0 Warning(s).
+linking...
+Program Size: Code=17724 RO-data=576 RW-data=28 ZI-data=3100  
+FromELF: creating hex file...
+"simplefoc_stm32f103\simplefoc_stm32f103.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -112,8 +56,7 @@ Package Vendor: Keil
 
    * Component: ARM::CMSIS:CORE@5.6.0
       Include file:  CMSIS/Core/Include/tz_context.h
-Target not created.
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>

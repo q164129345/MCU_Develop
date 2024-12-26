@@ -1,5 +1,5 @@
-#ifndef MAGNETICSENSORI2C_LIB_H
-#define MAGNETICSENSORI2C_LIB_H
+#ifndef AS5600_I2C_H
+#define AS5600_I2C_H
 
 #include "main.h"
 //#include <Wire.h>
@@ -7,44 +7,44 @@
 #include "foc_utils.h"
 #include "time_utils.h"
 
-struct MagneticSensorI2CConfig_s  {
+struct AS5600_I2CConfig_s  {
   int chip_address;
   int bit_resolution;
   int angle_register;
   int data_start_bit; 
 };
 // some predefined structures
-extern MagneticSensorI2CConfig_s AS5600_I2C,AS5048_I2C;
+// extern AS5600_I2CConfig_s AS5600_I2C;
 
-
-class MagneticSensorI2C: public Sensor{
+class AS5600_I2C: public Sensor{
  public:
     /**
-     * MagneticSensorI2C class constructor
+     * AS5600_I2C class constructor
      * @param chip_address  I2C chip address
      * @param bits number of bits of the sensor resolution 
      * @param angle_register_msb  angle read register msb
      * @param _bits_used_msb number of used bits in msb
      */
-    MagneticSensorI2C(uint8_t _chip_address, int _bit_resolution, uint8_t _angle_register_msb, int _msb_bits_used);
+    AS5600_I2C(uint8_t _chip_address, int _bit_resolution, uint8_t _angle_register_msb, int _msb_bits_used);
 
     /**
-     * MagneticSensorI2C class constructor
+     * AS5600_I2C class constructor
      * @param config  I2C config
      */
-    MagneticSensorI2C(MagneticSensorI2CConfig_s config);
+    AS5600_I2C(AS5600_I2CConfig_s config);
 
-    static MagneticSensorI2C AS5600();
+    // static AS5600_I2C AS5600();
         
     /** sensor initialise pins */
-    //void init(TwoWire* _wire = &Wire); // CubeMX已经初始化
+    //void init(TwoWire* _wire = &Wire); // 根据STM32的框架，重新写
+    void init(I2C_HandleTypeDef* hi2c1);
 
     // implementation of abstract functions of the Sensor class
     /** get current angle (rad) */
     float getSensorAngle() override;
 
     /** experimental function to check and fix SDA locked LOW issues */
-    int checkBus(byte sda_pin , byte scl_pin );
+    //int checkBus(byte sda_pin , byte scl_pin );
 
     /** current error code from Wire endTransmission() call **/
     uint8_t currWireError = 0;
@@ -70,8 +70,8 @@ class MagneticSensorI2C: public Sensor{
     int getRawCount();
     
     /* the two wire instance for this sensor */
-    TwoWire* wire;
-
+    //TwoWire* wire;
+    I2C_HandleTypeDef* hi2c1;
 
 };
 

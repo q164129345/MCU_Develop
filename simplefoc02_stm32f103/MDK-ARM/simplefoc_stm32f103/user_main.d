@@ -196,4 +196,8 @@ simplefoc_stm32f103/user_main.o: ..\user\user_main.cpp \
   C:\Keil_v5\ARM\ARMCLANG\include\stdio.h \
   C:\Keil_v5\ARM\ARMCLANG\include\libcxx\string.h \
   C:\Keil_v5\ARM\ARMCLANG\include\string.h \
-  ..\simplefoc\common\time_utils.h ..\simplefoc\common\foc_utils.h
+  ..\simplefoc\common\time_utils.h ..\simplefoc\common\foc_utils.h \
+  ..\simplefoc\sensors\AS5600_I2C.h \
+  ..\simplefoc\common\base_classes\Sensor.h \
+  C:\Keil_v5\ARM\ARMCLANG\include\libcxx\inttypes.h \
+  C:\Keil_v5\ARM\ARMCLANG\include\inttypes.h

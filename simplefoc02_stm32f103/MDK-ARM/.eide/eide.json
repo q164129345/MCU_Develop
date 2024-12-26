@@ -349,8 +349,8 @@
         "bin": "",
         "baseAddr": "",
         "cpuInfo": {
-          "vendor": "null",
-          "cpuName": "null"
+          "vendor": "ST",
+          "cpuName": "STM32F103CB"
         },
         "proType": 1,
         "speed": 8000,
