@@ -3,7 +3,7 @@
 <title>Static Call Graph - [simplefoc_stm32f103\simplefoc_stm32f103.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image simplefoc_stm32f103\simplefoc_stm32f103.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Thu Dec 26 19:29:50 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Thu Dec 26 20:15:02 2024
 <BR><P>
 <H3>Maximum Stack Usage =        392 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -861,7 +861,6 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::init()
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::update()
-<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_Cpp
 </UL>
 
 <P><STRONG><a name="[40]"></a>AS5600_I2C::getSensorAngle()</STRONG> (Thumb, 88 bytes, Stack size 32 bytes, as5600_i2c.o(.text._ZN10AS5600_I2C14getSensorAngleEv))
@@ -871,8 +870,6 @@ Global Symbols
 <LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2f
 <LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fdiv
-</UL>
-<BR>[Called By]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_Cpp
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> as5600_i2c.o(.rodata._ZTV10AS5600_I2C)
 </UL>
@@ -907,6 +904,8 @@ Global Symbols
 <LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
 <LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
 <LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
+</UL>
+<BR>[Called By]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_Cpp
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> as5600_i2c.o(.rodata._ZTV10AS5600_I2C)
 </UL>
@@ -949,6 +948,8 @@ Global Symbols
 <LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fcmpgt
 <LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
 </UL>
+<BR>[Called By]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_Cpp
+</UL>
 <BR>[Address Reference Count : 1]<UL><LI> as5600_i2c.o(.rodata._ZTV10AS5600_I2C)
 </UL>
 <P><STRONG><a name="[3a]"></a>Sensor::getAngle()</STRONG> (Thumb, 30 bytes, Stack size 8 bytes, sensor.o(.text._ZN6Sensor8getAngleEv))
@@ -976,15 +977,15 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry_main
 </UL>
 
-<P><STRONG><a name="[a4]"></a>main_Cpp</STRONG> (Thumb, 136 bytes, Stack size 56 bytes, user_main.o(.text.main_Cpp))
+<P><STRONG><a name="[a4]"></a>main_Cpp</STRONG> (Thumb, 126 bytes, Stack size 56 bytes, user_main.o(.text.main_Cpp))
 <BR><BR>[Stack]<UL><LI>Max Depth = 328 + Unknown Stack Size
 <LI>Call Chain = main_Cpp &rArr; SEGGER_RTT_printf &rArr; SEGGER_RTT_vprintf &rArr; _PrintUnsigned &rArr; SEGGER_RTT_Write &rArr; SEGGER_RTT_WriteNoLock
 </UL>
 <BR>[Calls]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
-<LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AS5600_I2C::getSensorAngle()
 <LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AS5600_I2C::init(I2C_HandleTypeDef*)
 <LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DWT_Delay_us
-<LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_micros()
+<LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::getVelocity()
+<LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::update()
 <LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_printf
 <LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_TogglePin
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
@@ -1365,7 +1366,7 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_vprintf
 </UL>
 
-<P><STRONG><a name="[42]"></a>_GLOBAL__sub_I_user_main.cpp</STRONG> (Thumb, 36 bytes, Stack size 16 bytes, user_main.o(.text._GLOBAL__sub_I_user_main.cpp))
+<P><STRONG><a name="[42]"></a>_GLOBAL__sub_I_user_main.cpp</STRONG> (Thumb, 38 bytes, Stack size 16 bytes, user_main.o(.text._GLOBAL__sub_I_user_main.cpp))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = _GLOBAL__sub_I_user_main.cpp &rArr; AS5600_I2C::AS5600_I2C(AS5600_I2CConfig_s)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AS5600_I2C::AS5600_I2C(AS5600_I2CConfig_s)
