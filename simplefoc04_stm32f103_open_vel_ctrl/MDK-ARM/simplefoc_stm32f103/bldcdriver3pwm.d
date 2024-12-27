@@ -1,6 +1,6 @@
-simplefoc_stm32f103/focmotor.o: \
-  ..\simplefoc\common\base_classes\FOCMotor.cpp \
-  ..\simplefoc\common\base_classes\FOCMotor.h ..\Core\Inc\main.h \
+simplefoc_stm32f103/bldcdriver3pwm.o: \
+  ..\simplefoc\drivers\BLDCDriver3PWM.cpp \
+  ..\simplefoc\drivers\BLDCDriver3PWM.h ..\Core\Inc\main.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h \
   ..\Core\Inc\stm32f1xx_hal_conf.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h \
@@ -199,13 +199,6 @@ simplefoc_stm32f103/focmotor.o: \
   C:\Keil_v5\ARM\ARMCLANG\include\stdio.h \
   C:\Keil_v5\ARM\ARMCLANG\include\libcxx\string.h \
   C:\Keil_v5\ARM\ARMCLANG\include\string.h \
-  ..\simplefoc\common\base_classes\Sensor.h \
-  C:\Keil_v5\ARM\ARMCLANG\include\libcxx\inttypes.h \
-  C:\Keil_v5\ARM\ARMCLANG\include\inttypes.h \
-  ..\simplefoc\common\base_classes\CurrentSense.h \
   ..\simplefoc\common\base_classes\BLDCDriver.h \
-  ..\simplefoc\common\base_classes\..\foc_utils.h \
-  ..\simplefoc\common\base_classes\..\time_utils.h \
-  ..\simplefoc\common\base_classes\..\defaults.h \
-  ..\simplefoc\common\base_classes\..\pid.h \
-  ..\simplefoc\common\base_classes\..\lowpass_filter.h
+  ..\simplefoc\common\foc_utils.h ..\simplefoc\common\time_utils.h \
+  ..\simplefoc\common\defaults.h

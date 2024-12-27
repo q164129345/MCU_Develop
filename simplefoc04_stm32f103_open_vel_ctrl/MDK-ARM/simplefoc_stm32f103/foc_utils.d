@@ -30,6 +30,8 @@ simplefoc_stm32f103/foc_utils.o: ..\simplefoc\common\foc_utils.cpp \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h \
+  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim.h \
+  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h \
   ..\SEGGER_RTT\SEGGER_RTT.h ..\SEGGER_RTT\SEGGER_RTT_Conf.h \
   C:\Keil_v5\ARM\ARMCLANG\include\libcxx\stdlib.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h \

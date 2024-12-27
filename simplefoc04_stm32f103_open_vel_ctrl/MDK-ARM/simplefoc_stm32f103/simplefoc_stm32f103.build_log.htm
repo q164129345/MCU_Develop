@@ -27,20 +27,11 @@ Project File Date:  12/27/2024
 <h2>Output:</h2>
 *** Using Compiler 'V6.21', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Build target 'simplefoc_stm32f103'
-../simplefoc/drivers/BLDCDriver3PWM.cpp(1): warning: In file included from...
-../simplefoc/drivers/BLDCDriver3PWM.h(8): error: 'hardware_api.h' file not found
-    8 | #include "hardware_api.h"
-      |          ^~~~~~~~~~~~~~~~
-1 error generated.
-compiling BLDCDriver3PWM.cpp...
-../simplefoc/BLDCMotor.cpp(1): warning: In file included from...
-../simplefoc/BLDCMotor.h(4): error: 'Arduino.h' file not found
-    4 | #include "Arduino.h"
-      |          ^~~~~~~~~~~
-1 error generated.
-compiling BLDCMotor.cpp...
-compiling user_main.cpp...
-"simplefoc_stm32f103\simplefoc_stm32f103.axf" - 2 Error(s), 0 Warning(s).
+compiling tim.c...
+linking...
+Program Size: Code=20244 RO-data=572 RW-data=28 ZI-data=3252  
+FromELF: creating hex file...
+"simplefoc_stm32f103\simplefoc_stm32f103.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -64,7 +55,6 @@ Package Vendor: Keil
 
    * Component: ARM::CMSIS:CORE@5.6.0
       Include file:  CMSIS/Core/Include/tz_context.h
-Target not created.
 Build Time Elapsed:  00:00:02
 </pre>
 </body>

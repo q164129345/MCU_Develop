@@ -37,6 +37,9 @@
                     "path": "../Core/Src/i2c.c"
                   },
                   {
+                    "path": "../Core/Src/tim.c"
+                  },
+                  {
                     "path": "../Core/Src/stm32f1xx_it.c"
                   },
                   {
@@ -366,7 +369,7 @@
           "cpuName": "STM32F103CB"
         },
         "proType": 1,
-        "speed": 8000,
+        "speed": 4000,
         "otherCmds": ""
       },
       "uploadConfigMap": {},
