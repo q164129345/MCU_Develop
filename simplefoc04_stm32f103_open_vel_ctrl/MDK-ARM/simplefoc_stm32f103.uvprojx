@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xB</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;..\SEGGER_RTT;..\simplefoc\common;..\simplefoc\common\base_classes;..\components\DWT;..\user;..\simplefoc\sensors</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;..\SEGGER_RTT;..\simplefoc\common;..\simplefoc\common\base_classes;..\components\DWT;..\user;..\simplefoc\sensors;..\simplefoc\drivers;..\simplefoc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -607,12 +607,22 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>components</GroupName>
+          <GroupName>simplefoc/drivers</GroupName>
           <Files>
             <File>
-              <FileName>dwt_timer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\components\DWT\dwt_timer.c</FilePath>
+              <FileName>BLDCDriver3PWM.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\simplefoc\drivers\BLDCDriver3PWM.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>simplefoc</GroupName>
+          <Files>
+            <File>
+              <FileName>BLDCMotor.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\simplefoc\BLDCMotor.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -623,6 +633,16 @@
               <FileName>user_main.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\user\user_main.cpp</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>components</GroupName>
+          <Files>
+            <File>
+              <FileName>dwt_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\components\DWT\dwt_timer.c</FilePath>
             </File>
           </Files>
         </Group>

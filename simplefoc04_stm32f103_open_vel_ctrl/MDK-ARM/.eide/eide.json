@@ -141,7 +141,11 @@
       },
       {
         "name": "simplefoc",
-        "files": [],
+        "files": [
+          {
+            "path": "../simplefoc/BLDCMotor.cpp"
+          }
+        ],
         "folders": [
           {
             "name": "common",
@@ -193,23 +197,32 @@
               }
             ],
             "folders": []
+          },
+          {
+            "name": "drivers",
+            "files": [
+              {
+                "path": "../simplefoc/drivers/BLDCDriver3PWM.cpp"
+              }
+            ],
+            "folders": []
           }
         ]
-      },
-      {
-        "name": "components",
-        "files": [
-          {
-            "path": "../components/DWT/dwt_timer.c"
-          }
-        ],
-        "folders": []
       },
       {
         "name": "user",
         "files": [
           {
             "path": "../user/user_main.cpp"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "components",
+        "files": [
+          {
+            "path": "../components/DWT/dwt_timer.c"
           }
         ],
         "folders": []
@@ -371,7 +384,8 @@
           "../components/DWT",
           "../user",
           "../simplefoc/sensors",
-          ".cmsis/include",
+          "../simplefoc/drivers",
+          "../simplefoc",
           "RTE/_simplefoc_stm32f103"
         ],
         "libList": [],
