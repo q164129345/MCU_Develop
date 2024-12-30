@@ -1,4 +1,5 @@
 #include "BLDCDriver3PWM.h"
+#include "bsp_pwm.h"
 
 BLDCDriver3PWM::BLDCDriver3PWM(int phA, int phB, int phC, int en1, int en2, int en3){
   // Pin initialization
@@ -15,7 +16,6 @@ BLDCDriver3PWM::BLDCDriver3PWM(int phA, int phB, int phC, int en1, int en2, int 
   voltage_power_supply = DEF_POWER_SUPPLY;
   voltage_limit = NOT_SET;
   pwm_frequency = NOT_SET;
-
 }
 
 // enable motor driver
@@ -42,7 +42,6 @@ void BLDCDriver3PWM::disable()
   // if ( _isset(enableA_pin) ) digitalWrite(enableA_pin, !enable_active_high);
   // if ( _isset(enableB_pin) ) digitalWrite(enableB_pin, !enable_active_high);
   // if ( _isset(enableC_pin) ) digitalWrite(enableC_pin, !enable_active_high);
-
 }
 
 // init hardware pins
@@ -54,8 +53,6 @@ int BLDCDriver3PWM::init() {
   // if( _isset(enableA_pin)) pinMode(enableA_pin, OUTPUT);
   // if( _isset(enableB_pin)) pinMode(enableB_pin, OUTPUT);
   // if( _isset(enableC_pin)) pinMode(enableC_pin, OUTPUT);
-
-
   // sanity check for the voltage limit configuration
   if(!_isset(voltage_limit) || voltage_limit > voltage_power_supply) voltage_limit =  voltage_power_supply;
 
@@ -64,8 +61,8 @@ int BLDCDriver3PWM::init() {
   // params = _configure3PWM(pwm_frequency, pwmA, pwmB, pwmC);
   // initialized = (params!=SIMPLEFOC_DRIVER_INIT_FAILED);
   // return params!=SIMPLEFOC_DRIVER_INIT_FAILED;
-  pwm_frequency = htim2.Init.Period + 1;   // 获取pwm频率
-  voltage_limit = DEF_POWER_SUPPLY;        // 获取电压限制
+  pwm_frequency = __HAL_TIM_GET_AUTORELOAD(&htim2); // 获取pwm频率，即ARR寄存器
+  voltage_limit = DEF_POWER_SUPPLY; // 获取电压限制
 
   return 1;
 }
@@ -91,11 +88,12 @@ void BLDCDriver3PWM::setPwm(float Ua, float Ub, float Uc) {
   Uc = _constrain(Uc, 0.0f, voltage_limit);
   // calculate duty cycle
   // limited in [0,1]
-  dc_a = _constrain(Ua / voltage_power_supply, 0.0f , 1.0f );
-  dc_b = _constrain(Ub / voltage_power_supply, 0.0f , 1.0f );
-  dc_c = _constrain(Uc / voltage_power_supply, 0.0f , 1.0f );
+  dc_a = _constrain(Ua / voltage_power_supply, 0.0f, 1.0f);
+  dc_b = _constrain(Ub / voltage_power_supply, 0.0f, 1.0f);
+  dc_c = _constrain(Uc / voltage_power_supply, 0.0f, 1.0f);
 
   // hardware specific writing
   // hardware specific function - depending on driver and mcu
   //_writeDutyCycle3PWM(dc_a, dc_b, dc_c, params);
+  _writeDutyCycle3PWM(&htim2, dc_a, dc_b, dc_c);
 }

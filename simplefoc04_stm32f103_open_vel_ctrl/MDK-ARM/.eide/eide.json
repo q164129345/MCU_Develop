@@ -241,8 +241,8 @@
     ]
   },
   "outDir": "build",
-  "deviceName": null,
-  "packDir": null,
+  "deviceName": "STM32F103CB",
+  "packDir": ".pack/Keil/STM32F1xx_DFP.2.3.0",
   "miscInfo": {
     "uid": "9b728883d64c2359f2004dfcfb6e8bc7"
   },
@@ -398,7 +398,8 @@
         "libList": [],
         "defineList": [
           "USE_HAL_DRIVER",
-          "STM32F103xB"
+          "STM32F103xB",
+          "STM32F10X_MD"
         ]
       },
       "builderOptions": {
