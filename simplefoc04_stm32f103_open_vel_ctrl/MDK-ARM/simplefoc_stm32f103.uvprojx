@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xB</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../SEGGER_RTT;../simplefoc/common;../simplefoc/common/base_classes;../components/DWT;../user;../simplefoc/sensors;../simplefoc/drivers;../simplefoc</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../SEGGER_RTT;../simplefoc/common;../simplefoc/common/base_classes;../components/DWT;../user;../simplefoc/sensors;../simplefoc/drivers;../simplefoc;..\components\bsp_pwm</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -699,6 +699,11 @@
               <FileName>dwt_timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\components\DWT\dwt_timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_pwm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\components\bsp_pwm\bsp_pwm.c</FilePath>
             </File>
           </Files>
         </Group>

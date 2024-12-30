@@ -21,6 +21,10 @@ BLDCDriver3PWM::BLDCDriver3PWM(int phA, int phB, int phC, int en1, int en2, int 
 // enable motor driver
 void  BLDCDriver3PWM::enable(){
     // enable_pin the driver - if enable_pin pin available
+    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1); // 使能A相
+    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2); // 使能B相
+    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3); // 使能C相
+    HAL_GPIO_WritePin(m1_enable_GPIO_Port, m1_enable_Pin, GPIO_PIN_SET); // 使能半桥驱动芯片
     // if ( _isset(enableA_pin) ) digitalWrite(enableA_pin, enable_active_high);
     // if ( _isset(enableB_pin) ) digitalWrite(enableB_pin, enable_active_high);
     // if ( _isset(enableC_pin) ) digitalWrite(enableC_pin, enable_active_high);
@@ -34,6 +38,7 @@ void BLDCDriver3PWM::disable()
   // set zero to PWM
   setPwm(0, 0, 0);
   // disable the driver - if enable_pin pin available
+  HAL_GPIO_WritePin(m1_enable_GPIO_Port, m1_enable_Pin, GPIO_PIN_RESET); // 不使能半桥驱动芯片
   // if ( _isset(enableA_pin) ) digitalWrite(enableA_pin, !enable_active_high);
   // if ( _isset(enableB_pin) ) digitalWrite(enableB_pin, !enable_active_high);
   // if ( _isset(enableC_pin) ) digitalWrite(enableC_pin, !enable_active_high);
@@ -52,13 +57,16 @@ int BLDCDriver3PWM::init() {
 
 
   // sanity check for the voltage limit configuration
-  //if(!_isset(voltage_limit) || voltage_limit > voltage_power_supply) voltage_limit =  voltage_power_supply;
+  if(!_isset(voltage_limit) || voltage_limit > voltage_power_supply) voltage_limit =  voltage_power_supply;
 
   // Set the pwm frequency to the pins
   // hardware specific function - depending on driver and mcu
   // params = _configure3PWM(pwm_frequency, pwmA, pwmB, pwmC);
   // initialized = (params!=SIMPLEFOC_DRIVER_INIT_FAILED);
   // return params!=SIMPLEFOC_DRIVER_INIT_FAILED;
+  pwm_frequency = htim2.Init.Period + 1;   // 获取pwm频率
+  voltage_limit = DEF_POWER_SUPPLY;        // 获取电压限制
+
   return 1;
 }
 

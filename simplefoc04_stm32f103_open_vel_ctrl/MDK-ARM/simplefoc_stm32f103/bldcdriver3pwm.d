@@ -198,7 +198,7 @@ simplefoc_stm32f103/bldcdriver3pwm.o: \
   C:\Keil_v5\ARM\ARMCLANG\include\libcxx\stdio.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdio.h \
   C:\Keil_v5\ARM\ARMCLANG\include\libcxx\string.h \
-  C:\Keil_v5\ARM\ARMCLANG\include\string.h \
+  C:\Keil_v5\ARM\ARMCLANG\include\string.h ..\Core\Inc\tim.h \
   ..\simplefoc\common\base_classes\BLDCDriver.h \
   ..\simplefoc\common\foc_utils.h ..\simplefoc\common\time_utils.h \
   ..\simplefoc\common\defaults.h

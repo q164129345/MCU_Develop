@@ -226,6 +226,9 @@
         "files": [
           {
             "path": "../components/DWT/dwt_timer.c"
+          },
+          {
+            "path": "../components/bsp_pwm/bsp_pwm.c"
           }
         ],
         "folders": []
@@ -389,6 +392,7 @@
           "../simplefoc/sensors",
           "../simplefoc/drivers",
           "../simplefoc",
+          "../components/bsp_pwm",
           "RTE/_simplefoc_stm32f103"
         ],
         "libList": [],

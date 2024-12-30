@@ -2,11 +2,16 @@
 #define BLDCDriver3PWM_h
 
 #include "main.h"
+#include "tim.h"
 #include "BLDCDriver.h"
 #include "foc_utils.h"
 #include "time_utils.h"
 #include "defaults.h"
 //#include "hardware_api.h"
+
+
+
+
 
 /**
  3 pwm bldc driver class
