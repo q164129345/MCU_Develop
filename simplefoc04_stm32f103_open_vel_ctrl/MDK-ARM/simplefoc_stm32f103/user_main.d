@@ -202,4 +202,7 @@ simplefoc_stm32f103/user_main.o: ..\user\user_main.cpp \
   ..\simplefoc\sensors\AS5600_I2C.h \
   ..\simplefoc\common\base_classes\Sensor.h \
   C:\Keil_v5\ARM\ARMCLANG\include\libcxx\inttypes.h \
-  C:\Keil_v5\ARM\ARMCLANG\include\inttypes.h
+  C:\Keil_v5\ARM\ARMCLANG\include\inttypes.h \
+  ..\simplefoc\drivers\BLDCDriver3PWM.h ..\Core\Inc\tim.h \
+  ..\simplefoc\common\base_classes\BLDCDriver.h \
+  ..\simplefoc\common\defaults.h

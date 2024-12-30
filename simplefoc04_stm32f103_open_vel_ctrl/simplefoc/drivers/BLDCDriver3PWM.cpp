@@ -63,7 +63,9 @@ int BLDCDriver3PWM::init() {
   // return params!=SIMPLEFOC_DRIVER_INIT_FAILED;
   pwm_frequency = __HAL_TIM_GET_AUTORELOAD(&htim2); // 获取pwm频率，即ARR寄存器
   voltage_limit = DEF_POWER_SUPPLY; // 获取电压限制
-
+  SEGGER_RTT_printf(0, "pwm_frequency:%u,voltage_limit:", pwm_frequency);
+  SEGGER_Printf_Float(voltage_limit);
+  SEGGER_RTT_printf(0,"\n");
   return 1;
 }
 

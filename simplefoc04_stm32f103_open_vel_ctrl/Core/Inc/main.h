@@ -47,7 +47,7 @@ extern "C" {
 
 /* Exported constants --------------------------------------------------------*/
 /* USER CODE BEGIN EC */
-
+void SEGGER_Printf_Float(float value);
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/

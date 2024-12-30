@@ -6,7 +6,8 @@
     ],
     "settings": {
         "files.associations": {
-            "bsp_pwm.h": "c"
+            "bsp_pwm.h": "c",
+            "main.h": "c"
         }
     },
     "extensions": {}
