@@ -399,8 +399,7 @@
         "libList": [],
         "defineList": [
           "USE_HAL_DRIVER",
-          "STM32F103xB",
-          "STM32F10X_MD"
+          "STM32F103xB"
         ]
       },
       "builderOptions": {
