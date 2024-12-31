@@ -7,7 +7,7 @@
             "request": "launch",
             "type": "cortex-debug",
             "servertype": "jlink",
-            "device": "STM32F103C8T6", // JLINK必须要指定芯片型号
+            "device": "STM32F103CBT6", // JLINK必须要指定芯片型号
             // "configFiles": [
             //     "interface/stlink-v2.cfg",
             //     "target/stm32f4x.cfg"
