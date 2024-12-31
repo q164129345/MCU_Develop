@@ -18,9 +18,7 @@ BLDCDriver3PWM motorDriver(GPIO_PIN_0,GPIO_PIN_1,GPIO_PIN_2); // PA0,PA1,PA2
 void main_Cpp(void)
 {
     AS5600_1.init(&hi2c1); // 初始化AS5600
-    motorDriver.init(); // 初始化电机驱动
-    motorDriver.enable(); // 使能电机驱动
-    motorDriver.setPwm(6,6,6); // 设置50%占空比
+    motorDriver.init();   // 初始化电机驱动
     HAL_Delay(1000); // 延时1s
     while(1) {
         HAL_GPIO_TogglePin(run_led_GPIO_Port,run_led_Pin); // 心跳灯跑起来

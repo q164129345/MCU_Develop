@@ -23,7 +23,7 @@ void main_Cpp(void)
     motorDriver.setPwm(6,6,6); // 设置50%占空比
     HAL_Delay(1000); // 延时1s
     while(1) {
-        HAL_GPIO_TogglePin(run_led_GPIO_Port,run_led_Pin); // 心跳灯跑起来
+        //HAL_GPIO_TogglePin(run_led_GPIO_Port,run_led_Pin); // 心跳灯跑起来
         //SEGGER_RTT_printf(0,"Dwt_time_us:%u\n",_micros()); // 打印DWT定时器的us级时间戳，看看有没有问题
         AS5600_1.update(); // 更新位置，获取速度
         g_Velocity = AS5600_1.getVelocity(); // 获取速度
