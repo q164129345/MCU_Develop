@@ -379,6 +379,7 @@
       "custom_dep": {
         "name": "default",
         "incList": [
+          ".",
           "../Core/Inc",
           "../Drivers/STM32F1xx_HAL_Driver/Inc",
           "../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy",
