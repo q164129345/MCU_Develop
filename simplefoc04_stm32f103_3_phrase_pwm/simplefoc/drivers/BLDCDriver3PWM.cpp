@@ -1,6 +1,4 @@
 #include "BLDCDriver3PWM.h"
-#include "bsp_pwm.h"
-
 
 #define PWM_TIM htim2 // pwm定时器接口（本项目使用htim2）
 
@@ -23,14 +21,11 @@ BLDCDriver3PWM::BLDCDriver3PWM(int phA, int phB, int phC, int en1, int en2, int 
 
 // enable motor driver
 void  BLDCDriver3PWM::enable(){
-    // enable_pin the driver - if enable_pin pin available
-    HAL_TIM_PWM_Start(&PWM_TIM, TIM_CHANNEL_1); // 使能A相
-    HAL_TIM_PWM_Start(&PWM_TIM, TIM_CHANNEL_2); // 使能B相
-    HAL_TIM_PWM_Start(&PWM_TIM, TIM_CHANNEL_3); // 使能C相
-    HAL_GPIO_WritePin(m1_enable_GPIO_Port, m1_enable_Pin, GPIO_PIN_SET); // 使能半桥驱动芯片
-    // set zero to PWM
-    setPwm(0,0,0);
-    SEGGER_RTT_printf(0,"enable motor.\n");
+  // enable_pin the driver - if enable_pin pin available
+  HAL_GPIO_WritePin(m1_enable_GPIO_Port, m1_enable_Pin, GPIO_PIN_SET); // 使能半桥驱动芯片
+  // set zero to PWM
+  setPwm(0,0,0);
+  SEGGER_RTT_printf(0,"enable motor.\n");
 }
 
 // disable motor driver
@@ -51,6 +46,9 @@ int BLDCDriver3PWM::init() {
   // Set the pwm frequency to the pins
   pwm_frequency = __HAL_TIM_GET_AUTORELOAD(&PWM_TIM); // 获取pwm频率，即ARR寄存器
   voltage_limit = DEF_POWER_SUPPLY; // 获取电压限制
+  HAL_TIM_PWM_Start(&PWM_TIM, TIM_CHANNEL_1); // 使能A相
+  HAL_TIM_PWM_Start(&PWM_TIM, TIM_CHANNEL_2); // 使能B相
+  HAL_TIM_PWM_Start(&PWM_TIM, TIM_CHANNEL_3); // 使能C相
   SEGGER_RTT_printf(0, "pwm_frequency:%u,voltage_limit:", pwm_frequency);
   SEGGER_Printf_Float(voltage_limit);
   SEGGER_RTT_printf(0,"\n");

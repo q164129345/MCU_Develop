@@ -3,9 +3,9 @@
 <title>Static Call Graph - [simplefoc_stm32f103\simplefoc_stm32f103.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image simplefoc_stm32f103\simplefoc_stm32f103.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Mon Dec 30 21:03:18 2024
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Tue Dec 31 15:38:21 2024
 <BR><P>
-<H3>Maximum Stack Usage =        416 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        424 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 __rt_entry_main &rArr; main &rArr; main_Cpp &rArr; BLDCDriver3PWM::init() &rArr; SEGGER_Printf_Float &rArr; SEGGER_RTT_printf &rArr; SEGGER_RTT_vprintf &rArr; _PrintUnsigned &rArr; SEGGER_RTT_Write &rArr; SEGGER_RTT_WriteNoLock
 <P>
@@ -252,7 +252,7 @@ Global Symbols
 <P><STRONG><a name="[108]"></a>__rt_entry_postsh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000009))
 
 <P><STRONG><a name="[58]"></a>__rt_entry_main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$0000000D))
-<BR><BR>[Stack]<UL><LI>Max Depth = 416 + Unknown Stack Size
+<BR><BR>[Stack]<UL><LI>Max Depth = 424 + Unknown Stack Size
 <LI>Call Chain = __rt_entry_main &rArr; main &rArr; main_Cpp &rArr; BLDCDriver3PWM::init() &rArr; SEGGER_Printf_Float &rArr; SEGGER_RTT_printf &rArr; SEGGER_RTT_vprintf &rArr; _PrintUnsigned &rArr; SEGGER_RTT_Write &rArr; SEGGER_RTT_WriteNoLock
 </UL>
 <BR>[Calls]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -835,7 +835,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[b3]"></a>HAL_TIM_PWM_Start</STRONG> (Thumb, 218 bytes, Stack size 0 bytes, stm32f1xx_hal_tim.o(.text.HAL_TIM_PWM_Start))
-<BR><BR>[Called By]<UL><LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCDriver3PWM::enable()
+<BR><BR>[Called By]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCDriver3PWM::init()
 </UL>
 
 <P><STRONG><a name="[8f]"></a>HAL_TIM_PeriodElapsedCallback</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f1xx_hal_tim.o(.text.HAL_TIM_PeriodElapsedCallback))
@@ -931,7 +931,8 @@ Global Symbols
 <LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 <LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCDriver3PWM::init()
+<BR>[Called By]<UL><LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_Cpp
+<LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCDriver3PWM::init()
 </UL>
 
 <P><STRONG><a name="[a5]"></a>SEGGER_RTT_Write</STRONG> (Thumb, 172 bytes, Stack size 24 bytes, segger_rtt.o(.text.SEGGER_RTT_Write))
@@ -959,8 +960,11 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_vprintf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_Printf_Float
+<BR>[Called By]<UL><LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_Cpp
+<LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_Printf_Float
 <LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCDriver3PWM::init()
+<LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCDriver3PWM::disable()
+<LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCDriver3PWM::enable()
 </UL>
 
 <P><STRONG><a name="[a8]"></a>SEGGER_RTT_vprintf</STRONG> (Thumb, 1604 bytes, Stack size 144 bytes, segger_rtt_printf.o(.text.SEGGER_RTT_vprintf))
@@ -1053,22 +1057,26 @@ Global Symbols
 <P><STRONG><a name="[46]"></a>BLDCDriver3PWM::setPhaseState(PhaseState, PhaseState, PhaseState)</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, bldcdriver3pwm.o(.text._ZN14BLDCDriver3PWM13setPhaseStateE10PhaseStateS0_S0_))
 <BR>[Address Reference Count : 1]<UL><LI> bldcdriver3pwm.o(.rodata._ZTV14BLDCDriver3PWM)
 </UL>
-<P><STRONG><a name="[42]"></a>BLDCDriver3PWM::init()</STRONG> (Thumb, 44 bytes, Stack size 8 bytes, bldcdriver3pwm.o(.text._ZN14BLDCDriver3PWM4initEv))
-<BR><BR>[Stack]<UL><LI>Max Depth = 352 + Unknown Stack Size
+<P><STRONG><a name="[42]"></a>BLDCDriver3PWM::init()</STRONG> (Thumb, 80 bytes, Stack size 16 bytes, bldcdriver3pwm.o(.text._ZN14BLDCDriver3PWM4initEv))
+<BR><BR>[Stack]<UL><LI>Max Depth = 360 + Unknown Stack Size
 <LI>Call Chain = BLDCDriver3PWM::init() &rArr; SEGGER_Printf_Float &rArr; SEGGER_RTT_printf &rArr; SEGGER_RTT_vprintf &rArr; _PrintUnsigned &rArr; SEGGER_RTT_Write &rArr; SEGGER_RTT_WriteNoLock
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_printf
+<BR>[Calls]<UL><LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PWM_Start
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_printf
 <LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_Printf_Float
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_Cpp
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> bldcdriver3pwm.o(.rodata._ZTV14BLDCDriver3PWM)
 </UL>
-<P><STRONG><a name="[43]"></a>BLDCDriver3PWM::enable()</STRONG> (Thumb, 74 bytes, Stack size 16 bytes, bldcdriver3pwm.o(.text._ZN14BLDCDriver3PWM6enableEv))
-<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = BLDCDriver3PWM::enable()
+<P><STRONG><a name="[43]"></a>BLDCDriver3PWM::enable()</STRONG> (Thumb, 52 bytes, Stack size 8 bytes, bldcdriver3pwm.o(.text._ZN14BLDCDriver3PWM6enableEv))
+<BR><BR>[Stack]<UL><LI>Max Depth = 280 + Unknown Stack Size
+<LI>Call Chain = BLDCDriver3PWM::enable() &rArr; SEGGER_RTT_printf &rArr; SEGGER_RTT_vprintf &rArr; _PrintUnsigned &rArr; SEGGER_RTT_Write &rArr; SEGGER_RTT_WriteNoLock
 </UL>
-<BR>[Calls]<UL><LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PWM_Start
-<LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
+<BR>[Calls]<UL><LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_printf
+</UL>
+<BR>[Called By]<UL><LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_Cpp
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> bldcdriver3pwm.o(.rodata._ZTV14BLDCDriver3PWM)
 </UL>
@@ -1080,12 +1088,16 @@ Global Symbols
 <LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fcmpgt
 <LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_writeDutyCycle3PWM
 </UL>
+<BR>[Called By]<UL><LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_Cpp
+</UL>
 <BR>[Address Reference Count : 1]<UL><LI> bldcdriver3pwm.o(.rodata._ZTV14BLDCDriver3PWM)
 </UL>
-<P><STRONG><a name="[44]"></a>BLDCDriver3PWM::disable()</STRONG> (Thumb, 38 bytes, Stack size 8 bytes, bldcdriver3pwm.o(.text._ZN14BLDCDriver3PWM7disableEv))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = BLDCDriver3PWM::disable()
+<P><STRONG><a name="[44]"></a>BLDCDriver3PWM::disable()</STRONG> (Thumb, 48 bytes, Stack size 8 bytes, bldcdriver3pwm.o(.text._ZN14BLDCDriver3PWM7disableEv))
+<BR><BR>[Stack]<UL><LI>Max Depth = 280 + Unknown Stack Size
+<LI>Call Chain = BLDCDriver3PWM::disable() &rArr; SEGGER_RTT_printf &rArr; SEGGER_RTT_vprintf &rArr; _PrintUnsigned &rArr; SEGGER_RTT_Write &rArr; SEGGER_RTT_WriteNoLock
 </UL>
 <BR>[Calls]<UL><LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_printf
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> bldcdriver3pwm.o(.rodata._ZTV14BLDCDriver3PWM)
 </UL>
@@ -1178,7 +1190,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[59]"></a>main</STRONG> (Thumb, 126 bytes, Stack size 64 bytes, main.o(.text.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 416 + Unknown Stack Size
+<BR><BR>[Stack]<UL><LI>Max Depth = 424 + Unknown Stack Size
 <LI>Call Chain = main &rArr; main_Cpp &rArr; BLDCDriver3PWM::init() &rArr; SEGGER_Printf_Float &rArr; SEGGER_RTT_printf &rArr; SEGGER_RTT_vprintf &rArr; _PrintUnsigned &rArr; SEGGER_RTT_Write &rArr; SEGGER_RTT_WriteNoLock
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_Cpp
@@ -1195,13 +1207,18 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry_main
 </UL>
 
-<P><STRONG><a name="[c1]"></a>main_Cpp</STRONG> (Thumb, 88 bytes, Stack size 0 bytes, user_main.o(.text.main_Cpp))
-<BR><BR>[Stack]<UL><LI>Max Depth = 352 + Unknown Stack Size
+<P><STRONG><a name="[c1]"></a>main_Cpp</STRONG> (Thumb, 140 bytes, Stack size 0 bytes, user_main.o(.text.main_Cpp))
+<BR><BR>[Stack]<UL><LI>Max Depth = 360 + Unknown Stack Size
 <LI>Call Chain = main_Cpp &rArr; BLDCDriver3PWM::init() &rArr; SEGGER_Printf_Float &rArr; SEGGER_RTT_printf &rArr; SEGGER_RTT_vprintf &rArr; _PrintUnsigned &rArr; SEGGER_RTT_Write &rArr; SEGGER_RTT_WriteNoLock
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_TogglePin
 <LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
+<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_printf
+<LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_Printf_Float
+<LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
+<LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCDriver3PWM::setPwm(float, float, float)
 <LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCDriver3PWM::init()
+<LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCDriver3PWM::enable()
 <LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AS5600_I2C::init(I2C_HandleTypeDef*)
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DWT_Delay_us
 <LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::getVelocity()
@@ -1346,7 +1363,8 @@ Global Symbols
 <P><STRONG><a name="[a3]"></a>__aeabi_f2d</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, f2d.o(x$fpl$f2d))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_f2d
 </UL>
-<BR>[Called By]<UL><LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_Printf_Float
+<BR>[Called By]<UL><LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_Cpp
+<LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_Printf_Float
 <LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::getPreciseAngle()
 </UL>
 

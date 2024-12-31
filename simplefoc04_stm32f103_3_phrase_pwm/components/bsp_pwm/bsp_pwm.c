@@ -3,10 +3,10 @@
 /**
  * @brief 设置三相PWM的占空比
  * 
- * @param htimx 
- * @param dc_a 
- * @param dc_b 
- * @param dc_c 
+ * @param htimx 定时器句柄
+ * @param dc_a A相的占空比%
+ * @param dc_b B相的占空比%
+ * @param dc_c C相的占空比%
  */
 void _writeDutyCycle3PWM(TIM_HandleTypeDef *htimx, float dc_a, float dc_b, float dc_c)
 {
