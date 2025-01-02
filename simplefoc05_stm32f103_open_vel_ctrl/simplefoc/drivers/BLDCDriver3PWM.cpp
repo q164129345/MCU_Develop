@@ -52,6 +52,7 @@ int BLDCDriver3PWM::init() {
   SEGGER_RTT_printf(0, "pwm_frequency:%u,voltage_limit:", pwm_frequency);
   SEGGER_Printf_Float(voltage_limit);
   SEGGER_RTT_printf(0,"\n");
+  initialized = true; // 初始化成功
   return 1;
 }
 
