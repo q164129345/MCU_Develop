@@ -32,10 +32,10 @@ void main_Cpp(void)
     HAL_TIM_Base_Start_IT(&htim4); // 启动TIM4定时器
     while(1) {
         HAL_GPIO_TogglePin(run_led_GPIO_Port,run_led_Pin); // 心跳灯跑起来
-        // AS5600_1.update(); // 更新位置，获取速度
-        // g_Velocity = AS5600_1.getVelocity(); // 获取速度
-        // SEGGER_RTT_printf(0,"motor_Velocity:%f\n",g_Velocity);
-        // SEGGER_Printf_Float(g_Velocity); // 打印电机速度
+        AS5600_1.update(); // 更新位置，获取速度
+        g_Velocity = AS5600_1.getVelocity(); // 获取速度
+        SEGGER_RTT_printf(0,"motor_Velocity:%f\n",g_Velocity);
+        SEGGER_Printf_Float(g_Velocity); // 打印电机速度
         delayMicroseconds(100000U); // 延时10ms
     }
 }
