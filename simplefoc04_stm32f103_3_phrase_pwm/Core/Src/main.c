@@ -155,25 +155,7 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-/**
-  * @brief  Timer callback interrupt function
-  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
-  *               the configuration information for TIM module.
-  * @retval None
-  */
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-{
-  // 检查是否是我们期望的定时器
-  if (htim->Instance == TIM2)
-  {
-    // 在这里添加你的定时器中断处理代码
-    // 例如，切换一个LED灯的状态
-    if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_RESET)
-    {
-        HAL_GPIO_TogglePin(run_led_GPIO_Port, run_led_Pin);
-    }
-  }
-}
+
 /* USER CODE END 4 */
 
 /**

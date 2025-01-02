@@ -33,13 +33,23 @@ void main_Cpp(void)
     }
 }
 
-
-
-
-
-
-
-
-
-
+/**
+  * @brief  Timer callback interrupt function
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *               the configuration information for TIM module.
+  * @retval None
+  */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+    static uint8_t tim2RCR = 0;
+    // 检查是否是我们期望的定时器
+    if (htim->Instance == TIM2)
+    {
+        tim2RCR = !tim2RCR; // 取反
+        if (tim2RCR == 0) {
+            // 后续在这里进行电流采样
+            HAL_GPIO_TogglePin(run_led_GPIO_Port, run_led_Pin); // 反转LED引脚的电平，从示波器波形上判断，电流采样是不是在下半桥稳定导通的时候。
+        }
+    }
+}
 
