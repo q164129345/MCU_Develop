@@ -39,7 +39,6 @@ void main_Cpp(void)
         delayMicroseconds(100000U); // 延时10ms
     }
 }
-
 /**
  * @brief 定时器中断回调函数
  * 
@@ -47,8 +46,7 @@ void main_Cpp(void)
  */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-    // 检查是否是我们期望的定时器
-    if(htim->Instance == TIM2) // 假设我们使用TIM2
+    if(htim->Instance == TIM2)
     {
     } else if(htim->Instance == TIM4) {
         motor.move(4); // 设置电机速度
