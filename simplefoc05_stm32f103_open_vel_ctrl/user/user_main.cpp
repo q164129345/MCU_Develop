@@ -26,7 +26,7 @@ void main_Cpp(void)
     motorDriver.init();   // 初始化电机驱动
     motor.linkDriver(&motorDriver); // 将电机驱动与电机连接
     motor.voltage_limit = 3; // 设置电机的电压限制
-    motor.controller = MotionControlType::velocity_openloop; // 设置控制器类型(开环速度控制)
+    motor.controller = MotionControlType::velocity_openloop; // 设置控制器模式(开环速度控制)
     motor.init(); // 初始化电机
     HAL_Delay(1000); // 延时1s
     HAL_TIM_Base_Start_IT(&htim4); // 启动TIM4定时器
