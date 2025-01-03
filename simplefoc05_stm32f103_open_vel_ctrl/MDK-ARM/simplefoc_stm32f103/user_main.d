@@ -10,9 +10,9 @@ simplefoc_stm32f103/user_main.o: ..\user\user_main.cpp \
   C:\Keil_v5\ARM\ARMCLANG\include\libcxx\stdint.h \
   C:\Keil_v5\ARM\ARMCLANG\include\libcxx\__config \
   C:\Keil_v5\ARM\ARMCLANG\include\stdint.h \
-  D:\Coding\MCU_Develop\simplefoc04_stm32f103_3_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h \
-  D:\Coding\MCU_Develop\simplefoc04_stm32f103_3_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h \
-  D:\Coding\MCU_Develop\simplefoc04_stm32f103_3_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h \
+  D:\Coding\MCU_Develop\simplefoc05_stm32f103_open_vel_ctrl\Drivers\CMSIS\Include\cmsis_version.h \
+  D:\Coding\MCU_Develop\simplefoc05_stm32f103_open_vel_ctrl\Drivers\CMSIS\Include\cmsis_compiler.h \
+  D:\Coding\MCU_Develop\simplefoc05_stm32f103_open_vel_ctrl\Drivers\CMSIS\Include\cmsis_armclang.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h \
@@ -205,4 +205,11 @@ simplefoc_stm32f103/user_main.o: ..\user\user_main.cpp \
   C:\Keil_v5\ARM\ARMCLANG\include\inttypes.h \
   ..\simplefoc\drivers\BLDCDriver3PWM.h ..\Core\Inc\tim.h \
   ..\simplefoc\common\base_classes\BLDCDriver.h \
-  ..\simplefoc\common\defaults.h ..\components\bsp_pwm\bsp_pwm.h
+  ..\simplefoc\common\defaults.h ..\components\bsp_pwm\bsp_pwm.h \
+  ..\simplefoc\BLDCMotor.h ..\simplefoc\common\base_classes\FOCMotor.h \
+  ..\simplefoc\common\base_classes\CurrentSense.h \
+  ..\simplefoc\common\base_classes\..\foc_utils.h \
+  ..\simplefoc\common\base_classes\..\time_utils.h \
+  ..\simplefoc\common\base_classes\..\defaults.h \
+  ..\simplefoc\common\base_classes\..\pid.h \
+  ..\simplefoc\common\base_classes\..\lowpass_filter.h

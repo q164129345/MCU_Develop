@@ -12,7 +12,7 @@ float g_Velocity; // 便于使用J-LINK Scope观察曲线
 
 AS5600_I2C AS5600_1(AS5600_I2C_Config); // 创建AS5600_I2C对象
 BLDCDriver3PWM motorDriver(GPIO_PIN_0,GPIO_PIN_1,GPIO_PIN_2); // PA0,PA1,PA2
-BLDCMotor motor(7); // 创建BLDCMotor对象,7对极
+BLDCMotor motor(7); // 创建BLDCMotor对象,电机是7对极
 
 /**
  * @brief C++环境入口函数
