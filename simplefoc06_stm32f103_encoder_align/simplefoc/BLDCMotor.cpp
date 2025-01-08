@@ -2,7 +2,7 @@
 //#include "./communication/SimpleFOCDebug.h"
 
 // 定义一个宏，将SIMPLEFOC_DEBUG替换为SEGGER_RTT_printf
-#define SIMPLEFOC_DEBUG(fmt, ...) SEGGER_RTT_printf(0, fmt, ##__VA_ARGS__)
+#define SIMPLEFOC_DEBUG(fmt, ...) SEGGER_RTT_printf(0, fmt "\n", ##__VA_ARGS__)
 
 // see https://www.youtube.com/watch?v=InzXA7mWBWE Slide 5
 // each is 60 degrees with values for 3 phases of 1=positive -1=negative 0=high-z
