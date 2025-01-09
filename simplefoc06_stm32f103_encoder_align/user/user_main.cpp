@@ -48,16 +48,17 @@ void main_Cpp(void)
     motor.foc_modulation = FOCModulationType::SpaceVectorPWM; // 正弦波改为马鞍波
     motor.linkSensor(&AS5600_1); // 将编码器与电机连接
     motor.sensor_direction = Direction::UNKNOWN; // 设置UNKNOW的目的是让initFOC()方法在初始化时，自动探测并设置传感器的方向
+    motor.voltage_sensor_align = 4; // 校准偏移offset时，所用到的电压值（相当于占空比4V / 12V = 1/3）
     motor.initFOC(); // 初始化FOC
-    //motor.enable(); // 使能电机
+    SEGGER_RTT_printf(0,"motor.zero_electric_angle:");
+    SEGGER_Printf_Float(motor.zero_electric_angle); // 打印电机零电角度
+    SEGGER_RTT_printf(0,"Sensor:");
+    SEGGER_Printf_Float(AS5600_1.getMechanicalAngle()); // 打印传感器角度
     HAL_Delay(1000); // 延时1s
     //HAL_TIM_Base_Start_IT(&htim4); // 启动TIM4定时器
     while(1) {
         HAL_GPIO_TogglePin(run_led_GPIO_Port,run_led_Pin); // 心跳灯跑起来
         AS5600_1.update(); // 更新位置，获取速度
-        g_Velocity = AS5600_1.getVelocity(); // 获取速度
-        //SEGGER_RTT_printf(0,"motor_Velocity:%f\n",g_Velocity);
-        //SEGGER_Printf_Float(g_Velocity); // 打印电机速度
         delayMicroseconds(100000U); // 延时10ms
     }
 }
