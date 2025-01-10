@@ -30,7 +30,7 @@ void main_Cpp(void)
         AS5600_1.update(); // 更新位置，获取速度
         g_Velocity = AS5600_1.getVelocity(); // 获取速度
         SEGGER_Printf_Float(g_Velocity); // 打印电机速度
-        delayMicroseconds(10000U); // 延时10ms
+        delayMicroseconds(10000U); // 延时100ms
     }
 }
 

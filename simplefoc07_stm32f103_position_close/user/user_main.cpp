@@ -38,6 +38,7 @@ void main_Cpp(void)
                             sizeof(JS_RTT_BufferUp1),       // 缓存大小
                             SEGGER_RTT_MODE_NO_BLOCK_SKIP); // 非阻塞
     AS5600_1.init(&hi2c1); // 初始化AS5600
+    motor.linkSensor(&AS5600_1); // 将编码器与电机连接
     motorDriver.voltage_power_supply = 12; // 设置电压
     motorDriver.voltage_limit = 6; // 设置电压限制
     motorDriver.init();   // 初始化电机驱动
@@ -46,7 +47,6 @@ void main_Cpp(void)
     motor.controller = MotionControlType::velocity_openloop; // 设置控制器模式(开环速度控制)
     motor.init(); // 初始化电机
     motor.foc_modulation = FOCModulationType::SpaceVectorPWM; // 正弦波改为马鞍波
-    motor.linkSensor(&AS5600_1); // 将编码器与电机连接
     motor.sensor_direction = Direction::UNKNOWN; // 设置UNKNOW的目的是让initFOC()方法在初始化时，自动探测并设置传感器的方向
     motor.voltage_sensor_align = 4; // 校准偏移offset时，所用到的电压值（相当于占空比4V / 12V = 1/3）
     motor.initFOC(); // 初始化FOC
@@ -59,7 +59,7 @@ void main_Cpp(void)
     while(1) {
         HAL_GPIO_TogglePin(run_led_GPIO_Port,run_led_Pin); // 心跳灯跑起来
         AS5600_1.update(); // 更新位置，获取速度
-        delayMicroseconds(100000U); // 延时10ms
+        delayMicroseconds(100000U); // 延时100ms
     }
 }
 /**

@@ -3,7 +3,7 @@
 <title>Static Call Graph - [simplefoc_stm32f103\simplefoc_stm32f103.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image simplefoc_stm32f103\simplefoc_stm32f103.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Wed Jan  8 16:55:32 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Fri Jan 10 17:59:00 2025
 <BR><P>
 <H3>Maximum Stack Usage =        432 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1360,8 +1360,6 @@ Global Symbols
 <LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
 <LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_Cpp
-</UL>
 <BR>[Address Reference Count : 1]<UL><LI> as5600_i2c.o(.rodata._ZTV10AS5600_I2C)
 </UL>
 <P><STRONG><a name="[3f]"></a>Sensor::needsSearch()</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, sensor.o(.text._ZN6Sensor11needsSearchEv))
@@ -1381,6 +1379,8 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> as5600_i2c.o(.rodata._ZTV10AS5600_I2C)
 </UL>
 <P><STRONG><a name="[39]"></a>Sensor::getMechanicalAngle()</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, sensor.o(.text._ZN6Sensor18getMechanicalAngleEv))
+<BR><BR>[Called By]<UL><LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_Cpp
+</UL>
 <BR>[Address Reference Count : 1]<UL><LI> as5600_i2c.o(.rodata._ZTV10AS5600_I2C)
 </UL>
 <P><STRONG><a name="[41]"></a>Sensor::init()</STRONG> (Thumb, 72 bytes, Stack size 8 bytes, sensor.o(.text._ZN6Sensor4initEv))
@@ -1689,7 +1689,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry_main
 </UL>
 
-<P><STRONG><a name="[ec]"></a>main_Cpp</STRONG> (Thumb, 228 bytes, Stack size 8 bytes, user_main.o(.text.main_Cpp))
+<P><STRONG><a name="[ec]"></a>main_Cpp</STRONG> (Thumb, 224 bytes, Stack size 8 bytes, user_main.o(.text.main_Cpp))
 <BR><BR>[Stack]<UL><LI>Max Depth = 368 + Unknown Stack Size
 <LI>Call Chain = main_Cpp &rArr; BLDCDriver3PWM::init() &rArr; SEGGER_Printf_Float &rArr; SEGGER_RTT_printf &rArr; SEGGER_RTT_vprintf &rArr; _PrintUnsigned &rArr; SEGGER_RTT_Write &rArr; SEGGER_RTT_WriteNoLock
 </UL>
@@ -1702,8 +1702,8 @@ Global Symbols
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::linkDriver(BLDCDriver*)
 <LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCDriver3PWM::init()
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AS5600_I2C::init(I2C_HandleTypeDef*)
+<LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::getMechanicalAngle()
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DWT_Delay_us
-<LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::getVelocity()
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::update()
 <LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::linkSensor(Sensor*)
 <LI><a href="#[ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_ConfigUpBuffer
@@ -2263,8 +2263,8 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_vprintf
 </UL>
 
-<P><STRONG><a name="[50]"></a>_GLOBAL__sub_I_user_main.cpp</STRONG> (Thumb, 92 bytes, Stack size 32 bytes, user_main.o(.text._GLOBAL__sub_I_user_main.cpp))
-<BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = _GLOBAL__sub_I_user_main.cpp &rArr; BLDCMotor::BLDCMotor(int, float, float, float) &rArr; FOCMotor::FOCMotor__sub_object() &rArr; PIDController::PIDController(float, float, float, float, float) &rArr; _micros() &rArr; DWT_Get_Microsecond
+<P><STRONG><a name="[50]"></a>_GLOBAL__sub_I_user_main.cpp</STRONG> (Thumb, 90 bytes, Stack size 24 bytes, user_main.o(.text._GLOBAL__sub_I_user_main.cpp))
+<BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = _GLOBAL__sub_I_user_main.cpp &rArr; BLDCMotor::BLDCMotor(int, float, float, float) &rArr; FOCMotor::FOCMotor__sub_object() &rArr; PIDController::PIDController(float, float, float, float, float) &rArr; _micros() &rArr; DWT_Get_Microsecond
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::BLDCMotor(int, float, float, float)
 <LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCDriver3PWM::BLDCDriver3PWM(int, int, int, int, int, int)

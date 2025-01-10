@@ -29,7 +29,7 @@ void main_Cpp(void)
         g_Velocity = AS5600_1.getVelocity(); // 获取速度
         SEGGER_RTT_printf(0,"motor_Velocity:%f\n",g_Velocity);
         SEGGER_Printf_Float(g_Velocity); // 打印电机速度
-        delayMicroseconds(100000U); // 延时10ms
+        delayMicroseconds(100000U); // 延时100ms
     }
 }
 

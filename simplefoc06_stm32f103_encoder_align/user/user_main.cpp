@@ -59,7 +59,7 @@ void main_Cpp(void)
     while(1) {
         HAL_GPIO_TogglePin(run_led_GPIO_Port,run_led_Pin); // 心跳灯跑起来
         AS5600_1.update(); // 更新位置，获取速度
-        delayMicroseconds(100000U); // 延时10ms
+        delayMicroseconds(100000U); // 延时100ms
     }
 }
 /**
