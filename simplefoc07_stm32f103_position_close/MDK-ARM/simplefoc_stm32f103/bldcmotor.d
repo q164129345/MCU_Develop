@@ -10,9 +10,9 @@ simplefoc_stm32f103/bldcmotor.o: ..\simplefoc\BLDCMotor.cpp \
   C:\Keil_v5\ARM\ARMCLANG\include\libcxx\stdint.h \
   C:\Keil_v5\ARM\ARMCLANG\include\libcxx\__config \
   C:\Keil_v5\ARM\ARMCLANG\include\stdint.h \
-  D:\Coding\MCU_Develop\simplefoc06_stm32f103_encoder_align\Drivers\CMSIS\Include\cmsis_version.h \
-  D:\Coding\MCU_Develop\simplefoc06_stm32f103_encoder_align\Drivers\CMSIS\Include\cmsis_compiler.h \
-  D:\Coding\MCU_Develop\simplefoc06_stm32f103_encoder_align\Drivers\CMSIS\Include\cmsis_armclang.h \
+  D:\Coding\MCU_Develop\simplefoc07_stm32f103_position_close\Drivers\CMSIS\Include\cmsis_version.h \
+  D:\Coding\MCU_Develop\simplefoc07_stm32f103_position_close\Drivers\CMSIS\Include\cmsis_compiler.h \
+  D:\Coding\MCU_Develop\simplefoc07_stm32f103_position_close\Drivers\CMSIS\Include\cmsis_armclang.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h \
