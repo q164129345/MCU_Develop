@@ -46,13 +46,13 @@ void main_Cpp(void)
     motor.voltage_sensor_align = 4; // 校准偏移offset时，所用到的电压值（相当于占空比4V / 12V = 1/3）
     motor.controller = MotionControlType::angle; // 设置控制器模式(开环速度控制)
     motor.PID_velocity.P = 0.1f; // 设置速度P
-    motor.PID_velocity.I = 10; // 设置速度I
+    motor.PID_velocity.I = 5; // 设置速度I
     motor.PID_velocity.D = 0; // 设置速度D
     motor.voltage_limit = 6; // 设置电机的电压限制
-    motor.PID_velocity.output_ramp = 1000; // 设置速度输出斜坡
-    motor.LPF_velocity.Tf = 0.01; // 设置速度低通滤波器
-    motor.P_angle.P = 15; // 设置角度P
-    motor.velocity_limit = 6.28; // 设置速度限制
+    motor.PID_velocity.output_ramp = 2000; // 设置速度输出斜坡
+    motor.LPF_velocity.Tf = 0.008; // 设置速度低通滤波器
+    motor.P_angle.P = 50; // 设置角度P
+    motor.velocity_limit = 40.0f; // 设置速度限制
     motor.init(); // 初始化电机
 
     motor.foc_modulation = FOCModulationType::SpaceVectorPWM; // 正弦波改为马鞍波
