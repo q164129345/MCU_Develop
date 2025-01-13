@@ -39,7 +39,6 @@ void main_Cpp(void)
                             SEGGER_RTT_MODE_NO_BLOCK_SKIP); // 非阻塞
     AS5600_1.init(&hi2c1); // 初始化AS5600
     motorDriver.voltage_power_supply = 12; // 设置电压
-    motorDriver.voltage_limit = 6; // 设置电压限制
     motorDriver.init();   // 初始化电机驱动
                             
     motor.linkSensor(&AS5600_1); // 将编码器与电机连接
@@ -52,8 +51,8 @@ void main_Cpp(void)
     motor.voltage_limit = 6; // 设置电机的电压限制
     motor.PID_velocity.output_ramp = 1000; // 设置速度输出斜坡
     motor.LPF_velocity.Tf = 0.01; // 设置速度低通滤波器
-    motor.P_angle.P = 10; // 设置角度P
-    motor.velocity_limit = 4; // 设置速度限制
+    motor.P_angle.P = 15; // 设置角度P
+    motor.velocity_limit = 6.28; // 设置速度限制
     motor.init(); // 初始化电机
 
     motor.foc_modulation = FOCModulationType::SpaceVectorPWM; // 正弦波改为马鞍波
@@ -69,7 +68,7 @@ void main_Cpp(void)
     while(1) {
         HAL_GPIO_TogglePin(run_led_GPIO_Port,run_led_Pin); // 心跳灯跑起来
         SEGGER_RTT_printf(0,"Sensor:");
-        SEGGER_Printf_Float(AS5600_1.getMechanicalAngle()); // 打印传感器角度
+        SEGGER_Printf_Float(AS5600_1.getAngle() * motor.sensor_direction); // 打印传感器角度
         //AS5600_1.update(); // 更新位置，获取速度
         delayMicroseconds(100000U); // 延时100ms
     }
