@@ -25,6 +25,7 @@ AS5600_I2C AS5600_1(AS5600_I2C_Config); // 创建AS5600_I2C对象
 BLDCDriver3PWM motorDriver(GPIO_PIN_0,GPIO_PIN_1,GPIO_PIN_2); // PA0,PA1,PA2
 BLDCMotor motor(7); // 创建BLDCMotor对象,电机是7对极
 float target_angle = 1.0f; // 目标角度
+float current_angle = 0.0f; // 当前角度
 /**
  * @brief C++环境入口函数
  * 
@@ -67,8 +68,9 @@ void main_Cpp(void)
     HAL_TIM_Base_Start_IT(&htim4); // 启动TIM4定时器
     while(1) {
         HAL_GPIO_TogglePin(run_led_GPIO_Port,run_led_Pin); // 心跳灯跑起来
+        current_angle = AS5600_1.getAngle() * motor.sensor_direction; // 获取当前角度
         SEGGER_RTT_printf(0,"Sensor:");
-        SEGGER_Printf_Float(AS5600_1.getAngle() * motor.sensor_direction); // 打印传感器角度
+        SEGGER_Printf_Float(current_angle); // 打印传感器角度
         //AS5600_1.update(); // 更新位置，获取速度
         delayMicroseconds(100000U); // 延时100ms
     }
