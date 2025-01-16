@@ -7,9 +7,9 @@ simplefoc_stm32f103/dwt_timer.o: ..\components\DWT\dwt_timer.c \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xb.h \
   ..\Drivers\CMSIS\Include\core_cm3.h \
-  D:\Coding\MCU_Develop\simplefoc07_stm32f103_position_close\Drivers\CMSIS\Include\cmsis_version.h \
-  D:\Coding\MCU_Develop\simplefoc07_stm32f103_position_close\Drivers\CMSIS\Include\cmsis_compiler.h \
-  D:\Coding\MCU_Develop\simplefoc07_stm32f103_position_close\Drivers\CMSIS\Include\cmsis_armclang.h \
+  D:\Coding\MCU_Develop\simplefoc08_stm32f103_velocity_close\Drivers\CMSIS\Include\cmsis_version.h \
+  D:\Coding\MCU_Develop\simplefoc08_stm32f103_velocity_close\Drivers\CMSIS\Include\cmsis_compiler.h \
+  D:\Coding\MCU_Develop\simplefoc08_stm32f103_velocity_close\Drivers\CMSIS\Include\cmsis_armclang.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h \

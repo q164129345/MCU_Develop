@@ -24,8 +24,8 @@ J_LINK_Scope_Message JS_Message;
 AS5600_I2C AS5600_1(AS5600_I2C_Config); // 创建AS5600_I2C对象
 BLDCDriver3PWM motorDriver(GPIO_PIN_0,GPIO_PIN_1,GPIO_PIN_2); // PA0,PA1,PA2
 BLDCMotor motor(7); // 创建BLDCMotor对象,电机是7对极
-float target_angle = 1.0f; // 目标角度
-float current_angle = 0.0f; // 当前角度
+float targetVelocity = 52.3f; // 目标转速（500转/min)
+float curVelocity = 0.0f; // 当前角度
 
 /**
  * @brief C++环境入口函数
@@ -47,19 +47,16 @@ void main_Cpp(void)
     motor.linkDriver(&motorDriver); // 将电机驱动与电机连接
     motor.voltage_sensor_align = 4; // 校准偏移offset时，所用到的电压值（相当于占空比4V / 12V = 1/3）
                             
-    motor.controller = MotionControlType::angle; // 设置控制器模式(位置闭环模式)
+    motor.controller = MotionControlType::velocity; // 设置控制器模式(速度闭环模式)
                             
-    motor.PID_velocity.P = 0.1f; // 设置速度P
-    motor.PID_velocity.I = 5; // 设置速度I
+    motor.PID_velocity.P = 0.30f; // 设置速度P
+    motor.PID_velocity.I = 10; // 设置速度I
     motor.PID_velocity.D = 0; // 设置速度D
-    motor.PID_velocity.output_ramp = 2000; // 设置速度输出斜坡
+    motor.PID_velocity.output_ramp = 1000; // 设置速度输出斜坡
                             
-    motor.LPF_velocity.Tf = 0.008; // 设置速度低通滤波器
-                            
-    motor.P_angle.P = 50; // 设置角度P
-                            
+    motor.LPF_velocity.Tf = 0.01; // 设置速度低通滤波器
     motor.voltage_limit = 6.9; // 设置电机的电压限制
-    motor.velocity_limit = 40.0f; // 设置速度限制
+    motor.velocity_limit = 94.2f; // 设置速度限制(900转/min)
     motor.init(); // 初始化电机
 
     motor.foc_modulation = FOCModulationType::SpaceVectorPWM; // 正弦波改为马鞍波
@@ -74,9 +71,9 @@ void main_Cpp(void)
     HAL_TIM_Base_Start_IT(&htim4); // 启动TIM4定时器
     while(1) {
         HAL_GPIO_TogglePin(run_led_GPIO_Port,run_led_Pin); // 心跳灯跑起来
-        current_angle = AS5600_1.getAngle() * motor.sensor_direction; // 获取当前角度
-        SEGGER_RTT_printf(0,"Sensor:");
-        SEGGER_Printf_Float(current_angle); // 打印传感器角度
+        curVelocity = motor.shaft_velocity; // 获取当前速度
+        SEGGER_RTT_printf(0,"Velocity:");
+        SEGGER_Printf_Float(curVelocity); // 打印传感器角度
         //AS5600_1.update(); // 更新位置，获取速度
         delayMicroseconds(100000U); // 延时100ms
     }
@@ -92,7 +89,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     {
     } else if(htim->Instance == TIM4) {
         motor.loopFOC(); // 执行FOC
-        motor.move(target_angle); // 控制目标角度
+        motor.move(targetVelocity); // 控制目标角度
         
         JS_Message.timestamp = _micros(); // 获取时间戳
         // 将占空比放大10倍，便于观察
