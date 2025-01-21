@@ -8,9 +8,9 @@ simplefoc_stm32f103/stm32f1xx_hal_rcc.o: \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xb.h \
   ..\Drivers\CMSIS\Include\core_cm3.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdint.h \
-  D:\Coding\MCU_Develop\simplefoc08_stm32f103_velocity_close\Drivers\CMSIS\Include\cmsis_version.h \
-  D:\Coding\MCU_Develop\simplefoc08_stm32f103_velocity_close\Drivers\CMSIS\Include\cmsis_compiler.h \
-  D:\Coding\MCU_Develop\simplefoc08_stm32f103_velocity_close\Drivers\CMSIS\Include\cmsis_armclang.h \
+  D:\Coding\MCU_Develop\simplefoc09_stm32f103_adc_sample\Drivers\CMSIS\Include\cmsis_version.h \
+  D:\Coding\MCU_Develop\simplefoc09_stm32f103_adc_sample\Drivers\CMSIS\Include\cmsis_compiler.h \
+  D:\Coding\MCU_Develop\simplefoc09_stm32f103_adc_sample\Drivers\CMSIS\Include\cmsis_armclang.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h \
@@ -23,6 +23,8 @@ simplefoc_stm32f103/stm32f1xx_hal_rcc.o: \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_dma_ex.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_cortex.h \
+  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_adc.h \
+  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_adc_ex.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_i2c.h \
