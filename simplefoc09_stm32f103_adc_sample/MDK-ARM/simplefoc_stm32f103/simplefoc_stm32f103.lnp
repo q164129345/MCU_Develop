@@ -36,6 +36,7 @@
 "simplefoc_stm32f103\sensor.o"
 "simplefoc_stm32f103\as5600_i2c.o"
 "simplefoc_stm32f103\bldcdriver3pwm.o"
+"simplefoc_stm32f103\inlinecurrentsense.o"
 "simplefoc_stm32f103\bldcmotor.o"
 "simplefoc_stm32f103\user_main.o"
 "simplefoc_stm32f103\dwt_timer.o"

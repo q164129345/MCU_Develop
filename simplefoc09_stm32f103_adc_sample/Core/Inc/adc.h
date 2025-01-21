@@ -41,6 +41,8 @@ extern ADC_HandleTypeDef hadc1;
 void MX_ADC1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
+HAL_StatusTypeDef ADC_StartReadVoltageFromChannels(void);
+float _readADCVoltageInline(uint32_t CH);
 
 /* USER CODE END Prototypes */
 

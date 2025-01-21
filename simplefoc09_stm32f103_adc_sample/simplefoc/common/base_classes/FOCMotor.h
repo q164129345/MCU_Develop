@@ -6,11 +6,11 @@
 #include "Sensor.h"
 #include "CurrentSense.h"
 
-#include "../time_utils.h"
-#include "../foc_utils.h"
-#include "../defaults.h"
-#include "../pid.h"
-#include "../lowpass_filter.h"
+#include "time_utils.h"
+#include "foc_utils.h"
+#include "defaults.h"
+#include "pid.h"
+#include "lowpass_filter.h"
 
 
 // monitoring bitmap

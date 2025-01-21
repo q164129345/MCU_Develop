@@ -2,6 +2,7 @@
 #include "AS5600_I2C.h"
 #include "BLDCDriver3PWM.h"
 #include "BLDCMotor.h"
+#include "InlineCurrentSense.h"
 
 // J-LINK Scope消息结构
 typedef struct {
@@ -24,6 +25,8 @@ J_LINK_Scope_Message JS_Message;
 AS5600_I2C AS5600_1(AS5600_I2C_Config); // 创建AS5600_I2C对象
 BLDCDriver3PWM motorDriver(GPIO_PIN_0,GPIO_PIN_1,GPIO_PIN_2); // PA0,PA1,PA2
 BLDCMotor motor(7); // 创建BLDCMotor对象,电机是7对极
+InlineCurrentSense currentSense(0.001f,50.0f,ADC_CHANNEL_3,ADC_CHANNEL_4,NOT_SET); // 创建电流传感器对象
+
 float targetVelocity = 52.3f; // 目标转速（500转/min)
 float curVelocity = 0.0f; // 当前角度
 
@@ -40,6 +43,8 @@ void main_Cpp(void)
                             sizeof(JS_RTT_BufferUp1),       // 缓存大小
                             SEGGER_RTT_MODE_NO_BLOCK_SKIP); // 非阻塞
     AS5600_1.init(&hi2c1); // 初始化AS5600
+    currentSense.init();   // 初始化电流传感器
+                            
     motorDriver.voltage_power_supply = 12; // 设置电压
     motorDriver.init();   // 初始化电机驱动
                             
@@ -50,17 +55,23 @@ void main_Cpp(void)
     motor.controller = MotionControlType::velocity; // 设置控制器模式(速度闭环模式)
                             
     motor.PID_velocity.P = 0.30f; // 设置速度P
-    motor.PID_velocity.I = 10; // 设置速度I
+    motor.PID_velocity.I = 10f; // 设置速度I
     motor.PID_velocity.D = 0; // 设置速度D
-    motor.PID_velocity.output_ramp = 1000; // 设置速度输出斜坡
-                            
-    motor.LPF_velocity.Tf = 0.01; // 设置速度低通滤波器
-    motor.voltage_limit = 6.9; // 设置电机的电压限制
+    motor.PID_velocity.output_ramp = 1000f; // 设置速度输出斜坡
+
+    motor.LPF_velocity.Tf = 0.01f; // 设置速度低通滤波器
+    motor.voltage_limit = 6.9f; // 设置电机的电压限制
     motor.velocity_limit = 94.2f; // 设置速度限制(900转/min)
+    
+    motor.PID_current_q.P = 0.6f;
+    motor.PID_current_q.I = 0;
+    motor.PID_current_q.D = 0;
+    
+    
     motor.init(); // 初始化电机
 
     motor.foc_modulation = FOCModulationType::SpaceVectorPWM; // 正弦波改为马鞍波
-    motor.sensor_direction = Direction::UNKNOWN; // 设置UNKNOW的目的是让initFOC()方法在初始化时，自动探测并设置传感器的方向
+    motor.sensor_direction = Direction::CCW; // 之前校准传感器的时候，知道传感器的方向是CCW（翻开校准传感器的章节就知道）
     motor.initFOC(); // 初始化FOC
 
     SEGGER_RTT_printf(0,"motor.zero_electric_angle:");
@@ -74,7 +85,10 @@ void main_Cpp(void)
         curVelocity = motor.shaft_velocity; // 获取当前速度
         SEGGER_RTT_printf(0,"Velocity:");
         SEGGER_Printf_Float(curVelocity); // 打印传感器角度
-        //AS5600_1.update(); // 更新位置，获取速度
+        SEGGER_RTT_printf(0,"A current:");
+        SEGGER_Printf_Float(_readADCVoltageInline(ADC_CHANNEL_3)); // 打印A相电流
+        SEGGER_RTT_printf(0,"B current:");
+        SEGGER_Printf_Float(_readADCVoltageInline(ADC_CHANNEL_4)); // 打印B相电流
         delayMicroseconds(100000U); // 延时100ms
     }
 }
