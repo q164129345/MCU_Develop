@@ -65,6 +65,8 @@ void main_Cpp(void);
 /* Private defines -----------------------------------------------------------*/
 #define run_led_Pin GPIO_PIN_13
 #define run_led_GPIO_Port GPIOC
+#define measure_Pin GPIO_PIN_4
+#define measure_GPIO_Port GPIOB
 #define m1_enable_Pin GPIO_PIN_9
 #define m1_enable_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
