@@ -44,12 +44,14 @@ void main_Cpp(void)
                             SEGGER_RTT_MODE_NO_BLOCK_SKIP); // 非阻塞
     AS5600_1.init(&hi2c1); // 初始化AS5600
     currentSense.init();   // 初始化电流传感器
+    currentSense.linkDriver(&motorDriver); // 电流传感器连接驱动器
                             
     motorDriver.voltage_power_supply = 12; // 设置电压
     motorDriver.init();   // 初始化电机驱动
                             
-    motor.linkSensor(&AS5600_1); // 将编码器与电机连接
-    motor.linkDriver(&motorDriver); // 将电机驱动与电机连接
+    motor.linkSensor(&AS5600_1); // 连接编码器
+    motor.linkDriver(&motorDriver); // 连接驱动器
+    motor.linkCurrentSense(&currentSense); // 连接电流传感器
     motor.voltage_sensor_align = 4; // 校准偏移offset时，所用到的电压值（相当于占空比4V / 12V = 1/3）
                             
     motor.controller = MotionControlType::velocity; // 设置控制器模式(速度闭环模式)
@@ -57,16 +59,30 @@ void main_Cpp(void)
     motor.PID_velocity.P = 0.30f; // 设置速度P
     motor.PID_velocity.I = 10.0f; // 设置速度I
     motor.PID_velocity.D = 0; // 设置速度D
-    motor.PID_velocity.output_ramp = 1000.0f; // 设置速度输出斜坡
+    motor.PID_velocity.output_ramp = 0; // 设置速度输出斜坡
 
     motor.LPF_velocity.Tf = 0.01f; // 设置速度低通滤波器
-    motor.voltage_limit = 6.9f; // 设置电机的电压限制
-    motor.velocity_limit = 94.2f; // 设置速度限制(900转/min)
+    motor.voltage_limit = 6.9f;    // 设置电机的电压限制
+    motor.velocity_limit = 94.2f;  // 设置速度限制(900转/min)
 
+    motor.PID_current_q.P = 0.5f;
+    motor.PID_current_q.I = 0.5f;
+    motor.PID_current_q.D = 0;
+    motor.PID_current_q.output_ramp = 0; // 不设置
+    motor.LPF_current_q.Tf = 0.02f;      // 低通滤波器
+    
+    motor.PID_current_d.P = 0.5f;
+    motor.PID_current_d.I = 0.5f;
+    motor.PID_current_d.D = 0;
+    motor.PID_current_d.output_ramp = 0; // 不设置
+    motor.LPF_current_d.Tf = 0.02f;
+    motor.current_limit = 50.0f; // 电流限制
+    
     motor.init(); // 初始化电机
 
     motor.foc_modulation = FOCModulationType::SpaceVectorPWM; // 正弦波改为马鞍波
     motor.sensor_direction = Direction::CCW; // 之前校准传感器的时候，知道传感器的方向是CCW（翻开校准传感器的章节就知道）
+    motor.torque_controller = TorqueControlType::foc_current; // 电流模式
     motor.initFOC(); // 初始化FOC
 
     SEGGER_RTT_printf(0,"motor.zero_electric_angle:");
@@ -79,12 +95,7 @@ void main_Cpp(void)
         HAL_GPIO_TogglePin(run_led_GPIO_Port,run_led_Pin); // 心跳灯跑起来
         curVelocity = motor.shaft_velocity; // 获取当前速度
         SEGGER_RTT_printf(0,"Velocity:");
-        SEGGER_Printf_Float(curVelocity); // 打印传感器角度
-        ADC_StartReadVoltageFromChannels(); // 启动ADC采样
-        SEGGER_RTT_printf(0,"A ADC_Voltage:");
-        SEGGER_Printf_Float(_readADCVoltageInline(ADC_CHANNEL_3)); // 打印A相的采样电压值
-        SEGGER_RTT_printf(0,"B ADC_Voltage:");
-        SEGGER_Printf_Float(_readADCVoltageInline(ADC_CHANNEL_4)); // 打印B相的采样电压值
+        SEGGER_Printf_Float(curVelocity); // 打印当前速度
         delayMicroseconds(100000U); // 延时100ms
     }
 }
