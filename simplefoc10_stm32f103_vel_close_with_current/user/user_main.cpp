@@ -62,20 +62,20 @@ void main_Cpp(void)
     motor.PID_velocity.output_ramp = 0; // 设置速度输出斜坡
 
     motor.LPF_velocity.Tf = 0.01f; // 设置速度低通滤波器
-    motor.voltage_limit = 6.0f;   // 设置电机的电压限制
+    motor.voltage_limit = 10.0f;   // 设置电机的电压限制
     motor.velocity_limit = 94.2f;  // 设置速度限制(900转/min)
 
-    motor.PID_current_q.P = 0.5f;
-    motor.PID_current_q.I = 0.5f;
+    motor.PID_current_q.P = 0.3f;
+    motor.PID_current_q.I = 0.1f;
     motor.PID_current_q.D = 0;
     motor.PID_current_q.output_ramp = 0; // 不设置
-    motor.LPF_current_q.Tf = 0.01f;      // 低通滤波器
+    motor.LPF_current_q.Tf = 0.02f;      // 低通滤波器
     
-    motor.PID_current_d.P = 0.5f;
-    motor.PID_current_d.I = 0.5f;
+    motor.PID_current_d.P = 0.3f;
+    motor.PID_current_d.I = 0.1f;
     motor.PID_current_d.D = 0;
     motor.PID_current_d.output_ramp = 0; // 不设置
-    motor.LPF_current_d.Tf = 0.01f;
+    motor.LPF_current_d.Tf = 0.02f;
     motor.current_limit = 5.0f; // 电流限制
     
     motor.init(); // 初始化电机
