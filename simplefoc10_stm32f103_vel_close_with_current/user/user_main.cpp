@@ -93,9 +93,9 @@ void main_Cpp(void)
     HAL_TIM_Base_Start_IT(&htim4); // 启动TIM4定时器
     while(1) {
         HAL_GPIO_TogglePin(run_led_GPIO_Port,run_led_Pin); // 心跳灯跑起来
-        //curVelocity = motor.shaft_velocity; // 获取当前速度
-        //SEGGER_RTT_printf(0,"Velocity:");
-        //SEGGER_Printf_Float(curVelocity); // 打印当前速度
+        curVelocity = motor.shaft_velocity; // 获取当前速度
+        SEGGER_RTT_printf(0,"Velocity:");
+        SEGGER_Printf_Float(curVelocity); // 打印当前速度
         delayMicroseconds(100000U); // 延时100ms
     }
 }
