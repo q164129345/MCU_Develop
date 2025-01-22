@@ -207,7 +207,6 @@ simplefoc_stm32f103/focmotor.o: \
   ..\simplefoc\common\base_classes\CurrentSense.h \
   ..\simplefoc\common\base_classes\BLDCDriver.h \
   ..\simplefoc\common\base_classes\..\foc_utils.h \
-  ..\simplefoc\common\base_classes\..\time_utils.h \
-  ..\simplefoc\common\base_classes\..\defaults.h \
-  ..\simplefoc\common\base_classes\..\pid.h \
-  ..\simplefoc\common\base_classes\..\lowpass_filter.h
+  ..\simplefoc\common\time_utils.h ..\simplefoc\common\foc_utils.h \
+  ..\simplefoc\common\defaults.h ..\simplefoc\common\pid.h \
+  ..\simplefoc\common\lowpass_filter.h

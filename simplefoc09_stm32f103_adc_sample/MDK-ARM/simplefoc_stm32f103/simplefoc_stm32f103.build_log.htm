@@ -27,15 +27,11 @@ Project File Date:  01/21/2025
 <h2>Output:</h2>
 *** Using Compiler 'V6.21', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Build target 'simplefoc_stm32f103'
-../user/user_main.cpp(58): error: invalid digit 'f' in decimal constant
-   58 |     motor.PID_velocity.I = 10f; // <C9><E8><D6><C3><CB>ٶ<C8>I
-      |                              ^
-../user/user_main.cpp(60): error: invalid digit 'f' in decimal constant
-   60 |     motor.PID_velocity.output_ramp = 1000f; // <C9><E8><D6><C3><CB>ٶ<C8><CA><E4><B3><F6>б<C6><C2>
-      |                                          ^
-2 errors generated.
 compiling user_main.cpp...
-"simplefoc_stm32f103\simplefoc_stm32f103.axf" - 2 Error(s), 0 Warning(s).
+linking...
+Program Size: Code=35200 RO-data=976 RW-data=248 ZI-data=5864  
+FromELF: creating hex file...
+"simplefoc_stm32f103\simplefoc_stm32f103.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -59,8 +55,7 @@ Package Vendor: Keil
 
    * Component: ARM::CMSIS:CORE@5.6.0
       Include file:  CMSIS/Core/Include/tz_context.h
-Target not created.
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>

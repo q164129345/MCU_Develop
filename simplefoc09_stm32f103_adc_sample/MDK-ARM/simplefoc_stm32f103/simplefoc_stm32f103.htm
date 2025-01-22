@@ -3,7 +3,7 @@
 <title>Static Call Graph - [simplefoc_stm32f103\simplefoc_stm32f103.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image simplefoc_stm32f103\simplefoc_stm32f103.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Tue Jan 21 21:27:56 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Wed Jan 22 14:39:41 2025
 <BR><P>
 <H3>Maximum Stack Usage =        448 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -675,7 +675,8 @@ Global Symbols
 <LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADC_PollForConversion
 <LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_ADC_Start
 </UL>
-<BR>[Called By]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::getPhaseCurrents()
+<BR>[Called By]<UL><LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_Cpp
+<LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::getPhaseCurrents()
 <LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::calibrateOffsets()
 </UL>
 
@@ -1933,7 +1934,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry_main
 </UL>
 
-<P><STRONG><a name="[103]"></a>main_Cpp</STRONG> (Thumb, 368 bytes, Stack size 8 bytes, user_main.o(.text.main_Cpp))
+<P><STRONG><a name="[103]"></a>main_Cpp</STRONG> (Thumb, 372 bytes, Stack size 8 bytes, user_main.o(.text.main_Cpp))
 <BR><BR>[Stack]<UL><LI>Max Depth = 368 + Unknown Stack Size
 <LI>Call Chain = main_Cpp &rArr; BLDCDriver3PWM::init() &rArr; SEGGER_Printf_Float &rArr; SEGGER_RTT_printf &rArr; SEGGER_RTT_vprintf &rArr; _PrintUnsigned &rArr; SEGGER_RTT_Write &rArr; SEGGER_RTT_WriteNoLock
 </UL>
@@ -1941,6 +1942,7 @@ Global Symbols
 <LI><a href="#[106]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_TogglePin
 <LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 <LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_readADCVoltageInline
+<LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_StartReadVoltageFromChannels
 <LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_printf
 <LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_Printf_Float
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::initFOC()

@@ -202,7 +202,7 @@ static uint32_t adcRead(uint32_t CH)
 }
 
 /**
- * @brief 读取ADC的电压值
+ * @brief function reading an ADC value and returning the read voltage
  * 
  * @param CH 通道号
  * @return float 返回电压值

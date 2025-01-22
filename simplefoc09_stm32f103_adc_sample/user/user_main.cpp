@@ -55,19 +55,14 @@ void main_Cpp(void)
     motor.controller = MotionControlType::velocity; // 设置控制器模式(速度闭环模式)
                             
     motor.PID_velocity.P = 0.30f; // 设置速度P
-    motor.PID_velocity.I = 10f; // 设置速度I
+    motor.PID_velocity.I = 10.0f; // 设置速度I
     motor.PID_velocity.D = 0; // 设置速度D
-    motor.PID_velocity.output_ramp = 1000f; // 设置速度输出斜坡
+    motor.PID_velocity.output_ramp = 1000.0f; // 设置速度输出斜坡
 
     motor.LPF_velocity.Tf = 0.01f; // 设置速度低通滤波器
     motor.voltage_limit = 6.9f; // 设置电机的电压限制
     motor.velocity_limit = 94.2f; // 设置速度限制(900转/min)
-    
-    motor.PID_current_q.P = 0.6f;
-    motor.PID_current_q.I = 0;
-    motor.PID_current_q.D = 0;
-    
-    
+
     motor.init(); // 初始化电机
 
     motor.foc_modulation = FOCModulationType::SpaceVectorPWM; // 正弦波改为马鞍波
@@ -85,10 +80,11 @@ void main_Cpp(void)
         curVelocity = motor.shaft_velocity; // 获取当前速度
         SEGGER_RTT_printf(0,"Velocity:");
         SEGGER_Printf_Float(curVelocity); // 打印传感器角度
-        SEGGER_RTT_printf(0,"A current:");
-        SEGGER_Printf_Float(_readADCVoltageInline(ADC_CHANNEL_3)); // 打印A相电流
-        SEGGER_RTT_printf(0,"B current:");
-        SEGGER_Printf_Float(_readADCVoltageInline(ADC_CHANNEL_4)); // 打印B相电流
+        ADC_StartReadVoltageFromChannels(); // 启动ADC采样
+        SEGGER_RTT_printf(0,"A ADC_Voltage:");
+        SEGGER_Printf_Float(_readADCVoltageInline(ADC_CHANNEL_3)); // 打印A相的采样电压值
+        SEGGER_RTT_printf(0,"B ADC_Voltage:");
+        SEGGER_Printf_Float(_readADCVoltageInline(ADC_CHANNEL_4)); // 打印B相的采样电压值
         delayMicroseconds(100000U); // 延时100ms
     }
 }
