@@ -81,8 +81,8 @@ void InlineCurrentSense::calibrateOffsets(){
 PhaseCurrent_s InlineCurrentSense::getPhaseCurrents(){
     PhaseCurrent_s current;
     ADC_StartReadVoltageFromChannels(); // 每一次都要启动一次ADC采样流程
-    current.a = _readADCVoltageInline(pinA - offset_ia)*gain_a;// amps
-    current.b = _readADCVoltageInline(pinB - offset_ib)*gain_b;// amps
+    current.a = (_readADCVoltageInline(pinA) - offset_ia) * gain_a;// amps
+    current.b = (_readADCVoltageInline(pinB) - offset_ib) * gain_b;// amps
     current.c = (!_isset(pinC)) ? 0 : (_readADCVoltageInline(pinC) - offset_ic)*gain_c; // amps
     return current;
 }

@@ -3,7 +3,7 @@
 <title>Static Call Graph - [simplefoc_stm32f103\simplefoc_stm32f103.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image simplefoc_stm32f103\simplefoc_stm32f103.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Wed Jan 22 17:12:39 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Wed Jan 22 18:08:37 2025
 <BR><P>
 <H3>Maximum Stack Usage =        448 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -567,7 +567,7 @@ Global Symbols
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_SIGABRT
 <LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_sys_exit
 </UL>
-<BR>[Called By]<UL><LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;abort_message
+<BR>[Called By]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;abort_message
 </UL>
 
 <P><STRONG><a name="[6b]"></a>_sys_exit</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, sys_exit.o(.text))
@@ -1206,8 +1206,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_Cpp
 <LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_Printf_Float
 <LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::loopFOC()
-<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::absoluteZeroSearch()
-<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
+<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::absoluteZeroSearch()
+<LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::initFOC()
 <LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::init()
 <LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::driverAlign(float)
@@ -1276,9 +1276,9 @@ Global Symbols
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
 </UL>
 <BR>[Called By]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::setPhaseVoltage(float, float, float)
-<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
-<LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
-<LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::electricalAngle()
+<LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
+<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
+<LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::electricalAngle()
 </UL>
 
 <P><STRONG><a name="[dc]"></a>_electricalAngle(float, int)</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, foc_utils.o(.text._Z16_electricalAnglefi))
@@ -1287,8 +1287,8 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2f
 </UL>
-<BR>[Called By]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
-<LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
+<BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
+<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
 </UL>
 
 <P><STRONG><a name="[de]"></a>_cos(float)</STRONG> (Thumb, 58 bytes, Stack size 16 bytes, foc_utils.o(.text._Z4_cosf))
@@ -1319,7 +1319,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 </UL>
-<BR>[Called By]<UL><LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
+<BR>[Called By]<UL><LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::initFOC()
 <LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::init()
 <LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::driverAlign(float)
@@ -1333,8 +1333,8 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DWT_Get_Microsecond
 </UL>
 <BR>[Called By]<UL><LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PeriodElapsedCallback
-<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
-<LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
+<LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
+<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
 <LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::init()
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::update()
 <LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PIDController::PIDController(float, float, float, float, float)
@@ -1416,7 +1416,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_micros()
 </UL>
-<BR>[Called By]<UL><LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::FOCMotor__sub_object()
+<BR>[Called By]<UL><LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::FOCMotor__sub_object()
 </UL>
 
 <P><STRONG><a name="[169]"></a>LowPassFilter::LowPassFilter__sub_object(float)</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, lowpass_filter.o(.text._ZN13LowPassFilterC2Ef), UNUSED)
@@ -1434,8 +1434,8 @@ Global Symbols
 <LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_micros()
 </UL>
 <BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::loopFOC()
-<LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::shaftVelocity()
-<LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::shaftAngle()
+<LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::shaftVelocity()
+<LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::shaftAngle()
 </UL>
 
 <P><STRONG><a name="[ef]"></a>PIDController::PIDController(float, float, float, float, float)</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, pid.o(.text._ZN13PIDControllerC2Efffff))
@@ -1443,7 +1443,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_micros()
 </UL>
-<BR>[Called By]<UL><LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::FOCMotor__sub_object()
+<BR>[Called By]<UL><LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::FOCMotor__sub_object()
 </UL>
 
 <P><STRONG><a name="[16a]"></a>PIDController::PIDController__sub_object(float, float, float, float, float)</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, pid.o(.text._ZN13PIDControllerC2Efffff), UNUSED)
@@ -1509,13 +1509,13 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> bldcdriver3pwm.o(.rodata._ZTV14BLDCDriver3PWM)
 </UL>
-<P><STRONG><a name="[d4]"></a>BLDCDriver3PWM::BLDCDriver3PWM(int, int, int, int, int, int)</STRONG> (Thumb, 78 bytes, Stack size 20 bytes, bldcdriver3pwm.o(.text._ZN14BLDCDriver3PWMC2Eiiiiii))
+<P><STRONG><a name="[d4]"></a>BLDCDriver3PWM::BLDCDriver3PWM(int, int, int, int, int, int)</STRONG> (Thumb, 80 bytes, Stack size 20 bytes, bldcdriver3pwm.o(.text._ZN14BLDCDriver3PWMC2Eiiiiii))
 <BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = BLDCDriver3PWM::BLDCDriver3PWM(int, int, int, int, int, int)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_GLOBAL__sub_I_user_main.cpp
 </UL>
 
-<P><STRONG><a name="[16b]"></a>BLDCDriver3PWM::BLDCDriver3PWM__sub_object(int, int, int, int, int, int)</STRONG> (Thumb, 78 bytes, Stack size 20 bytes, bldcdriver3pwm.o(.text._ZN14BLDCDriver3PWMC2Eiiiiii), UNUSED)
+<P><STRONG><a name="[16b]"></a>BLDCDriver3PWM::BLDCDriver3PWM__sub_object(int, int, int, int, int, int)</STRONG> (Thumb, 80 bytes, Stack size 20 bytes, bldcdriver3pwm.o(.text._ZN14BLDCDriver3PWMC2Eiiiiii), UNUSED)
 
 <P><STRONG><a name="[48]"></a>InlineCurrentSense::driverAlign(float)</STRONG> (Thumb, 2028 bytes, Stack size 80 bytes, inlinecurrentsense.o(.text._ZN18InlineCurrentSense11driverAlignEf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 352 + Unknown Stack Size
@@ -1550,14 +1550,12 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::init()
 </UL>
 
-<P><STRONG><a name="[49]"></a>InlineCurrentSense::getPhaseCurrents()</STRONG> (Thumb, 122 bytes, Stack size 24 bytes, inlinecurrentsense.o(.text._ZN18InlineCurrentSense16getPhaseCurrentsEv))
+<P><STRONG><a name="[49]"></a>InlineCurrentSense::getPhaseCurrents()</STRONG> (Thumb, 106 bytes, Stack size 24 bytes, inlinecurrentsense.o(.text._ZN18InlineCurrentSense16getPhaseCurrentsEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = InlineCurrentSense::getPhaseCurrents() &rArr; ADC_StartReadVoltageFromChannels &rArr; HAL_ADC_PollForConversion &rArr; HAL_RCCEx_GetPeriphCLKFreq
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_readADCVoltageInline
 <LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_StartReadVoltageFromChannels
 <LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
-<LI><a href="#[dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2f
-<LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> inlinecurrentsense.o(.rodata._ZTV18InlineCurrentSense)
@@ -1592,7 +1590,7 @@ Global Symbols
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
+<LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
 <LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> as5600_i2c.o(.rodata._ZTV10AS5600_I2C)
@@ -1605,7 +1603,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
+<LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
 <LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> as5600_i2c.o(.rodata._ZTV10AS5600_I2C)
@@ -1653,7 +1651,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_Cpp
 </UL>
 
-<P><STRONG><a name="[f9]"></a>FOCMotor::shaftAngle()</STRONG> (Thumb, 70 bytes, Stack size 24 bytes, focmotor.o(.text._ZN8FOCMotor10shaftAngleEv))
+<P><STRONG><a name="[f8]"></a>FOCMotor::shaftAngle()</STRONG> (Thumb, 70 bytes, Stack size 24 bytes, focmotor.o(.text._ZN8FOCMotor10shaftAngleEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = FOCMotor::shaftAngle() &rArr; LowPassFilter::operator()(float) &rArr; __aeabi_fmul
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
@@ -1665,7 +1663,7 @@ Global Symbols
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::initFOC()
 </UL>
 
-<P><STRONG><a name="[fa]"></a>FOCMotor::shaftVelocity()</STRONG> (Thumb, 52 bytes, Stack size 16 bytes, focmotor.o(.text._ZN8FOCMotor13shaftVelocityEv))
+<P><STRONG><a name="[f9]"></a>FOCMotor::shaftVelocity()</STRONG> (Thumb, 52 bytes, Stack size 16 bytes, focmotor.o(.text._ZN8FOCMotor13shaftVelocityEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = FOCMotor::shaftVelocity() &rArr; LowPassFilter::operator()(float) &rArr; __aeabi_fmul
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
@@ -1675,7 +1673,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::move(float)
 </UL>
 
-<P><STRONG><a name="[fb]"></a>FOCMotor::electricalAngle()</STRONG> (Thumb, 64 bytes, Stack size 16 bytes, focmotor.o(.text._ZN8FOCMotor15electricalAngleEv))
+<P><STRONG><a name="[fa]"></a>FOCMotor::electricalAngle()</STRONG> (Thumb, 64 bytes, Stack size 16 bytes, focmotor.o(.text._ZN8FOCMotor15electricalAngleEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = FOCMotor::electricalAngle() &rArr; _normalizeAngle(float) &rArr; fmodf &rArr; _frem &rArr; __fpl_fnaninf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
@@ -1684,15 +1682,15 @@ Global Symbols
 <LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_normalizeAngle(float)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::loopFOC()
-<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
+<LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
 </UL>
 
 <P><STRONG><a name="[106]"></a>FOCMotor::linkCurrentSense(CurrentSense*)</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, focmotor.o(.text._ZN8FOCMotor16linkCurrentSenseEP12CurrentSense))
 <BR><BR>[Called By]<UL><LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_Cpp
 </UL>
 
-<P><STRONG><a name="[fc]"></a>FOCMotor::FOCMotor__sub_object()</STRONG> (Thumb, 298 bytes, Stack size 40 bytes, focmotor.o(.text._ZN8FOCMotorC2Ev))
-<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = FOCMotor::FOCMotor__sub_object() &rArr; PIDController::PIDController(float, float, float, float, float) &rArr; _micros() &rArr; DWT_Get_Microsecond
+<P><STRONG><a name="[fb]"></a>FOCMotor::FOCMotor__sub_object()</STRONG> (Thumb, 300 bytes, Stack size 32 bytes, focmotor.o(.text._ZN8FOCMotorC2Ev))
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = FOCMotor::FOCMotor__sub_object() &rArr; PIDController::PIDController(float, float, float, float, float) &rArr; _micros() &rArr; DWT_Get_Microsecond
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PIDController::PIDController(float, float, float, float, float)
 <LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LowPassFilter::LowPassFilter(float)
@@ -1705,7 +1703,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> bldcmotor.o(.rodata._ZTV9BLDCMotor)
 </UL>
-<P><STRONG><a name="[fd]"></a>BLDCMotor::alignSensor()</STRONG> (Thumb, 652 bytes, Stack size 32 bytes, bldcmotor.o(.text._ZN9BLDCMotor11alignSensorEv))
+<P><STRONG><a name="[fc]"></a>BLDCMotor::alignSensor()</STRONG> (Thumb, 652 bytes, Stack size 32 bytes, bldcmotor.o(.text._ZN9BLDCMotor11alignSensorEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 328 + Unknown Stack Size
 <LI>Call Chain = BLDCMotor::alignSensor() &rArr; BLDCMotor::absoluteZeroSearch() &rArr; SEGGER_RTT_printf &rArr; SEGGER_RTT_vprintf &rArr; _PrintUnsigned &rArr; SEGGER_RTT_Write &rArr; SEGGER_RTT_WriteNoLock
 </UL>
@@ -1720,14 +1718,14 @@ Global Symbols
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
-<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::absoluteZeroSearch()
-<LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::electricalAngle()
+<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::absoluteZeroSearch()
+<LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::electricalAngle()
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_delay(unsigned long)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::initFOC()
 </UL>
 
-<P><STRONG><a name="[ff]"></a>BLDCMotor::angleOpenloop(float)</STRONG> (Thumb, 326 bytes, Stack size 40 bytes, bldcmotor.o(.text._ZN9BLDCMotor13angleOpenloopEf))
+<P><STRONG><a name="[fe]"></a>BLDCMotor::angleOpenloop(float)</STRONG> (Thumb, 326 bytes, Stack size 40 bytes, bldcmotor.o(.text._ZN9BLDCMotor13angleOpenloopEf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = BLDCMotor::angleOpenloop(float) &rArr; _normalizeAngle(float) &rArr; fmodf &rArr; _frem &rArr; __fpl_fnaninf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
@@ -1744,7 +1742,7 @@ Global Symbols
 <LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_normalizeAngle(float)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::move(float)
-<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::absoluteZeroSearch()
+<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::absoluteZeroSearch()
 </UL>
 
 <P><STRONG><a name="[52]"></a>BLDCMotor::setPhaseVoltage(float, float, float)</STRONG> (Thumb, 918 bytes, Stack size 48 bytes, bldcmotor.o(.text._ZN9BLDCMotor15setPhaseVoltageEfff))
@@ -1752,7 +1750,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2f
-<LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2iz
+<LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2iz
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fdiv
 <LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fcmplt
 <LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fcmpgt
@@ -1763,7 +1761,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> bldcmotor.o(.rodata._ZTV9BLDCMotor)
 </UL>
-<P><STRONG><a name="[101]"></a>BLDCMotor::velocityOpenloop(float)</STRONG> (Thumb, 234 bytes, Stack size 40 bytes, bldcmotor.o(.text._ZN9BLDCMotor16velocityOpenloopEf))
+<P><STRONG><a name="[100]"></a>BLDCMotor::velocityOpenloop(float)</STRONG> (Thumb, 234 bytes, Stack size 40 bytes, bldcmotor.o(.text._ZN9BLDCMotor16velocityOpenloopEf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = BLDCMotor::velocityOpenloop(float) &rArr; _normalizeAngle(float) &rArr; fmodf &rArr; _frem &rArr; __fpl_fnaninf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
@@ -1782,16 +1780,16 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::move(float)
 </UL>
 
-<P><STRONG><a name="[fe]"></a>BLDCMotor::absoluteZeroSearch()</STRONG> (Thumb, 188 bytes, Stack size 24 bytes, bldcmotor.o(.text._ZN9BLDCMotor18absoluteZeroSearchEv))
+<P><STRONG><a name="[fd]"></a>BLDCMotor::absoluteZeroSearch()</STRONG> (Thumb, 188 bytes, Stack size 24 bytes, bldcmotor.o(.text._ZN9BLDCMotor18absoluteZeroSearchEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 296 + Unknown Stack Size
 <LI>Call Chain = BLDCMotor::absoluteZeroSearch() &rArr; SEGGER_RTT_printf &rArr; SEGGER_RTT_vprintf &rArr; _PrintUnsigned &rArr; SEGGER_RTT_Write &rArr; SEGGER_RTT_WriteNoLock
 </UL>
 <BR>[Calls]<UL><LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_printf
 <LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fcmplt
 <LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fcmpge
-<LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
+<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
+<BR>[Called By]<UL><LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
 </UL>
 
 <P><STRONG><a name="[4c]"></a>BLDCMotor::init()</STRONG> (Thumb, 216 bytes, Stack size 24 bytes, bldcmotor.o(.text._ZN9BLDCMotor4initEv))
@@ -1818,10 +1816,10 @@ Global Symbols
 <LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fcmpeq
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fadd
-<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
-<LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
-<LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::shaftVelocity()
-<LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::shaftAngle()
+<LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
+<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
+<LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::shaftVelocity()
+<LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::shaftAngle()
 <LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PIDController::operator()(float)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PeriodElapsedCallback
@@ -1843,8 +1841,8 @@ Global Symbols
 <LI>Call Chain = BLDCMotor::initFOC() &rArr; BLDCMotor::alignSensor() &rArr; BLDCMotor::absoluteZeroSearch() &rArr; SEGGER_RTT_printf &rArr; SEGGER_RTT_vprintf &rArr; _PrintUnsigned &rArr; SEGGER_RTT_Write &rArr; SEGGER_RTT_WriteNoLock
 </UL>
 <BR>[Calls]<UL><LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_printf
-<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
-<LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::shaftAngle()
+<LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
+<LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::shaftAngle()
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_delay(unsigned long)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_Cpp
@@ -1862,7 +1860,7 @@ Global Symbols
 <LI><a href="#[df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fcmpgt
 <LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fcmpeq
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fsub
-<LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::electricalAngle()
+<LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::electricalAngle()
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CurrentSense::getFOCCurrents(float)
 <LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PIDController::operator()(float)
 <LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LowPassFilter::operator()(float)
@@ -1872,11 +1870,11 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> bldcmotor.o(.rodata._ZTV9BLDCMotor)
 </UL>
 <P><STRONG><a name="[d5]"></a>BLDCMotor::BLDCMotor(int, float, float, float)</STRONG> (Thumb, 90 bytes, Stack size 24 bytes, bldcmotor.o(.text._ZN9BLDCMotorC2Eifff))
-<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = BLDCMotor::BLDCMotor(int, float, float, float) &rArr; FOCMotor::FOCMotor__sub_object() &rArr; PIDController::PIDController(float, float, float, float, float) &rArr; _micros() &rArr; DWT_Get_Microsecond
+<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = BLDCMotor::BLDCMotor(int, float, float, float) &rArr; FOCMotor::FOCMotor__sub_object() &rArr; PIDController::PIDController(float, float, float, float, float) &rArr; _micros() &rArr; DWT_Get_Microsecond
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fcmpeq
-<LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::FOCMotor__sub_object()
+<LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::FOCMotor__sub_object()
 </UL>
 <BR>[Called By]<UL><LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_GLOBAL__sub_I_user_main.cpp
 </UL>
@@ -1887,7 +1885,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 48 + Unknown Stack Size
 <LI>Call Chain = __cxa_pure_virtual &rArr; abort_message &rArr; abort &rArr; __rt_SIGABRT &rArr; __rt_SIGABRT_inner &rArr; __default_signal_display &rArr; _ttywrch
 </UL>
-<BR>[Calls]<UL><LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;abort_message
+<BR>[Calls]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;abort_message
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> focmotor.o(.rodata._ZTV8FOCMotor)
 </UL>
@@ -1906,12 +1904,12 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fmul
 <LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2f
-<LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
+<LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2uiz
 </UL>
 <BR>[Called By]<UL><LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCDriver3PWM::setPwm(float, float, float)
 </UL>
 
-<P><STRONG><a name="[102]"></a>abort_message</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, abort_message.cpp.o(.text.abort_message))
+<P><STRONG><a name="[101]"></a>abort_message</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, abort_message.cpp.o(.text.abort_message))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48 + Unknown Stack Size
 <LI>Call Chain = abort_message &rArr; abort &rArr; __rt_SIGABRT &rArr; __rt_SIGABRT_inner &rArr; __default_signal_display &rArr; _ttywrch
 </UL>
@@ -1940,7 +1938,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_entry_main
 </UL>
 
-<P><STRONG><a name="[103]"></a>main_Cpp</STRONG> (Thumb, 388 bytes, Stack size 8 bytes, user_main.o(.text.main_Cpp))
+<P><STRONG><a name="[103]"></a>main_Cpp</STRONG> (Thumb, 348 bytes, Stack size 8 bytes, user_main.o(.text.main_Cpp))
 <BR><BR>[Stack]<UL><LI>Max Depth = 368 + Unknown Stack Size
 <LI>Call Chain = main_Cpp &rArr; BLDCDriver3PWM::init() &rArr; SEGGER_Printf_Float &rArr; SEGGER_RTT_printf &rArr; SEGGER_RTT_vprintf &rArr; _PrintUnsigned &rArr; SEGGER_RTT_Write &rArr; SEGGER_RTT_WriteNoLock
 </UL>
@@ -2090,7 +2088,7 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_dnaninf
 </UL>
 
-<P><STRONG><a name="[f8]"></a>__aeabi_i2d</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, dflt_clz.o(x$fpl$dflt))
+<P><STRONG><a name="[f7]"></a>__aeabi_i2d</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, dflt_clz.o(x$fpl$dflt))
 <BR><BR>[Called By]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::getPreciseAngle()
 <LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::getVelocity()
 </UL>
@@ -2136,7 +2134,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_f2d
 </UL>
 <BR>[Called By]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_Printf_Float
-<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
+<LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
 <LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::driverAlign(float)
 <LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::getPreciseAngle()
 <LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_sin(float)
@@ -2151,10 +2149,10 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_fadd
 </UL>
 <BR>[Called By]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::setPhaseVoltage(float, float, float)
-<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
+<LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
 <LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::move(float)
-<LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
-<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
+<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
+<LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
 <LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::driverAlign(float)
 <LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::calibrateOffsets()
 <LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::getAngle()
@@ -2177,11 +2175,11 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __aeabi_fcmpeq
 </UL>
 <BR>[Called By]<UL><LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::BLDCMotor(int, float, float, float)
-<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
+<LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
 <LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::move(float)
 <LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::loopFOC()
-<LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
-<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
+<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
+<LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
 <LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::init()
 <LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::driverAlign(float)
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CurrentSense::getFOCCurrents(float)
@@ -2200,10 +2198,10 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __aeabi_fcmpgt
 </UL>
 <BR>[Called By]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::setPhaseVoltage(float, float, float)
-<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
+<LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
 <LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::move(float)
 <LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::loopFOC()
-<LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
+<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
 <LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::driverAlign(float)
 <LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCDriver3PWM::setPwm(float, float, float)
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::update()
@@ -2219,8 +2217,8 @@ Global Symbols
 <P><STRONG><a name="[da]"></a>__aeabi_fcmpge</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, fcmp.o(x$fpl$fcmp))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __aeabi_fcmpge
 </UL>
-<BR>[Called By]<UL><LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::absoluteZeroSearch()
-<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
+<BR>[Called By]<UL><LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::absoluteZeroSearch()
+<LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
 <LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::driverAlign(float)
 <LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::getVelocity()
 <LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PIDController::operator()(float)
@@ -2234,9 +2232,9 @@ Global Symbols
 <P><STRONG><a name="[ee]"></a>__aeabi_fcmple</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, fcmp.o(x$fpl$fcmp))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __aeabi_fcmple
 </UL>
-<BR>[Called By]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
-<LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
-<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
+<BR>[Called By]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
+<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
+<LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
 <LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::init()
 <LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::driverAlign(float)
 <LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::getVelocity()
@@ -2253,12 +2251,12 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __aeabi_fcmplt
 </UL>
 <BR>[Called By]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::setPhaseVoltage(float, float, float)
-<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
+<LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
 <LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::move(float)
 <LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::loopFOC()
-<LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
-<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::absoluteZeroSearch()
-<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
+<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
+<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::absoluteZeroSearch()
+<LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
 <LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::driverAlign(float)
 <LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCDriver3PWM::setPwm(float, float, float)
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::update()
@@ -2280,10 +2278,10 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_fdiv
 </UL>
 <BR>[Called By]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::setPhaseVoltage(float, float, float)
-<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
+<LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
 <LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::move(float)
-<LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
-<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
+<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
+<LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
 <LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::InlineCurrentSense(float, float, int, int, int)
 <LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::driverAlign(float)
 <LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::calibrateOffsets()
@@ -2310,7 +2308,7 @@ Global Symbols
 <LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_feq
 </UL>
 
-<P><STRONG><a name="[100]"></a>__aeabi_f2iz</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, ffix.o(x$fpl$ffix))
+<P><STRONG><a name="[ff]"></a>__aeabi_f2iz</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, ffix.o(x$fpl$ffix))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_f2iz
 </UL>
 <BR>[Called By]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::setPhaseVoltage(float, float, float)
@@ -2320,11 +2318,10 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__fpl_fnaninf
 </UL>
 
-<P><STRONG><a name="[f7]"></a>__aeabi_f2uiz</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, ffixu.o(x$fpl$ffixu))
+<P><STRONG><a name="[102]"></a>__aeabi_f2uiz</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, ffixu.o(x$fpl$ffixu))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_f2uiz
 </UL>
-<BR>[Called By]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::getPhaseCurrents()
-<LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_writeDutyCycle3PWM
+<BR>[Called By]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_writeDutyCycle3PWM
 </UL>
 
 <P><STRONG><a name="[12c]"></a>_ffixu</STRONG> (Thumb, 62 bytes, Stack size 16 bytes, ffixu.o(x$fpl$ffixu), UNUSED)
@@ -2335,15 +2332,14 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::setPhaseVoltage(float, float, float)
 <LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::move(float)
 <LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::loopFOC()
-<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
-<LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::getPhaseCurrents()
+<LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
 <LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AS5600_I2C::AS5600_I2C(AS5600_I2CConfig_s)
 <LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AS5600_I2C::getSensorAngle()
 <LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::getAngle()
 <LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::getVelocity()
-<LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::electricalAngle()
-<LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::shaftVelocity()
-<LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::shaftAngle()
+<LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::electricalAngle()
+<LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::shaftVelocity()
+<LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::shaftAngle()
 <LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_electricalAngle(float, int)
 <LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_sin(float)
 </UL>
@@ -2352,8 +2348,8 @@ Global Symbols
 
 <P><STRONG><a name="[ec]"></a>__aeabi_ui2f</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, fflt_clz.o(x$fpl$ffltu))
 <BR><BR>[Called By]<UL><LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_readADCVoltageInline
-<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
-<LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
+<LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
+<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
 <LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_writeDutyCycle3PWM
 <LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PIDController::operator()(float)
 <LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LowPassFilter::operator()(float)
@@ -2388,20 +2384,20 @@ Global Symbols
 <LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_PeriodElapsedCallback
 <LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::BLDCMotor(int, float, float, float)
 <LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::setPhaseVoltage(float, float, float)
-<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
+<LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
 <LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::move(float)
 <LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::loopFOC()
-<LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
-<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
+<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
+<LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
 <LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::driverAlign(float)
 <LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::getPhaseCurrents()
 <LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_writeDutyCycle3PWM
 <LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AS5600_I2C::getSensorAngle()
 <LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::getAngle()
 <LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::getVelocity()
-<LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::electricalAngle()
-<LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::shaftVelocity()
-<LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::shaftAngle()
+<LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::electricalAngle()
+<LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::shaftVelocity()
+<LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::shaftAngle()
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CurrentSense::getFOCCurrents(float)
 <LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CurrentSense::getDCCurrent(float)
 <LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PIDController::operator()(float)
@@ -2460,16 +2456,16 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_fsub
 </UL>
 <BR>[Called By]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::setPhaseVoltage(float, float, float)
-<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
+<LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::velocityOpenloop(float)
 <LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::move(float)
 <LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::loopFOC()
-<LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
-<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
+<LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::angleOpenloop(float)
+<LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
 <LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::getPhaseCurrents()
 <LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::getVelocity()
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::update()
-<LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::electricalAngle()
-<LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::shaftAngle()
+<LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::electricalAngle()
+<LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FOCMotor::shaftAngle()
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CurrentSense::getFOCCurrents(float)
 <LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CurrentSense::getDCCurrent(float)
 <LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PIDController::operator()(float)
@@ -2544,8 +2540,8 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_vprintf
 </UL>
 
-<P><STRONG><a name="[54]"></a>_GLOBAL__sub_I_user_main.cpp</STRONG> (Thumb, 124 bytes, Stack size 32 bytes, user_main.o(.text._GLOBAL__sub_I_user_main.cpp))
-<BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = _GLOBAL__sub_I_user_main.cpp &rArr; BLDCMotor::BLDCMotor(int, float, float, float) &rArr; FOCMotor::FOCMotor__sub_object() &rArr; PIDController::PIDController(float, float, float, float, float) &rArr; _micros() &rArr; DWT_Get_Microsecond
+<P><STRONG><a name="[54]"></a>_GLOBAL__sub_I_user_main.cpp</STRONG> (Thumb, 120 bytes, Stack size 32 bytes, user_main.o(.text._GLOBAL__sub_I_user_main.cpp))
+<BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = _GLOBAL__sub_I_user_main.cpp &rArr; BLDCMotor::BLDCMotor(int, float, float, float) &rArr; FOCMotor::FOCMotor__sub_object() &rArr; PIDController::PIDController(float, float, float, float, float) &rArr; _micros() &rArr; DWT_Get_Microsecond
 </UL>
 <BR>[Calls]<UL><LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::BLDCMotor(int, float, float, float)
 <LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::InlineCurrentSense(float, float, int, int, int)

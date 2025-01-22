@@ -43,11 +43,11 @@ void main_Cpp(void)
                             sizeof(JS_RTT_BufferUp1),       // 缓存大小
                             SEGGER_RTT_MODE_NO_BLOCK_SKIP); // 非阻塞
     AS5600_1.init(&hi2c1); // 初始化AS5600
+    motorDriver.voltage_power_supply = DEF_POWER_SUPPLY; // 设置电压
+    motorDriver.init();   // 初始化电机驱动
+                            
     currentSense.init();   // 初始化电流传感器
     currentSense.linkDriver(&motorDriver); // 电流传感器连接驱动器
-                            
-    motorDriver.voltage_power_supply = 12; // 设置电压
-    motorDriver.init();   // 初始化电机驱动
                             
     motor.linkSensor(&AS5600_1); // 连接编码器
     motor.linkDriver(&motorDriver); // 连接驱动器
@@ -62,21 +62,21 @@ void main_Cpp(void)
     motor.PID_velocity.output_ramp = 0; // 设置速度输出斜坡
 
     motor.LPF_velocity.Tf = 0.01f; // 设置速度低通滤波器
-    motor.voltage_limit = 6.9f;    // 设置电机的电压限制
+    motor.voltage_limit = 6.0f;   // 设置电机的电压限制
     motor.velocity_limit = 94.2f;  // 设置速度限制(900转/min)
 
     motor.PID_current_q.P = 0.5f;
     motor.PID_current_q.I = 0.5f;
     motor.PID_current_q.D = 0;
     motor.PID_current_q.output_ramp = 0; // 不设置
-    motor.LPF_current_q.Tf = 0.02f;      // 低通滤波器
+    motor.LPF_current_q.Tf = 0.01f;      // 低通滤波器
     
     motor.PID_current_d.P = 0.5f;
     motor.PID_current_d.I = 0.5f;
     motor.PID_current_d.D = 0;
     motor.PID_current_d.output_ramp = 0; // 不设置
-    motor.LPF_current_d.Tf = 0.02f;
-    motor.current_limit = 50.0f; // 电流限制
+    motor.LPF_current_d.Tf = 0.01f;
+    motor.current_limit = 5.0f; // 电流限制
     
     motor.init(); // 初始化电机
 
@@ -93,9 +93,9 @@ void main_Cpp(void)
     HAL_TIM_Base_Start_IT(&htim4); // 启动TIM4定时器
     while(1) {
         HAL_GPIO_TogglePin(run_led_GPIO_Port,run_led_Pin); // 心跳灯跑起来
-        curVelocity = motor.shaft_velocity; // 获取当前速度
-        SEGGER_RTT_printf(0,"Velocity:");
-        SEGGER_Printf_Float(curVelocity); // 打印当前速度
+        //curVelocity = motor.shaft_velocity; // 获取当前速度
+        //SEGGER_RTT_printf(0,"Velocity:");
+        //SEGGER_Printf_Float(curVelocity); // 打印当前速度
         delayMicroseconds(100000U); // 延时100ms
     }
 }
