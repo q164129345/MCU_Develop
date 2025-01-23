@@ -4,10 +4,6 @@
             "path": "."
         }
     ],
-    "settings": {
-        "files.associations": {
-            "adc.h": "c"
-        }
-    },
+    "settings": {},
     "extensions": {}
 }

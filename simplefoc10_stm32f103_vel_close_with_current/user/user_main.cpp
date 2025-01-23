@@ -45,7 +45,8 @@ void main_Cpp(void)
     AS5600_1.init(&hi2c1); // 初始化AS5600
     motorDriver.voltage_power_supply = DEF_POWER_SUPPLY; // 设置电压
     motorDriver.init();   // 初始化电机驱动
-                            
+
+    currentSense.skip_align = true; // 跳过检测电机三相接线
     currentSense.init();   // 初始化电流传感器
     currentSense.linkDriver(&motorDriver); // 电流传感器连接驱动器
                             
@@ -53,17 +54,13 @@ void main_Cpp(void)
     motor.linkDriver(&motorDriver); // 连接驱动器
     motor.linkCurrentSense(&currentSense); // 连接电流传感器
     motor.voltage_sensor_align = 6; // 校准偏移offset时，所用到的电压值（相当于占空比4V / 12V = 1/3）
-                            
     motor.controller = MotionControlType::velocity; // 设置控制器模式(速度闭环模式)
                             
     motor.PID_velocity.P = 0.30f; // 设置速度P
     motor.PID_velocity.I = 10.0f; // 设置速度I
     motor.PID_velocity.D = 0; // 设置速度D
-    motor.PID_velocity.output_ramp = 0; // 设置速度输出斜坡
-
+    motor.PID_velocity.output_ramp = 0; // 0：不设置斜坡
     motor.LPF_velocity.Tf = 0.01f; // 设置速度低通滤波器
-    motor.voltage_limit = 10.0f;   // 设置电机的电压限制
-    motor.velocity_limit = 94.2f;  // 设置速度限制(900转/min)
 
     motor.PID_current_q.P = 0.3f;
     motor.PID_current_q.I = 1.0f;
@@ -74,15 +71,17 @@ void main_Cpp(void)
     motor.PID_current_d.P = 0.3f;
     motor.PID_current_d.I = 1.0f;
     motor.PID_current_d.D = 0;
-    motor.PID_current_d.output_ramp = 0; // 不设置
+    motor.PID_current_d.output_ramp = 0; // 0：不设置斜坡
     motor.LPF_current_d.Tf = 0.02f;
-    motor.current_limit = 10.0f; // 电流限制
     
+    motor.current_limit = 10.0f; // 电流限制
+    motor.voltage_limit = 10.0f;   // 设置电机的电压限制
+    motor.velocity_limit = 94.2f;  // 设置速度限制(900转/min)
     motor.init(); // 初始化电机
 
     motor.foc_modulation = FOCModulationType::SpaceVectorPWM; // 正弦波改为马鞍波
     motor.sensor_direction = Direction::CCW; // 之前校准传感器的时候，知道传感器的方向是CCW（翻开校准传感器的章节就知道）
-    motor.torque_controller = TorqueControlType::dc_current; // 电流模式
+    motor.torque_controller = TorqueControlType::dc_current; // Iq闭环，Id = 0
     motor.initFOC(); // 初始化FOC
 
     SEGGER_RTT_printf(0,"motor.zero_electric_angle:");
@@ -96,6 +95,10 @@ void main_Cpp(void)
         curVelocity = motor.shaft_velocity; // 获取当前速度
         SEGGER_RTT_printf(0,"Velocity:");
         SEGGER_Printf_Float(curVelocity); // 打印当前速度
+        SEGGER_RTT_printf(0,"Iq:");
+        SEGGER_Printf_Float(motor.current.q); // 打印转矩分量Iq
+        SEGGER_RTT_printf(0,"Id:");
+        SEGGER_Printf_Float(motor.current.d); // 打印励磁分量Id
         delayMicroseconds(100000U); // 延时100ms
     }
 }

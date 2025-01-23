@@ -218,6 +218,15 @@
               }
             ],
             "folders": []
+          },
+          {
+            "name": "current_sense",
+            "files": [
+              {
+                "path": "../simplefoc/current_sense/InlineCurrentSense.cpp"
+              }
+            ],
+            "folders": []
           }
         ]
       },
@@ -403,6 +412,7 @@
           "../simplefoc/drivers",
           "../simplefoc",
           "../components/bsp_pwm",
+          "../simplefoc/current_sense",
           "RTE/_simplefoc_stm32f103"
         ],
         "libList": [],
