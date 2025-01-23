@@ -140,7 +140,6 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
 HAL_StatusTypeDef ADC_StartReadVoltageFromChannels(void)
 {
     HAL_StatusTypeDef status;
-
     // 启动ADC
     status = HAL_ADC_Start(&hadc1);
     if (status != HAL_OK) {
@@ -156,7 +155,6 @@ HAL_StatusTypeDef ADC_StartReadVoltageFromChannels(void)
         HAL_ADC_Stop(&hadc1);
         return status;
     }
-    
     // 启动ADC
     status = HAL_ADC_Start(&hadc1);
     if (status != HAL_OK) {
@@ -170,10 +168,8 @@ HAL_StatusTypeDef ADC_StartReadVoltageFromChannels(void)
         HAL_ADC_Stop(&hadc1);
         return status;
     }
-
     // 这里可以填写第三个通道，如果板子有三个采样电阻的话
-
-    // 4. 停止ADC
+    // 停止ADC
     status = HAL_ADC_Stop(&hadc1);
     return status;  // 一般可忽略，但如需判断是否Stop成功，也可检查返回值
 }

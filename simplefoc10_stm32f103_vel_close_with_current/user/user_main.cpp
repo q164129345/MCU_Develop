@@ -52,7 +52,7 @@ void main_Cpp(void)
     motor.linkSensor(&AS5600_1); // 连接编码器
     motor.linkDriver(&motorDriver); // 连接驱动器
     motor.linkCurrentSense(&currentSense); // 连接电流传感器
-    motor.voltage_sensor_align = 4; // 校准偏移offset时，所用到的电压值（相当于占空比4V / 12V = 1/3）
+    motor.voltage_sensor_align = 6; // 校准偏移offset时，所用到的电压值（相当于占空比4V / 12V = 1/3）
                             
     motor.controller = MotionControlType::velocity; // 设置控制器模式(速度闭环模式)
                             
@@ -66,23 +66,23 @@ void main_Cpp(void)
     motor.velocity_limit = 94.2f;  // 设置速度限制(900转/min)
 
     motor.PID_current_q.P = 0.3f;
-    motor.PID_current_q.I = 0.1f;
+    motor.PID_current_q.I = 1.0f;
     motor.PID_current_q.D = 0;
     motor.PID_current_q.output_ramp = 0; // 不设置
     motor.LPF_current_q.Tf = 0.02f;      // 低通滤波器
     
     motor.PID_current_d.P = 0.3f;
-    motor.PID_current_d.I = 0.1f;
+    motor.PID_current_d.I = 1.0f;
     motor.PID_current_d.D = 0;
     motor.PID_current_d.output_ramp = 0; // 不设置
     motor.LPF_current_d.Tf = 0.02f;
-    motor.current_limit = 5.0f; // 电流限制
+    motor.current_limit = 10.0f; // 电流限制
     
     motor.init(); // 初始化电机
 
     motor.foc_modulation = FOCModulationType::SpaceVectorPWM; // 正弦波改为马鞍波
     motor.sensor_direction = Direction::CCW; // 之前校准传感器的时候，知道传感器的方向是CCW（翻开校准传感器的章节就知道）
-    motor.torque_controller = TorqueControlType::foc_current; // 电流模式
+    motor.torque_controller = TorqueControlType::dc_current; // 电流模式
     motor.initFOC(); // 初始化FOC
 
     SEGGER_RTT_printf(0,"motor.zero_electric_angle:");
