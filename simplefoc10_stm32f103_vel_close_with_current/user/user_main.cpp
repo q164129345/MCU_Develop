@@ -112,8 +112,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     if(htim->Instance == TIM2)
     {
     } else if(htim->Instance == TIM4) {
+        
+        HAL_GPIO_WritePin(measure_GPIO_Port,measure_Pin,GPIO_PIN_SET); // 拉高电平
         motor.loopFOC(); // 执行FOC
         motor.move(targetVelocity); // 控制目标角度
+        HAL_GPIO_WritePin(measure_GPIO_Port,measure_Pin,GPIO_PIN_RESET); // 拉低电平
         
         JS_Message.timestamp = _micros(); // 获取时间戳
         // 将占空比放大10倍，便于观察
