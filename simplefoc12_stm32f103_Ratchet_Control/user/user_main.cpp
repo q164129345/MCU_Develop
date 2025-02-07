@@ -77,7 +77,7 @@ void main_Cpp(void)
     motor.LPF_velocity.Tf = 0.01f; // 设置速度低通滤波器
 
     motor.P_angle.P = 50.0f; // 位置环P
-    motor.P_angle.I = 1000.0f; // 位置环I
+    motor.P_angle.I = 500.0f; // 位置环I
     motor.P_angle.D = 0.0f;  // 位置环D
     motor.P_angle.output_ramp = 0; // 不设置
     
