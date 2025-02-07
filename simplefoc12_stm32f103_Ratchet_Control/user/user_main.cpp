@@ -29,14 +29,19 @@ InlineCurrentSense currentSense(0.001f,50.0f,ADC_CHANNEL_3,ADC_CHANNEL_4,NOT_SET
 
 float targetAngle = 0.0f; // 目标角度
 
-#define GAP_POINT 0.3926990817 // 22.5°的弧度值
-#define POS_POINT 0.7853981634 // 45°的弧度值
+// 棘轮手感的实现
 void Ratchet_Control(void)
 {
-    if (motor.shaft_angle - targetAngle < -GAP_POINT) { // 顺时钟转
-        targetAngle -= POS_POINT;
-    } else if (motor.shaft_angle - targetAngle > GAP_POINT) { // 逆时钟转
-        targetAngle += POS_POINT;
+    const float GapPoint = 0.3926990817; // 22.5°的弧度值
+    const float PosPoint = 0.7853981634; // 45°的弧度值
+    
+    float angle_diff = motor.shaft_angle - targetAngle;
+
+    if (angle_diff < -GapPoint) { 
+        targetAngle -= PosPoint; // 顺时针转
+    } 
+    else if (angle_diff > GapPoint) { 
+        targetAngle += PosPoint; // 逆时针转
     }
 }
 
