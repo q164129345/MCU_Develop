@@ -34,13 +34,12 @@ void Ratchet_Control(void)
 {
     const float GapPoint = 0.3926990817; // 22.5°的弧度值
     const float PosPoint = 0.7853981634; // 45°的弧度值
-    
-    float angle_diff = motor.shaft_angle - targetAngle;
+
+    float angle_diff = motor.shaft_angle - targetAngle; // 角度差 = 电机当前的角度 - 电机的目标位置
 
     if (angle_diff < -GapPoint) { 
         targetAngle -= PosPoint; // 顺时针转
-    } 
-    else if (angle_diff > GapPoint) { 
+    } else if (angle_diff > GapPoint) { 
         targetAngle += PosPoint; // 逆时针转
     }
 }
