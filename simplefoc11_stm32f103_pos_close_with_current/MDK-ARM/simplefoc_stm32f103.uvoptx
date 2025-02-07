@@ -205,6 +205,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>targetAngle</ItemText>
         </Ww>
+        <Ww>
+          <count>10</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>curAngle</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
