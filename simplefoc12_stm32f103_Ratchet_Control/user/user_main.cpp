@@ -100,8 +100,8 @@ void main_Cpp(void)
     
     motor.init(); // 初始化电机
 
-    motor.PID_current_q.limit = DEF_POWER_SUPPLY - 9.5f;
-    motor.PID_current_d.limit = DEF_POWER_SUPPLY - 9.5f;
+    motor.PID_current_q.limit = DEF_POWER_SUPPLY - 8.5f;
+    motor.PID_current_d.limit = DEF_POWER_SUPPLY - 8.5f;
     motor.PID_velocity.limit = DEF_POWER_SUPPLY * 2.0f;
     
     motor.foc_modulation = FOCModulationType::SpaceVectorPWM; // 正弦波改为马鞍波
