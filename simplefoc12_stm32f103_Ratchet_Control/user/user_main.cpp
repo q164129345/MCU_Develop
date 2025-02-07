@@ -29,6 +29,17 @@ InlineCurrentSense currentSense(0.001f,50.0f,ADC_CHANNEL_3,ADC_CHANNEL_4,NOT_SET
 
 float targetAngle = 0.0f; // 目标角度
 
+#define GAP_POINT 0.3926990817 // 22.5°的弧度值
+#define POS_POINT 0.7853981634 // 45°的弧度值
+void Ratchet_Control(void)
+{
+    if (motor.shaft_angle - targetAngle < -GAP_POINT) { // 顺时钟转
+        targetAngle -= POS_POINT;
+    } else if (motor.shaft_angle - targetAngle > GAP_POINT) { // 逆时钟转
+        targetAngle += POS_POINT;
+    }
+}
+
 /**
  * @brief C++环境入口函数
  * 
@@ -55,8 +66,8 @@ void main_Cpp(void)
     motor.voltage_sensor_align = 6; // 校准偏移offset时，所用到的电压值（相当于占空比4V / 12V = 1/3）
     motor.controller = MotionControlType::angle; // 设置控制器模式(位置闭环模式)
 
-    motor.PID_velocity.P = 0.50f; // 设置速度P
-    motor.PID_velocity.I = 10.0f; // 设置速度I
+    motor.PID_velocity.P = 0.40f; // 设置速度P
+    motor.PID_velocity.I = 30.0f; // 设置速度I
     motor.PID_velocity.D = 0; // 设置速度D
     motor.PID_velocity.output_ramp = 0; // 0：不设置斜坡
     motor.LPF_velocity.Tf = 0.01f; // 设置速度低通滤波器
@@ -67,7 +78,7 @@ void main_Cpp(void)
     motor.P_angle.output_ramp = 0; // 不设置
     
     motor.PID_current_q.P = 0.3f;
-    motor.PID_current_q.I = 1.0f;
+    motor.PID_current_q.I = 0.8f;
     motor.PID_current_q.D = 0;
     motor.PID_current_q.output_ramp = 0; // 不设置
     motor.LPF_current_q.Tf = 0.01f;      // 低通滤波器
@@ -79,15 +90,16 @@ void main_Cpp(void)
     motor.LPF_current_d.Tf = 0.01f;
     
     motor.current_limit = DEF_POWER_SUPPLY; // 电流限制
-    motor.voltage_limit = DEF_POWER_SUPPLY; // 电压限制
+    motor.voltage_limit = DEF_POWER_SUPPLY * 2.0f; // 电压限制
     motor.velocity_limit = DEF_POWER_SUPPLY; // 位置闭环模式时，变成位置环PID的limit
     motor.torque_controller = TorqueControlType::dc_current; // Iq闭环，Id = 0
     
     motor.init(); // 初始化电机
 
-    motor.PID_current_q.limit = DEF_POWER_SUPPLY - 8.5f;
-    motor.PID_current_d.limit = DEF_POWER_SUPPLY - 8.5f;
-
+    motor.PID_current_q.limit = DEF_POWER_SUPPLY - 9.5f;
+    motor.PID_current_d.limit = DEF_POWER_SUPPLY - 9.5f;
+    motor.PID_velocity.limit = DEF_POWER_SUPPLY * 2.0f;
+    
     motor.foc_modulation = FOCModulationType::SpaceVectorPWM; // 正弦波改为马鞍波
     motor.sensor_direction = Direction::CCW; // 之前校准传感器的时候，知道传感器的方向是CCW（翻开校准传感器的章节就知道）
     motor.initFOC(); // 初始化FOC
@@ -98,9 +110,11 @@ void main_Cpp(void)
     SEGGER_Printf_Float(AS5600_1.getMechanicalAngle()); // 打印传感器角度
     HAL_Delay(1000); // 延时1s
     HAL_TIM_Base_Start_IT(&htim4); // 启动TIM4定时器
+    HAL_Delay(1000);
     while(1) {
         HAL_GPIO_TogglePin(run_led_GPIO_Port,run_led_Pin); // 心跳灯跑起来
-        delayMicroseconds(10000U); // 延时100ms
+        Ratchet_Control();
+        delayMicroseconds(100000U); // 延时100ms
     }
 }
 /**
