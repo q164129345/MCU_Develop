@@ -70,7 +70,7 @@ void main_Cpp(void)
     motor.voltage_sensor_align = 6; // 校准偏移offset时，所用到的电压值（相当于占空比4V / 12V = 1/3）
     motor.controller = MotionControlType::angle; // 设置控制器模式(位置闭环模式)
 
-    motor.PID_velocity.P = 0.40f; // 设置速度P
+    motor.PID_velocity.P = 0.30f; // 设置速度P
     motor.PID_velocity.I = 30.0f; // 设置速度I
     motor.PID_velocity.D = 0; // 设置速度D
     motor.PID_velocity.output_ramp = 0; // 0：不设置斜坡
@@ -117,7 +117,7 @@ void main_Cpp(void)
     HAL_Delay(1000);
     while(1) {
         HAL_GPIO_TogglePin(run_led_GPIO_Port,run_led_Pin); // 心跳灯跑起来
-        Ratchet_Control();
+        Ratchet_Control(); // 棘轮手感实现
         delayMicroseconds(100000U); // 延时100ms
     }
 }
