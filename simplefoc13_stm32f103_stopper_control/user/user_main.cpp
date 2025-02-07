@@ -34,11 +34,12 @@ void Stopper_Control(void)
     const float StopPos1 = -1.100f; // 边界1
     const float StopPos2 = 2.200f;  // 边界2
     
+    // 如果摆臂进入禁区，电机使能，利用位置闭环回到边界
     if (motor.shaft_angle <= StopPos1) {
-        motor.enable();
+        if (motor.enabled != 1) motor.enable(); // 避免重复使能
         targetAngle = StopPos1;
     } else if (motor.shaft_angle >= StopPos2) {
-        motor.enable();
+        if (motor.enabled != 1) motor.enable();
         targetAngle = StopPos2;
     } else {
         motor.disable();
