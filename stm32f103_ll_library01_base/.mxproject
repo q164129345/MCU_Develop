@@ -12,18 +12,18 @@ SourceFiles=;;
 [PreviousGenFiles]
 AdvancedFolderStructure=true
 HeaderFileListSize=4
-HeaderFiles#0=D:/Coding/MCU_Develop/stm32f103_ll_library01_gpio_control/Core/Inc/gpio.h
-HeaderFiles#1=D:/Coding/MCU_Develop/stm32f103_ll_library01_gpio_control/Core/Inc/stm32f1xx_it.h
-HeaderFiles#2=D:/Coding/MCU_Develop/stm32f103_ll_library01_gpio_control/Core/Inc/stm32_assert.h
-HeaderFiles#3=D:/Coding/MCU_Develop/stm32f103_ll_library01_gpio_control/Core/Inc/main.h
+HeaderFiles#0=D:/Coding/MCU_Develop/stm32f103_ll_library01_base/Core/Inc/gpio.h
+HeaderFiles#1=D:/Coding/MCU_Develop/stm32f103_ll_library01_base/Core/Inc/stm32f1xx_it.h
+HeaderFiles#2=D:/Coding/MCU_Develop/stm32f103_ll_library01_base/Core/Inc/stm32_assert.h
+HeaderFiles#3=D:/Coding/MCU_Develop/stm32f103_ll_library01_base/Core/Inc/main.h
 HeaderFolderListSize=1
-HeaderPath#0=D:/Coding/MCU_Develop/stm32f103_ll_library01_gpio_control/Core/Inc
+HeaderPath#0=D:/Coding/MCU_Develop/stm32f103_ll_library01_base/Core/Inc
 HeaderFiles=;
 SourceFileListSize=3
-SourceFiles#0=D:/Coding/MCU_Develop/stm32f103_ll_library01_gpio_control/Core/Src/gpio.c
-SourceFiles#1=D:/Coding/MCU_Develop/stm32f103_ll_library01_gpio_control/Core/Src/stm32f1xx_it.c
-SourceFiles#2=D:/Coding/MCU_Develop/stm32f103_ll_library01_gpio_control/Core/Src/main.c
+SourceFiles#0=D:/Coding/MCU_Develop/stm32f103_ll_library01_base/Core/Src/gpio.c
+SourceFiles#1=D:/Coding/MCU_Develop/stm32f103_ll_library01_base/Core/Src/stm32f1xx_it.c
+SourceFiles#2=D:/Coding/MCU_Develop/stm32f103_ll_library01_base/Core/Src/main.c
 SourceFolderListSize=1
-SourcePath#0=D:/Coding/MCU_Develop/stm32f103_ll_library01_gpio_control/Core/Src
+SourcePath#0=D:/Coding/MCU_Develop/stm32f103_ll_library01_base/Core/Src
 SourceFiles=;
 

@@ -1,0 +1,89 @@
+T6318 000:005.451   SEGGER J-Link V8.12b Log File
+T6318 000:005.630   DLL Compiled: Jan 15 2025 12:10:30
+T6318 000:005.641   Logging started @ 2025-02-18 03:43
+T6318 000:005.650   Process: C:\Keil_v5\UV4\UV4.exe
+T6318 000:005.664 - 5.658ms 
+T6318 000:005.678 JLINK_SetWarnOutHandler(...)
+T6318 000:005.687 - 0.010ms 
+T6318 000:005.698 JLINK_OpenEx(...)
+T6318 000:009.682   Firmware: J-Link Pro V4 V11 PLUS Jan compiled 4 2025 15:28:35
+T6318 000:010.832   Firmware: J-Link Pro V4 V11 PLUS Jan compiled 4 2025 15:28:35
+T6318 000:010.991   Decompressing FW timestamp took 116 us
+T6318 000:012.974   Hardware: V11.00
+T6318 000:013.011   S/N: 601023829
+T6318 000:013.031   OEM: SEGGER
+T6318 000:013.051   Feature(s): FlashBP, GDB, JFlash, FlashDL, RDI
+T6318 000:013.825   Bootloader: (FW returned invalid version)
+T6318 000:014.287   USB speed mode: High speed (480 MBit/s)
+T6318 000:014.698   TELNET listener socket opened on port 19021
+T6318 000:014.925   WEBSRV WEBSRV_Init(): Starting webserver thread(s)
+T6318 000:015.099   WEBSRV Webserver running on local port 19080
+T6318 000:015.296   Looking for J-Link GUI Server exe at: C:\Keil_v5\ARM\Segger\JLinkGUIServer.exe
+T6318 000:015.448   Looking for J-Link GUI Server exe at: C:\Program Files\SEGGER\JLink_V812b\JLinkGUIServer.exe
+T6318 000:015.507   Forking J-Link GUI Server: C:\Program Files\SEGGER\JLink_V812b\JLinkGUIServer.exe
+T6318 000:020.981   J-Link GUI Server info: "J-Link GUI server V8.12b "
+T6318 000:021.658 - 15.949ms returns "O.K."
+T6318 000:021.714 JLINK_GetEmuCaps()
+T6318 000:021.734 - 0.017ms returns 0xB9FF7BBF
+T6318 000:021.751 JLINK_TIF_GetAvailable(...)
+T6318 000:021.987 - 0.235ms 
+T6318 000:022.024 JLINK_SetErrorOutHandler(...)
+T6318 000:022.039 - 0.015ms 
+T6318 000:022.080 JLINK_ExecCommand("ProjectFile = "D:\Coding\MCU_Develop\simplefoc13_stm32f103_stopper_control\MDK-ARM\JLinkSettings.ini"", ...). 
+T6318 000:039.075   Ref file found at: C:\Keil_v5\ARM\Segger\JLinkDevices.ref
+T6318 000:039.304   REF file references invalid XML file: C:\Program Files\SEGGER\JLink_V812b\JLinkDevices.xml
+T6318 000:040.818 - 18.738ms returns 0x00
+T6318 000:051.253 JLINK_ExecCommand("Device = STM32F103CB", ...). 
+T6318 000:053.318   Device "STM32F103CB" selected.
+T6318 000:053.871 - 2.539ms returns 0x00
+T6318 000:053.905 JLINK_ExecCommand("DisableConnectionTimeout", ...). 
+T6318 000:053.931   ERROR: Unknown command
+T6318 000:053.954 - 0.031ms returns 0x01
+T6318 000:053.969 JLINK_GetHardwareVersion()
+T6318 000:053.985 - 0.013ms returns 110000
+T6318 000:053.999 JLINK_GetDLLVersion()
+T6318 000:054.013 - 0.014ms returns 81202
+T6318 000:054.028 JLINK_GetOEMString(...)
+T6318 000:054.059 JLINK_GetFirmwareString(...)
+T6318 000:054.072 - 0.013ms 
+T6318 000:056.368 JLINK_GetDLLVersion()
+T6318 000:056.433 - 0.064ms returns 81202
+T6318 000:056.450 JLINK_GetCompileDateTime()
+T6318 000:056.465 - 0.014ms 
+T6318 000:056.979 JLINK_GetFirmwareString(...)
+T6318 000:057.022 - 0.042ms 
+T6318 000:057.281 JLINK_GetHardwareVersion()
+T6318 000:057.299 - 0.017ms returns 110000
+T6318 000:057.528 JLINK_GetSN()
+T6318 000:057.545 - 0.017ms returns 601023829
+T6318 000:058.082 JLINK_GetOEMString(...)
+T6318 000:059.511 JLINK_TIF_Select(JLINKARM_TIF_SWD)
+T6318 000:060.512 - 1.001ms returns 0x00
+T6318 000:060.551 JLINK_HasError()
+T6318 000:060.578 JLINK_SetSpeed(10000)
+T6318 000:060.710 - 0.133ms 
+T6318 000:060.734 JLINK_GetId()
+T6318 000:061.561   InitTarget() start
+T6318 000:061.597    J-Link Script File: Executing InitTarget()
+T6318 000:062.628   SWD selected. Executing JTAG -> SWD switching sequence.
+T6318 000:164.525   Error: Failed to configure AP.
+T6318 000:164.871   Can not attach to CPU. Trying connect under reset.
+T6318 000:217.138   SWD selected. Executing JTAG -> SWD switching sequence.
+T6318 000:219.579   Error: Failed to initialized DAP.
+T6318 000:219.824   Connecting to CPU via connect under reset failed.
+T6318 000:272.107   InitTarget() end - Took 209ms
+T6318 000:272.418   Connect failed. Resetting via Reset pin and trying again.
+T6318 000:335.331   InitTarget() start
+T6318 000:335.442    J-Link Script File: Executing InitTarget()
+T6318 000:336.282   SWD selected. Executing JTAG -> SWD switching sequence.
+T6318 000:339.368   Error: Failed to configure AP.
+T6318 000:339.641   Can not attach to CPU. Trying connect under reset.
+T6318 000:391.343   SWD selected. Executing JTAG -> SWD switching sequence.
+T6318 000:394.240   DAP initialized successfully.
+T6318 000:394.946   Connecting to CPU via connect under reset failed.
+T6318 000:445.820   InitTarget() end - Took 109ms
+T6318 000:445.867 - 385.132ms returns 0x00000000
+T6318 001:138.884 JLINK_Close()
+T6318 001:151.716 - 12.831ms
+T6318 001:151.767   
+T6318 001:151.777   Closed

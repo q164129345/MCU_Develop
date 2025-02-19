@@ -229,7 +229,6 @@
           "../Drivers/STM32F1xx_HAL_Driver/Inc",
           "../Drivers/CMSIS/Device/ST/STM32F1xx/Include",
           "../Drivers/CMSIS/Include",
-          ".cmsis/include",
           "RTE/_stm32f103cbtx"
         ],
         "libList": [],
@@ -256,7 +255,7 @@
             "output-debug-info": "enable"
           },
           "c/cpp-compiler": {
-            "optimization": "level-3",
+            "optimization": "level-0",
             "language-c": "c11",
             "language-cpp": "c++11",
             "link-time-optimization": false,

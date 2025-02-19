@@ -36,7 +36,7 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
+uint32_t cnt = 0;
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -53,7 +53,13 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+void Enable_Peripherals_Clock(void) {
+    SET_BIT(RCC->APB2ENR, 1UL << 0UL);  // 启动AFIO时钟
+    SET_BIT(RCC->APB1ENR, 1UL << 28UL); // 启动PWR时钟
+    SET_BIT(RCC->APB2ENR, 1UL << 5UL);  // 启动GPIOD时钟
+    SET_BIT(RCC->APB2ENR, 1UL << 2UL);  // 启动GPIOA时钟
+    __NOP(); // 稍微延时一下下
+}
 /* USER CODE END 0 */
 
 /**
@@ -63,14 +69,14 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+  Enable_Peripherals_Clock(); // 启动所需外设的时钟
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_AFIO);
-  LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
+  //LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_AFIO);
+  //LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
 
   /* System interrupt init*/
   NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
@@ -94,7 +100,7 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  MX_GPIO_Init();
+  //MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
   /* USER CODE END 2 */
 
@@ -105,8 +111,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    LL_GPIO_TogglePin(heartLED_GPIO_Port,heartLED_Pin); // 翻转LED电平
-    LL_mDelay(200);  // 延迟
+    cnt++;
+    LL_mDelay(1000);  // 延迟
   }
   /* USER CODE END 3 */
 }
@@ -123,7 +129,7 @@ void SystemClock_Config(void)
   }
   LL_RCC_HSE_Enable();
 
-   /* Wait till HSE is ready */ 
+   /* Wait till HSE is ready */
   while(LL_RCC_HSE_IsReady() != 1)
   {
 
