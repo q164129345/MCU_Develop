@@ -53,13 +53,25 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void Enable_Peripherals_Clock(void) {
+__STATIC_INLINE void Enable_Peripherals_Clock(void) {
     SET_BIT(RCC->APB2ENR, 1UL << 0UL);  // 启动AFIO时钟
     SET_BIT(RCC->APB1ENR, 1UL << 28UL); // 启动PWR时钟
     SET_BIT(RCC->APB2ENR, 1UL << 5UL);  // 启动GPIOD时钟
     SET_BIT(RCC->APB2ENR, 1UL << 2UL);  // 启动GPIOA时钟
     __NOP(); // 稍微延时一下下
 }
+
+__STATIC_INLINE void Set_NVIC_PriorityGrouping(uint32_t group_numer) {
+    SCB->AIRCR = (0x5FA << SCB_AIRCR_VECTKEY_Pos) | (group_numer << SCB_AIRCR_PRIGROUP_Pos);
+}
+
+__STATIC_INLINE void Set_USE_SWD_NOT_JTAG(void) {
+    __IO uint32_t reg = READ_REG(AFIO->MAPR);
+    CLEAR_BIT(reg, AFIO_MAPR_SWJ_CFG);  // AFIO_MAPR_SWJ_CFG = 0x07 << 24UL
+    SET_BIT(reg, AFIO_MAPR_SWJ_CFG_JTAGDISABLE); // AFIO_MAPR_SWJ_CFG_JTAGDISABLE = 1UL << 25UL
+    AFIO->MAPR = reg; // 设置AFIO
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -70,6 +82,8 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
   Enable_Peripherals_Clock(); // 启动所需外设的时钟
+  Set_NVIC_PriorityGrouping(NVIC_PRIORITYGROUP_4); // 设置NVIC中断优先级组
+  Set_USE_SWD_NOT_JTAG(); // 关闭JTAG，只用SWD
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -86,7 +100,7 @@ int main(void)
 
   /** NOJTAG: JTAG-DP Disabled and SW-DP Enabled
   */
-  LL_GPIO_AF_Remap_SWJ_NOJTAG();
+  //LL_GPIO_AF_Remap_SWJ_NOJTAG();
 
   /* USER CODE BEGIN Init */
 
