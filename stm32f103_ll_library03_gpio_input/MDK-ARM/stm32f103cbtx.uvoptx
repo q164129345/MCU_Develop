@@ -119,13 +119,17 @@
       <TargetDriverDllRegistry>
         <SetRegEntry>
           <Number>0</Number>
+          <Key>DLGUARM</Key>
+        </SetRegEntry>
+        <SetRegEntry>
+          <Number>0</Number>
           <Key>ARMRTXEVENTFLAGS</Key>
           <Name>-L70 -Z18 -C0 -M0 -T1</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGTARM</Key>
-          <Name>(1010=1076,305,1526,862,0)(1007=143,140,330,415,0)(1008=1094,255,1470,491,1)(1009=-1,-1,-1,-1,0)</Name>
+          <Name>(1010=1076,305,1526,862,0)(1007=143,140,330,415,0)(1008=1094,255,1470,491,0)(1009=-1,-1,-1,-1,0)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -169,6 +173,11 @@
           <count>3</count>
           <WinNumber>1</WinNumber>
           <ItemText>gTickCount,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>4</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>pinStatus,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>
