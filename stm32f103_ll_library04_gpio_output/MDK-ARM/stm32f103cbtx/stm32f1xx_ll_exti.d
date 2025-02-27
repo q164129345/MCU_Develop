@@ -5,9 +5,9 @@ stm32f103cbtx/stm32f1xx_ll_exti.o: \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xb.h \
   ..\Drivers\CMSIS\Include\core_cm3.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdint.h \
-  D:\Coding\MCU_Develop\stm32f103_ll_library03_gpio_input\Drivers\CMSIS\Include\cmsis_version.h \
-  D:\Coding\MCU_Develop\stm32f103_ll_library03_gpio_input\Drivers\CMSIS\Include\cmsis_compiler.h \
-  D:\Coding\MCU_Develop\stm32f103_ll_library03_gpio_input\Drivers\CMSIS\Include\cmsis_armclang.h \
+  D:\Coding\MCU_Develop\stm32f103_ll_library04_gpio_output\Drivers\CMSIS\Include\cmsis_version.h \
+  D:\Coding\MCU_Develop\stm32f103_ll_library04_gpio_output\Drivers\CMSIS\Include\cmsis_compiler.h \
+  D:\Coding\MCU_Develop\stm32f103_ll_library04_gpio_output\Drivers\CMSIS\Include\cmsis_armclang.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h

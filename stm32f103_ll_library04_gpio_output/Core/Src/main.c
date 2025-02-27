@@ -63,8 +63,19 @@ __STATIC_INLINE void Enable_Peripherals_Clock(void) {
 }
 
 __STATIC_INLINE void GPIO_Configure(void) {
+    /* PB4 */
     MODIFY_REG(GPIOB->CRL, 0x0F << 16UL, 0x08 << 16UL); // PB4输入模式
     SET_BIT(GPIOB->ODR, 0X01 << 4UL); // PB4设置上拉
+    
+    /* PB5 */
+    // 寄存器方式
+    //SET_BIT(GPIOB->BRR, 0X01 << 5UL); // PB5复位（下拉）、学习LL库，设置GPIO输出模式之前，先复位
+    //MODIFY_REG(GPIOB->CRL, 0x0F << 20UL, 0x02 << 20UL); // PB5输出推挽模式
+    // LL库的另一种方式
+    LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_5);                  // PB5复位
+    LL_GPIO_SetPinMode(GPIOB, LL_GPIO_PIN_5, LL_GPIO_MODE_OUTPUT); // PB5输出模式
+    LL_GPIO_SetPinOutputType(GPIOB, LL_GPIO_PIN_5, LL_GPIO_OUTPUT_PUSHPULL); // 推挽输出
+    
 }
 /* USER CODE END 0 */
 
@@ -75,7 +86,7 @@ __STATIC_INLINE void GPIO_Configure(void) {
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  //Enable_Peripherals_Clock(); // 启动所需外设的时钟
+  Enable_Peripherals_Clock(); // 启动所需外设的时钟
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -106,9 +117,9 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  MX_GPIO_Init();
+  //MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-  //GPIO_Configure();
+  GPIO_Configure();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -116,9 +127,9 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    LL_GPIO_SetOutputPin(GPIO_Output1_GPIO_Port,GPIO_Output1_Pin); // PB5输出高电平
+    SET_BIT(GPIOB->BSRR, 1 << 5UL); // PB5电平拉高
     LL_mDelay(1000); // 延迟1S
-    LL_GPIO_ResetOutputPin(GPIO_Output1_GPIO_Port, GPIO_Output1_Pin); // PB5输出低电平
+    SET_BIT(GPIOB->BSRR, 1 << (5UL + 16UL)); // PB5电平拉低
     LL_mDelay(1000); // 延迟1S
     /* USER CODE BEGIN 3 */
   }

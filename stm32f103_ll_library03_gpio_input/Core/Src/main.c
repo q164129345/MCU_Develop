@@ -63,8 +63,13 @@ __STATIC_INLINE void Enable_Peripherals_Clock(void) {
 }
 
 __STATIC_INLINE void GPIO_Configure(void) {
-    MODIFY_REG(GPIOB->CRL, 0x0F << 16UL, 0x08 << 16UL); // PB4输入模式
-    SET_BIT(GPIOB->ODR, 0X01 << 4UL); // PB4设置上拉
+    // 寄存器方式实现
+    //MODIFY_REG(GPIOB->CRL, 0x0F << 16UL, 0x08 << 16UL); // PB4输入模式
+    //SET_BIT(GPIOB->ODR, 0X01 << 4UL); // PB4设置上拉
+    
+    // LL库设置GPIO的另外一种方法
+    LL_GPIO_SetPinMode(GPIOB, LL_GPIO_PIN_4, LL_GPIO_MODE_INPUT); // PB4输入模式
+    LL_GPIO_SetPinPull(GPIOB, LL_GPIO_PIN_4, LL_GPIO_PULL_UP);    // PB4上拉
 }
 /* USER CODE END 0 */
 
