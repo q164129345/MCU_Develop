@@ -118,8 +118,8 @@
       <flags>2</flags>
       <showCmd>3</showCmd>
       <MinPosition>
-        <xPos>-1</xPos>
-        <yPos>-1</yPos>
+        <xPos>-32000</xPos>
+        <yPos>-32000</yPos>
       </MinPosition>
       <MaxPosition>
         <xPos>-1</xPos>
@@ -3631,18 +3631,18 @@
       <ActiveTab>1</ActiveTab>
       <Doc>
         <Name>../Core/Src/main.c</Name>
-        <ColumnNumber>11</ColumnNumber>
-        <TopLine>178</TopLine>
-        <CurrentLine>142</CurrentLine>
+        <ColumnNumber>35</ColumnNumber>
+        <TopLine>70</TopLine>
+        <CurrentLine>75</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>
       </Doc>
       <Doc>
         <Name>../Core/Src/stm32f1xx_it.c</Name>
-        <ColumnNumber>0</ColumnNumber>
-        <TopLine>176</TopLine>
-        <CurrentLine>194</CurrentLine>
+        <ColumnNumber>1</ColumnNumber>
+        <TopLine>182</TopLine>
+        <CurrentLine>198</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>
@@ -3694,9 +3694,9 @@
       </Doc>
       <Doc>
         <Name>..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h</Name>
-        <ColumnNumber>2</ColumnNumber>
+        <ColumnNumber>8</ColumnNumber>
         <TopLine>149</TopLine>
-        <CurrentLine>160</CurrentLine>
+        <CurrentLine>181</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>
@@ -3704,17 +3704,17 @@
       <Doc>
         <Name>startup_stm32f103xb.s</Name>
         <ColumnNumber>0</ColumnNumber>
-        <TopLine>48</TopLine>
-        <CurrentLine>52</CurrentLine>
+        <TopLine>54</TopLine>
+        <CurrentLine>132</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>
       </Doc>
       <Doc>
         <Name>..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_ll_gpio.h</Name>
-        <ColumnNumber>8</ColumnNumber>
-        <TopLine>214</TopLine>
-        <CurrentLine>227</CurrentLine>
+        <ColumnNumber>21</ColumnNumber>
+        <TopLine>2238</TopLine>
+        <CurrentLine>2263</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>
@@ -3739,9 +3739,9 @@
       </Doc>
       <Doc>
         <Name>..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xb.h</Name>
-        <ColumnNumber>2</ColumnNumber>
-        <TopLine>64</TopLine>
-        <CurrentLine>92</CurrentLine>
+        <ColumnNumber>4</ColumnNumber>
+        <TopLine>348</TopLine>
+        <CurrentLine>370</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>

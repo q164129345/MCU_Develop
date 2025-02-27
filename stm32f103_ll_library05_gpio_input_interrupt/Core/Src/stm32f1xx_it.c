@@ -190,7 +190,7 @@ void SysTick_Handler(void)
   } else {
       pinStatus = 0x00; // PB4当前低电平
   }
-  /* USER CODE END SysTick_IRQn 0 */
+  /* USER CODE END SysTick_IRQn 0 */                             
 
   /* USER CODE BEGIN SysTick_IRQn 1 */
 
@@ -207,9 +207,15 @@ void SysTick_Handler(void)
 /* USER CODE BEGIN 1 */
 void EXTI4_IRQHandler(void)
 {
-    if (LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_4) != RESET) { // 看看是不是EXIT4触发的中断
-        LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_4); // 清除EXTI4的中断标志
-        // 在这里填其他代码
+    // LL库方式
+//    if (LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_4) != RESET) { // 看看是不是EXIT4触发的中断
+//        LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_4); // 清除EXTI4的中断标志
+//        // 在这里填其他代码
+//        
+//    }
+    // 寄存器方式
+    if (EXTI->PR & (0x01UL << 4UL)) { // 看看是不是EXTI4触发的中断
+        EXTI->PR |= 0x01UL << 4UL; // 清除EXTI4的中断标志
         
     }
 }

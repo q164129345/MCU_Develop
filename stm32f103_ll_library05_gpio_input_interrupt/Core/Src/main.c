@@ -74,17 +74,23 @@ __STATIC_INLINE void GPIO_Configure(void) {
 
 __STATIC_INLINE void EXTI_Configure(void)
 {
-    // 配置EXTI线路映射到PB4
-    LL_GPIO_AF_SetEXTISource(LL_GPIO_AF_EXTI_PORTB, LL_GPIO_AF_EXTI_LINE4);
+    // LL库方式
+    //LL_GPIO_AF_SetEXTISource(LL_GPIO_AF_EXTI_PORTB, LL_GPIO_AF_EXTI_LINE4); // 配置EXTI线路映射到PB4
+    // 寄存器方式
+    MODIFY_REG(AFIO->EXTICR[1], 0xF << 0UL, 0x01 << 0UL); // 配置EXTI线路映射到PB4
     
-    // 配置EXTI
-    LL_EXTI_InitTypeDef EXTI_InitStruct = {0};
-    EXTI_InitStruct.Line_0_31 = LL_EXTI_LINE_4; // EXTI4
-    EXTI_InitStruct.LineCommand = ENABLE;       // 启动EXIT4
-    EXTI_InitStruct.Mode = LL_EXTI_MODE_IT;     // 中断模式
-    EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_RISING; // 触发：上升沿
-    LL_EXTI_Init(&EXTI_InitStruct);             // 初始化
-    
+    // 配置EXTI(LL库方式）
+//    LL_EXTI_InitTypeDef EXTI_InitStruct = {0};
+//    EXTI_InitStruct.Line_0_31 = LL_EXTI_LINE_4; // EXTI4
+//    EXTI_InitStruct.LineCommand = ENABLE;       // 启动EXIT4
+//    EXTI_InitStruct.Mode = LL_EXTI_MODE_IT;     // 中断模式
+//    EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_RISING; // 触发：上升沿
+//    LL_EXTI_Init(&EXTI_InitStruct);             // 初始化
+    // 配置EXTI（寄存器方式）
+    EXTI->RTSR |= 0x01UL << 4UL; // 开启EXTI4的上升沿触发
+    EXTI->FTSR &= ~(0x01UL << 4UL); // 禁用EXTI4的下降沿触发
+    EXTI->IMR |= 0x01UL << 4UL;  // 开启EXTI4的中断
+
     // 配置NVIC
     NVIC_SetPriority(EXTI4_IRQn, 1); // 设置中断优先级1（数字越低优先级越高）
     NVIC_EnableIRQ(EXTI4_IRQn); // 启动中断
