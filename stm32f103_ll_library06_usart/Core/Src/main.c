@@ -37,7 +37,6 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-uint32_t cnt = 0;
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -55,8 +54,8 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 __STATIC_INLINE void Enable_Peripherals_Clock(void) {
-    SET_BIT(RCC->APB2ENR, 1UL << 0UL);  // 启动AFIO时钟  // 一般工程都要开
-    SET_BIT(RCC->APB1ENR, 1UL << 28UL); // 启动PWR时钟   // 一般工程都要开
+    SET_BIT(RCC->APB2ENR, 1UL << 0UL);  // 启动AFIO时钟  // 一般的工程都要开
+    SET_BIT(RCC->APB1ENR, 1UL << 28UL); // 启动PWR时钟   // 一般的工程都要开
     SET_BIT(RCC->APB2ENR, 1UL << 5UL);  // 启动GPIOD时钟 // 晶振时钟
     SET_BIT(RCC->APB2ENR, 1UL << 2UL);  // 启动GPIOA时钟 // SWD接口
     SET_BIT(RCC->APB2ENR, 1UL << 3UL);  // 启动GPIOB时钟 // 因为用了PB4
@@ -69,6 +68,7 @@ __STATIC_INLINE void GPIO_Configure(void) {
     SET_BIT(GPIOB->ODR, 0X01 << 4UL); // PB4设置上拉（因电路板设计原因，PB4外部还有一个10K的上拉电路）
 }
 
+// USART1发送函数
 void USART1_SendString(const char *str) {
     while (*str) {
         while (!LL_USART_IsActiveFlag_TXE(USART1));
@@ -85,14 +85,14 @@ void USART1_SendString(const char *str) {
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  //Enable_Peripherals_Clock(); // 启动所需外设的时钟
+  Enable_Peripherals_Clock(); // 启动所需外设的时钟
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_AFIO);
-  LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
+  //LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_AFIO);
+  //LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
 
   /* System interrupt init*/
   NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
@@ -116,10 +116,10 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  MX_GPIO_Init();
+  //MX_GPIO_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  //GPIO_Configure();
+  GPIO_Configure();
   /* USER CODE END 2 */
 
   /* Infinite loop */

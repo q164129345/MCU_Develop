@@ -73,8 +73,6 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define GPIO_Input1_Pin LL_GPIO_PIN_4
 #define GPIO_Input1_GPIO_Port GPIOB
-#define GPIO_Output1_Pin LL_GPIO_PIN_5
-#define GPIO_Output1_GPIO_Port GPIOB
 #ifndef NVIC_PRIORITYGROUP_0
 #define NVIC_PRIORITYGROUP_0         ((uint32_t)0x00000007) /*!< 0 bit  for pre-emption priority,
                                                                  4 bits for subpriority */
