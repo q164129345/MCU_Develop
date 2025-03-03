@@ -68,11 +68,58 @@ __STATIC_INLINE void GPIO_Configure(void) {
     SET_BIT(GPIOB->ODR, 0X01 << 4UL); // PB4设置上拉（因电路板设计原因，PB4外部还有一个10K的上拉电路）
 }
 
+__STATIC_INLINE void USART1_Configure(void) {
+    /* 1. 使能外设时钟 */
+    // RCC->APB2ENR 寄存器控制 APB2 外设时钟
+    RCC->APB2ENR |= (1UL << 14UL); // 使能 USART1 时钟 (位 14)
+    RCC->APB2ENR |= (1UL << 2UL);  // 使能 GPIOA 时钟 (位 2)
+    /* 2. 配置 GPIO (PA9 - TX, PA10 - RX) */
+    // GPIOA->CRH 寄存器控制 PA8-PA15 的模式和配置
+    // PA9: 复用推挽输出 (模式: 10, CNF: 10)
+    GPIOA->CRH &= ~(0xF << 4UL);        // 清零 PA9 的配置位 (位 4-7)
+    GPIOA->CRH |= (0xA << 4UL);         // PA9: 10MHz 复用推挽输出 (MODE9 = 10, CNF9 = 10)
+    // PA10: 浮空输入 (模式: 00, CNF: 01)
+    GPIOA->CRH &= ~(0xF << 8UL);        // 清零 PA10 的配置位 (位 8-11)
+    GPIOA->CRH |= (0x4 << 8UL);         // PA10: 输入模式，浮空输入 (MODE10 = 00, CNF10 = 01)
+    
+    /* 3. 配置 USART1 参数 */
+    // (1) 设置波特率 115200 (系统时钟 72MHz, 过采样 16)
+    // 波特率计算: USART_BRR = fPCLK / (16 * BaudRate)
+    // 72MHz / (16 * 115200) = 39.0625
+    // 整数部分: 39 (0x27), 小数部分: 0.0625 * 16 = 1 (0x1)
+    USART1->BRR = (39 << 4UL) | 1;      // BRR = 0x271 (39.0625)
+    // (2) 配置数据帧格式 (USART_CR1 和 USART_CR2)
+    USART1->CR1 &= ~(1UL << 12UL);      // M 位 = 0, 8 位数据
+    USART1->CR2 &= ~(3UL << 12UL);      // STOP 位 = 00, 1 个停止位
+    USART1->CR1 &= ~(1UL << 10UL);      // 没奇偶校验
+    
+    // (3) 配置传输方向 (收发双向)
+    USART1->CR1 |= (1UL << 3UL);        // TE 位 = 1, 使能发送
+    USART1->CR1 |= (1UL << 2UL);        // RE 位 = 1, 使能接收
+    // (4) 禁用硬件流控 (USART_CR3)
+    USART1->CR3 &= ~(3UL << 8UL);       // CTSE 和 RTSE 位 = 0, 无流控
+    // (5) 配置异步模式 (清除无关模式位)
+    USART1->CR2 &= ~(1UL << 14UL);      // LINEN 位 = 0, 禁用 LIN 模式
+    USART1->CR2 &= ~(1UL << 11UL);      // CLKEN 位 = 0, 禁用时钟输出
+    USART1->CR3 &= ~(1UL << 5UL);       // SCEN 位 = 0, 禁用智能卡模式
+    USART1->CR3 &= ~(1UL << 1UL);       // IREN 位 = 0, 禁用 IrDA 模式
+    USART1->CR3 &= ~(1UL << 3UL);       // HDSEL 位 = 0, 禁用半双工
+    // (6) 启用 USART
+    USART1->CR1 |= (1UL << 13UL);       // UE 位 = 1, 启用 USART
+}
+
 // USART1发送函数
 void USART1_SendString(const char *str) {
-    while (*str) {
-        while (!LL_USART_IsActiveFlag_TXE(USART1));
-        LL_USART_TransmitData8(USART1, *str++);
+    /* LL库 */
+//    while (*str) {
+//        while (!LL_USART_IsActiveFlag_TXE(USART1));
+//        LL_USART_TransmitData8(USART1, *str++);
+//    }
+    
+    /* 寄存器方式 */
+    while(*str) {
+        while(!(USART1->SR & (0x01UL << 7UL))); // 等待TXE = 1
+        USART1->DR = *str++;
     }
 }
 
@@ -117,9 +164,10 @@ int main(void)
 
   /* Initialize all configured peripherals */
   //MX_GPIO_Init();
-  MX_USART1_UART_Init();
+  //MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  GPIO_Configure();
+  GPIO_Configure();   // PB4
+  USART1_Configure(); // USART1
   /* USER CODE END 2 */
 
   /* Infinite loop */
