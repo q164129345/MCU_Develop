@@ -217,11 +217,11 @@ void USART1_IRQHandler(void)
 
   /* USER CODE END USART1_IRQn 0 */
   /* USER CODE BEGIN USART1_IRQn 1 */
-if(LL_USART_IsActiveFlag_RXNE(USART1) && LL_USART_IsEnabledIT_RXNE(USART1))
-  {
+//if(LL_USART_IsActiveFlag_RXNE(USART1) && LL_USART_IsEnabledIT_RXNE(USART1)) {
+  if((USART1->SR & (1UL << 5UL)) && (USART1->CR1 & (1UL << 5UL))) {
     // 读取接收到的数据
-    uint8_t received_data = LL_USART_ReceiveData8(USART1);
-    
+    //uint8_t received_data = LL_USART_ReceiveData8(USART1);
+    uint8_t received_data = (uint8_t)(USART1->DR & 0xFF); // USART1->DR是32位的寄存器，跟0xFF进行&运算的目的是数据段只有8bit
     // 检查缓冲区是否有空间
     if(rx_index < RX_BUFFER_SIZE - 1) {
       rx_buffer[rx_index++] = received_data;

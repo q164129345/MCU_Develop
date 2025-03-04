@@ -85,6 +85,10 @@ __STATIC_INLINE void USART1_Configure(void) {
     GPIOA->CRH &= ~(0xF << 8UL);        // 清零 PA10 的配置位 (位 8-11)
     GPIOA->CRH |= (0x4 << 8UL);         // PA10: 输入模式，浮空输入 (MODE10 = 00, CNF10 = 01)
     
+    // 开启USART1全局中断
+    NVIC_SetPriority(USART1_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),1, 0)); // 优先级1（优先级越低相当于越优先）
+    NVIC_EnableIRQ(USART1_IRQn);
+
     /* 3. 配置 USART1 参数 */
     // (1) 设置波特率 115200 (系统时钟 72MHz, 过采样 16)
     // 波特率计算: USART_BRR = fPCLK / (16 * BaudRate)
@@ -107,7 +111,10 @@ __STATIC_INLINE void USART1_Configure(void) {
     USART1->CR3 &= ~(1UL << 5UL);       // SCEN 位 = 0, 禁用智能卡模式
     USART1->CR3 &= ~(1UL << 1UL);       // IREN 位 = 0, 禁用 IrDA 模式
     USART1->CR3 &= ~(1UL << 3UL);       // HDSEL 位 = 0, 禁用半双工
-    // (6) 启用 USART
+    
+    // (6) 开启接收缓存区非空中断
+    USART1->CR1 |= (1UL << 5UL);         // 设置 CR1 寄存器的 RXNEIE 位（位 5）为 1，启用 RXNE 中断
+    // (7) 启用 USART
     USART1->CR1 |= (1UL << 13UL);       // UE 位 = 1, 启用 USART
 }
 
@@ -118,7 +125,6 @@ void USART1_SendString(const char *str) {
 //        while (!LL_USART_IsActiveFlag_TXE(USART1));
 //        LL_USART_TransmitData8(USART1, *str++);
 //    }
-    
     /* 寄存器方式 */
     while(*str) {
         while(!(USART1->SR & (0x01UL << 7UL))); // 等待TXE = 1
@@ -126,6 +132,7 @@ void USART1_SendString(const char *str) {
     }
 }
 
+// 接收处理函数
 void Process_Received_Data(void)
 {
     if(rx_complete) {
@@ -180,11 +187,11 @@ int main(void)
 
   /* Initialize all configured peripherals */
   //MX_GPIO_Init();
-  MX_USART1_UART_Init();
+  //MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   GPIO_Configure();   // PB4
-  //USART1_Configure(); // USART1
-  LL_USART_EnableIT_RXNE(USART1);  // 使能USART1接收中断
+  USART1_Configure(); // USART1
+  //LL_USART_EnableIT_RXNE(USART1);  // 使能USART1接收区非空中断
   /* USER CODE END 2 */
 
   /* Infinite loop */
