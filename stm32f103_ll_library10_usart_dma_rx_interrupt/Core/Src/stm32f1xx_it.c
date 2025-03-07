@@ -221,18 +221,20 @@ void DMA1_Channel4_IRQHandler(void)
   /* USER CODE END DMA1_Channel4_IRQn 0 */
 
   /* USER CODE BEGIN DMA1_Channel4_IRQn 1 */
+#if (USE_LL_LIBRARY == 1)
     // 检查传输完成标志（TC）是否置位（LL库提供TC4接口）
-//    if(LL_DMA_IsActiveFlag_TC4(DMA1))
-//    {
-//        // 清除DMA传输完成标志
-//        LL_DMA_ClearFlag_TC4(DMA1);
-//        // 禁用DMA通道4，确保下次传输前重新配置
-//        LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_4);
-//        // 清除USART1中DMAT位，关闭DMA发送请求
-//        LL_USART_DisableDMAReq_TX(USART1);
-//        // 标记DMA发送完成
-//        tx_dma_busy = 0;
-//    }
+    if(LL_DMA_IsActiveFlag_TC4(DMA1))
+    {
+        // 清除DMA传输完成标志
+        LL_DMA_ClearFlag_TC4(DMA1);
+        // 禁用DMA通道4，确保下次传输前重新配置
+        LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_4);
+        // 清除USART1中DMAT位，关闭DMA发送请求
+        LL_USART_DisableDMAReq_TX(USART1);
+        // 标记DMA发送完成
+        tx_dma_busy = 0;
+    }
+#else
     // 寄存器方式
     if(DMA1->ISR & (1UL << 13)) {
         // 清除DMA传输完成标志：在IFCR寄存器中写1清除对应标志
@@ -244,6 +246,7 @@ void DMA1_Channel4_IRQHandler(void)
         // 标记DMA发送完成
         tx_dma_busy = 0;
     }
+#endif
   /* USER CODE END DMA1_Channel4_IRQn 1 */
 }
 
@@ -270,26 +273,28 @@ void USART1_IRQHandler(void)
 
   /* USER CODE END USART1_IRQn 0 */
   /* USER CODE BEGIN USART1_IRQn 1 */
+#if (USE_LL_LIBRARY == 1)
     // LL库方式
-//    if (LL_USART_IsActiveFlag_IDLE(USART1)) {
-//        uint32_t tmp;
-//        /* 清除IDLE标志，必须先读SR，再读DR */
-//        tmp = USART1->SR;
-//        tmp = USART1->DR;
-//        (void)tmp;
-//        /* 暂时禁用DMA接收，防止数据继续写入 */
-//        LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_5);
-//        /* 计算本次接收的字节数：
-//           recvd_length = RX_BUFFER_SIZE - 当前DMA剩余传输字节数 */
-//        recvd_length = RX_BUFFER_SIZE - LL_DMA_GetDataLength(DMA1, LL_DMA_CHANNEL_5);
-//        /* 将接收到的数据从接收缓冲区复制到发送缓冲区 */
-//        memcpy((void*)tx_buffer, (const void*)rx_buffer, recvd_length);
-//        /* 标记接收完成 */
-//        rx_complete = 1;
-//        /* 重置DMA接收：重新设置数据长度后再使能DMA */
-//        LL_DMA_SetDataLength(DMA1, LL_DMA_CHANNEL_5, RX_BUFFER_SIZE);
-//        LL_DMA_EnableChannel(DMA1, LL_DMA_CHANNEL_5);
-//    }
+    if (LL_USART_IsActiveFlag_IDLE(USART1)) {
+        uint32_t tmp;
+        /* 清除IDLE标志，必须先读SR，再读DR */
+        tmp = USART1->SR;
+        tmp = USART1->DR;
+        (void)tmp;
+        /* 暂时禁用DMA接收，防止数据继续写入 */
+        LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_5);
+        /* 计算本次接收的字节数：
+           recvd_length = RX_BUFFER_SIZE - 当前DMA剩余传输字节数 */
+        recvd_length = RX_BUFFER_SIZE - LL_DMA_GetDataLength(DMA1, LL_DMA_CHANNEL_5);
+        /* 将接收到的数据从接收缓冲区复制到发送缓冲区 */
+        memcpy((void*)tx_buffer, (const void*)rx_buffer, recvd_length);
+        /* 标记接收完成 */
+        rx_complete = 1;
+        /* 重置DMA接收：重新设置数据长度后再使能DMA */
+        LL_DMA_SetDataLength(DMA1, LL_DMA_CHANNEL_5, RX_BUFFER_SIZE);
+        LL_DMA_EnableChannel(DMA1, LL_DMA_CHANNEL_5);
+    }
+#else
     // 寄存器方式
     // 检查USART1 SR寄存器的IDLE标志（bit4）
     if (USART1->SR & (1UL << 4)) {
@@ -313,6 +318,7 @@ void USART1_IRQHandler(void)
         // 重新使能DMA1通道5：设置EN位（bit0）
         DMA1_Channel5->CCR |= 1UL;
     }
+#endif
   /* USER CODE END USART1_IRQn 1 */
 }
 
