@@ -247,15 +247,14 @@ int main(void)
   /* USER CODE BEGIN 1 */
 #if (USE_LL_LIBRARY == 0)
   Enable_Peripherals_Clock(); // 启动所需外设的时钟
+#endif
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-#else
   LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_AFIO);
   LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
-#endif
   /* System interrupt init*/
   NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
 

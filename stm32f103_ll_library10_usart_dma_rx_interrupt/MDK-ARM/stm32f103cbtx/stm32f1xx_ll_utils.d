@@ -5,9 +5,9 @@ stm32f103cbtx/stm32f1xx_ll_utils.o: \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xb.h \
   ..\Drivers\CMSIS\Include\core_cm3.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdint.h \
-  D:\Coding\MCU_Develop\stm32f103_ll_library09_usart_dma_rec_with_ilde\Drivers\CMSIS\Include\cmsis_version.h \
-  D:\Coding\MCU_Develop\stm32f103_ll_library09_usart_dma_rec_with_ilde\Drivers\CMSIS\Include\cmsis_compiler.h \
-  D:\Coding\MCU_Develop\stm32f103_ll_library09_usart_dma_rec_with_ilde\Drivers\CMSIS\Include\cmsis_armclang.h \
+  D:\Coding\MCU_Develop\stm32f103_ll_library10_usart_dma_rx_interrupt\Drivers\CMSIS\Include\cmsis_version.h \
+  D:\Coding\MCU_Develop\stm32f103_ll_library10_usart_dma_rx_interrupt\Drivers\CMSIS\Include\cmsis_compiler.h \
+  D:\Coding\MCU_Develop\stm32f103_ll_library10_usart_dma_rx_interrupt\Drivers\CMSIS\Include\cmsis_armclang.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h \

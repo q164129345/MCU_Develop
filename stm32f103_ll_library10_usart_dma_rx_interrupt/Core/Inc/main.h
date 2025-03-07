@@ -50,8 +50,8 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-#define RX_BUFFER_SIZE 2048U
-#define TX_BUFFER_SIZE 2048U
+#define RX_BUFFER_SIZE 1024U
+#define TX_BUFFER_SIZE 1024U
 
 #define USE_LL_LIBRARY 1
 /* USER CODE END ET */
