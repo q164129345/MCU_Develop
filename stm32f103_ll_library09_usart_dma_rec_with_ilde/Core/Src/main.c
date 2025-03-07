@@ -288,10 +288,6 @@ int main(void)
   DMA1_Channel4_Configure(); // DMA1通道4
 #endif
   DMA1_Channel5_Configure(); // DMA1通道5
-  
-//#if (USE_LL_LIBRARY == 0)
-//  DMA1_Channel4_Configure(); // DMA1通道4
-//#endif
   /* USER CODE END 2 */
 
   /* Infinite loop */
