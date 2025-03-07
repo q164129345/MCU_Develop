@@ -58,7 +58,8 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-#if 1
+#if (USE_LL_LIBRARY == 0)
+// 外设时钟
 __STATIC_INLINE void Enable_Peripherals_Clock(void) {
     SET_BIT(RCC->APB2ENR, 1UL << 0UL);  // 启动AFIO时钟  // 一般的工程都要开
     SET_BIT(RCC->APB1ENR, 1UL << 28UL); // 启动PWR时钟   // 一般的工程都要开
@@ -66,7 +67,6 @@ __STATIC_INLINE void Enable_Peripherals_Clock(void) {
     SET_BIT(RCC->APB2ENR, 1UL << 2UL);  // 启动GPIOA时钟 // SWD接口
     __NOP(); // 稍微延时一下下
 }
-
 
 // 配置DMA1的通道4：普通模式，内存到外设(flash->USART1_TX)，优先级高，存储器地址递增、数据大小都是8bit
 __STATIC_INLINE void DMA1_Channel4_Configure(void) {
@@ -138,56 +138,14 @@ __STATIC_INLINE void USART1_Configure(void) {
     // (7) 启用 USART
     USART1->CR1 |= (1UL << 13UL);       // UE 位 = 1, 启用 USART
 }
-#endif
 
-#if 0
-// 配置DMA1通道5用于USART1_RX
-__STATIC_INLINE void DMA1_Channel5_Configure(void) {
-    /* 配置DMA1通道5用于USART1_RX接收 */
-    LL_DMA_SetMemoryAddress(DMA1, LL_DMA_CHANNEL_5, (uint32_t)rx_buffer);
-    LL_DMA_SetPeriphAddress(DMA1, LL_DMA_CHANNEL_5, (uint32_t)&USART1->DR);
-    LL_DMA_SetDataLength(DMA1, LL_DMA_CHANNEL_5, RX_BUFFER_SIZE);
-    LL_DMA_EnableChannel(DMA1, LL_DMA_CHANNEL_5);
-}
-
-/**
-  * @brief  使用DMA发送字符串，采用USART1_TX对应的DMA1通道4
-  * @param  data: 待发送数据指针（必须指向独立发送缓冲区）
-  * @param  len:  待发送数据长度
-  * @retval None
-  */
-void USART1_SendString_DMA(const char *data, uint16_t len)
-{
-    // 等待上一次DMA传输完成（也可以添加超时机制）
-    while(tx_dma_busy);
-    tx_dma_busy = 1; // 标记DMA正在发送
-    
-    // 如果DMA通道4正在使能，则先禁用以便重新配置
-    if (LL_DMA_IsEnabledChannel(DMA1, LL_DMA_CHANNEL_4))
-    {
-        LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_4);
-        while(LL_DMA_IsEnabledChannel(DMA1, LL_DMA_CHANNEL_4));
-    }
-    
-    // 配置DMA通道4：内存地址、外设地址及数据传输长度
-    LL_DMA_SetMemoryAddress(DMA1, LL_DMA_CHANNEL_4, (uint32_t)data);
-    LL_DMA_SetPeriphAddress(DMA1, LL_DMA_CHANNEL_4, (uint32_t)&USART1->DR);
-    LL_DMA_SetDataLength(DMA1, LL_DMA_CHANNEL_4, len);
-    
-    // 开启USART1的DMA发送请求（CR3中DMAT置1，通常为第7位）
-    LL_USART_EnableDMAReq_TX(USART1); // 开启USART1的DMA发送请求
-    
-    // 启动DMA通道4，开始DMA传输
-    LL_DMA_EnableChannel(DMA1, LL_DMA_CHANNEL_4);
-}
-
-#else
+// 配置USART1_RX的DMA1通道5
 __STATIC_INLINE void DMA1_Channel5_Configure(void) {
     // 时钟
     RCC->AHBENR |= (1UL << 0UL); // 开启DMA1时钟
     // 开启全局中断
-    NVIC_SetPriority(DMA1_Channel4_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0, 0));
-    NVIC_EnableIRQ(DMA1_Channel4_IRQn);
+    NVIC_SetPriority(DMA1_Channel5_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0, 0));
+    NVIC_EnableIRQ(DMA1_Channel5_IRQn);
     /* 1. 禁用DMA通道5，等待其完全关闭 */
     DMA1_Channel5->CCR &= ~(1UL << 0);  // 清除EN位
     while(DMA1_Channel5->CCR & 1UL);     // 等待DMA通道5关闭
@@ -234,6 +192,48 @@ void USART1_SendString_DMA(const char *data, uint16_t len)
     // 启动DMA通道4：设置EN位启动DMA传输
     DMA1_Channel4->CCR |= 1UL;
 }
+
+#else
+
+// 配置DMA1通道5用于USART1_RX
+__STATIC_INLINE void DMA1_Channel5_Configure(void) {
+    /* 配置DMA1通道5用于USART1_RX接收 */
+    LL_DMA_SetMemoryAddress(DMA1, LL_DMA_CHANNEL_5, (uint32_t)rx_buffer);
+    LL_DMA_SetPeriphAddress(DMA1, LL_DMA_CHANNEL_5, (uint32_t)&USART1->DR);
+    LL_DMA_SetDataLength(DMA1, LL_DMA_CHANNEL_5, RX_BUFFER_SIZE);
+    LL_DMA_EnableChannel(DMA1, LL_DMA_CHANNEL_5);
+}
+
+/**
+  * @brief  使用DMA发送字符串，采用USART1_TX对应的DMA1通道4
+  * @param  data: 待发送数据指针（必须指向独立发送缓冲区）
+  * @param  len:  待发送数据长度
+  * @retval None
+  */
+void USART1_SendString_DMA(const char *data, uint16_t len)
+{
+    // 等待上一次DMA传输完成（也可以添加超时机制）
+    while(tx_dma_busy);
+    tx_dma_busy = 1; // 标记DMA正在发送
+    
+    // 如果DMA通道4正在使能，则先禁用以便重新配置
+    if (LL_DMA_IsEnabledChannel(DMA1, LL_DMA_CHANNEL_4))
+    {
+        LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_4);
+        while(LL_DMA_IsEnabledChannel(DMA1, LL_DMA_CHANNEL_4));
+    }
+    
+    // 配置DMA通道4：内存地址、外设地址及数据传输长度
+    LL_DMA_SetMemoryAddress(DMA1, LL_DMA_CHANNEL_4, (uint32_t)data);
+    LL_DMA_SetPeriphAddress(DMA1, LL_DMA_CHANNEL_4, (uint32_t)&USART1->DR);
+    LL_DMA_SetDataLength(DMA1, LL_DMA_CHANNEL_4, len);
+    
+    // 开启USART1的DMA发送请求（CR3中DMAT置1，通常为第7位）
+    LL_USART_EnableDMAReq_TX(USART1); // 开启USART1的DMA发送请求
+    
+    // 启动DMA通道4，开始DMA传输
+    LL_DMA_EnableChannel(DMA1, LL_DMA_CHANNEL_4);
+}
 #endif
 
 /* USER CODE END 0 */
@@ -245,15 +245,17 @@ void USART1_SendString_DMA(const char *data, uint16_t len)
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  //Enable_Peripherals_Clock(); // 启动所需外设的时钟
+#if (USE_LL_LIBRARY == 0)
+  Enable_Peripherals_Clock(); // 启动所需外设的时钟
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  //LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_AFIO);
-  //LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
-
+#else
+  LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_AFIO);
+  LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
+#endif
   /* System interrupt init*/
   NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
 
@@ -273,16 +275,23 @@ int main(void)
 
   /* USER CODE BEGIN SysInit */
   SysTick->CTRL |= 0x01UL << 1UL; // 开启SysTick中断
+#if (USE_LL_LIBRARY == 1)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  //MX_DMA_Init();
-  //MX_USART1_UART_Init();
+  MX_DMA_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  DMA1_Channel5_Configure(); // DMA1通道5
-  DMA1_Channel4_Configure(); // DMA1通道4
+#else
   USART1_Configure(); // USART1
+  DMA1_Channel4_Configure(); // DMA1通道4
+#endif
+  DMA1_Channel5_Configure(); // DMA1通道5
+  
+//#if (USE_LL_LIBRARY == 0)
+//  DMA1_Channel4_Configure(); // DMA1通道4
+//#endif
   /* USER CODE END 2 */
 
   /* Infinite loop */
