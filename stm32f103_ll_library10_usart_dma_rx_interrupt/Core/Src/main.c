@@ -31,7 +31,6 @@
 volatile uint8_t rx_buffer[RX_BUFFER_SIZE];
 volatile uint8_t rx_complete = 0;
 volatile uint16_t recvd_length = 0;
-volatile uint8_t cnt = 0;
 
 volatile uint8_t tx_buffer[TX_BUFFER_SIZE];
 volatile uint8_t tx_dma_busy = 0;
@@ -305,7 +304,6 @@ int main(void)
            以避免在发送过程中被中断修改tx_buffer */
         USART1_SendString_DMA((const char*)tx_buffer, recvd_length);
         rx_complete = 0; // 清除标志，等待下一次接收
-        cnt++;
     }
   }
   /* USER CODE END 3 */
