@@ -73,7 +73,7 @@ __STATIC_INLINE void DMA1_Channel4_Configure(void) {
     // 开启时钟
     RCC->AHBENR |= (1UL << 0UL); // 开启DMA1时钟
     // 设置并开启全局中断
-    NVIC_SetPriority(DMA1_Channel4_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0, 0));
+    NVIC_SetPriority(DMA1_Channel4_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),2, 0));
     NVIC_EnableIRQ(DMA1_Channel4_IRQn);
     // 数据传输方向
     DMA1_Channel4->CCR &= ~(1UL << 14UL); // 外设到存储器模式
@@ -108,7 +108,7 @@ __STATIC_INLINE void USART1_Configure(void) {
     GPIOA->CRH &= ~(0xF << 8UL);        // 清零 PA10 的配置位 (位 8-11)
     GPIOA->CRH |= (0x4 << 8UL);         // PA10: 输入模式，浮空输入 (MODE10 = 00, CNF10 = 01)
     // 开启USART1全局中断
-    NVIC_SetPriority(USART1_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),1, 0)); // 优先级1（优先级越低相当于越优先）
+    NVIC_SetPriority(USART1_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0, 0)); // 优先级1（优先级越低相当于越优先）
     NVIC_EnableIRQ(USART1_IRQn);
     /* 3. 配置 USART1 参数 */
     // (1) 设置波特率 115200 (系统时钟 72MHz, 过采样 16)
@@ -148,7 +148,7 @@ __STATIC_INLINE void DMA1_Channel5_Configure(void) {
     NVIC_EnableIRQ(DMA1_Channel5_IRQn);
     /* 1. 禁用DMA通道5，等待其完全关闭 */
     DMA1_Channel5->CCR &= ~(1UL << 0);  // 清除EN位
-    while(DMA1_Channel5->CCR & 1UL);     // 等待DMA通道5关闭
+    while(DMA1_Channel5->CCR & 1UL);    // 等待DMA通道5关闭
 
     /* 2. 配置外设地址和存储器地址 */
     DMA1_Channel5->CPAR = (uint32_t)&USART1->DR;  // 外设地址为USART1数据寄存器
@@ -168,13 +168,19 @@ __STATIC_INLINE void DMA1_Channel5_Configure(void) {
     DMA1_Channel5->CCR |= (1UL << 5);       // 使能循环模式 (CIRC，bit5)
     DMA1_Channel5->CCR |= (1UL << 7);       // 使能存储器自增 (MINC，bit7)
     DMA1_Channel5->CCR |= (3UL << 12);      // 设置优先级为非常高 (PL置为“11”，bit12-13)
-
+    
+    // 增加传输完成与传输过半中断
+    DMA1_Channel5->CCR |= (1UL << 1);             // 传输完成中断 (TCIE)
+    DMA1_Channel5->CCR |= (1UL << 2);             // 传输过半中断 (HTIE)
     /* 4. 使能DMA通道5 */
     DMA1_Channel5->CCR |= 1UL;  // 置EN位启动通道
 }
 
 void USART1_SendString_DMA(const char *data, uint16_t len)
 {
+    if (len == 0) {
+        return;
+    }
     // 等待上一次DMA传输完成（也可以添加超时机制）
     while(tx_dma_busy);
     tx_dma_busy = 1; // 标记DMA正在发送
@@ -212,7 +218,7 @@ __STATIC_INLINE void DMA1_Channel5_Configure(void) {
   */
 void USART1_SendString_DMA(const char *data, uint16_t len)
 {
-    if (len == 0) {
+    if (len == 0) { // 不能让DMA发送0个字节，会导致没办法进入发送完成中断，然后卡死这个函数。
         return;
     }
     // 等待上一次DMA传输完成

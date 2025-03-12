@@ -109,7 +109,7 @@ void MX_USART1_UART_Init(void)
   LL_USART_EnableIT_IDLE(USART1);   // 开启USART1接收空闲中断
   
   LL_DMA_EnableIT_HT(DMA1, LL_DMA_CHANNEL_5); // 使能DMA1通道5的传输过半中断
-  LL_DMA_EnableIT_TC(DMA1, LL_DMA_CHANNEL_5); // 使能DMA1通道的传输完成中断
+  LL_DMA_EnableIT_TC(DMA1, LL_DMA_CHANNEL_5); // 使能DMA1通道5的传输完成中断
   
   LL_DMA_EnableIT_TC(DMA1, LL_DMA_CHANNEL_4); // 使能DMA1通道4的传输完成中断
   /* USER CODE END USART1_Init 2 */

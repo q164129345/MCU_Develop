@@ -254,6 +254,7 @@ void DMA1_Channel5_IRQHandler(void)
   /* USER CODE END DMA1_Channel5_IRQn 0 */
 
   /* USER CODE BEGIN DMA1_Channel5_IRQn 1 */
+#if USE_LL_LIBRARY == 1
     // 判断是否产生半传输中断（前半区完成）
     if(LL_DMA_IsActiveFlag_HT5(DMA1)) {
         // 清除半传输标志
@@ -273,6 +274,25 @@ void DMA1_Channel5_IRQHandler(void)
         recvd_length = RX_BUFFER_SIZE/2;
         rx_complete = 1;
     }
+#else
+    // 半传输中断
+    if (DMA1->ISR & (1UL << 18)) {
+        DMA1->IFCR |= (1UL << 18);
+        // 前半缓冲区处理
+        memcpy((void*)tx_buffer, (const void*)rx_buffer, RX_BUFFER_SIZE / 2);
+        recvd_length = RX_BUFFER_SIZE / 2;
+        rx_complete = 1;
+    }
+
+    // 传输完成中断
+    if (DMA1->ISR & (1UL << 17)) {
+        DMA1->IFCR |= (1UL << 17);
+        // 后半缓冲区处理
+        memcpy((void*)tx_buffer, (const void*)(rx_buffer + RX_BUFFER_SIZE / 2), RX_BUFFER_SIZE / 2);
+        recvd_length = RX_BUFFER_SIZE / 2;
+        rx_complete = 1;
+    }
+#endif
   /* USER CODE END DMA1_Channel5_IRQn 1 */
 }
 
@@ -294,10 +314,8 @@ void USART1_IRQHandler(void)
         tmp = USART1->SR;
         tmp = USART1->DR;
         (void)tmp;
-        
         // 禁用 DMA1 通道5，防止数据继续写入
         LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_5);
-        
         uint16_t remaining = LL_DMA_GetDataLength(DMA1, LL_DMA_CHANNEL_5); // 获取剩余的容量
         uint16_t count = 0;
         // 根据剩余字节判断当前正在哪个半区
@@ -315,12 +333,10 @@ void USART1_IRQHandler(void)
                 memcpy((void*)tx_buffer, (const void*)(rx_buffer + RX_BUFFER_SIZE/2), count);
             }
         }
-        
         if (count != 0) {
             recvd_length = count;
             rx_complete = 1;
         }
-
         // 重新设置 DMA 传输长度并使能 DMA
         LL_DMA_SetDataLength(DMA1, LL_DMA_CHANNEL_5, RX_BUFFER_SIZE);
         LL_DMA_EnableChannel(DMA1, LL_DMA_CHANNEL_5);
@@ -334,16 +350,32 @@ void USART1_IRQHandler(void)
         tmp = USART1->SR;
         tmp = USART1->DR;
         (void)tmp;
-        
         // 禁用DMA1通道5：清除CCR寄存器的EN位（bit0）
         DMA1_Channel5->CCR &= ~(1UL << 0);
-        // (可选)等待通道确实关闭：while(DMA1_Channel5->CCR & (1UL << 0));
-        // 计算本次接收的字节数
-        recvd_length = RX_BUFFER_SIZE - DMA1_Channel5->CNDTR;
-        // 将接收到的数据复制到发送缓冲区
-        memcpy((void*)tx_buffer, (const void*)rx_buffer, recvd_length);
-        // 标记接收完成
-        rx_complete = 1;
+        // 获取剩余的数据量
+        uint16_t remaining = DMA1_Channel5->CNDTR;
+        uint16_t count = 0;
+
+        // 根据剩余字节判断当前正在哪个半区
+        // 注意：为避免当数据长度刚好为512字节或1024字节时，与DMA半传输/传输完成中断冲突，
+        // 在count不为0时才进行数据复制
+        if (remaining > (RX_BUFFER_SIZE / 2)) {
+            // 还在接收前半区：接收数据量 = (总长度 - remaining)，不足512字节
+            count = RX_BUFFER_SIZE - remaining;
+            if (count != 0) {  // 避免与传输完成中断冲突，多复制一次
+                memcpy((void*)tx_buffer, (const void*)rx_buffer, count);
+            }
+        } else {
+            // 前半区已满，当前在后半区：后半区接收数据量 = (前半区长度 - remaining)
+            count = (RX_BUFFER_SIZE / 2) - remaining;
+            if (count != 0) {  // 避免与传输过半中断冲突，多复制一次
+                memcpy((void*)tx_buffer, (const void*)rx_buffer + (RX_BUFFER_SIZE / 2), count);
+            }
+        }
+        if (count != 0) {
+            recvd_length = count;
+            rx_complete = 1;
+        }
         // 重置DMA接收：设置CNDTR寄存器为RX_BUFFER_SIZE
         DMA1_Channel5->CNDTR = RX_BUFFER_SIZE;
         // 重新使能DMA1通道5：设置EN位（bit0）
