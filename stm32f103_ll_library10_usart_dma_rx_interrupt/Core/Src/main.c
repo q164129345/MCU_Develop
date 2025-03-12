@@ -31,6 +31,7 @@
 volatile uint8_t rx_buffer[RX_BUFFER_SIZE];
 volatile uint8_t rx_complete = 0;
 volatile uint16_t recvd_length = 0;
+volatile uint8_t cnt = 0;
 
 volatile uint8_t tx_buffer[TX_BUFFER_SIZE];
 volatile uint8_t tx_dma_busy = 0;
@@ -212,6 +213,9 @@ __STATIC_INLINE void DMA1_Channel5_Configure(void) {
   */
 void USART1_SendString_DMA(const char *data, uint16_t len)
 {
+    if (len == 0) {
+        return;
+    }
     // 等待上一次DMA传输完成（也可以添加超时机制）
     while(tx_dma_busy);
     tx_dma_busy = 1; // 标记DMA正在发送
@@ -296,11 +300,12 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    if (rx_complete) {
+    if (rx_complete && !tx_dma_busy) {
         /* 在发送之前，可以选择禁用中断或者采取其他同步机制，
            以避免在发送过程中被中断修改tx_buffer */
         USART1_SendString_DMA((const char*)tx_buffer, recvd_length);
         rx_complete = 0; // 清除标志，等待下一次接收
+        cnt++;
     }
   }
   /* USER CODE END 3 */

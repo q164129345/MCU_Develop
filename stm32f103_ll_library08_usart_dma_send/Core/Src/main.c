@@ -173,6 +173,9 @@ void USART1_SendString(const char *str) {
   */
 void USART1_SendString_DMA(const char *data, uint16_t len)
 {
+    if (len == 0) {
+        return;
+    }
     // 等待上一次DMA传输完成（也可以添加超时机制）
     while(tx_dma_busy);
     tx_dma_busy = 1; // 标记DMA正在发送
@@ -200,6 +203,9 @@ void USART1_SendString_DMA(const char *data, uint16_t len)
 #else
 void USART1_SendString_DMA(const char *data, uint16_t len)
 {
+    if (len == 0) {
+        return;
+    }
     // 等待上一次DMA传输完成（也可以添加超时机制）
     while(tx_dma_busy);
     tx_dma_busy = 1; // 标记DMA正在发送

@@ -922,35 +922,35 @@ Image Symbol Table
     [Anonymous Symbol]                       0x08001138   Section        0  system_stm32f1xx.o(.text.SystemInit)
     [Anonymous Symbol]                       0x0800113c   Section        0  stm32f1xx_it.o(.text.USART1_IRQHandler)
     [Anonymous Symbol]                       0x080011cc   Section        0  main.o(.text.USART1_SendString_DMA)
-    [Anonymous Symbol]                       0x0800126c   Section        0  stm32f1xx_it.o(.text.UsageFault_Handler)
-    __NVIC_EnableIRQ                         0x08001271   Thumb Code    48  dma.o(.text.__NVIC_EnableIRQ)
-    [Anonymous Symbol]                       0x08001270   Section        0  dma.o(.text.__NVIC_EnableIRQ)
-    __NVIC_EnableIRQ                         0x080012a1   Thumb Code    48  usart.o(.text.__NVIC_EnableIRQ)
-    [Anonymous Symbol]                       0x080012a0   Section        0  usart.o(.text.__NVIC_EnableIRQ)
-    __NVIC_GetPriorityGrouping               0x080012d1   Thumb Code    16  main.o(.text.__NVIC_GetPriorityGrouping)
-    [Anonymous Symbol]                       0x080012d0   Section        0  main.o(.text.__NVIC_GetPriorityGrouping)
-    __NVIC_GetPriorityGrouping               0x080012e1   Thumb Code    16  dma.o(.text.__NVIC_GetPriorityGrouping)
-    [Anonymous Symbol]                       0x080012e0   Section        0  dma.o(.text.__NVIC_GetPriorityGrouping)
-    __NVIC_GetPriorityGrouping               0x080012f1   Thumb Code    16  usart.o(.text.__NVIC_GetPriorityGrouping)
-    [Anonymous Symbol]                       0x080012f0   Section        0  usart.o(.text.__NVIC_GetPriorityGrouping)
-    __NVIC_SetPriority                       0x08001301   Thumb Code    66  main.o(.text.__NVIC_SetPriority)
-    [Anonymous Symbol]                       0x08001300   Section        0  main.o(.text.__NVIC_SetPriority)
-    __NVIC_SetPriority                       0x08001345   Thumb Code    66  dma.o(.text.__NVIC_SetPriority)
-    [Anonymous Symbol]                       0x08001344   Section        0  dma.o(.text.__NVIC_SetPriority)
-    __NVIC_SetPriority                       0x08001389   Thumb Code    66  usart.o(.text.__NVIC_SetPriority)
-    [Anonymous Symbol]                       0x08001388   Section        0  usart.o(.text.__NVIC_SetPriority)
-    __NVIC_SetPriorityGrouping               0x080013cd   Thumb Code    60  main.o(.text.__NVIC_SetPriorityGrouping)
-    [Anonymous Symbol]                       0x080013cc   Section        0  main.o(.text.__NVIC_SetPriorityGrouping)
-    [Anonymous Symbol]                       0x08001408   Section        0  main.o(.text.main)
-    i.__scatterload_copy                     0x0800149a   Section       14  handlers.o(i.__scatterload_copy)
-    i.__scatterload_null                     0x080014a8   Section        2  handlers.o(i.__scatterload_null)
-    i.__scatterload_zeroinit                 0x080014aa   Section       14  handlers.o(i.__scatterload_zeroinit)
-    CHANNEL_OFFSET_TAB                       0x080014d0   Data           7  main.o(.rodata.CHANNEL_OFFSET_TAB)
-    [Anonymous Symbol]                       0x080014d0   Section        0  main.o(.rodata.CHANNEL_OFFSET_TAB)
-    CHANNEL_OFFSET_TAB                       0x080014d7   Data           7  usart.o(.rodata.CHANNEL_OFFSET_TAB)
-    [Anonymous Symbol]                       0x080014d7   Section        0  usart.o(.rodata.CHANNEL_OFFSET_TAB)
-    CHANNEL_OFFSET_TAB                       0x080014de   Data           7  stm32f1xx_it.o(.rodata.CHANNEL_OFFSET_TAB)
-    [Anonymous Symbol]                       0x080014de   Section        0  stm32f1xx_it.o(.rodata.CHANNEL_OFFSET_TAB)
+    [Anonymous Symbol]                       0x08001278   Section        0  stm32f1xx_it.o(.text.UsageFault_Handler)
+    __NVIC_EnableIRQ                         0x0800127d   Thumb Code    48  dma.o(.text.__NVIC_EnableIRQ)
+    [Anonymous Symbol]                       0x0800127c   Section        0  dma.o(.text.__NVIC_EnableIRQ)
+    __NVIC_EnableIRQ                         0x080012ad   Thumb Code    48  usart.o(.text.__NVIC_EnableIRQ)
+    [Anonymous Symbol]                       0x080012ac   Section        0  usart.o(.text.__NVIC_EnableIRQ)
+    __NVIC_GetPriorityGrouping               0x080012dd   Thumb Code    16  main.o(.text.__NVIC_GetPriorityGrouping)
+    [Anonymous Symbol]                       0x080012dc   Section        0  main.o(.text.__NVIC_GetPriorityGrouping)
+    __NVIC_GetPriorityGrouping               0x080012ed   Thumb Code    16  dma.o(.text.__NVIC_GetPriorityGrouping)
+    [Anonymous Symbol]                       0x080012ec   Section        0  dma.o(.text.__NVIC_GetPriorityGrouping)
+    __NVIC_GetPriorityGrouping               0x080012fd   Thumb Code    16  usart.o(.text.__NVIC_GetPriorityGrouping)
+    [Anonymous Symbol]                       0x080012fc   Section        0  usart.o(.text.__NVIC_GetPriorityGrouping)
+    __NVIC_SetPriority                       0x0800130d   Thumb Code    66  main.o(.text.__NVIC_SetPriority)
+    [Anonymous Symbol]                       0x0800130c   Section        0  main.o(.text.__NVIC_SetPriority)
+    __NVIC_SetPriority                       0x08001351   Thumb Code    66  dma.o(.text.__NVIC_SetPriority)
+    [Anonymous Symbol]                       0x08001350   Section        0  dma.o(.text.__NVIC_SetPriority)
+    __NVIC_SetPriority                       0x08001395   Thumb Code    66  usart.o(.text.__NVIC_SetPriority)
+    [Anonymous Symbol]                       0x08001394   Section        0  usart.o(.text.__NVIC_SetPriority)
+    __NVIC_SetPriorityGrouping               0x080013d9   Thumb Code    60  main.o(.text.__NVIC_SetPriorityGrouping)
+    [Anonymous Symbol]                       0x080013d8   Section        0  main.o(.text.__NVIC_SetPriorityGrouping)
+    [Anonymous Symbol]                       0x08001414   Section        0  main.o(.text.main)
+    i.__scatterload_copy                     0x080014a6   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x080014b4   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x080014b6   Section       14  handlers.o(i.__scatterload_zeroinit)
+    CHANNEL_OFFSET_TAB                       0x080014dc   Data           7  main.o(.rodata.CHANNEL_OFFSET_TAB)
+    [Anonymous Symbol]                       0x080014dc   Section        0  main.o(.rodata.CHANNEL_OFFSET_TAB)
+    CHANNEL_OFFSET_TAB                       0x080014e3   Data           7  usart.o(.rodata.CHANNEL_OFFSET_TAB)
+    [Anonymous Symbol]                       0x080014e3   Section        0  usart.o(.rodata.CHANNEL_OFFSET_TAB)
+    CHANNEL_OFFSET_TAB                       0x080014ea   Data           7  stm32f1xx_it.o(.rodata.CHANNEL_OFFSET_TAB)
+    [Anonymous Symbol]                       0x080014ea   Section        0  stm32f1xx_it.o(.rodata.CHANNEL_OFFSET_TAB)
     STACK                                    0x20001018   Section     1024  startup_stm32f103xb.o(STACK)
 
     Global Symbols
@@ -1047,16 +1047,16 @@ Image Symbol Table
     SystemClock_Config                       0x080010ad   Thumb Code   138  main.o(.text.SystemClock_Config)
     SystemInit                               0x08001139   Thumb Code     2  system_stm32f1xx.o(.text.SystemInit)
     USART1_IRQHandler                        0x0800113d   Thumb Code   142  stm32f1xx_it.o(.text.USART1_IRQHandler)
-    USART1_SendString_DMA                    0x080011cd   Thumb Code   160  main.o(.text.USART1_SendString_DMA)
-    UsageFault_Handler                       0x0800126d   Thumb Code     4  stm32f1xx_it.o(.text.UsageFault_Handler)
-    main                                     0x08001409   Thumb Code   146  main.o(.text.main)
-    __scatterload_copy                       0x0800149b   Thumb Code    14  handlers.o(i.__scatterload_copy)
-    __scatterload_null                       0x080014a9   Thumb Code     2  handlers.o(i.__scatterload_null)
-    __scatterload_zeroinit                   0x080014ab   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
-    AHBPrescTable                            0x080014b8   Data          16  system_stm32f1xx.o(.rodata.AHBPrescTable)
-    APBPrescTable                            0x080014c8   Data           8  system_stm32f1xx.o(.rodata.APBPrescTable)
-    Region$$Table$$Base                      0x080014e8   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x08001508   Number         0  anon$$obj.o(Region$$Table)
+    USART1_SendString_DMA                    0x080011cd   Thumb Code   172  main.o(.text.USART1_SendString_DMA)
+    UsageFault_Handler                       0x08001279   Thumb Code     4  stm32f1xx_it.o(.text.UsageFault_Handler)
+    main                                     0x08001415   Thumb Code   146  main.o(.text.main)
+    __scatterload_copy                       0x080014a7   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x080014b5   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x080014b7   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    AHBPrescTable                            0x080014c4   Data          16  system_stm32f1xx.o(.rodata.AHBPrescTable)
+    APBPrescTable                            0x080014d4   Data           8  system_stm32f1xx.o(.rodata.APBPrescTable)
+    Region$$Table$$Base                      0x080014f4   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x08001514   Number         0  anon$$obj.o(Region$$Table)
     SystemCoreClock                          0x20000000   Data           4  system_stm32f1xx.o(.data.SystemCoreClock)
     gTickCount                               0x20000008   Data           4  stm32f1xx_it.o(.bss.gTickCount)
     pinStatus                                0x2000000c   Data           1  stm32f1xx_it.o(.bss.pinStatus)
@@ -1075,9 +1075,9 @@ Memory Map of the image
 
   Image Entry point : 0x080000ed
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00001510, Max: 0x00020000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00001520, Max: 0x00020000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00001508, Max: 0x00020000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00001514, Max: 0x00020000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -1222,48 +1222,48 @@ Memory Map of the image
     0x0800113a   0x0800113a   0x00000002   PAD
     0x0800113c   0x0800113c   0x0000008e   Code   RO          191    .text.USART1_IRQHandler  stm32f1xx_it.o
     0x080011ca   0x080011ca   0x00000002   PAD
-    0x080011cc   0x080011cc   0x000000a0   Code   RO           11    .text.USART1_SendString_DMA  main.o
-    0x0800126c   0x0800126c   0x00000004   Code   RO          169    .text.UsageFault_Handler  stm32f1xx_it.o
-    0x08001270   0x08001270   0x00000030   Code   RO          108    .text.__NVIC_EnableIRQ  dma.o
-    0x080012a0   0x080012a0   0x00000030   Code   RO          141    .text.__NVIC_EnableIRQ  usart.o
-    0x080012d0   0x080012d0   0x00000010   Code   RO           39    .text.__NVIC_GetPriorityGrouping  main.o
-    0x080012e0   0x080012e0   0x00000010   Code   RO          106    .text.__NVIC_GetPriorityGrouping  dma.o
-    0x080012f0   0x080012f0   0x00000010   Code   RO          139    .text.__NVIC_GetPriorityGrouping  usart.o
-    0x08001300   0x08001300   0x00000042   Code   RO           35    .text.__NVIC_SetPriority  main.o
-    0x08001342   0x08001342   0x00000002   PAD
-    0x08001344   0x08001344   0x00000042   Code   RO          102    .text.__NVIC_SetPriority  dma.o
-    0x08001386   0x08001386   0x00000002   PAD
-    0x08001388   0x08001388   0x00000042   Code   RO          135    .text.__NVIC_SetPriority  usart.o
-    0x080013ca   0x080013ca   0x00000002   PAD
-    0x080013cc   0x080013cc   0x0000003c   Code   RO           33    .text.__NVIC_SetPriorityGrouping  main.o
-    0x08001408   0x08001408   0x00000092   Code   RO           27    .text.main          main.o
-    0x0800149a   0x0800149a   0x0000000e   Code   RO          505    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x080014a8   0x080014a8   0x00000002   Code   RO          506    i.__scatterload_null  mc_w.l(handlers.o)
-    0x080014aa   0x080014aa   0x0000000e   Code   RO          507    i.__scatterload_zeroinit  mc_w.l(handlers.o)
-    0x080014b8   0x080014b8   0x00000010   Data   RO          472    .rodata.AHBPrescTable  system_stm32f1xx.o
-    0x080014c8   0x080014c8   0x00000008   Data   RO          473    .rodata.APBPrescTable  system_stm32f1xx.o
-    0x080014d0   0x080014d0   0x00000007   Data   RO           78    .rodata.CHANNEL_OFFSET_TAB  main.o
-    0x080014d7   0x080014d7   0x00000007   Data   RO          153    .rodata.CHANNEL_OFFSET_TAB  usart.o
-    0x080014de   0x080014de   0x00000007   Data   RO          203    .rodata.CHANNEL_OFFSET_TAB  stm32f1xx_it.o
-    0x080014e5   0x080014e5   0x00000003   PAD
-    0x080014e8   0x080014e8   0x00000020   Data   RO          504    Region$$Table       anon$$obj.o
+    0x080011cc   0x080011cc   0x000000ac   Code   RO           11    .text.USART1_SendString_DMA  main.o
+    0x08001278   0x08001278   0x00000004   Code   RO          169    .text.UsageFault_Handler  stm32f1xx_it.o
+    0x0800127c   0x0800127c   0x00000030   Code   RO          108    .text.__NVIC_EnableIRQ  dma.o
+    0x080012ac   0x080012ac   0x00000030   Code   RO          141    .text.__NVIC_EnableIRQ  usart.o
+    0x080012dc   0x080012dc   0x00000010   Code   RO           39    .text.__NVIC_GetPriorityGrouping  main.o
+    0x080012ec   0x080012ec   0x00000010   Code   RO          106    .text.__NVIC_GetPriorityGrouping  dma.o
+    0x080012fc   0x080012fc   0x00000010   Code   RO          139    .text.__NVIC_GetPriorityGrouping  usart.o
+    0x0800130c   0x0800130c   0x00000042   Code   RO           35    .text.__NVIC_SetPriority  main.o
+    0x0800134e   0x0800134e   0x00000002   PAD
+    0x08001350   0x08001350   0x00000042   Code   RO          102    .text.__NVIC_SetPriority  dma.o
+    0x08001392   0x08001392   0x00000002   PAD
+    0x08001394   0x08001394   0x00000042   Code   RO          135    .text.__NVIC_SetPriority  usart.o
+    0x080013d6   0x080013d6   0x00000002   PAD
+    0x080013d8   0x080013d8   0x0000003c   Code   RO           33    .text.__NVIC_SetPriorityGrouping  main.o
+    0x08001414   0x08001414   0x00000092   Code   RO           27    .text.main          main.o
+    0x080014a6   0x080014a6   0x0000000e   Code   RO          505    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x080014b4   0x080014b4   0x00000002   Code   RO          506    i.__scatterload_null  mc_w.l(handlers.o)
+    0x080014b6   0x080014b6   0x0000000e   Code   RO          507    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x080014c4   0x080014c4   0x00000010   Data   RO          472    .rodata.AHBPrescTable  system_stm32f1xx.o
+    0x080014d4   0x080014d4   0x00000008   Data   RO          473    .rodata.APBPrescTable  system_stm32f1xx.o
+    0x080014dc   0x080014dc   0x00000007   Data   RO           78    .rodata.CHANNEL_OFFSET_TAB  main.o
+    0x080014e3   0x080014e3   0x00000007   Data   RO          153    .rodata.CHANNEL_OFFSET_TAB  usart.o
+    0x080014ea   0x080014ea   0x00000007   Data   RO          203    .rodata.CHANNEL_OFFSET_TAB  stm32f1xx_it.o
+    0x080014f1   0x080014f1   0x00000003   PAD
+    0x080014f4   0x080014f4   0x00000020   Data   RO          504    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08001508, Size: 0x00001418, Max: 0x00005000, ABSOLUTE)
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08001518, Size: 0x00001418, Max: 0x00005000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x08001508   0x00000004   Data   RW          471    .data.SystemCoreClock  system_stm32f1xx.o
-    0x20000004   0x0800150c   0x00000004   PAD
+    0x20000000   0x08001518   0x00000004   Data   RW          471    .data.SystemCoreClock  system_stm32f1xx.o
+    0x20000004   0x0800151c   0x00000004   PAD
     0x20000008        -       0x00000004   Zero   RW          201    .bss.gTickCount     stm32f1xx_it.o
     0x2000000c        -       0x00000001   Zero   RW          202    .bss.pinStatus      stm32f1xx_it.o
-    0x2000000d   0x0800150c   0x00000001   PAD
+    0x2000000d   0x0800151c   0x00000001   PAD
     0x2000000e        -       0x00000002   Zero   RW           74    .bss.recvd_length   main.o
     0x20000010        -       0x00000800   Zero   RW           77    .bss.rx_buffer      main.o
     0x20000810        -       0x00000001   Zero   RW           73    .bss.rx_complete    main.o
     0x20000811        -       0x00000800   Zero   RW           76    .bss.tx_buffer      main.o
     0x20001011        -       0x00000001   Zero   RW           75    .bss.tx_dma_busy    main.o
-    0x20001012   0x0800150c   0x00000006   PAD
+    0x20001012   0x0800151c   0x00000006   PAD
     0x20001018        -       0x00000400   Zero   RW            1    STACK               startup_stm32f103xb.o
 
 
@@ -1276,7 +1276,7 @@ Image component sizes
 
        344          0          0          0          0       4155   dma.o
         50          0          0          0          0       1135   gpio.o
-      1404          0          7          0       4100       8626   main.o
+      1416          0          7          0       4100       8635   main.o
         36          8        236          0       1024        812   startup_stm32f103xb.o
        554          0          7          0          5       3726   stm32f1xx_it.o
        392          0          0          0          0       3205   stm32f1xx_ll_gpio.o
@@ -1287,7 +1287,7 @@ Image component sizes
       1166          0          7          0          0       7077   usart.o
 
     ----------------------------------------------------------------------
-      4934          8        316          4       5140      45278   Object Totals
+      4946          8        316          4       5140      45287   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         80          0          3          0         11          0   (incl. Padding)
 
@@ -1327,15 +1327,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      5068         26        316          4       5140      45386   Grand Totals
-      5068         26        316          4       5140      45386   ELF Image Totals
-      5068         26        316          4          0          0   ROM Totals
+      5080         26        316          4       5140      45395   Grand Totals
+      5080         26        316          4       5140      45395   ELF Image Totals
+      5080         26        316          4          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 5384 (   5.26kB)
+    Total RO  Size (Code + RO Data)                 5396 (   5.27kB)
     Total RW  Size (RW Data + ZI Data)              5144 (   5.02kB)
-    Total ROM Size (Code + RO Data + RW Data)       5388 (   5.26kB)
+    Total ROM Size (Code + RO Data + RW Data)       5400 (   5.27kB)
 
 ==============================================================================
 

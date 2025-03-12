@@ -298,22 +298,29 @@ void USART1_IRQHandler(void)
         // 禁用 DMA1 通道5，防止数据继续写入
         LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_5);
         
-        uint16_t remaining = LL_DMA_GetDataLength(DMA1, LL_DMA_CHANNEL_5);
+        uint16_t remaining = LL_DMA_GetDataLength(DMA1, LL_DMA_CHANNEL_5); // 获取剩余的容量
         uint16_t count = 0;
         // 根据剩余字节判断当前正在哪个半区
         // 还有，避免当数据长度刚好512字节与1024字节时，传输过半中断与空闲中断复制两遍数据，与传输完成中断与空闲中断复制两遍数据。
         if (remaining > (RX_BUFFER_SIZE/2)) {
             // 还在接收前半区：接收数据量 = (1K - remaining)，但肯定不足 512 字节
             count = RX_BUFFER_SIZE - remaining;
-            memcpy((void*)tx_buffer, (const void*)rx_buffer, count);
+            if (count != 0) { // 避免与传输完成中断冲突，多复制一次
+                memcpy((void*)tx_buffer, (const void*)rx_buffer, count);
+            }
         } else {
             // 前半区已写满，当前在后半区：后半区接收数据量 = (RX_BUFFER_SIZE/2 - remaining)
             count = (RX_BUFFER_SIZE/2) - remaining;
-            memcpy((void*)tx_buffer, (const void*)(rx_buffer + RX_BUFFER_SIZE/2), count);
+            if (count != 0) { // 避免与传输过半中断冲突，多复制一次
+                memcpy((void*)tx_buffer, (const void*)(rx_buffer + RX_BUFFER_SIZE/2), count);
+            }
         }
-        recvd_length = count;
-        rx_complete = 1;
         
+        if (count != 0) {
+            recvd_length = count;
+            rx_complete = 1;
+        }
+
         // 重新设置 DMA 传输长度并使能 DMA
         LL_DMA_SetDataLength(DMA1, LL_DMA_CHANNEL_5, RX_BUFFER_SIZE);
         LL_DMA_EnableChannel(DMA1, LL_DMA_CHANNEL_5);
