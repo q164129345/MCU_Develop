@@ -55,7 +55,6 @@ Section Cross References
     main.o(.text.main) refers to usart.o(.text.MX_USART1_UART_Init) for MX_USART1_UART_Init
     main.o(.text.main) refers to main.o(.text.DMA1_Channel5_Configure) for DMA1_Channel5_Configure
     main.o(.text.main) refers to main.o(.bss.rx_complete) for rx_complete
-    main.o(.text.main) refers to main.o(.bss.tx_dma_busy) for tx_dma_busy
     main.o(.text.main) refers to main.o(.bss.recvd_length) for recvd_length
     main.o(.text.main) refers to main.o(.bss.tx_buffer) for tx_buffer
     main.o(.text.main) refers to main.o(.text.USART1_SendString_DMA) for USART1_SendString_DMA
@@ -974,15 +973,15 @@ Image Symbol Table
     __NVIC_SetPriorityGrouping               0x08001535   Thumb Code    60  main.o(.text.__NVIC_SetPriorityGrouping)
     [Anonymous Symbol]                       0x08001534   Section        0  main.o(.text.__NVIC_SetPriorityGrouping)
     [Anonymous Symbol]                       0x08001570   Section        0  main.o(.text.main)
-    i.__scatterload_copy                     0x08001610   Section       14  handlers.o(i.__scatterload_copy)
-    i.__scatterload_null                     0x0800161e   Section        2  handlers.o(i.__scatterload_null)
-    i.__scatterload_zeroinit                 0x08001620   Section       14  handlers.o(i.__scatterload_zeroinit)
-    CHANNEL_OFFSET_TAB                       0x08001646   Data           7  main.o(.rodata.CHANNEL_OFFSET_TAB)
-    [Anonymous Symbol]                       0x08001646   Section        0  main.o(.rodata.CHANNEL_OFFSET_TAB)
-    CHANNEL_OFFSET_TAB                       0x0800164d   Data           7  usart.o(.rodata.CHANNEL_OFFSET_TAB)
-    [Anonymous Symbol]                       0x0800164d   Section        0  usart.o(.rodata.CHANNEL_OFFSET_TAB)
-    CHANNEL_OFFSET_TAB                       0x08001654   Data           7  stm32f1xx_it.o(.rodata.CHANNEL_OFFSET_TAB)
-    [Anonymous Symbol]                       0x08001654   Section        0  stm32f1xx_it.o(.rodata.CHANNEL_OFFSET_TAB)
+    i.__scatterload_copy                     0x08001602   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x08001610   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x08001612   Section       14  handlers.o(i.__scatterload_zeroinit)
+    CHANNEL_OFFSET_TAB                       0x08001638   Data           7  main.o(.rodata.CHANNEL_OFFSET_TAB)
+    [Anonymous Symbol]                       0x08001638   Section        0  main.o(.rodata.CHANNEL_OFFSET_TAB)
+    CHANNEL_OFFSET_TAB                       0x0800163f   Data           7  usart.o(.rodata.CHANNEL_OFFSET_TAB)
+    [Anonymous Symbol]                       0x0800163f   Section        0  usart.o(.rodata.CHANNEL_OFFSET_TAB)
+    CHANNEL_OFFSET_TAB                       0x08001646   Data           7  stm32f1xx_it.o(.rodata.CHANNEL_OFFSET_TAB)
+    [Anonymous Symbol]                       0x08001646   Section        0  stm32f1xx_it.o(.rodata.CHANNEL_OFFSET_TAB)
     STACK                                    0x20000810   Section     1024  startup_stm32f103xb.o(STACK)
 
     Global Symbols
@@ -1081,14 +1080,14 @@ Image Symbol Table
     USART1_IRQHandler                        0x08001221   Thumb Code   262  stm32f1xx_it.o(.text.USART1_IRQHandler)
     USART1_SendString_DMA                    0x08001329   Thumb Code   172  main.o(.text.USART1_SendString_DMA)
     UsageFault_Handler                       0x080013d5   Thumb Code     4  stm32f1xx_it.o(.text.UsageFault_Handler)
-    main                                     0x08001571   Thumb Code   160  main.o(.text.main)
-    __scatterload_copy                       0x08001611   Thumb Code    14  handlers.o(i.__scatterload_copy)
-    __scatterload_null                       0x0800161f   Thumb Code     2  handlers.o(i.__scatterload_null)
-    __scatterload_zeroinit                   0x08001621   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
-    AHBPrescTable                            0x0800162e   Data          16  system_stm32f1xx.o(.rodata.AHBPrescTable)
-    APBPrescTable                            0x0800163e   Data           8  system_stm32f1xx.o(.rodata.APBPrescTable)
-    Region$$Table$$Base                      0x0800165c   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x0800167c   Number         0  anon$$obj.o(Region$$Table)
+    main                                     0x08001571   Thumb Code   146  main.o(.text.main)
+    __scatterload_copy                       0x08001603   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x08001611   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x08001613   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    AHBPrescTable                            0x08001620   Data          16  system_stm32f1xx.o(.rodata.AHBPrescTable)
+    APBPrescTable                            0x08001630   Data           8  system_stm32f1xx.o(.rodata.APBPrescTable)
+    Region$$Table$$Base                      0x08001650   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x08001670   Number         0  anon$$obj.o(Region$$Table)
     SystemCoreClock                          0x20000000   Data           4  system_stm32f1xx.o(.data.SystemCoreClock)
     gTickCount                               0x20000008   Data           4  stm32f1xx_it.o(.bss.gTickCount)
     recvd_length                             0x2000000c   Data           2  main.o(.bss.recvd_length)
@@ -1106,9 +1105,9 @@ Memory Map of the image
 
   Image Entry point : 0x080000ed
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00001688, Max: 0x00020000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00001678, Max: 0x00020000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x0000167c, Max: 0x00020000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00001670, Max: 0x00020000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -1270,25 +1269,25 @@ Memory Map of the image
     0x080014f0   0x080014f0   0x00000042   Code   RO          135    .text.__NVIC_SetPriority  usart.o
     0x08001532   0x08001532   0x00000002   PAD
     0x08001534   0x08001534   0x0000003c   Code   RO           33    .text.__NVIC_SetPriorityGrouping  main.o
-    0x08001570   0x08001570   0x000000a0   Code   RO           27    .text.main          main.o
-    0x08001610   0x08001610   0x0000000e   Code   RO          515    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x0800161e   0x0800161e   0x00000002   Code   RO          516    i.__scatterload_null  mc_w.l(handlers.o)
-    0x08001620   0x08001620   0x0000000e   Code   RO          517    i.__scatterload_zeroinit  mc_w.l(handlers.o)
-    0x0800162e   0x0800162e   0x00000010   Data   RO          482    .rodata.AHBPrescTable  system_stm32f1xx.o
-    0x0800163e   0x0800163e   0x00000008   Data   RO          483    .rodata.APBPrescTable  system_stm32f1xx.o
-    0x08001646   0x08001646   0x00000007   Data   RO           78    .rodata.CHANNEL_OFFSET_TAB  main.o
-    0x0800164d   0x0800164d   0x00000007   Data   RO          155    .rodata.CHANNEL_OFFSET_TAB  usart.o
-    0x08001654   0x08001654   0x00000007   Data   RO          213    .rodata.CHANNEL_OFFSET_TAB  stm32f1xx_it.o
-    0x0800165b   0x0800165b   0x00000001   PAD
-    0x0800165c   0x0800165c   0x00000020   Data   RO          514    Region$$Table       anon$$obj.o
+    0x08001570   0x08001570   0x00000092   Code   RO           27    .text.main          main.o
+    0x08001602   0x08001602   0x0000000e   Code   RO          515    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x08001610   0x08001610   0x00000002   Code   RO          516    i.__scatterload_null  mc_w.l(handlers.o)
+    0x08001612   0x08001612   0x0000000e   Code   RO          517    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x08001620   0x08001620   0x00000010   Data   RO          482    .rodata.AHBPrescTable  system_stm32f1xx.o
+    0x08001630   0x08001630   0x00000008   Data   RO          483    .rodata.APBPrescTable  system_stm32f1xx.o
+    0x08001638   0x08001638   0x00000007   Data   RO           78    .rodata.CHANNEL_OFFSET_TAB  main.o
+    0x0800163f   0x0800163f   0x00000007   Data   RO          155    .rodata.CHANNEL_OFFSET_TAB  usart.o
+    0x08001646   0x08001646   0x00000007   Data   RO          213    .rodata.CHANNEL_OFFSET_TAB  stm32f1xx_it.o
+    0x0800164d   0x0800164d   0x00000003   PAD
+    0x08001650   0x08001650   0x00000020   Data   RO          514    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08001680, Size: 0x00000c10, Max: 0x00005000, ABSOLUTE)
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08001670, Size: 0x00000c10, Max: 0x00005000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x08001680   0x00000004   Data   RW          481    .data.SystemCoreClock  system_stm32f1xx.o
-    0x20000004   0x08001684   0x00000004   PAD
+    0x20000000   0x08001670   0x00000004   Data   RW          481    .data.SystemCoreClock  system_stm32f1xx.o
+    0x20000004   0x08001674   0x00000004   PAD
     0x20000008        -       0x00000004   Zero   RW          211    .bss.gTickCount     stm32f1xx_it.o
     0x2000000c        -       0x00000002   Zero   RW           74    .bss.recvd_length   main.o
     0x2000000e        -       0x00000400   Zero   RW           77    .bss.rx_buffer      main.o
@@ -1307,7 +1306,7 @@ Image component sizes
 
        344          0          0          0          0       4154   dma.o
         50          0          0          0          0       1134   gpio.o
-      1430          0          7          0       2052       8642   main.o
+      1416          0          7          0       2052       8634   main.o
         36          8        236          0       1024        812   startup_stm32f103xb.o
        854          0          7          0          4       4243   stm32f1xx_it.o
        392          0          0          0          0       3204   stm32f1xx_ll_gpio.o
@@ -1318,9 +1317,9 @@ Image component sizes
       1218          0          7          0          0       7201   usart.o
 
     ----------------------------------------------------------------------
-      5308          8        314          4       3084      45928   Object Totals
+      5294          8        316          4       3084      45920   Object Totals
          0          0         32          0          0          0   (incl. Generated)
-        76          0          1          0          4          0   (incl. Padding)
+        76          0          3          0          4          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -1358,15 +1357,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      5442         26        314          4       3084      46036   Grand Totals
-      5442         26        314          4       3084      46036   ELF Image Totals
-      5442         26        314          4          0          0   ROM Totals
+      5428         26        316          4       3084      46028   Grand Totals
+      5428         26        316          4       3084      46028   ELF Image Totals
+      5428         26        316          4          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 5756 (   5.62kB)
+    Total RO  Size (Code + RO Data)                 5744 (   5.61kB)
     Total RW  Size (RW Data + ZI Data)              3088 (   3.02kB)
-    Total ROM Size (Code + RO Data + RW Data)       5760 (   5.62kB)
+    Total ROM Size (Code + RO Data + RW Data)       5748 (   5.61kB)
 
 ==============================================================================
 
