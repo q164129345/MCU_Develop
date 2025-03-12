@@ -215,25 +215,20 @@ void USART1_SendString_DMA(const char *data, uint16_t len)
     if (len == 0) {
         return;
     }
-    // 等待上一次DMA传输完成（也可以添加超时机制）
+    // 等待上一次DMA传输完成
     while(tx_dma_busy);
     tx_dma_busy = 1; // 标记DMA正在发送
-    
     // 如果DMA通道4正在使能，则先禁用以便重新配置
-    if (LL_DMA_IsEnabledChannel(DMA1, LL_DMA_CHANNEL_4))
-    {
+    if (LL_DMA_IsEnabledChannel(DMA1, LL_DMA_CHANNEL_4)) {
         LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_4);
         while(LL_DMA_IsEnabledChannel(DMA1, LL_DMA_CHANNEL_4));
     }
-    
     // 配置DMA通道4：内存地址、外设地址及数据传输长度
     LL_DMA_SetMemoryAddress(DMA1, LL_DMA_CHANNEL_4, (uint32_t)data);
     LL_DMA_SetPeriphAddress(DMA1, LL_DMA_CHANNEL_4, (uint32_t)&USART1->DR);
     LL_DMA_SetDataLength(DMA1, LL_DMA_CHANNEL_4, len);
-    
     // 开启USART1的DMA发送请求（CR3中DMAT置1，通常为第7位）
     LL_USART_EnableDMAReq_TX(USART1); // 开启USART1的DMA发送请求
-    
     // 启动DMA通道4，开始DMA传输
     LL_DMA_EnableChannel(DMA1, LL_DMA_CHANNEL_4);
 }

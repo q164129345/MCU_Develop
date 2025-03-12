@@ -3625,18 +3625,18 @@
       <ActiveTab>0</ActiveTab>
       <Doc>
         <Name>../Core/Src/main.c</Name>
-        <ColumnNumber>3</ColumnNumber>
-        <TopLine>290</TopLine>
-        <CurrentLine>298</CurrentLine>
+        <ColumnNumber>63</ColumnNumber>
+        <TopLine>203</TopLine>
+        <CurrentLine>224</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>
       </Doc>
       <Doc>
         <Name>../Core/Src/stm32f1xx_it.c</Name>
-        <ColumnNumber>47</ColumnNumber>
-        <TopLine>276</TopLine>
-        <CurrentLine>307</CurrentLine>
+        <ColumnNumber>50</ColumnNumber>
+        <TopLine>294</TopLine>
+        <CurrentLine>308</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>
@@ -3787,9 +3787,9 @@
       </Doc>
       <Doc>
         <Name>..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_ll_dma.h</Name>
-        <ColumnNumber>25</ColumnNumber>
-        <TopLine>888</TopLine>
-        <CurrentLine>901</CurrentLine>
+        <ColumnNumber>38</ColumnNumber>
+        <TopLine>882</TopLine>
+        <CurrentLine>897</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders></ContractedFolders>
         <PaneID>0</PaneID>
