@@ -34,6 +34,7 @@ volatile uint16_t recvd_length = 0;
 
 volatile uint8_t tx_buffer[TX_BUFFER_SIZE];
 volatile uint8_t tx_dma_busy = 0;
+uint8_t rebootUsart1 = 0;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -201,7 +202,13 @@ void USART1_SendString_DMA(const char *data, uint16_t len)
 
 #else
 
-// 配置DMA1通道5用于USART1_RX
+/**
+  * @brief  配置DMA1通道5用于USART1_RX接收。
+  * @note   此函数基于LL库实现。它将DMA1通道5的内存地址配置为rx_buffer，
+  *         外设地址配置为USART1数据寄存器的地址，并设置传输数据长度为RX_BUFFER_SIZE，
+  *         最后使能DMA1通道5以启动接收数据。
+  * @retval None
+  */
 __STATIC_INLINE void DMA1_Channel5_Configure(void) {
     /* 配置DMA1通道5用于USART1_RX接收 */
     LL_DMA_SetMemoryAddress(DMA1, LL_DMA_CHANNEL_5, (uint32_t)rx_buffer);
@@ -238,6 +245,42 @@ void USART1_SendString_DMA(const char *data, uint16_t len)
     // 启动DMA通道4，开始DMA传输
     LL_DMA_EnableChannel(DMA1, LL_DMA_CHANNEL_4);
 }
+
+/**
+  * @brief  当检测到USART1异常时，重新初始化USART1及其相关DMA通道。
+  * @note   此函数首先停止DMA1通道4（USART1_TX）和通道5（USART1_RX），确保DMA传输终止，
+  *         然后禁用USART1及其DMA接收请求，并通过读SR和DR清除挂起的错误标志，
+  *         经过短暂延时后调用MX_USART1_UART_Init()重新配置USART1、GPIO和DMA，
+  *         MX_USART1_UART_Init()内部已完成USART1中断的配置，无需额外使能。
+  * @retval None
+  */
+void USART1_Reinit(void)
+{
+    /* 禁用DMA，如果USART1启用了DMA的话 */
+    LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_4); // 禁用DMA1通道4
+    while(LL_DMA_IsEnabledChannel(DMA1, LL_DMA_CHANNEL_4)) { // 等待通道完全关闭（可以添加超时机制以避免死循环）
+        // 空循环等待
+    }
+    LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_5); // 禁用DMA1通道5
+    while(LL_DMA_IsEnabledChannel(DMA1, LL_DMA_CHANNEL_5)) {  // 等待通道完全关闭（可以添加超时机制以避免死循环）
+        // 空循环等待
+    }
+    
+    /* USART1 */
+    NVIC_DisableIRQ(USART1_IRQn); // 1. 禁用USART1全局中断，避免重启过程中产生新的中断干扰
+    LL_USART_DisableDMAReq_RX(USART1); // 2. 禁用USART1的DMA接收请求（如果使用DMA接收）
+    LL_USART_Disable(USART1); // 3. 禁用USART1
+    
+    // 4. 读SR和DR以清除挂起的错误标志（例如IDLE、ORE、NE、FE、PE）
+    volatile uint32_t tmp = USART1->SR;
+    tmp = USART1->DR;
+    (void)tmp;
+    
+    for (volatile uint32_t i = 0; i < 1000; i++); // 5. 可选：短暂延时，确保USART完全关闭
+    tx_dma_busy = 0; // 复位发送标志
+    MX_USART1_UART_Init(); // 重新初始化USART1
+}
+
 #endif
 
 /* USER CODE END 0 */
@@ -301,11 +344,15 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     if (rx_complete) {
-        /* 在发送之前，可以选择禁用中断或者采取其他同步机制，
-           以避免在发送过程中被中断修改tx_buffer */
         USART1_SendString_DMA((const char*)tx_buffer, recvd_length);
         rx_complete = 0; // 清除标志，等待下一次接收
     }
+    
+    if (rebootUsart1 == 1) {
+        rebootUsart1 = 0;
+        USART1_Reinit(); // USART1重新初始化
+    }
+    
   }
   /* USER CODE END 3 */
 }

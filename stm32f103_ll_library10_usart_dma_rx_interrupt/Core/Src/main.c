@@ -301,8 +301,6 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     if (rx_complete) {
-        /* 在发送之前，可以选择禁用中断或者采取其他同步机制，
-           以避免在发送过程中被中断修改tx_buffer */
         USART1_SendString_DMA((const char*)tx_buffer, recvd_length);
         rx_complete = 0; // 清除标志，等待下一次接收
     }

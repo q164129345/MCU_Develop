@@ -120,7 +120,6 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>滹^</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -198,22 +197,7 @@
         <Ww>
           <count>8</count>
           <WinNumber>1</WinNumber>
-          <ItemText>rx_complete</ItemText>
-        </Ww>
-        <Ww>
-          <count>9</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>tx_dma_busy</ItemText>
-        </Ww>
-        <Ww>
-          <count>10</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>recvd_length,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>11</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>cnt,0x0A</ItemText>
+          <ItemText>rebootUsart1,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>
