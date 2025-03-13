@@ -39,6 +39,10 @@ extern volatile uint16_t recvd_length;
 
 extern volatile uint8_t tx_dma_busy;
 extern volatile uint8_t tx_buffer[];
+
+extern volatile uint16_t usart1Error;
+extern volatile uint16_t dma1Channel4Error;
+extern volatile uint16_t dma1Channel5Error;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -64,7 +68,123 @@ extern volatile uint8_t tx_buffer[];
 /* External variables --------------------------------------------------------*/
 
 /* USER CODE BEGIN EV */
+#if USE_LL_LIBRARY == 1
+/**
+  * @brief  检查USART1错误标志，并清除相关错误标志（ORE、NE、FE、PE）。
+  * @note   此函数基于LL库实现。当检测到USART1错误标志时，通过读取SR和DR清除错误，
+  *         并返回1表示存在错误；否则返回0。
+  * @retval uint8_t 错误状态：1表示检测到错误并已清除，0表示无错误。
+  */
+static __inline uint8_t USART1_Error_Handler(void) {
+    // 错误处理：检查USART错误标志（ORE、NE、FE、PE）
+    if (LL_USART_IsActiveFlag_ORE(USART1) ||
+        LL_USART_IsActiveFlag_NE(USART1)  ||
+        LL_USART_IsActiveFlag_FE(USART1)  ||
+        LL_USART_IsActiveFlag_PE(USART1))
+    {
+        // 通过读SR和DR来清除错误标志
+        volatile uint32_t tmp = USART1->SR;
+        tmp = USART1->DR;
+        (void)tmp;
+        return 1;
+    } else {
+        return 0;
+    } 
+}
+/**
+  * @brief  检查DMA1通道4传输错误，并处理错误状态。
+  * @note   此函数基于LL库实现。主要用于检测USART1_TX传输过程中DMA1通道4是否发生传输错误（TE）。
+  *         如果检测到错误，则清除错误标志、禁用DMA1通道4，并关闭USART1的DMA发送请求，
+  *         从而终止当前传输。返回1表示错误已处理；否则返回0。
+  * @retval uint8_t 错误状态：1表示检测到并处理了错误，0表示无错误。
+  */
+static __inline uint8_t DMA1_Channel4_Error_Handler(void) {
+    // 检查通道4是否发生传输错误（TE）
+    if (LL_DMA_IsActiveFlag_TE4(DMA1)) {
+        // 清除传输错误标志
+        LL_DMA_ClearFlag_TE4(DMA1);
+        // 禁用DMA通道4，停止当前传输
+        LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_4);
+        // 清除USART1的DMA发送请求（DMAT位）
+        LL_USART_DisableDMAReq_TX(USART1);
+        // 清除发送标志！！
+        tx_dma_busy = 0;
+        return 1;
+    } else {
+        return 0;
+    }
+}
+/**
+  * @brief  检查DMA1通道5传输错误，并恢复DMA接收。
+  * @note   此函数基于LL库实现。主要用于检测USART1_RX传输过程中DMA1通道5是否发生传输错误（TE）。
+  *         如果检测到错误，则清除错误标志、禁用DMA1通道5、重置传输长度为RX_BUFFER_SIZE，
+  *         并重新使能DMA通道5以恢复数据接收。返回1表示错误已处理；否则返回0。
+  * @retval uint8_t 错误状态：1表示检测到并处理了错误，0表示无错误。
+  */
+static __inline uint8_t DMA1_Channel5_Error_Hanlder(void) {
+    // 检查通道5是否发生传输错误（TE）
+    if (LL_DMA_IsActiveFlag_TE5(DMA1)) {
+        // 清除传输错误标志
+        LL_DMA_ClearFlag_TE5(DMA1);
+        // 禁用DMA通道5，停止当前传输
+        LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_5);
+        // 重新设置传输长度，恢复到初始状态
+        LL_DMA_SetDataLength(DMA1, LL_DMA_CHANNEL_5, RX_BUFFER_SIZE);
+        // 重新使能DMA通道5，恢复接收
+        LL_DMA_EnableChannel(DMA1, LL_DMA_CHANNEL_5);
+        return 1;
+    } else {
+        return 0;
+    }
+}
 
+#else
+static __inline uint8_t USART1_Error_Handler(void) {
+    // 寄存器方式：检查错误标志（PE、FE、NE、ORE分别位0~3）
+    if (USART1->SR & ((1UL << 0) | (1UL << 1) | (1UL << 2) | (1UL << 3))) {
+        // 清除错误标志
+        volatile uint32_t tmp = USART1->SR;
+        tmp = USART1->DR;
+        (void)tmp;
+        return 1;
+    } else {
+        return 0;
+    }
+}
+static __inline uint8_t DMA1_Channel4_Error_Handler(void) {
+    // 检查传输错误（TE）标志，假设TE对应位(1UL << 15)（请根据具体芯片参考手册确认）
+    if (DMA1->ISR & (1UL << 15)) {
+        // 清除TE错误标志
+        DMA1->IFCR |= (1UL << 15);
+        // 禁用DMA通道4
+        DMA1_Channel4->CCR &= ~(1UL << 0);
+        // 清除USART1中DMAT位
+        USART1->CR3 &= ~(1UL << 7);
+        // 清除发送标志！！
+        tx_dma_busy = 0;
+        return 1;
+    } else {
+        return 0;
+    }
+}
+static __inline uint8_t DMA1_Channel5_Error_Hanlder(void) {
+    // 检查传输错误（TE）标志，假设TE对应位(1UL << 19)（请确认具体位）
+    if (DMA1->ISR & (1UL << 19)) {
+        // 清除错误标志
+        DMA1->IFCR |= (1UL << 19);
+        // 禁用DMA通道5
+        DMA1_Channel5->CCR &= ~(1UL << 0);
+        // 重置传输计数
+        DMA1_Channel5->CNDTR = RX_BUFFER_SIZE;
+        // 重新使能DMA通道5
+        DMA1_Channel5->CCR |= 1UL;
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+#endif
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -216,9 +336,9 @@ void DMA1_Channel4_IRQHandler(void)
 
   /* USER CODE BEGIN DMA1_Channel4_IRQn 1 */
 #if (USE_LL_LIBRARY == 1)
-    // 检查传输完成标志（TC）是否置位（LL库提供TC4接口）
-    if(LL_DMA_IsActiveFlag_TC4(DMA1))
-    {
+    if (DMA1_Channel4_Error_Handler()) { // 监控传输错误
+        dma1Channel4Error++;
+    } else if(LL_DMA_IsActiveFlag_TC4(DMA1)) {// 检查传输完成标志（TC）是否置位（LL库提供TC4接口）
         // 清除DMA传输完成标志
         LL_DMA_ClearFlag_TC4(DMA1);
         // 禁用DMA通道4，确保下次传输前重新配置
@@ -230,7 +350,9 @@ void DMA1_Channel4_IRQHandler(void)
     }
 #else
     // 寄存器方式
-    if(DMA1->ISR & (1UL << 13)) {
+    if (DMA1_Channel4_Error_Handler()) { // 监控传输错误
+        dma1Channel4Error++;
+    } else if (DMA1->ISR & (1UL << 13)) {
         // 清除DMA传输完成标志：在IFCR寄存器中写1清除对应标志
         DMA1->IFCR |= (1UL << 13);
         // 禁用DMA通道4（清除CCR寄存器的EN位，位0）
@@ -255,18 +377,16 @@ void DMA1_Channel5_IRQHandler(void)
 
   /* USER CODE BEGIN DMA1_Channel5_IRQn 1 */
 #if USE_LL_LIBRARY == 1
-    // 判断是否产生半传输中断（前半区完成）
-    if(LL_DMA_IsActiveFlag_HT5(DMA1)) {
+    if (DMA1_Channel5_Error_Hanlder()) { // 监控传输失败
+        dma1Channel5Error++;
+    } else if(LL_DMA_IsActiveFlag_HT5(DMA1)) { // 判断是否产生半传输中断（前半区完成）
         // 清除半传输标志
         LL_DMA_ClearFlag_HT5(DMA1);
         // 处理前 512 字节数据（偏移 0~511）
         memcpy((void*)tx_buffer, (const void*)rx_buffer, RX_BUFFER_SIZE/2);
         recvd_length = RX_BUFFER_SIZE/2;
         rx_complete = 1;
-    }
-  
-    // 判断是否产生传输完成中断（后半区完成）
-    if(LL_DMA_IsActiveFlag_TC5(DMA1)) {
+    } else if(LL_DMA_IsActiveFlag_TC5(DMA1)) { // 判断是否产生传输完成中断（后半区完成）
         // 清除传输完成标志
         LL_DMA_ClearFlag_TC5(DMA1);
         // 处理后 512 字节数据（偏移 512~1023）
@@ -275,17 +395,15 @@ void DMA1_Channel5_IRQHandler(void)
         rx_complete = 1;
     }
 #else
-    // 半传输中断
-    if (DMA1->ISR & (1UL << 18)) {
+    if (DMA1_Channel5_Error_Hanlder()) { // 监控传输错误
+        dma1Channel5Error++;
+    } else if (DMA1->ISR & (1UL << 18)) { // 半传输中断
         DMA1->IFCR |= (1UL << 18);
         // 前半缓冲区处理
         memcpy((void*)tx_buffer, (const void*)rx_buffer, RX_BUFFER_SIZE / 2);
         recvd_length = RX_BUFFER_SIZE / 2;
         rx_complete = 1;
-    }
-
-    // 传输完成中断
-    if (DMA1->ISR & (1UL << 17)) {
+    } else if (DMA1->ISR & (1UL << 17)) { // 传输完成中断
         DMA1->IFCR |= (1UL << 17);
         // 后半缓冲区处理
         memcpy((void*)tx_buffer, (const void*)(rx_buffer + RX_BUFFER_SIZE / 2), RX_BUFFER_SIZE / 2);
@@ -307,8 +425,9 @@ void USART1_IRQHandler(void)
   /* USER CODE BEGIN USART1_IRQn 1 */
 #if (USE_LL_LIBRARY == 1)
     // LL库方式
-    // 检查 USART1 是否因空闲而中断
-    if (LL_USART_IsActiveFlag_IDLE(USART1)) {
+    if (USART1_Error_Handler()) { // 检查错误标志
+        usart1Error++; // 有错误，记录事件
+    } else if (LL_USART_IsActiveFlag_IDLE(USART1)) {  // 检查 USART1 是否因空闲而中断
         uint32_t tmp;
         /* 清除IDLE标志：必须先读SR，再读DR */
         tmp = USART1->SR;
@@ -343,8 +462,9 @@ void USART1_IRQHandler(void)
     }
 #else
     // 寄存器方式
-    // 检查USART1 SR寄存器的IDLE标志（bit4）
-    if (USART1->SR & (1UL << 4)) {
+    if (USART1_Error_Handler()) { // 监控串口错误
+        usart1Error++; // 有错误，记录事件
+    } else if (USART1->SR & (1UL << 4)) { // 检查USART1 SR寄存器的IDLE标志（bit4）
         uint32_t tmp;
         // 清除IDLE标志：先读SR再读DR
         tmp = USART1->SR;

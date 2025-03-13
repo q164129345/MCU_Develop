@@ -34,6 +34,12 @@ volatile uint16_t recvd_length = 0;
 
 volatile uint8_t tx_buffer[TX_BUFFER_SIZE];
 volatile uint8_t tx_dma_busy = 0;
+
+volatile uint16_t usart1Error = 0;
+volatile uint16_t dma1Channel4Error = 0;
+volatile uint16_t dma1Channel5Error = 0;
+
+
 uint8_t rebootUsart1 = 0;
 /* USER CODE END PTD */
 
@@ -171,12 +177,18 @@ __STATIC_INLINE void DMA1_Channel5_Configure(void) {
     DMA1_Channel5->CCR |= (3UL << 12);      // 设置优先级为非常高 (PL置为“11”，bit12-13)
     
     // 增加传输完成与传输过半中断
-    DMA1_Channel5->CCR |= (1UL << 1);             // 传输完成中断 (TCIE)
-    DMA1_Channel5->CCR |= (1UL << 2);             // 传输过半中断 (HTIE)
+    DMA1_Channel5->CCR |= (1UL << 1);       // 传输完成中断 (TCIE)
+    DMA1_Channel5->CCR |= (1UL << 2);       // 传输过半中断 (HTIE)
     /* 4. 使能DMA通道5 */
     DMA1_Channel5->CCR |= 1UL;  // 置EN位启动通道
 }
 
+/**
+  * @brief  使用DMA发送字符串，采用USART1_TX对应的DMA1通道4
+  * @param  data: 待发送数据指针（必须指向独立发送缓冲区）
+  * @param  len:  待发送数据长度
+  * @retval None
+  */
 void USART1_SendString_DMA(const char *data, uint16_t len)
 {
     if (len == 0) {
@@ -199,6 +211,47 @@ void USART1_SendString_DMA(const char *data, uint16_t len)
     // 启动DMA通道4：设置EN位启动DMA传输
     DMA1_Channel4->CCR |= 1UL;
 }
+
+/**
+  * @brief  当检测到USART1异常时，重新初始化USART1及其相关DMA通道。
+  * @note   此函数首先停止DMA1通道4（USART1_TX）和通道5（USART1_RX），确保DMA传输终止，
+  *         然后禁用USART1及其DMA接收请求，并通过读SR和DR清除挂起的错误标志，
+  *         经过短暂延时后调用MX_USART1_UART_Init()重新配置USART1、GPIO和DMA，
+  *         MX_USART1_UART_Init()内部已完成USART1中断的配置，无需额外使能。
+  * @retval None
+  */
+void USART1_Reinit(void)
+{
+    /* 禁用DMA，如果USART1启用了DMA的话 */
+    DMA1_Channel4->CCR &= ~(1UL << 0); // 禁用DMA1通道4：清除CCR的EN位（位0）
+    while (DMA1_Channel4->CCR & 1UL) { // 等待DMA1通道4完全关闭（建议增加超时处理）
+        // 空循环等待
+    }
+    DMA1_Channel5->CCR &= ~(1UL << 0); // 禁用DMA1通道5：清除CCR的EN位（位0）
+    while (DMA1_Channel5->CCR & 1UL) { // 等待DMA1通道5完全关闭（建议增加超时处理）
+        // 空循环等待
+    }
+    NVIC_DisableIRQ(USART1_IRQn); // 禁用USART1全局中断，避免重启过程中产生新的中断干扰
+    USART1->CR3 &= ~(1UL << 6); // 禁用USART1的DMA接收请求：清除CR3的DMAR位（位6）
+    USART1->CR1 &= ~(1UL << 13); // 禁用USART1：清除CR1的UE位（位13）
+    
+    // 读SR和DR以清除挂起的错误标志（例如IDLE、ORE、NE、FE、PE）
+    volatile uint32_t tmp = USART1->SR;
+    tmp = USART1->DR;
+    (void)tmp;
+    
+    for (volatile uint32_t i = 0; i < 1000; i++); // 可选：短暂延时，确保USART1完全关闭
+    tx_dma_busy = 0; // 复位发送标志！！！！！
+    
+    /* 重新初始化USART1、DMA1 */
+    USART1_Configure(); // USART1
+    DMA1_Channel4_Configure(); // DMA1通道4
+    DMA1_Channel5_Configure(); // DMA1通道5
+}
+
+
+
+
 
 #else
 
@@ -279,6 +332,7 @@ void USART1_Reinit(void)
     for (volatile uint32_t i = 0; i < 1000; i++); // 5. 可选：短暂延时，确保USART完全关闭
     tx_dma_busy = 0; // 复位发送标志
     MX_USART1_UART_Init(); // 重新初始化USART1
+    DMA1_Channel5_Configure(); // 重新初始化DMA1通道5
 }
 
 #endif
