@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "can.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -27,131 +28,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-/**
-  * @brief  使用直接寄存器操作的CAN初始化（对照HAL库BTR=0x002D0003）
-  * @note   BTR解析:
-  *         - SILM=0, LBKM=0  => 不使用静默/回环
-  *         - SJW=0          => SJW=1Tq
-  *         - TS2=0x02       => BS2=2 => 3Tq
-  *         - TS1=0x0D       => BS1=13 => 14Tq
-  *         - BRP=0x03       => 分频=4
-  *         同时关闭自动重传(NART=1), 其他自动功能Disable
-  */
-void CAN_Config(void)
-{
-  /* 1. 使能CAN1和GPIOA时钟 */
-  RCC->APB1ENR |= RCC_APB1ENR_CAN1EN;
-  RCC->APB2ENR |= RCC_APB2ENR_IOPAEN;
 
-  /* 2. 配置PA11(CAN_RX)为上拉输入、PA12(CAN_TX)为复用推挽输出 */
-  // PA11: CRH[15:12], MODE=00, CNF=10(上拉输入)
-  GPIOA->CRH &= ~(0xF << 12);
-  GPIOA->CRH |=  (0x8 << 12);
-  GPIOA->ODR |=  GPIO_ODR_ODR11; // 上拉
-
-  // PA12: CRH[19:16], MODE=11(50MHz), CNF=10(复用推挽)
-  GPIOA->CRH &= ~(0xF << 16);
-  GPIOA->CRH |=  (0xB << 16);
-
-  /* 3. 进入初始化模式 */
-  CAN1->MCR |= CAN_MCR_INRQ;          // 请求进入INIT
-  while(!(CAN1->MSR & CAN_MSR_INAK)); // 等待INAK=1
-
-  /* 关闭TTCM/ABOM/AWUM/RFLM/TXFP(均为Disable) */
-  CAN1->MCR &= ~(CAN_MCR_TTCM | CAN_MCR_ABOM | CAN_MCR_AWUM | CAN_MCR_RFLM | CAN_MCR_TXFP);
-  /* 关闭自动重传(NART=1) */
-  CAN1->MCR |= CAN_MCR_NART;
-
-  /*
-    4. 设置BTR=0x002D0003 与HAL库相同:
-       - SJW=0  => 1Tq
-       - TS2=0x02 => 2 => 3Tq
-       - TS1=0x0D => 13 => 14Tq
-       - BRP=0x03 => 3 => 分频=4
-  */
-  CAN1->BTR = 0x002D0003;
-
-  /* 5. 退出初始化模式 */
-  CAN1->MCR &= ~CAN_MCR_INRQ;
-  while(CAN1->MSR & CAN_MSR_INAK); // 等待INAK=0
-
-  /* 确保不在SLEEP模式 */
-  CAN1->MCR &= ~CAN_MCR_SLEEP;
-  while(CAN1->MSR & CAN_MSR_SLAK);
-
-  /* 6. 配置过滤器0为不过滤，FIFO0 */
-  CAN1->FMR |= CAN_FMR_FINIT; // 进入过滤器初始化
-  CAN1->sFilterRegister[0].FR1 = 0x00000000;
-  CAN1->sFilterRegister[0].FR2 = 0x00000000;
-  CAN1->FFA1R &= ~(1 << 0);  // 分配到FIFO0
-  CAN1->FA1R  |=  (1 << 0);  // 激活过滤器0
-  CAN1->FMR   &= ~CAN_FMR_FINIT; // 退出过滤器初始化
-}
-
-/**
-  * @brief  直接操作寄存器实现CAN消息发送(标准数据帧)
-  * @param  stdId: 标准ID(11位)
-  * @param  data: 数据指针
-  * @param  DLC: 数据长度(0~8)
-  * @retval 0=发送成功; 1=无空闲邮箱; 2=超时/失败
-  */
-uint8_t CAN_SendMessage(uint32_t stdId, uint8_t *data, uint8_t DLC)
-{
-  uint8_t mailbox;
-  uint32_t timeout = 0xFFFF;
-
-  /* 寻找空闲邮箱 */
-  for(mailbox = 0; mailbox < 3; mailbox++)
-  {
-    if((CAN1->sTxMailBox[mailbox].TIR & CAN_TI0R_TXRQ) == 0)
-      break;
-  }
-  if(mailbox >= 3)
-    return 1; // 无空闲邮箱
-
-  /* 清空该邮箱 */
-  CAN1->sTxMailBox[mailbox].TIR  = 0;
-  CAN1->sTxMailBox[mailbox].TDTR = 0;
-  CAN1->sTxMailBox[mailbox].TDLR = 0;
-  CAN1->sTxMailBox[mailbox].TDHR = 0;
-
-  /* 标准ID写入TIR的[31:21] */
-  CAN1->sTxMailBox[mailbox].TIR |= (stdId << 21);
-  /* 标准帧, RTR=0, IDE=0, 配置DLC */
-  CAN1->sTxMailBox[mailbox].TDTR = (DLC & 0x0F);
-
-  /* 填充数据 */
-  if(DLC <= 4)
-  {
-    for(uint8_t i=0; i<DLC; i++)
-    {
-      CAN1->sTxMailBox[mailbox].TDLR |= ((uint32_t)data[i]) << (8 * i);
-    }
-  }
-  else
-  {
-    for(uint8_t i=0; i<4; i++)
-    {
-      CAN1->sTxMailBox[mailbox].TDLR |= ((uint32_t)data[i]) << (8 * i);
-    }
-    for(uint8_t i=4; i<DLC; i++)
-    {
-      CAN1->sTxMailBox[mailbox].TDHR |= ((uint32_t)data[i]) << (8 * (i-4));
-    }
-  }
-
-  /* 发起发送请求 */
-  CAN1->sTxMailBox[mailbox].TIR |= CAN_TI0R_TXRQ;
-
-  /* 轮询等待TXRQ清零或超时 */
-  while((CAN1->sTxMailBox[mailbox].TIR & CAN_TI0R_TXRQ) && --timeout);
-  if(timeout == 0)
-  {
-    // 发送失败(无ACK或位错误), 返回2
-    return 2;
-  }
-  return 0; // 发送成功
-}
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -160,27 +37,27 @@ uint8_t CAN_SendMessage(uint32_t stdId, uint8_t *data, uint8_t DLC)
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-//void Test_CAN_Send_Msg(void) {
-//    CAN_TxHeaderTypeDef TxHeader;
-//    uint32_t TxMailbox;
-//    uint8_t TxData[8] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
-//    /* 配置CAN发送帧参数 */
-//    TxHeader.StdId = 0x123;          // 标准标识符，可根据实际需求修改
-//    TxHeader.ExtId = 0;              // 对于标准帧，扩展标识符无效
-//    TxHeader.IDE = CAN_ID_STD;       // 标准帧
-//    TxHeader.RTR = CAN_RTR_DATA;     // 数据帧
-//    TxHeader.DLC = 8;                // 数据长度为8字节
-//    TxHeader.TransmitGlobalTime = DISABLE; // 不发送全局时间
-//    /* 如果没有发送邮箱，延迟等待（如果有实时操作系统，发起调度是更加好的方案） */
-//    if (HAL_CAN_GetTxMailboxesFreeLevel(&hcan) == 0) {
-//        LL_mDelay(1);
-//    }
-//    /* 发送CAN消息 */
-//    if (HAL_CAN_AddTxMessage(&hcan, &TxHeader, TxData, &TxMailbox) != HAL_OK) {
-//    /* 发送失败，进入错误处理 */
-//        Error_Handler();
-//    }
-//}
+void Test_CAN_Send_Msg(void) {
+    CAN_TxHeaderTypeDef TxHeader;
+    uint32_t TxMailbox;
+    uint8_t TxData[8] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
+    /* 配置CAN发送帧参数 */
+    TxHeader.StdId = 0x123;          // 标准标识符，可根据实际需求修改
+    TxHeader.ExtId = 0;              // 对于标准帧，扩展标识符无效
+    TxHeader.IDE = CAN_ID_STD;       // 标准帧
+    TxHeader.RTR = CAN_RTR_DATA;     // 数据帧
+    TxHeader.DLC = 8;                // 数据长度为8字节
+    TxHeader.TransmitGlobalTime = DISABLE; // 不发送全局时间
+    /* 如果没有发送邮箱，延迟等待（如果有实时操作系统，发起调度是更加好的方案） */
+    if (HAL_CAN_GetTxMailboxesFreeLevel(&hcan) == 0) {
+        LL_mDelay(1);
+    }
+    /* 发送CAN消息 */
+    if (HAL_CAN_AddTxMessage(&hcan, &TxHeader, TxData, &TxMailbox) != HAL_OK) {
+    /* 发送失败，进入错误处理 */
+        Error_Handler();
+    }
+}
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -213,18 +90,7 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_AFIO);
-  LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
-
-  /* System interrupt init*/
-  NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
-
-  /* SysTick_IRQn interrupt configuration */
-  NVIC_SetPriority(SysTick_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),15, 0));
-
-  /** NOJTAG: JTAG-DP Disabled and SW-DP Enabled
-  */
-  LL_GPIO_AF_Remap_SWJ_NOJTAG();
+  HAL_Init();
 
   /* USER CODE BEGIN Init */
 
@@ -239,11 +105,11 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_CAN_Init();
   /* USER CODE BEGIN 2 */
-//  if (HAL_CAN_Start(&hcan) != HAL_OK) {
-//      Error_Handler(); // 启动失败，进入错误处理
-//  }
-  CAN_Config();
+  if (HAL_CAN_Start(&hcan) != HAL_OK) {
+      Error_Handler(); // 启动失败，进入错误处理
+  }
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -254,10 +120,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     LL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
-    uint8_t txData[8] = {0x11, 0x22, 0x33, 0x44,
-                         0x55, 0x66, 0x77, 0x88};
-    CAN_SendMessage(0x123, txData, 8);
-//    Test_CAN_Send_Msg();
+    Test_CAN_Send_Msg();
     LL_mDelay(100);
   }
   /* USER CODE END 3 */
@@ -298,8 +161,13 @@ void SystemClock_Config(void)
   {
 
   }
-  LL_Init1msTick(72000000);
   LL_SetSystemCoreClock(72000000);
+
+   /* Update the time base */
+  if (HAL_InitTick (TICK_INT_PRIORITY) != HAL_OK)
+  {
+    Error_Handler();
+  }
 }
 
 /* USER CODE BEGIN 4 */
