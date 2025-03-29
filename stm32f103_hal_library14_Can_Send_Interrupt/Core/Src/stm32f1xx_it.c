@@ -32,7 +32,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+extern volatile uint8_t txmail_free;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -209,7 +209,13 @@ void USB_HP_CAN1_TX_IRQHandler(void)
   /* USER CODE END USB_HP_CAN1_TX_IRQn 0 */
   HAL_CAN_IRQHandler(&hcan);
   /* USER CODE BEGIN USB_HP_CAN1_TX_IRQn 1 */
-
+    // 保持临界区（代码更健壮）
+    __disable_irq();
+    // 通过寄存器方式（更加高效），更新发送邮箱的空闲数量
+    txmail_free = ((hcan.Instance->TSR & CAN_TSR_TME0) ? 1 : 0) +
+                 ((hcan.Instance->TSR & CAN_TSR_TME1) ? 1 : 0) +
+                 ((hcan.Instance->TSR & CAN_TSR_TME2) ? 1 : 0);
+    __enable_irq();
   /* USER CODE END USB_HP_CAN1_TX_IRQn 1 */
 }
 
