@@ -27,6 +27,9 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+volatile uint8_t txmail_free = 0;
+volatile uint32_t canSendError = 0;
+
 /**
   * @brief  使用直接寄存器操作的CAN初始化
   * @note   BTR解析:
@@ -97,6 +100,17 @@ void CAN_Config(void)
     CAN1->FFA1R &= ~(1UL << 0);  // 分配到 FIFO0
     CAN1->FA1R  |=  (1UL << 0);  // 激活过滤器 0
     CAN1->FMR   &= ~(1UL << 0);  // 退出过滤器初始化模式
+    
+    /* 10.CAN发送完成中断 */
+    // 开启CAN发送完成的全局中断，并设置中断优先级
+    NVIC_SetPriority(USB_HP_CAN1_TX_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),3, 0));
+    NVIC_EnableIRQ(USB_HP_CAN1_TX_IRQn);
+    CAN1->IER |= CAN_IER_TMEIE; // 发送邮箱空中断使能
+    
+    /* 11.获取一次发送邮箱的数量 */
+    txmail_free = ((CAN1->TSR & CAN_TSR_TME0) ? 1 : 0) +
+             ((CAN1->TSR & CAN_TSR_TME1) ? 1 : 0) +
+             ((CAN1->TSR & CAN_TSR_TME2) ? 1 : 0);
 }
 
 /**
@@ -160,34 +174,29 @@ uint8_t CAN_SendMessage_Blocking(uint32_t stdId, uint8_t *data, uint8_t DLC)
 uint8_t CAN_SendMessage_NonBlocking(uint32_t stdId, uint8_t *data, uint8_t DLC)
 {
     uint8_t mailbox;
+    if (txmail_free > 0) {
+        /* 清空该邮箱并配置ID、DLC和数据 */
+        CAN1->sTxMailBox[mailbox].TIR  = 0;
+        CAN1->sTxMailBox[mailbox].TDTR = (DLC & 0x0F);
+        CAN1->sTxMailBox[mailbox].TDLR = 0;
+        CAN1->sTxMailBox[mailbox].TDHR = 0;
+        CAN1->sTxMailBox[mailbox].TIR |= (stdId << 21);
 
-    /* 寻找空闲邮箱 */
-    for(mailbox = 0; mailbox < 3; mailbox++) {
-      if((CAN1->sTxMailBox[mailbox].TIR & (1UL << 0)) == 0)
-         break;
+        /* 填充数据 */
+        for(uint8_t i = 0; i < DLC && i < 8; i++) {
+            if(i < 4)
+                CAN1->sTxMailBox[mailbox].TDLR |= ((uint32_t)data[i]) << (8 * i);
+            else
+                CAN1->sTxMailBox[mailbox].TDHR |= ((uint32_t)data[i]) << (8 * (i-4));
+        }
+
+        /* 发起发送请求并直接返回 */
+        CAN1->sTxMailBox[mailbox].TIR |= CAN_TI0R_TXRQ;
+        txmail_free--;
+        return 0; // 已发起发送请求，不等待完成
+    } else {
+        return 1; // 发送失败，因为发送邮箱满了
     }
-    if(mailbox >= 3)
-        return 1; // 无空闲邮箱
-
-    /* 清空该邮箱并配置ID、DLC和数据 */
-    CAN1->sTxMailBox[mailbox].TIR  = 0;
-    CAN1->sTxMailBox[mailbox].TDTR = (DLC & 0x0F);
-    CAN1->sTxMailBox[mailbox].TDLR = 0;
-    CAN1->sTxMailBox[mailbox].TDHR = 0;
-    CAN1->sTxMailBox[mailbox].TIR |= (stdId << 21);
-
-    /* 填充数据 */
-    for(uint8_t i = 0; i < DLC && i < 8; i++) {
-        if(i < 4)
-            CAN1->sTxMailBox[mailbox].TDLR |= ((uint32_t)data[i]) << (8 * i);
-        else
-            CAN1->sTxMailBox[mailbox].TDHR |= ((uint32_t)data[i]) << (8 * (i-4));
-    }
-
-    /* 发起发送请求并直接返回 */
-    CAN1->sTxMailBox[mailbox].TIR |= CAN_TI0R_TXRQ;
-
-    return 0; // 已发起发送请求，不等待完成
 }
 
 /* USER CODE END PTD */
@@ -269,10 +278,13 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     LL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
+
     uint8_t txData[8] = {0x11, 0x22, 0x33, 0x44,
                          0x55, 0x66, 0x77, 0x88};
-    CAN_SendMessage_NonBlocking(0x123, txData, 8);
-//    Test_CAN_Send_Msg();
+    if (CAN_SendMessage_NonBlocking(0x123, txData, 8)) {
+        canSendError++;  // 因为发送邮箱满了，所以当前消息发送失败
+    }
+    
     LL_mDelay(100);
   }
   /* USER CODE END 3 */

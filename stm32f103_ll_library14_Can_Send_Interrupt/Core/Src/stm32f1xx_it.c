@@ -27,7 +27,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
-
+extern volatile uint8_t txmail_free;
 /* USER CODE END TD */
 
 /* Private define ------------------------------------------------------------*/
@@ -200,5 +200,32 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /* USER CODE BEGIN 1 */
+void USB_HP_CAN1_TX_IRQHandler(void)
+{
+    // 检查发送邮箱空中断标志（一定要清除标志位）
+    if(CAN1->TSR & CAN_TSR_TME0) // 邮箱0空
+    {
+        // 你的处理代码...
+        CAN1->TSR |= CAN_TSR_TME0; // 清除标志（通过写1清除）
+    }
+    if(CAN1->TSR & CAN_TSR_TME1) // 邮箱1空
+    {
+        // 你的处理代码...
+        CAN1->TSR |= CAN_TSR_TME1;
+    }
+    if(CAN1->TSR & CAN_TSR_TME2) // 邮箱2空
+    {
+        // 你的处理代码...
+        CAN1->TSR |= CAN_TSR_TME2;
+    }
+    
+    // 保持临界区（代码更健壮）
+    __disable_irq();
+    // 通过寄存器方式，更新发送邮箱的空闲数量
+    txmail_free = ((CAN1->TSR & CAN_TSR_TME0) ? 1 : 0) +
+                 ((CAN1->TSR & CAN_TSR_TME1) ? 1 : 0) +
+                 ((CAN1->TSR & CAN_TSR_TME2) ? 1 : 0);
+    __enable_irq();
 
+}
 /* USER CODE END 1 */
