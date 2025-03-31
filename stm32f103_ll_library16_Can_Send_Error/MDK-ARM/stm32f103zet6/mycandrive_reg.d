@@ -1,6 +1,6 @@
-stm32f103zet6/stm32f1xx_ll_gpio.o: \
-  ..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_gpio.c \
-  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_ll_gpio.h \
+stm32f103zet6/mycandrive_reg.o: ..\BSP\myCanDrive_reg.c \
+  ..\BSP\myCanDrive_reg.h ..\Core\Inc\main.h \
+  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_ll_rcc.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xe.h \
   ..\Drivers\CMSIS\Include\core_cm3.h \
@@ -11,4 +11,11 @@ stm32f103zet6/stm32f1xx_ll_gpio.o: \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h \
-  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_ll_bus.h
+  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_ll_bus.h \
+  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_ll_system.h \
+  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_ll_exti.h \
+  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_ll_cortex.h \
+  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_ll_utils.h \
+  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_ll_pwr.h \
+  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_ll_dma.h \
+  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_ll_gpio.h

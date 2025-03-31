@@ -22,7 +22,7 @@
 #include "stm32f1xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "myCanDrive_reg.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -228,11 +228,5 @@ void USB_HP_CAN1_TX_IRQHandler(void)
     __enable_irq();
 
 }
-
-void CAN1_SCE_IRQHandler(void)
-{
-    
-}
-
 
 /* USER CODE END 1 */
