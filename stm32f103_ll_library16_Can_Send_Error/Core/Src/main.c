@@ -120,7 +120,9 @@ int main(void)
 
     /* 监控CAN错误 */
     if (CAN_Check_Error(&gCanESR)) {
-        // 添加自己的错误处理代码
+        CAN_BusOff_Recover(); // 离线状态恢复
+    } else {
+        // 其他错误
     }
     
     LL_mDelay(50);

@@ -49,6 +49,7 @@ void CAN_Config(void)
        - TS2=0x02 => 2 => 3Tq
        - TS1=0x0D => 13 => 14Tq
        - BRP=0x03 => 3 => 分频=4
+       - 最终，波特率500K
     */
     CAN1->BTR = (0x00 << 24) |  // SILM(31) | LBKM(30) = 0
                 (0x00 << 22) |  // SJW(23:22) = 0 (SJW = 1Tq)
@@ -59,6 +60,9 @@ void CAN_Config(void)
     /* 8. 退出初始化模式 */
     CAN1->MCR &= ~(1UL << 0);  // 清除 INRQ (进入正常模式)
     while (CAN1->MSR & (1UL << 0)); // 等待 MSR.INAK 变 0
+
+    /* 新增：清除总线关闭标志（加了显式清除BOFF位后，这个函数恢复Bus-off错误状态 */
+    //CAN1->ESR &= ~CAN_ESR_BOFF;  // 显式清除BOFF位
 
     /* 9. 配置过滤器 0，FIFO0 */
     CAN1->FMR |= (1UL << 0);   // 进入过滤器初始化模式
@@ -190,15 +194,22 @@ uint8_t CAN_Check_Error(CAN_ESR_t* can_esr) {
     can_esr->boff  = (esr & CAN_ESR_BOFF)  >> CAN_ESR_BOFF_Pos;  // 总线关闭标志（Bus-Off Flag）
 
     /* 清除LEC错误码字段（向对应位写0清除） */
-    CAN1->ESR &= ~CAN_ESR_LEC;
+    //CAN1->ESR &= ~CAN_ESR_LEC;
 
     /* 按错误严重程度分级返回（BOFF > EPVF > LEC > EWGF）*/
-    if (can_esr->boff)  return 3;    // 总线关闭状态（最严重，需要硬件复位）
-    if (can_esr->epvf)  return 2;    // 错误被动状态（TEC/REC > 127）
-    if (can_esr->lec)   return 1;    // 协议错误（位填充/格式/ACK等错误）
-    if (can_esr->ewgf)  return 4;    // 警告状态（TEC/REC > 96）
+    if (can_esr->boff == 0x01)  return 3;    // 总线关闭状态（最严重，需要硬件复位）
+    if (can_esr->epvf == 0x01)  return 2;    // 错误被动状态（TEC/REC > 127）
+    if (can_esr->lec == 0x01)   return 1;    // 协议错误（位填充/格式/ACK等错误）
+    if (can_esr->ewgf == 0x01)  return 4;    // 警告状态（TEC/REC > 96）
     return 0;                        // 无错误
 }
+
+void CAN_BusOff_Recover(void)
+{
+    CAN1->MCR |= CAN_MCR_SLEEP;  // 进入睡眠模式（停止收发）
+    CAN_Config();                // 重新初始化一次CAN
+}
+
 
 
 
