@@ -62,7 +62,7 @@ void CAN_Config(void)
     while (CAN1->MSR & (1UL << 0)); // 等待 MSR.INAK 变 0
 
     /* 新增：清除总线关闭标志（加了显式清除BOFF位后，这个函数恢复Bus-off错误状态 */
-    //CAN1->ESR &= ~CAN_ESR_BOFF;  // 显式清除BOFF位
+    CAN1->ESR &= ~CAN_ESR_BOFF;  // 显式清除BOFF位
 
     /* 9. 配置过滤器 0，FIFO0 */
     CAN1->FMR |= (1UL << 0);   // 进入过滤器初始化模式

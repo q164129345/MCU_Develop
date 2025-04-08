@@ -60,8 +60,8 @@ typedef struct {
 void CAN_Config(void);
 uint8_t CAN_SendMessage_Blocking(uint32_t stdId, uint8_t *data, uint8_t DLC);
 uint8_t CAN_SendMessage_NonBlocking(uint32_t stdId, uint8_t *data, uint8_t DLC);
-uint8_t CAN_Check_Error(CAN_ESR_t* can_esr);
-
+uint8_t CAN_Check_Error(void);
+void CAN_BusOff_Recover(void);
 
 #ifdef __cplusplus
 }
