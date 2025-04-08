@@ -120,7 +120,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>潆O</Name>
+          <Name>4駬</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -157,18 +157,18 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>123</LineNumber>
+          <LineNumber>226</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134219684</Address>
+          <Address>134218156</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>../Core/Src/main.c</Filename>
+          <Filename>..\BSP\myCanDrive_reg.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\stm32f103zet6\../Core/Src/main.c\123</Expression>
+          <Expression>\\stm32f103zet6\../BSP/myCanDrive_reg.c\226</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -186,6 +186,11 @@
           <count>2</count>
           <WinNumber>1</WinNumber>
           <ItemText>gCanESR,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>3</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>g_BusOffCount,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>

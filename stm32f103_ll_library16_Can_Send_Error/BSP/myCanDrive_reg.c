@@ -181,29 +181,45 @@ uint8_t CAN_SendMessage_NonBlocking(uint32_t stdId, uint8_t *data, uint8_t DLC)
  *                       - 4: 警告状态（EWGF = 1）
  * @note   本函数会在读取后自动清除LEC错误码字段
  */
-uint8_t CAN_Check_Error(CAN_ESR_t* can_esr) {
+uint8_t CAN_Check_Error(void) {
     /* 读取CAN错误状态寄存器（ESR） */
     uint32_t esr = CAN1->ESR;
+    uint8_t result = 0;
 
     /* 解析所有错误字段 */
-    can_esr->lec   = (esr & CAN_ESR_LEC)   >> CAN_ESR_LEC_Pos;   // 最后错误代码（Last Error Code）
-    can_esr->tec   = (esr & CAN_ESR_TEC)   >> CAN_ESR_TEC_Pos;   // 发送错误计数器（Transmit Error Counter）
-    can_esr->rec   = (esr & CAN_ESR_REC)   >> CAN_ESR_REC_Pos;   // 接收错误计数器（Receive Error Counter）
-    can_esr->epvf  = (esr & CAN_ESR_EPVF)  >> CAN_ESR_EPVF_Pos;  // 错误被动标志（Error Passive Flag）
-    can_esr->ewgf  = (esr & CAN_ESR_EWGF)  >> CAN_ESR_EWGF_Pos;  // 错误警告标志（Error Warning Flag）
-    can_esr->boff  = (esr & CAN_ESR_BOFF)  >> CAN_ESR_BOFF_Pos;  // 总线关闭标志（Bus-Off Flag）
+    gCanESR.lec   = (esr & CAN_ESR_LEC)   >> CAN_ESR_LEC_Pos;   // 最后错误代码（Last Error Code）
+    gCanESR.tec   = (esr & CAN_ESR_TEC)   >> CAN_ESR_TEC_Pos;   // 发送错误计数器（Transmit Error Counter）
+    gCanESR.rec   = (esr & CAN_ESR_REC)   >> CAN_ESR_REC_Pos;   // 接收错误计数器（Receive Error Counter）
+    gCanESR.epvf  = (esr & CAN_ESR_EPVF)  >> CAN_ESR_EPVF_Pos;  // 错误被动标志（Error Passive Flag）
+    gCanESR.ewgf  = (esr & CAN_ESR_EWGF)  >> CAN_ESR_EWGF_Pos;  // 错误警告标志（Error Warning Flag）
+    gCanESR.boff  = (esr & CAN_ESR_BOFF)  >> CAN_ESR_BOFF_Pos;  // 总线关闭标志（Bus-Off Flag）
 
     /* 清除LEC错误码字段（向对应位写0清除） */
-    //CAN1->ESR &= ~CAN_ESR_LEC;
+    CAN1->ESR &= ~CAN_ESR_LEC;
 
     /* 按错误严重程度分级返回（BOFF > EPVF > LEC > EWGF）*/
-    if (can_esr->boff == 0x01)  return 3;    // 总线关闭状态（最严重，需要硬件复位）
-    if (can_esr->epvf == 0x01)  return 2;    // 错误被动状态（TEC/REC > 127）
-    if (can_esr->lec == 0x01)   return 1;    // 协议错误（位填充/格式/ACK等错误）
-    if (can_esr->ewgf == 0x01)  return 4;    // 警告状态（TEC/REC > 96）
-    return 0;                        // 无错误
+    if (gCanESR.boff == 0x01) {
+        return 3;
+    } else if (gCanESR.epvf == 0x01) {
+        return 2; // 错误被动状态（TEC/REC > 127）
+    } else if (gCanESR.lec == 0x01) {
+        return 1; // 协议错误（位填充/格式/ACK等错误）
+    } else if (gCanESR.ewgf == 0x01) {
+        return 4; // 警告状态（TEC/REC > 96）
+    } else {
+        return 0; // 无错误
+    }
 }
 
+/**
+ * @brief CAN总线Bus-Off恢复函数
+ *
+ * 该函数用于在CAN总线进入Bus-Off状态后，恢复CAN控制器的正常工作状态。
+ * 它首先通过设置CAN1->MCR寄存器中的CAN_MCR_SLEEP位，使CAN进入睡眠模式，停止数据发送和接收，
+ * 随后调用CAN_Config函数对CAN进行重新初始化，以便使其重新恢复正常运行。
+ *
+ * @note 
+ */
 void CAN_BusOff_Recover(void)
 {
     CAN1->MCR |= CAN_MCR_SLEEP;  // 进入睡眠模式（停止收发）

@@ -3,7 +3,7 @@
 <title>Static Call Graph - [stm32f103zet6\stm32f103zet6.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image stm32f103zet6\stm32f103zet6.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Wed Apr  2 15:16:03 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Tue Apr  8 15:12:26 2025
 <BR><P>
 <H3>Maximum Stack Usage =         92 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -328,17 +328,17 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[53]"></a>CAN_Check_Error</STRONG> (Thumb, 86 bytes, Stack size 0 bytes, mycandrive_reg.o(.text.CAN_Check_Error))
+<P><STRONG><a name="[55]"></a>CAN_Check_Error</STRONG> (Thumb, 102 bytes, Stack size 0 bytes, mycandrive_reg.o(.text.CAN_Check_Error))
 <BR><BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[4d]"></a>CAN_Config</STRONG> (Thumb, 360 bytes, Stack size 0 bytes, mycandrive_reg.o(.text.CAN_Config))
+<P><STRONG><a name="[4d]"></a>CAN_Config</STRONG> (Thumb, 424 bytes, Stack size 0 bytes, mycandrive_reg.o(.text.CAN_Config))
 <BR><BR>[Called By]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_BusOff_Recover
 <LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[55]"></a>CAN_SendMessage_NonBlocking</STRONG> (Thumb, 152 bytes, Stack size 16 bytes, mycandrive_reg.o(.text.CAN_SendMessage_NonBlocking))
-<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = CAN_SendMessage_NonBlocking
+<P><STRONG><a name="[54]"></a>CAN_SendMessage_NonBlocking</STRONG> (Thumb, 340 bytes, Stack size 24 bytes, mycandrive_reg.o(.text.CAN_SendMessage_NonBlocking))
+<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = CAN_SendMessage_NonBlocking
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -353,7 +353,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
-<P><STRONG><a name="[4f]"></a>LL_GPIO_Init</STRONG> (Thumb, 188 bytes, Stack size 36 bytes, stm32f1xx_ll_gpio.o(.text.LL_GPIO_Init))
+<P><STRONG><a name="[4f]"></a>LL_GPIO_Init</STRONG> (Thumb, 190 bytes, Stack size 36 bytes, stm32f1xx_ll_gpio.o(.text.LL_GPIO_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = LL_GPIO_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
@@ -367,13 +367,13 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 </UL>
 
-<P><STRONG><a name="[54]"></a>LL_mDelay</STRONG> (Thumb, 40 bytes, Stack size 4 bytes, stm32f1xx_ll_utils.o(.text.LL_mDelay))
+<P><STRONG><a name="[53]"></a>LL_mDelay</STRONG> (Thumb, 70 bytes, Stack size 4 bytes, stm32f1xx_ll_utils.o(.text.LL_mDelay))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = LL_mDelay
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[4e]"></a>MX_GPIO_Init</STRONG> (Thumb, 156 bytes, Stack size 48 bytes, gpio.o(.text.MX_GPIO_Init))
+<P><STRONG><a name="[4e]"></a>MX_GPIO_Init</STRONG> (Thumb, 146 bytes, Stack size 48 bytes, gpio.o(.text.MX_GPIO_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 84<LI>Call Chain = MX_GPIO_Init &rArr; LL_GPIO_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_GPIO_Init
@@ -404,7 +404,7 @@ Global Symbols
 <P><STRONG><a name="[9]"></a>SysTick_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f1xx_it.o(.text.SysTick_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
-<P><STRONG><a name="[50]"></a>SystemClock_Config</STRONG> (Thumb, 162 bytes, Stack size 8 bytes, main.o(.text.SystemClock_Config))
+<P><STRONG><a name="[50]"></a>SystemClock_Config</STRONG> (Thumb, 272 bytes, Stack size 8 bytes, main.o(.text.SystemClock_Config))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = SystemClock_Config
 </UL>
 <BR>[Calls]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_SetSystemCoreClock
@@ -416,7 +416,7 @@ Global Symbols
 <P><STRONG><a name="[47]"></a>SystemInit</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, system_stm32f1xx.o(.text.SystemInit))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(.text)
 </UL>
-<P><STRONG><a name="[1d]"></a>USB_HP_CAN1_TX_IRQHandler</STRONG> (Thumb, 92 bytes, Stack size 0 bytes, stm32f1xx_it.o(.text.USB_HP_CAN1_TX_IRQHandler))
+<P><STRONG><a name="[1d]"></a>USB_HP_CAN1_TX_IRQHandler</STRONG> (Thumb, 106 bytes, Stack size 0 bytes, stm32f1xx_it.o(.text.USB_HP_CAN1_TX_IRQHandler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
 <P><STRONG><a name="[5]"></a>UsageFault_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f1xx_it.o(.text.UsageFault_Handler))
@@ -426,13 +426,13 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
-<P><STRONG><a name="[46]"></a>main</STRONG> (Thumb, 252 bytes, Stack size 8 bytes, main.o(.text.main))
+<P><STRONG><a name="[46]"></a>main</STRONG> (Thumb, 246 bytes, Stack size 8 bytes, main.o(.text.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 92<LI>Call Chain = main &rArr; MX_GPIO_Init &rArr; LL_GPIO_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_SendMessage_NonBlocking
-<LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_mDelay
-<LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_BusOff_Recover
-<LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Check_Error
+<BR>[Calls]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_BusOff_Recover
+<LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Check_Error
+<LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_SendMessage_NonBlocking
+<LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_mDelay
 <LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Config
 <LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
 <LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config

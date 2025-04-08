@@ -29,8 +29,7 @@
 /* USER CODE BEGIN PTD */
 
 volatile uint32_t canSendError = 0;
-extern CAN_ESR_t gCanESR;
-
+volatile uint8_t g_BusOffCount = 0;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -119,10 +118,11 @@ int main(void)
     }
 
     /* 监控CAN错误 */
-    if (CAN_Check_Error(&gCanESR)) {
+    if (CAN_Check_Error() == 0x03) { // 因为错误太严重，进入离线状态
+        g_BusOffCount++;      // 每发生一次busoff严重错误，记录一次
         CAN_BusOff_Recover(); // 离线状态恢复
     } else {
-        // 其他错误
+        // 其他错误与没有错误
     }
     
     LL_mDelay(50);
