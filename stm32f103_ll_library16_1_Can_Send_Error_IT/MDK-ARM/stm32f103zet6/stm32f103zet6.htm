@@ -3,7 +3,7 @@
 <title>Static Call Graph - [stm32f103zet6\stm32f103zet6.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image stm32f103zet6\stm32f103zet6.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Wed Apr  9 17:31:44 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Wed Apr  9 19:18:24 2025
 <BR><P>
 <H3>Maximum Stack Usage =         92 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -26,7 +26,7 @@ Function Pointers
  <LI><a href="#[39]">ADC3_IRQHandler</a> from startup_stm32f103xe.o(.text) referenced from startup_stm32f103xe.o(RESET)
  <LI><a href="#[4]">BusFault_Handler</a> from stm32f1xx_it.o(.text.BusFault_Handler) referenced from startup_stm32f103xe.o(RESET)
  <LI><a href="#[1f]">CAN1_RX1_IRQHandler</a> from startup_stm32f103xe.o(.text) referenced from startup_stm32f103xe.o(RESET)
- <LI><a href="#[20]">CAN1_SCE_IRQHandler</a> from startup_stm32f103xe.o(.text) referenced from startup_stm32f103xe.o(RESET)
+ <LI><a href="#[20]">CAN1_SCE_IRQHandler</a> from stm32f1xx_it.o(.text.CAN1_SCE_IRQHandler) referenced from startup_stm32f103xe.o(RESET)
  <LI><a href="#[15]">DMA1_Channel1_IRQHandler</a> from startup_stm32f103xe.o(.text) referenced from startup_stm32f103xe.o(RESET)
  <LI><a href="#[16]">DMA1_Channel2_IRQHandler</a> from startup_stm32f103xe.o(.text) referenced from startup_stm32f103xe.o(RESET)
  <LI><a href="#[17]">DMA1_Channel3_IRQHandler</a> from startup_stm32f103xe.o(.text) referenced from startup_stm32f103xe.o(RESET)
@@ -137,9 +137,6 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
 <P><STRONG><a name="[1f]"></a>CAN1_RX1_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_stm32f103xe.o(.text))
-<BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
-</UL>
-<P><STRONG><a name="[20]"></a>CAN1_SCE_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_stm32f103xe.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
 <P><STRONG><a name="[15]"></a>DMA1_Channel1_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_stm32f103xe.o(.text))
@@ -322,22 +319,24 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
-<P><STRONG><a name="[4c]"></a>CAN_BusOff_Recover</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, mycandrive_reg.o(.text.CAN_BusOff_Recover))
-<BR><BR>[Calls]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Config
+<P><STRONG><a name="[20]"></a>CAN1_SCE_IRQHandler</STRONG> (Thumb, 70 bytes, Stack size 0 bytes, stm32f1xx_it.o(.text.CAN1_SCE_IRQHandler))
+<BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
+</UL>
+<P><STRONG><a name="[55]"></a>CAN_BusOff_Recover</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, mycandrive_reg.o(.text.CAN_BusOff_Recover))
+<BR><BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[51]"></a>CAN_Config</STRONG> (Thumb, 492 bytes, Stack size 16 bytes, mycandrive_reg.o(.text.CAN_Config))
+<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = CAN_Config
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[55]"></a>CAN_Check_Error</STRONG> (Thumb, 102 bytes, Stack size 0 bytes, mycandrive_reg.o(.text.CAN_Check_Error))
+<P><STRONG><a name="[54]"></a>CAN_Read_CAN_Error</STRONG> (Thumb, 52 bytes, Stack size 0 bytes, mycandrive_reg.o(.text.CAN_Read_CAN_Error))
 <BR><BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[4d]"></a>CAN_Config</STRONG> (Thumb, 432 bytes, Stack size 0 bytes, mycandrive_reg.o(.text.CAN_Config))
-<BR><BR>[Called By]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_BusOff_Recover
-<LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-</UL>
-
-<P><STRONG><a name="[54]"></a>CAN_SendMessage_NonBlocking</STRONG> (Thumb, 340 bytes, Stack size 24 bytes, mycandrive_reg.o(.text.CAN_SendMessage_NonBlocking))
+<P><STRONG><a name="[53]"></a>CAN_SendMessage_NonBlocking</STRONG> (Thumb, 340 bytes, Stack size 24 bytes, mycandrive_reg.o(.text.CAN_SendMessage_NonBlocking))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = CAN_SendMessage_NonBlocking
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -353,30 +352,30 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
-<P><STRONG><a name="[4f]"></a>LL_GPIO_Init</STRONG> (Thumb, 190 bytes, Stack size 36 bytes, stm32f1xx_ll_gpio.o(.text.LL_GPIO_Init))
+<P><STRONG><a name="[4d]"></a>LL_GPIO_Init</STRONG> (Thumb, 190 bytes, Stack size 36 bytes, stm32f1xx_ll_gpio.o(.text.LL_GPIO_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = LL_GPIO_Init
 </UL>
-<BR>[Called By]<UL><LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
+<BR>[Called By]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
 </UL>
 
-<P><STRONG><a name="[51]"></a>LL_Init1msTick</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, stm32f1xx_ll_utils.o(.text.LL_Init1msTick))
-<BR><BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
+<P><STRONG><a name="[4f]"></a>LL_Init1msTick</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, stm32f1xx_ll_utils.o(.text.LL_Init1msTick))
+<BR><BR>[Called By]<UL><LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 </UL>
 
-<P><STRONG><a name="[52]"></a>LL_SetSystemCoreClock</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, stm32f1xx_ll_utils.o(.text.LL_SetSystemCoreClock))
-<BR><BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
+<P><STRONG><a name="[50]"></a>LL_SetSystemCoreClock</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, stm32f1xx_ll_utils.o(.text.LL_SetSystemCoreClock))
+<BR><BR>[Called By]<UL><LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 </UL>
 
-<P><STRONG><a name="[53]"></a>LL_mDelay</STRONG> (Thumb, 70 bytes, Stack size 4 bytes, stm32f1xx_ll_utils.o(.text.LL_mDelay))
+<P><STRONG><a name="[52]"></a>LL_mDelay</STRONG> (Thumb, 70 bytes, Stack size 4 bytes, stm32f1xx_ll_utils.o(.text.LL_mDelay))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = LL_mDelay
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[4e]"></a>MX_GPIO_Init</STRONG> (Thumb, 146 bytes, Stack size 48 bytes, gpio.o(.text.MX_GPIO_Init))
+<P><STRONG><a name="[4c]"></a>MX_GPIO_Init</STRONG> (Thumb, 146 bytes, Stack size 48 bytes, gpio.o(.text.MX_GPIO_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 84<LI>Call Chain = MX_GPIO_Init &rArr; LL_GPIO_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_GPIO_Init
+<BR>[Calls]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_GPIO_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -404,11 +403,11 @@ Global Symbols
 <P><STRONG><a name="[9]"></a>SysTick_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f1xx_it.o(.text.SysTick_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
-<P><STRONG><a name="[50]"></a>SystemClock_Config</STRONG> (Thumb, 272 bytes, Stack size 8 bytes, main.o(.text.SystemClock_Config))
+<P><STRONG><a name="[4e]"></a>SystemClock_Config</STRONG> (Thumb, 272 bytes, Stack size 8 bytes, main.o(.text.SystemClock_Config))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = SystemClock_Config
 </UL>
-<BR>[Calls]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_SetSystemCoreClock
-<LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_Init1msTick
+<BR>[Calls]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_SetSystemCoreClock
+<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_Init1msTick
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -426,16 +425,16 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
-<P><STRONG><a name="[46]"></a>main</STRONG> (Thumb, 246 bytes, Stack size 8 bytes, main.o(.text.main))
+<P><STRONG><a name="[46]"></a>main</STRONG> (Thumb, 272 bytes, Stack size 8 bytes, main.o(.text.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 92<LI>Call Chain = main &rArr; MX_GPIO_Init &rArr; LL_GPIO_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_BusOff_Recover
-<LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Check_Error
-<LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_SendMessage_NonBlocking
-<LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_mDelay
-<LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Config
-<LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
-<LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
+<BR>[Calls]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_BusOff_Recover
+<LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Read_CAN_Error
+<LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_SendMessage_NonBlocking
+<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_mDelay
+<LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Config
+<LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
+<LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
 </UL>
