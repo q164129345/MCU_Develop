@@ -1,0 +1,32 @@
+/**
+ * @file myCanDrive.h
+ * @brief definitions for CAN driver module
+ * @note 
+ * 
+ * @version 1.0.0
+ * @date 2025-04-09
+ * @author Wallace.zhang
+ * 
+ * @copyright
+ * 
+ * @license SPDX-License-Identifier: MIT
+ */
+#ifndef __MYCANDRIVE_H
+#define __MYCANDRIVE_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "main.h"
+
+void CAN_Send_Msg_Serial(void);
+uint8_t CAN_Send_Msg_No_Serial(void);
+void CAN_Config(void);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __MYCANDRIVE_H */
+
