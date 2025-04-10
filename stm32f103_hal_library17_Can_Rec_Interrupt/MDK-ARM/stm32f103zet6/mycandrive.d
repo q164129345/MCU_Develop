@@ -35,4 +35,5 @@ stm32f103zet6/mycandrive.o: ..\BSP\myCanDrive.c ..\BSP\myCanDrive.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_ll_pwr.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_ll_dma.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_ll_gpio.h \
-  ..\Core\Inc\can.h
+  C:\Keil_v5\ARM\ARMCLANG\include\stdio.h \
+  C:\Keil_v5\ARM\ARMCLANG\include\string.h ..\Core\Inc\can.h

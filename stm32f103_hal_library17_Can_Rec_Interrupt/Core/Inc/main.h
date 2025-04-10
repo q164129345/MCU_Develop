@@ -41,7 +41,8 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#define USE_REGISTER_MODE 1
+#include "stdio.h"
+#include "string.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

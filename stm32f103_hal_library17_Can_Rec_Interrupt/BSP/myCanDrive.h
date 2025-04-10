@@ -19,10 +19,19 @@ extern "C" {
 #endif
 
 #include "main.h"
+#include "can.h"
+    
+typedef struct {
+    CAN_RxHeaderTypeDef RxHeader;
+    volatile uint8_t RxData[8];
+}CANMsg_t;
+
 
 void CAN_Send_Msg_Serial(void);
 uint8_t CAN_Send_Msg_No_Serial(void);
 void CAN_Config(void);
+void HAL_CAN_RxFifo1MsgPendingCallback(CAN_HandleTypeDef *hcan);
+
 
 #ifdef __cplusplus
 }
