@@ -3,6 +3,7 @@
 volatile uint8_t txmail_free = 0;
 volatile uint32_t canSendError = 0;
 volatile uint32_t g_RxCount = 0;
+volatile uint32_t g_RxOverflowError = 0;
 CANMsg_t g_CanMsg = {0,}; // 全局变量，易于观察
 
 /**
@@ -107,7 +108,8 @@ void CAN_Config(void)
 {
     txmail_free = HAL_CAN_GetTxMailboxesFreeLevel(&hcan); // 获取发送邮箱的空闲数量，一般都是3个
     HAL_CAN_ActivateNotification(&hcan, CAN_IT_TX_MAILBOX_EMPTY); // 启动发送完成中断
-    HAL_CAN_ActivateNotification(&hcan, CAN_IT_RX_FIFO1_MSG_PENDING); // 启动接收FIFO1中断，当FIFO1中有消息到达时，产生中断
+    //HAL_CAN_ActivateNotification(&hcan, CAN_IT_RX_FIFO1_MSG_PENDING); // 启动接收FIFO1中断，当FIFO1中有消息到达时，产生中断
+    HAL_CAN_ActivateNotification(&hcan, CAN_IT_RX_FIFO1_OVERRUN); // 启动接收FIFO1溢出中断
     CAN_FilterConfig_AllMessages(&hcan); // 配置过滤器
     if (HAL_CAN_Start(&hcan) != HAL_OK) {
       Error_Handler(); // 启动失败，进入错误处理
@@ -144,3 +146,11 @@ void HAL_CAN_RxFifo1MsgPendingCallback(CAN_HandleTypeDef *hcan)
         pendingMessages = HAL_CAN_GetRxFifoFillLevel(hcan, CAN_RX_FIFO1); // 更新FIFO1里CAN报文的数量
     }
 }
+
+void CAN_FIFO1_Overflow_Handler(void)
+{
+    if (CAN1->RF1R & CAN_RF1R_FOVR1) { // 读取FOVR1位（FIFO1溢出中断），看看是不是被置1
+        g_RxOverflowError++;
+    }
+}
+
