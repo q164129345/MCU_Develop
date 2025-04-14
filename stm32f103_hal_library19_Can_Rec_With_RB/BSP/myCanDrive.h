@@ -23,7 +23,7 @@ extern "C" {
     
 typedef struct {
     CAN_RxHeaderTypeDef RxHeader;
-    volatile uint8_t RxData[8];
+    uint8_t RxData[8];
 }CANMsg_t;
 
 
