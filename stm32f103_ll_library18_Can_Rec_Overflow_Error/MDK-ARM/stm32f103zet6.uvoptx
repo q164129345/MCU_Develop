@@ -120,7 +120,6 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>4駮</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -184,6 +183,11 @@
           <count>5</count>
           <WinNumber>1</WinNumber>
           <ItemText>g_RxCount,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>6</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>g_RxOverflowError,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>

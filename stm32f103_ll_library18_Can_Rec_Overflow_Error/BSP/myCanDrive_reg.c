@@ -3,7 +3,7 @@
 volatile uint8_t txmail_free = 0;
 CAN_ESR_t gCanESR = {0,};
 volatile uint32_t g_RxCount = 0;    // 记录接收报文总数
-volatile uint32_t g_RxOverFlow = 0; // 记录接收溢出错误
+volatile uint32_t g_RxOverflowError = 0; // 记录接收溢出错误
 CANMsg_t g_CanMsg = {0,}; // 全局变量，易于观察
 /**
   * @brief  使用直接寄存器操作的CAN初始化配置
@@ -84,7 +84,8 @@ void CAN_Config(void)
     // 开启CAN消息挂号中断（接收中断）
     NVIC_SetPriority(CAN1_RX1_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 0, 0));
     NVIC_EnableIRQ(CAN1_RX1_IRQn);
-    CAN1->IER |= CAN_IER_FMPIE1; // 使能接收中断（消息挂号中断）
+    //CAN1->IER |= CAN_IER_FMPIE1; // 使能接收FIFO1中断（消息挂号中断）
+    CAN1->IER |= CAN_IER_FOVIE1; // 使能接收FIFO1溢出中断
     
     /* 11.获取一次发送邮箱的数量 */
     txmail_free = ((CAN1->TSR & CAN_TSR_TME0) ? 1 : 0) +
@@ -296,6 +297,35 @@ __STATIC_INLINE void CAN_Get_Message_From_FIFO1(CAN_RxHeaderTypeDef* rxHeader, u
 }
 
 /**
+  * @brief  CAN接收FIFO1溢出中断处理
+  * @note   寄存器方式实现
+  * @retval None
+  */
+__STATIC_INLINE void CAN_FIFO1_Overflow_Handler(void)
+{
+    g_RxOverflowError++;          // 溢出计数自增
+    CAN1->RF1R |= CAN_RF1R_FOVR1; // 清除FIFO1溢出标志（写1清除）
+}
+
+/**
+  * @brief  CAN接收FIFO1挂号中断处理
+  * @note   寄存器方式实现
+  * @retval None
+  */
+__STATIC_INLINE void CAN_FIFO1_Message_Pending_Handler(void)
+{
+    while (CAN1->RF1R & CAN_RF1R_FMP1) { // 当FIFO1中还有待处理的报文时，循环读取
+        CAN_Get_Message_From_FIFO1(&g_CanMsg.RxHeader, (uint8_t*)g_CanMsg.RxData); // 从FIFO1中获取CAN报文的详细内容
+        /* 在这里添加对接收到数据的处理代码
+         * 例如调用用户自定义的函数处理数据：
+         * Process_CAN_Message(&g_CanMsg.RxHeader, g_CanMsg.RxData);
+         * 或者将接收到的数据放入环形缓冲区ringbuffer。
+         */
+        g_RxCount++; // 更新全局接收报文计数器
+    }
+}
+
+/**
   * @brief  外设CAN的发送完成全局中断函数
   * @note   寄存器方式实现
   * @retval None
@@ -324,6 +354,7 @@ void USB_HP_CAN1_TX_IRQHandler(void)
     __enable_irq();
 
 }
+
 /**
   * @brief  外设CAN的RX_FIFO1全局中断函数
   * @note   寄存器方式实现
@@ -331,19 +362,14 @@ void USB_HP_CAN1_TX_IRQHandler(void)
   */
 void CAN1_RX1_IRQHandler(void)
 {
-    /* 当FIFO1中还有待处理的报文时，循环读取 */
-    while (CAN1->RF1R & CAN_RF1R_FMP1) {
-        /* 从FIFO1中获取CAN报文的详细内容 */
-        CAN_Get_Message_From_FIFO1(&g_CanMsg.RxHeader, (uint8_t*)g_CanMsg.RxData);
-        
-        /* 在这里添加对接收到数据的处理代码
-         * 例如调用用户自定义的函数处理数据：
-         * Process_CAN_Message(&g_CanMsg.RxHeader, g_CanMsg.RxData);
-         * 或者将接收到的数据放入环形缓冲区ringbuffer。
-         */
-        
-        /* 更新全局接收报文计数器 */
-        g_RxCount++;
+    /* 首先检查FIFO1是否发生溢出 */
+    if (CAN1->RF1R & CAN_RF1R_FOVR1) { // FIFO1接收溢出中断
+        CAN_FIFO1_Overflow_Handler(); // 接收FIFO1溢出中断处理
+    } else if (CAN1->RF1R & CAN_RF1R_FMP1) { // FIFO1挂号中断
+        CAN_FIFO1_Message_Pending_Handler(); // 接收FIFO1挂号中断处理
+    } else {
+        // 其他错误
     }
 }
+
 

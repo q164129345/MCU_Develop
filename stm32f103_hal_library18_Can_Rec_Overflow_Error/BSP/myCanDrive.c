@@ -82,22 +82,18 @@ static void CAN_FilterConfig_AllMessages(CAN_HandleTypeDef *hcan)
     filterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
     // 设置滤波器为32位模式
     filterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
-
     // 设置滤波器标识符均为0
     filterConfig.FilterIdHigh = 0x0000;
     filterConfig.FilterIdLow  = 0x0000;
     // 设置屏蔽值为0，即不对任何比特进行过滤
     filterConfig.FilterMaskIdHigh = 0x0000;
     filterConfig.FilterMaskIdLow  = 0x0000;
-    
     // 将接收到的消息分配到FIFO0（也可以选择FIFO1，根据实际应用配置）
     filterConfig.FilterFIFOAssignment = CAN_RX_FIFO1;
     // 激活滤波器
     filterConfig.FilterActivation = ENABLE;
-    
     // 配置滤波器，配置失败则进入错误处理
-    if (HAL_CAN_ConfigFilter(hcan, &filterConfig) != HAL_OK)
-    {
+    if (HAL_CAN_ConfigFilter(hcan, &filterConfig) != HAL_OK) {
         Error_Handler();
     }
 }
@@ -147,6 +143,11 @@ void HAL_CAN_RxFifo1MsgPendingCallback(CAN_HandleTypeDef *hcan)
     }
 }
 
+/**
+  * @brief  CAN溢出中断处理函数，在全局中断CAN1_RX1_IRQHandler()里调用
+  * @param  Note
+  * @retval None
+  */
 void CAN_FIFO1_Overflow_Handler(void)
 {
     if (CAN1->RF1R & CAN_RF1R_FOVR1) { // 读取FOVR1位（FIFO1溢出中断），看看是不是被置1
