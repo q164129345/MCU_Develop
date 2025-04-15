@@ -167,22 +167,22 @@
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>g_CanMsg,0x0A</ItemText>
+          <ItemText>g_RxCount,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
           <WinNumber>1</WinNumber>
-          <ItemText>g_RxCount,0x0A</ItemText>
+          <ItemText>g_RxOverflowError,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>4</count>
           <WinNumber>1</WinNumber>
-          <ItemText>g_RxOverflowError,0x0A</ItemText>
+          <ItemText>g_CanRxRBHandler,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>5</count>
           <WinNumber>1</WinNumber>
-          <ItemText>g_CanRxRBHandler,0x0A</ItemText>
+          <ItemText>g_CanRxRBDataBuffer,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>

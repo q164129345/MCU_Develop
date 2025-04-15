@@ -4,69 +4,88 @@ volatile uint8_t txmail_free = 0;
 volatile uint32_t canSendError = 0;
 volatile uint32_t g_RxCount = 0;
 volatile uint32_t g_RxOverflowError = 0;
-volatile CANMsg_t g_CanMsg = {0,}; // 全局变量，易于观察
+volatile uint32_t g_RXRingbufferOverflow = 0;
+CANMsg_t g_CanMsg = {0,};
 
 /* ringbuffer */
-volatile lwrb_t g_CanRxRBHandler; // ringbuffer
-volatile CANMsg_t g_CanRxRBDataBuffer[50]; // ringbuffer缓存（最多可以存50个CAN消息）
+volatile lwrb_t g_CanRxRBHandler; // 实例化ringbuffer
+volatile CANMsg_t g_CanRxRBDataBuffer[50] = {0,}; // ringbuffer缓存（最多可以存50个CAN消息）
 
 /**
-  * @brief  通过CAN总线发送固定序列数据（带序列号）。
-  * @note   此函数配置标准CAN数据帧（ID: 0x123），发送8字节固定数据(0x01-0x08)，
-  *         如果发送邮箱已满，将延迟1ms等待，发送失败时触发错误处理。
-  *         适用于需要简单可靠发送固定格式数据的场景。
+  * @brief  发送一个标准数据帧的CAN消息（串行方式）
+  * 
+  * 此函数采用串行方式发送标准CAN数据帧。函数内部首先配置发送帧的相关参数，
+  * 然后检测发送邮箱是否空闲。如果发送邮箱已经用完，则通过短延时等待后再发送数据。
+  * 如果发送失败，则调用Error_Handler()进行错误处理。
+  *
+  * @param  canid  标准CAN标识符
+  * @param  data   指向将要发送的数据数组的指针，数据长度由len参数确定（0~8字节）
+  * @param  len    数据字节数（DLC），应不超过8
+  * 
+  * @note   当发送邮箱不可用时，函数会通过延时（LL_mDelay(1)）等待一段时间，
+  *         如果延时后仍无法获得邮箱，则继续等待或最终发送失败。
+  * 
   * @retval None
   */
-void CAN_Send_Msg_Serial(void)
+void CAN_Send_STD_DATA_Msg_Serial(uint32_t canid, uint8_t* data, uint8_t len)
 {
-    CAN_TxHeaderTypeDef TxHeader;
     uint32_t TxMailbox;
-    uint8_t TxData[8] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
+    CAN_TxHeaderTypeDef txHeader;
     /* 配置CAN发送帧参数 */
-    TxHeader.StdId = 0x123;          // 标准标识符，可根据实际需求修改
-    TxHeader.ExtId = 0;              // 对于标准帧，扩展标识符无效
-    TxHeader.IDE = CAN_ID_STD;       // 标准帧
-    TxHeader.RTR = CAN_RTR_DATA;     // 数据帧
-    TxHeader.DLC = 8;                // 数据长度为8字节
-    TxHeader.TransmitGlobalTime = DISABLE; // 不发送全局时间
+    txHeader.StdId = canid;       // 标准标识符，可根据实际需求修改
+    txHeader.ExtId = 0;           // 对于标准帧，扩展标识符无效
+    txHeader.IDE = CAN_ID_STD;    // 标准帧
+    txHeader.RTR = CAN_RTR_DATA;  // 数据帧
+    txHeader.DLC = len;           // 数据长度
+    txHeader.TransmitGlobalTime = DISABLE; // 不发送全局时间
     /* 如果没有发送邮箱，延迟等待（如果有实时操作系统，发起调度是更加好的方案） */
     if (HAL_CAN_GetTxMailboxesFreeLevel(&hcan) == 0) {
         LL_mDelay(1);
     }
     /* 发送CAN消息 */
-    if (HAL_CAN_AddTxMessage(&hcan, &TxHeader, TxData, &TxMailbox) != HAL_OK) {
+    if (HAL_CAN_AddTxMessage(&hcan, &txHeader, data, &TxMailbox) != HAL_OK) {
     /* 发送失败，进入错误处理 */
         Error_Handler();
     }
 }
+
 /**
-  * @brief  通过CAN总线发送固定序列数据（无序列号，带邮箱状态检查）。
-  * @note   此函数在发送邮箱可用时（txmail_free > 0）配置标准CAN数据帧（ID: 0x200），
-  *         发送8字节固定数据(0x01-0x08)，成功后减少可用邮箱计数，
-  *         发送失败时触发错误处理，邮箱不可用时返回发送失败状态。
-  * @retval uint8_t 发送状态：0表示成功，1表示邮箱不可用，发送失败
+  * @brief  发送一个标准数据帧的CAN消息（非串行方式）
+  * 
+  * 此函数采用非串行方式发送标准CAN数据帧。发送前首先检查全局变量txmail_free，
+  * 判断是否有空闲的发送邮箱。如果有，则配置帧参数并发送消息，同时减少空闲邮箱计数；
+  * 否则，增加canSendError计数以记录错误，并返回错误代码。
+  *
+  * @param  canid  标准CAN标识符
+  * @param  data   指向将要发送的数据数组的指针，数据长度由len参数确定（0~8字节）
+  * @param  len    数据字节数（DLC），应不超过8
+  *
+  * @note   函数依赖全局变量txmail_free来检测发送邮箱的空闲状态，
+  *         当发送邮箱不足时，会增加全局变量canSendError计数，并返回错误。
+  * 
+  * @retval uint8_t  返回0表示发送成功；返回1表示发送邮箱已满，未能发送CAN消息
   */
-uint8_t CAN_Send_Msg_No_Serial(void)
+uint8_t CAN_Send_STD_DATA_Msg_No_Serial(uint32_t canid, uint8_t* data, uint8_t len)
 {
     if (txmail_free > 0) {
-        CAN_TxHeaderTypeDef TxHeader;
         uint32_t TxMailbox;
-        uint8_t TxData[8] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
+        CAN_TxHeaderTypeDef txHeader;
         /* 配置CAN发送帧参数 */
-        TxHeader.StdId = 0x200;          // 标准标识符，可根据实际需求修改
-        TxHeader.ExtId = 0;              // 对于标准帧，扩展标识符无效
-        TxHeader.IDE = CAN_ID_STD;       // 标准帧
-        TxHeader.RTR = CAN_RTR_DATA;     // 数据帧
-        TxHeader.DLC = 8;                // 数据长度为8字节
-        TxHeader.TransmitGlobalTime = DISABLE; // 不发送全局时间
+        txHeader.StdId = canid;      // 标准标识符，可根据实际需求修改
+        txHeader.ExtId = 0;          // 对于标准帧，扩展标识符无效
+        txHeader.IDE = CAN_ID_STD;   // 标准帧
+        txHeader.RTR = CAN_RTR_DATA; // 数据帧
+        txHeader.DLC = len;          // 数据长度
+        txHeader.TransmitGlobalTime = DISABLE; // 不发送全局时间
         /* 发送CAN消息 */
-        if (HAL_CAN_AddTxMessage(&hcan, &TxHeader, TxData, &TxMailbox) != HAL_OK) {
+        if (HAL_CAN_AddTxMessage(&hcan, &txHeader, data, &TxMailbox) != HAL_OK) {
         /* 发送失败，进入错误处理 */
             Error_Handler();
         }
         txmail_free--; // 用掉一个发送邮箱
         return 0;
     } else {
+        canSendError++; // 发送邮箱满了，溢出
         return 1;
     }
 }
@@ -101,6 +120,32 @@ static void CAN_FilterConfig_AllMessages(CAN_HandleTypeDef *hcan)
         Error_Handler();
     }
 }
+
+/**
+  * @brief  从ringbuffer中取出所有的CANMsg_t消息并依次发送到CAN总线上
+  * @return 0：所有消息发送成功  
+  *         1：发送过程中出现发送邮箱不足或发送错误  
+  *         2：没有一条完整的CAN消息可供发送
+  */
+uint8_t CAN_Send_CANMsg_FromRingBuffer(void)
+{
+    uint8_t ret = 2;  // 默认返回2表示没有消息可发
+    while(lwrb_get_full((lwrb_t*)&g_CanRxRBHandler) >= sizeof(CANMsg_t)) {
+        ret = 0; // 已有消息可发送
+        if(txmail_free == 0) {
+            ret = 1;  // 没有可用的发送邮箱
+            break;
+        }
+        CANMsg_t canMsg;
+        lwrb_read((lwrb_t*)&g_CanRxRBHandler, &canMsg, sizeof(CANMsg_t)); // 从ringbuffer中读取一条CAN消息
+        if (CAN_Send_STD_DATA_Msg_No_Serial(canMsg.RxHeader.StdId, canMsg.RxData, canMsg.RxHeader.DLC)) { // 使用非串行方式发送消息
+            ret = 1; // 如果发送失败（例如发送邮箱不足或其他错误），记录错误后退出
+            break;
+        }
+    }
+    return ret;
+}
+
 /**
   * @brief  CAN初始化
   */
@@ -115,7 +160,7 @@ void CAN_Config(void)
       Error_Handler(); // 启动失败，进入错误处理
     }
     /* ringbuffer */
-    lwrb_init((lwrb_t*)&g_CanRxRBHandler, (uint8_t*)g_CanRxRBDataBuffer, sizeof(g_CanRxRBDataBuffer));
+    lwrb_init((lwrb_t*)&g_CanRxRBHandler, (uint8_t*)g_CanRxRBDataBuffer, sizeof(g_CanRxRBDataBuffer) + 1); // ringbuffer初始化
 }
 
 /**
@@ -125,23 +170,18 @@ void CAN_Config(void)
   */
 void HAL_CAN_RxFifo1MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
-    CAN_RxHeaderTypeDef RxHeader;
-    uint8_t RxData[8];
+    CANMsg_t canMsg = {0,};
     uint32_t pendingMessages = HAL_CAN_GetRxFifoFillLevel(hcan, CAN_RX_FIFO1); // 获取FIFO1一共有多少个CAN报文
     
     while(pendingMessages) {
         /* 从FIFO1中读取接收消息 */
-        if(HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO1, &RxHeader, RxData) == HAL_OK) {
-            // 在这里添加对接收到数据的处理代码
-            // 例如：调用用户自定义的函数处理数据
-            // Process_CAN_Message(&RxHeader, RxData);
-            // 例如：将接收到的数据放入Ringbuffer
-            
-            /* 将接收到的CAN信息放入全局变量，易于观察。实际项目应该在中断将收到的CAN报文放入ringbuffer,然后在主循环处理CAN报文 */
-            g_CanMsg.RxHeader = RxHeader;
-            memcpy((uint8_t*)g_CanMsg.RxData,(uint8_t*)RxData,8);
+        if(HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO1, &canMsg.RxHeader, canMsg.RxData) == HAL_OK) {
             g_RxCount++; // 累加接收到的CAN报文总数
-            // 示例：简单地将接收到数据存入一个全局变量或打印（如果调试时有串口或其他调试方式）
+            if(lwrb_get_free((lwrb_t*)&g_CanRxRBHandler) < sizeof(CANMsg_t)) { // 判断ringbuffer是否被挤满
+                g_RXRingbufferOverflow++;    // 累加ringbuffer溢出全局计数器
+                lwrb_reset((lwrb_t*)&g_CanRxRBHandler); // 清空ringbuffer
+            }
+            lwrb_write((lwrb_t*)&g_CanRxRBHandler, &canMsg, sizeof(CANMsg_t)); // 将CAN报文放入ringbuffer
         } else {
             // 如果读取消息失败，也可以在这里做错误处理
         }

@@ -28,8 +28,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-extern volatile uint8_t txmail_free;
-extern volatile uint32_t canSendError;
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -99,10 +98,8 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     LL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
-    if (CAN_Send_Msg_No_Serial()) {
-        canSendError++; // 因发送邮箱满了，所以发送失败
-    }
-    LL_mDelay(100);
+    CAN_Send_CANMsg_FromRingBuffer(); // 将ringbuffer的CAN消息发送出去
+    LL_mDelay(50);
   }
   /* USER CODE END 3 */
 }
