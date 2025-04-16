@@ -22,7 +22,8 @@ Section Cross References
     main.o(.text.main) refers to main.o(.text.SystemClock_Config) for SystemClock_Config
     main.o(.text.main) refers to gpio.o(.text.MX_GPIO_Init) for MX_GPIO_Init
     main.o(.text.main) refers to mycandrive_reg.o(.text.CAN_Config) for CAN_Config
-    main.o(.text.main) refers to main.o(.bss..L_MergedGlobals) for .L_MergedGlobals
+    main.o(.text.main) refers to main.o(.bss.g_BusOffCount) for g_BusOffCount
+    main.o(.text.main) refers to mycandrive_reg.o(.bss.canSendError) for canSendError
     main.o(.text.main) refers to stm32f1xx_ll_utils.o(.text.LL_mDelay) for LL_mDelay
     main.o(.text.main) refers to mycandrive_reg.o(.text.CAN_SendMessage_NonBlocking) for CAN_SendMessage_NonBlocking
     main.o(.text.main) refers to mycandrive_reg.o(.text.CAN_Check_Error) for CAN_Check_Error
@@ -84,7 +85,11 @@ Section Cross References
     system_stm32f1xx.o(.ARM.exidx.text.SystemCoreClockUpdate) refers to system_stm32f1xx.o(.text.SystemCoreClockUpdate) for [Anonymous Symbol]
     mycandrive_reg.o(.text.CAN_Config) refers to mycandrive_reg.o(.bss.txmail_free) for txmail_free
     mycandrive_reg.o(.ARM.exidx.text.CAN_Config) refers to mycandrive_reg.o(.text.CAN_Config) for [Anonymous Symbol]
+    mycandrive_reg.o(.text.CAN_SendMessage_Blocking) refers to main.o(.text.Error_Handler) for Error_Handler
+    mycandrive_reg.o(.text.CAN_SendMessage_Blocking) refers to stm32f1xx_ll_utils.o(.text.LL_mDelay) for LL_mDelay
+    mycandrive_reg.o(.text.CAN_SendMessage_Blocking) refers to mycandrive_reg.o(.bss.canSendError) for canSendError
     mycandrive_reg.o(.ARM.exidx.text.CAN_SendMessage_Blocking) refers to mycandrive_reg.o(.text.CAN_SendMessage_Blocking) for [Anonymous Symbol]
+    mycandrive_reg.o(.text.CAN_SendMessage_NonBlocking) refers to main.o(.text.Error_Handler) for Error_Handler
     mycandrive_reg.o(.text.CAN_SendMessage_NonBlocking) refers to mycandrive_reg.o(.bss.txmail_free) for txmail_free
     mycandrive_reg.o(.ARM.exidx.text.CAN_SendMessage_NonBlocking) refers to mycandrive_reg.o(.text.CAN_SendMessage_NonBlocking) for [Anonymous Symbol]
     mycandrive_reg.o(.text.CAN_Check_Error) refers to mycandrive_reg.o(.bss.gCanESR) for gCanESR
@@ -120,7 +125,6 @@ Removing Unused input sections from the image.
     Removing main.o(.text), (0 bytes).
     Removing main.o(.ARM.exidx.text.main), (8 bytes).
     Removing main.o(.ARM.exidx.text.SystemClock_Config), (8 bytes).
-    Removing main.o(.text.Error_Handler), (10 bytes).
     Removing main.o(.ARM.exidx.text.Error_Handler), (8 bytes).
     Removing main.o(.ARM.use_no_argv), (4 bytes).
     Removing gpio.o(.text), (0 bytes).
@@ -190,15 +194,16 @@ Removing Unused input sections from the image.
     Removing system_stm32f1xx.o(.rodata.APBPrescTable), (8 bytes).
     Removing mycandrive_reg.o(.text), (0 bytes).
     Removing mycandrive_reg.o(.ARM.exidx.text.CAN_Config), (8 bytes).
-    Removing mycandrive_reg.o(.text.CAN_SendMessage_Blocking), (488 bytes).
+    Removing mycandrive_reg.o(.text.CAN_SendMessage_Blocking), (502 bytes).
     Removing mycandrive_reg.o(.ARM.exidx.text.CAN_SendMessage_Blocking), (8 bytes).
     Removing mycandrive_reg.o(.ARM.exidx.text.CAN_SendMessage_NonBlocking), (8 bytes).
     Removing mycandrive_reg.o(.ARM.exidx.text.CAN_Check_Error), (8 bytes).
     Removing mycandrive_reg.o(.ARM.exidx.text.CAN_BusOff_Recover), (8 bytes).
     Removing mycandrive_reg.o(.ARM.exidx.text.USB_HP_CAN1_TX_IRQHandler), (8 bytes).
     Removing mycandrive_reg.o(.ARM.exidx.text.CAN1_RX1_IRQHandler), (8 bytes).
+    Removing mycandrive_reg.o(.bss.g_RxOverFlow), (4 bytes).
 
-81 unused section(s) (total 3406 bytes) removed from the image.
+81 unused section(s) (total 3414 bytes) removed from the image.
 
 ==============================================================================
 
@@ -254,30 +259,29 @@ Image Symbol Table
     [Anonymous Symbol]                       0x08000308   Section        0  mycandrive_reg.o(.text.CAN_Check_Error)
     [Anonymous Symbol]                       0x08000370   Section        0  mycandrive_reg.o(.text.CAN_Config)
     [Anonymous Symbol]                       0x08000548   Section        0  mycandrive_reg.o(.text.CAN_SendMessage_NonBlocking)
-    [Anonymous Symbol]                       0x0800069c   Section        0  stm32f1xx_it.o(.text.DebugMon_Handler)
-    [Anonymous Symbol]                       0x080006a0   Section        0  stm32f1xx_it.o(.text.HardFault_Handler)
-    [Anonymous Symbol]                       0x080006a4   Section        0  stm32f1xx_ll_gpio.o(.text.LL_GPIO_Init)
-    [Anonymous Symbol]                       0x08000764   Section        0  stm32f1xx_ll_utils.o(.text.LL_Init1msTick)
-    [Anonymous Symbol]                       0x0800078c   Section        0  stm32f1xx_ll_utils.o(.text.LL_SetSystemCoreClock)
-    [Anonymous Symbol]                       0x08000798   Section        0  stm32f1xx_ll_utils.o(.text.LL_mDelay)
-    [Anonymous Symbol]                       0x080007e0   Section        0  gpio.o(.text.MX_GPIO_Init)
-    [Anonymous Symbol]                       0x08000874   Section        0  stm32f1xx_it.o(.text.MemManage_Handler)
-    [Anonymous Symbol]                       0x08000878   Section        0  stm32f1xx_it.o(.text.NMI_Handler)
-    [Anonymous Symbol]                       0x0800087c   Section        0  stm32f1xx_it.o(.text.PendSV_Handler)
-    [Anonymous Symbol]                       0x08000880   Section        0  stm32f1xx_it.o(.text.SVC_Handler)
-    [Anonymous Symbol]                       0x08000884   Section        0  stm32f1xx_it.o(.text.SysTick_Handler)
-    [Anonymous Symbol]                       0x08000888   Section        0  main.o(.text.SystemClock_Config)
-    [Anonymous Symbol]                       0x08000998   Section        0  system_stm32f1xx.o(.text.SystemInit)
-    [Anonymous Symbol]                       0x0800099c   Section        0  mycandrive_reg.o(.text.USB_HP_CAN1_TX_IRQHandler)
-    [Anonymous Symbol]                       0x08000a08   Section        0  stm32f1xx_it.o(.text.UsageFault_Handler)
-    [Anonymous Symbol]                       0x08000a0c   Section        0  main.o(.text.main)
-    i.__scatterload_copy                     0x08000b02   Section       14  handlers.o(i.__scatterload_copy)
-    i.__scatterload_null                     0x08000b10   Section        2  handlers.o(i.__scatterload_null)
-    i.__scatterload_zeroinit                 0x08000b12   Section       14  handlers.o(i.__scatterload_zeroinit)
-    .L_MergedGlobals                         0x20000008   Data           8  main.o(.bss..L_MergedGlobals)
-    [Anonymous Symbol]                       0x20000008   Section        0  main.o(.bss..L_MergedGlobals)
-    .L_MergedGlobals                         0x20000010   Data          40  mycandrive_reg.o(.bss..L_MergedGlobals)
-    [Anonymous Symbol]                       0x20000010   Section        0  mycandrive_reg.o(.bss..L_MergedGlobals)
+    [Anonymous Symbol]                       0x080006d0   Section        0  stm32f1xx_it.o(.text.DebugMon_Handler)
+    [Anonymous Symbol]                       0x080006d4   Section        0  main.o(.text.Error_Handler)
+    [Anonymous Symbol]                       0x080006e0   Section        0  stm32f1xx_it.o(.text.HardFault_Handler)
+    [Anonymous Symbol]                       0x080006e4   Section        0  stm32f1xx_ll_gpio.o(.text.LL_GPIO_Init)
+    [Anonymous Symbol]                       0x080007a4   Section        0  stm32f1xx_ll_utils.o(.text.LL_Init1msTick)
+    [Anonymous Symbol]                       0x080007cc   Section        0  stm32f1xx_ll_utils.o(.text.LL_SetSystemCoreClock)
+    [Anonymous Symbol]                       0x080007d8   Section        0  stm32f1xx_ll_utils.o(.text.LL_mDelay)
+    [Anonymous Symbol]                       0x08000820   Section        0  gpio.o(.text.MX_GPIO_Init)
+    [Anonymous Symbol]                       0x080008b4   Section        0  stm32f1xx_it.o(.text.MemManage_Handler)
+    [Anonymous Symbol]                       0x080008b8   Section        0  stm32f1xx_it.o(.text.NMI_Handler)
+    [Anonymous Symbol]                       0x080008bc   Section        0  stm32f1xx_it.o(.text.PendSV_Handler)
+    [Anonymous Symbol]                       0x080008c0   Section        0  stm32f1xx_it.o(.text.SVC_Handler)
+    [Anonymous Symbol]                       0x080008c4   Section        0  stm32f1xx_it.o(.text.SysTick_Handler)
+    [Anonymous Symbol]                       0x080008c8   Section        0  main.o(.text.SystemClock_Config)
+    [Anonymous Symbol]                       0x080009d8   Section        0  system_stm32f1xx.o(.text.SystemInit)
+    [Anonymous Symbol]                       0x080009dc   Section        0  mycandrive_reg.o(.text.USB_HP_CAN1_TX_IRQHandler)
+    [Anonymous Symbol]                       0x08000a48   Section        0  stm32f1xx_it.o(.text.UsageFault_Handler)
+    [Anonymous Symbol]                       0x08000a4c   Section        0  main.o(.text.main)
+    i.__scatterload_copy                     0x08000b4a   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x08000b58   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x08000b5a   Section       14  handlers.o(i.__scatterload_zeroinit)
+    .L_MergedGlobals                         0x20000008   Data          40  mycandrive_reg.o(.bss..L_MergedGlobals)
+    [Anonymous Symbol]                       0x20000008   Section        0  mycandrive_reg.o(.bss..L_MergedGlobals)
     STACK                                    0x20000040   Section     1024  startup_stm32f103xe.o(STACK)
 
     Global Symbols
@@ -368,36 +372,37 @@ Image Symbol Table
     CAN_BusOff_Recover                       0x080002f5   Thumb Code    20  mycandrive_reg.o(.text.CAN_BusOff_Recover)
     CAN_Check_Error                          0x08000309   Thumb Code   102  mycandrive_reg.o(.text.CAN_Check_Error)
     CAN_Config                               0x08000371   Thumb Code   472  mycandrive_reg.o(.text.CAN_Config)
-    CAN_SendMessage_NonBlocking              0x08000549   Thumb Code   340  mycandrive_reg.o(.text.CAN_SendMessage_NonBlocking)
-    DebugMon_Handler                         0x0800069d   Thumb Code     2  stm32f1xx_it.o(.text.DebugMon_Handler)
-    HardFault_Handler                        0x080006a1   Thumb Code     2  stm32f1xx_it.o(.text.HardFault_Handler)
-    LL_GPIO_Init                             0x080006a5   Thumb Code   190  stm32f1xx_ll_gpio.o(.text.LL_GPIO_Init)
-    LL_Init1msTick                           0x08000765   Thumb Code    40  stm32f1xx_ll_utils.o(.text.LL_Init1msTick)
-    LL_SetSystemCoreClock                    0x0800078d   Thumb Code    12  stm32f1xx_ll_utils.o(.text.LL_SetSystemCoreClock)
-    LL_mDelay                                0x08000799   Thumb Code    70  stm32f1xx_ll_utils.o(.text.LL_mDelay)
-    MX_GPIO_Init                             0x080007e1   Thumb Code   146  gpio.o(.text.MX_GPIO_Init)
-    MemManage_Handler                        0x08000875   Thumb Code     2  stm32f1xx_it.o(.text.MemManage_Handler)
-    NMI_Handler                              0x08000879   Thumb Code     2  stm32f1xx_it.o(.text.NMI_Handler)
-    PendSV_Handler                           0x0800087d   Thumb Code     2  stm32f1xx_it.o(.text.PendSV_Handler)
-    SVC_Handler                              0x08000881   Thumb Code     2  stm32f1xx_it.o(.text.SVC_Handler)
-    SysTick_Handler                          0x08000885   Thumb Code     2  stm32f1xx_it.o(.text.SysTick_Handler)
-    SystemClock_Config                       0x08000889   Thumb Code   272  main.o(.text.SystemClock_Config)
-    SystemInit                               0x08000999   Thumb Code     2  system_stm32f1xx.o(.text.SystemInit)
-    USB_HP_CAN1_TX_IRQHandler                0x0800099d   Thumb Code   106  mycandrive_reg.o(.text.USB_HP_CAN1_TX_IRQHandler)
-    UsageFault_Handler                       0x08000a09   Thumb Code     2  stm32f1xx_it.o(.text.UsageFault_Handler)
-    main                                     0x08000a0d   Thumb Code   246  main.o(.text.main)
-    __scatterload_copy                       0x08000b03   Thumb Code    14  handlers.o(i.__scatterload_copy)
-    __scatterload_null                       0x08000b11   Thumb Code     2  handlers.o(i.__scatterload_null)
-    __scatterload_zeroinit                   0x08000b13   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
-    Region$$Table$$Base                      0x08000b20   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x08000b40   Number         0  anon$$obj.o(Region$$Table)
+    CAN_SendMessage_NonBlocking              0x08000549   Thumb Code   390  mycandrive_reg.o(.text.CAN_SendMessage_NonBlocking)
+    DebugMon_Handler                         0x080006d1   Thumb Code     2  stm32f1xx_it.o(.text.DebugMon_Handler)
+    Error_Handler                            0x080006d5   Thumb Code    10  main.o(.text.Error_Handler)
+    HardFault_Handler                        0x080006e1   Thumb Code     2  stm32f1xx_it.o(.text.HardFault_Handler)
+    LL_GPIO_Init                             0x080006e5   Thumb Code   190  stm32f1xx_ll_gpio.o(.text.LL_GPIO_Init)
+    LL_Init1msTick                           0x080007a5   Thumb Code    40  stm32f1xx_ll_utils.o(.text.LL_Init1msTick)
+    LL_SetSystemCoreClock                    0x080007cd   Thumb Code    12  stm32f1xx_ll_utils.o(.text.LL_SetSystemCoreClock)
+    LL_mDelay                                0x080007d9   Thumb Code    70  stm32f1xx_ll_utils.o(.text.LL_mDelay)
+    MX_GPIO_Init                             0x08000821   Thumb Code   146  gpio.o(.text.MX_GPIO_Init)
+    MemManage_Handler                        0x080008b5   Thumb Code     2  stm32f1xx_it.o(.text.MemManage_Handler)
+    NMI_Handler                              0x080008b9   Thumb Code     2  stm32f1xx_it.o(.text.NMI_Handler)
+    PendSV_Handler                           0x080008bd   Thumb Code     2  stm32f1xx_it.o(.text.PendSV_Handler)
+    SVC_Handler                              0x080008c1   Thumb Code     2  stm32f1xx_it.o(.text.SVC_Handler)
+    SysTick_Handler                          0x080008c5   Thumb Code     2  stm32f1xx_it.o(.text.SysTick_Handler)
+    SystemClock_Config                       0x080008c9   Thumb Code   272  main.o(.text.SystemClock_Config)
+    SystemInit                               0x080009d9   Thumb Code     2  system_stm32f1xx.o(.text.SystemInit)
+    USB_HP_CAN1_TX_IRQHandler                0x080009dd   Thumb Code   106  mycandrive_reg.o(.text.USB_HP_CAN1_TX_IRQHandler)
+    UsageFault_Handler                       0x08000a49   Thumb Code     2  stm32f1xx_it.o(.text.UsageFault_Handler)
+    main                                     0x08000a4d   Thumb Code   254  main.o(.text.main)
+    __scatterload_copy                       0x08000b4b   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x08000b59   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x08000b5b   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    Region$$Table$$Base                      0x08000b68   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x08000b88   Number         0  anon$$obj.o(Region$$Table)
     SystemCoreClock                          0x20000000   Data           4  system_stm32f1xx.o(.data.SystemCoreClock)
-    g_BusOffCount                            0x20000008   Data           1  main.o(.bss..L_MergedGlobals)
-    canSendError                             0x2000000c   Data           4  main.o(.bss..L_MergedGlobals)
-    g_RxCount                                0x20000010   Data           4  mycandrive_reg.o(.bss..L_MergedGlobals)
-    g_CanMsg                                 0x20000014   Data          36  mycandrive_reg.o(.bss..L_MergedGlobals)
-    gCanESR                                  0x20000038   Data           6  mycandrive_reg.o(.bss.gCanESR)
-    txmail_free                              0x2000003e   Data           1  mycandrive_reg.o(.bss.txmail_free)
+    g_RxCount                                0x20000008   Data           4  mycandrive_reg.o(.bss..L_MergedGlobals)
+    g_CanMsg                                 0x2000000c   Data          36  mycandrive_reg.o(.bss..L_MergedGlobals)
+    canSendError                             0x20000030   Data           4  mycandrive_reg.o(.bss.canSendError)
+    gCanESR                                  0x20000034   Data           6  mycandrive_reg.o(.bss.gCanESR)
+    g_BusOffCount                            0x2000003a   Data           1  main.o(.bss.g_BusOffCount)
+    txmail_free                              0x2000003b   Data           1  mycandrive_reg.o(.bss.txmail_free)
     __initial_sp                             0x20000440   Data           0  startup_stm32f103xe.o(STACK)
 
 
@@ -408,24 +413,24 @@ Memory Map of the image
 
   Image Entry point : 0x08000131
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00000b48, Max: 0x00080000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00000b90, Max: 0x00080000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00000b40, Max: 0x00080000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00000b88, Max: 0x00080000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x08000000   0x08000000   0x00000130   Data   RO            3    RESET               startup_stm32f103xe.o
-    0x08000130   0x08000130   0x00000000   Code   RO          185  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
-    0x08000130   0x08000130   0x00000004   Code   RO          188    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
-    0x08000134   0x08000134   0x00000004   Code   RO          191    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
-    0x08000138   0x08000138   0x00000000   Code   RO          193    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
-    0x08000138   0x08000138   0x00000000   Code   RO          195    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
-    0x08000138   0x08000138   0x00000008   Code   RO          196    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
-    0x08000140   0x08000140   0x00000000   Code   RO          198    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
-    0x08000140   0x08000140   0x00000000   Code   RO          200    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
-    0x08000140   0x08000140   0x00000004   Code   RO          189    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
+    0x08000130   0x08000130   0x00000000   Code   RO          187  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
+    0x08000130   0x08000130   0x00000004   Code   RO          190    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
+    0x08000134   0x08000134   0x00000004   Code   RO          193    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
+    0x08000138   0x08000138   0x00000000   Code   RO          195    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
+    0x08000138   0x08000138   0x00000000   Code   RO          197    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
+    0x08000138   0x08000138   0x00000008   Code   RO          198    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
+    0x08000140   0x08000140   0x00000000   Code   RO          200    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
+    0x08000140   0x08000140   0x00000000   Code   RO          202    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
+    0x08000140   0x08000140   0x00000004   Code   RO          191    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
     0x08000144   0x08000144   0x00000024   Code   RO            4    .text               startup_stm32f103xe.o
-    0x08000168   0x08000168   0x00000030   Code   RO          202    .text               mc_w.l(init.o)
+    0x08000168   0x08000168   0x00000030   Code   RO          204    .text               mc_w.l(init.o)
     0x08000198   0x08000198   0x00000002   Code   RO           42    .text.BusFault_Handler  stm32f1xx_it.o
     0x0800019a   0x0800019a   0x00000002   PAD
     0x0800019c   0x0800019c   0x00000158   Code   RO          173    .text.CAN1_RX1_IRQHandler  mycandrive_reg.o
@@ -433,54 +438,58 @@ Memory Map of the image
     0x08000308   0x08000308   0x00000066   Code   RO          167    .text.CAN_Check_Error  mycandrive_reg.o
     0x0800036e   0x0800036e   0x00000002   PAD
     0x08000370   0x08000370   0x000001d8   Code   RO          161    .text.CAN_Config    mycandrive_reg.o
-    0x08000548   0x08000548   0x00000154   Code   RO          165    .text.CAN_SendMessage_NonBlocking  mycandrive_reg.o
-    0x0800069c   0x0800069c   0x00000002   Code   RO           48    .text.DebugMon_Handler  stm32f1xx_it.o
-    0x0800069e   0x0800069e   0x00000002   PAD
-    0x080006a0   0x080006a0   0x00000002   Code   RO           38    .text.HardFault_Handler  stm32f1xx_it.o
-    0x080006a2   0x080006a2   0x00000002   PAD
-    0x080006a4   0x080006a4   0x000000be   Code   RO           63    .text.LL_GPIO_Init  stm32f1xx_ll_gpio.o
-    0x08000762   0x08000762   0x00000002   PAD
-    0x08000764   0x08000764   0x00000028   Code   RO          124    .text.LL_Init1msTick  stm32f1xx_ll_utils.o
-    0x0800078c   0x0800078c   0x0000000c   Code   RO          128    .text.LL_SetSystemCoreClock  stm32f1xx_ll_utils.o
-    0x08000798   0x08000798   0x00000046   Code   RO          126    .text.LL_mDelay     stm32f1xx_ll_utils.o
-    0x080007de   0x080007de   0x00000002   PAD
-    0x080007e0   0x080007e0   0x00000092   Code   RO           27    .text.MX_GPIO_Init  gpio.o
-    0x08000872   0x08000872   0x00000002   PAD
-    0x08000874   0x08000874   0x00000002   Code   RO           40    .text.MemManage_Handler  stm32f1xx_it.o
-    0x08000876   0x08000876   0x00000002   PAD
-    0x08000878   0x08000878   0x00000002   Code   RO           36    .text.NMI_Handler   stm32f1xx_it.o
-    0x0800087a   0x0800087a   0x00000002   PAD
-    0x0800087c   0x0800087c   0x00000002   Code   RO           50    .text.PendSV_Handler  stm32f1xx_it.o
-    0x0800087e   0x0800087e   0x00000002   PAD
-    0x08000880   0x08000880   0x00000002   Code   RO           46    .text.SVC_Handler   stm32f1xx_it.o
-    0x08000882   0x08000882   0x00000002   PAD
-    0x08000884   0x08000884   0x00000002   Code   RO           52    .text.SysTick_Handler  stm32f1xx_it.o
-    0x08000886   0x08000886   0x00000002   PAD
-    0x08000888   0x08000888   0x00000110   Code   RO           13    .text.SystemClock_Config  main.o
-    0x08000998   0x08000998   0x00000002   Code   RO          146    .text.SystemInit    system_stm32f1xx.o
-    0x0800099a   0x0800099a   0x00000002   PAD
-    0x0800099c   0x0800099c   0x0000006a   Code   RO          171    .text.USB_HP_CAN1_TX_IRQHandler  mycandrive_reg.o
-    0x08000a06   0x08000a06   0x00000002   PAD
-    0x08000a08   0x08000a08   0x00000002   Code   RO           44    .text.UsageFault_Handler  stm32f1xx_it.o
-    0x08000a0a   0x08000a0a   0x00000002   PAD
-    0x08000a0c   0x08000a0c   0x000000f6   Code   RO           11    .text.main          main.o
-    0x08000b02   0x08000b02   0x0000000e   Code   RO          206    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x08000b10   0x08000b10   0x00000002   Code   RO          207    i.__scatterload_null  mc_w.l(handlers.o)
-    0x08000b12   0x08000b12   0x0000000e   Code   RO          208    i.__scatterload_zeroinit  mc_w.l(handlers.o)
-    0x08000b20   0x08000b20   0x00000020   Data   RO          205    Region$$Table       anon$$obj.o
+    0x08000548   0x08000548   0x00000186   Code   RO          165    .text.CAN_SendMessage_NonBlocking  mycandrive_reg.o
+    0x080006ce   0x080006ce   0x00000002   PAD
+    0x080006d0   0x080006d0   0x00000002   Code   RO           48    .text.DebugMon_Handler  stm32f1xx_it.o
+    0x080006d2   0x080006d2   0x00000002   PAD
+    0x080006d4   0x080006d4   0x0000000a   Code   RO           15    .text.Error_Handler  main.o
+    0x080006de   0x080006de   0x00000002   PAD
+    0x080006e0   0x080006e0   0x00000002   Code   RO           38    .text.HardFault_Handler  stm32f1xx_it.o
+    0x080006e2   0x080006e2   0x00000002   PAD
+    0x080006e4   0x080006e4   0x000000be   Code   RO           63    .text.LL_GPIO_Init  stm32f1xx_ll_gpio.o
+    0x080007a2   0x080007a2   0x00000002   PAD
+    0x080007a4   0x080007a4   0x00000028   Code   RO          124    .text.LL_Init1msTick  stm32f1xx_ll_utils.o
+    0x080007cc   0x080007cc   0x0000000c   Code   RO          128    .text.LL_SetSystemCoreClock  stm32f1xx_ll_utils.o
+    0x080007d8   0x080007d8   0x00000046   Code   RO          126    .text.LL_mDelay     stm32f1xx_ll_utils.o
+    0x0800081e   0x0800081e   0x00000002   PAD
+    0x08000820   0x08000820   0x00000092   Code   RO           27    .text.MX_GPIO_Init  gpio.o
+    0x080008b2   0x080008b2   0x00000002   PAD
+    0x080008b4   0x080008b4   0x00000002   Code   RO           40    .text.MemManage_Handler  stm32f1xx_it.o
+    0x080008b6   0x080008b6   0x00000002   PAD
+    0x080008b8   0x080008b8   0x00000002   Code   RO           36    .text.NMI_Handler   stm32f1xx_it.o
+    0x080008ba   0x080008ba   0x00000002   PAD
+    0x080008bc   0x080008bc   0x00000002   Code   RO           50    .text.PendSV_Handler  stm32f1xx_it.o
+    0x080008be   0x080008be   0x00000002   PAD
+    0x080008c0   0x080008c0   0x00000002   Code   RO           46    .text.SVC_Handler   stm32f1xx_it.o
+    0x080008c2   0x080008c2   0x00000002   PAD
+    0x080008c4   0x080008c4   0x00000002   Code   RO           52    .text.SysTick_Handler  stm32f1xx_it.o
+    0x080008c6   0x080008c6   0x00000002   PAD
+    0x080008c8   0x080008c8   0x00000110   Code   RO           13    .text.SystemClock_Config  main.o
+    0x080009d8   0x080009d8   0x00000002   Code   RO          146    .text.SystemInit    system_stm32f1xx.o
+    0x080009da   0x080009da   0x00000002   PAD
+    0x080009dc   0x080009dc   0x0000006a   Code   RO          171    .text.USB_HP_CAN1_TX_IRQHandler  mycandrive_reg.o
+    0x08000a46   0x08000a46   0x00000002   PAD
+    0x08000a48   0x08000a48   0x00000002   Code   RO           44    .text.UsageFault_Handler  stm32f1xx_it.o
+    0x08000a4a   0x08000a4a   0x00000002   PAD
+    0x08000a4c   0x08000a4c   0x000000fe   Code   RO           11    .text.main          main.o
+    0x08000b4a   0x08000b4a   0x0000000e   Code   RO          208    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x08000b58   0x08000b58   0x00000002   Code   RO          209    i.__scatterload_null  mc_w.l(handlers.o)
+    0x08000b5a   0x08000b5a   0x0000000e   Code   RO          210    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x08000b68   0x08000b68   0x00000020   Data   RO          207    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08000b40, Size: 0x00000440, Max: 0x00010000, ABSOLUTE)
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08000b88, Size: 0x00000440, Max: 0x00010000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x08000b40   0x00000004   Data   RW          150    .data.SystemCoreClock  system_stm32f1xx.o
-    0x20000004   0x08000b44   0x00000004   PAD
-    0x20000008        -       0x00000008   Zero   RW           18    .bss..L_MergedGlobals  main.o
-    0x20000010        -       0x00000028   Zero   RW          177    .bss..L_MergedGlobals  mycandrive_reg.o
-    0x20000038        -       0x00000006   Zero   RW          176    .bss.gCanESR        mycandrive_reg.o
-    0x2000003e        -       0x00000001   Zero   RW          175    .bss.txmail_free    mycandrive_reg.o
-    0x2000003f   0x08000b44   0x00000001   PAD
+    0x20000000   0x08000b88   0x00000004   Data   RW          150    .data.SystemCoreClock  system_stm32f1xx.o
+    0x20000004   0x08000b8c   0x00000004   PAD
+    0x20000008        -       0x00000028   Zero   RW          179    .bss..L_MergedGlobals  mycandrive_reg.o
+    0x20000030        -       0x00000004   Zero   RW          176    .bss.canSendError   mycandrive_reg.o
+    0x20000034        -       0x00000006   Zero   RW          177    .bss.gCanESR        mycandrive_reg.o
+    0x2000003a        -       0x00000001   Zero   RW           17    .bss.g_BusOffCount  main.o
+    0x2000003b        -       0x00000001   Zero   RW          175    .bss.txmail_free    mycandrive_reg.o
+    0x2000003c   0x08000b8c   0x00000004   PAD
     0x20000040        -       0x00000400   Zero   RW            1    STACK               startup_stm32f103xe.o
 
 
@@ -492,8 +501,8 @@ Image component sizes
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
        146          0          0          0          0       2051   gpio.o
-       518          0          0          0          8       7162   main.o
-      1384          0          0          0         47      10207   mycandrive_reg.o
+       536          0          0          0          1       7131   main.o
+      1434          0          0          0         51      10476   mycandrive_reg.o
         36          8        304          0       1024        808   startup_stm32f103xe.o
         18          0          0          0          0       1021   stm32f1xx_it.o
        190          0          0          0          0       3238   stm32f1xx_ll_gpio.o
@@ -501,9 +510,9 @@ Image component sizes
          2          0          0          4          0       1607   system_stm32f1xx.o
 
     ----------------------------------------------------------------------
-      2446          8        336          4       1084      33971   Object Totals
+      2518          8        336          4       1084      34209   Object Totals
          0          0         32          0          0          0   (incl. Generated)
-        30          0          0          0          5          0   (incl. Padding)
+        34          0          0          0          8          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -540,15 +549,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      2544         26        336          4       1084      34071   Grand Totals
-      2544         26        336          4       1084      34071   ELF Image Totals
-      2544         26        336          4          0          0   ROM Totals
+      2616         26        336          4       1084      34309   Grand Totals
+      2616         26        336          4       1084      34309   ELF Image Totals
+      2616         26        336          4          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 2880 (   2.81kB)
+    Total RO  Size (Code + RO Data)                 2952 (   2.88kB)
     Total RW  Size (RW Data + ZI Data)              1088 (   1.06kB)
-    Total ROM Size (Code + RO Data + RW Data)       2884 (   2.82kB)
+    Total ROM Size (Code + RO Data + RW Data)       2956 (   2.89kB)
 
 ==============================================================================
 

@@ -28,7 +28,7 @@
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
-volatile uint32_t canSendError = 0;
+extern volatile uint32_t canSendError;
 volatile uint8_t g_BusOffCount = 0;
 /* USER CODE END PTD */
 

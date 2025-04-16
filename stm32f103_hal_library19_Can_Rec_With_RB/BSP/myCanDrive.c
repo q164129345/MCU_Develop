@@ -1,11 +1,10 @@
 #include "myCanDrive.h"
 
-volatile uint8_t txmail_free = 0;
-volatile uint32_t canSendError = 0;
-volatile uint32_t g_RxCount = 0;
-volatile uint32_t g_RxOverflowError = 0;
-volatile uint32_t g_RXRingbufferOverflow = 0;
-CANMsg_t g_CanMsg = {0,};
+volatile uint8_t txmail_free = 0;             // 空闲邮箱的数量
+volatile uint32_t canSendError = 0;           // 统计发送失败次数
+volatile uint32_t g_RxCount = 0;              // 统计接收的CAN报文总数
+volatile uint32_t g_RxOverflowError = 0;      // 统计RX FIFO1溢出数量
+volatile uint32_t g_RXRingbufferOverflow = 0; // 统计ringbuffer溢出次数
 
 /* ringbuffer */
 volatile lwrb_t g_CanRxRBHandler; // 实例化ringbuffer
@@ -30,7 +29,13 @@ volatile CANMsg_t g_CanRxRBDataBuffer[50] = {0,}; // ringbuffer缓存（最多可以存5
 void CAN_Send_STD_DATA_Msg_Serial(uint32_t canid, uint8_t* data, uint8_t len)
 {
     uint32_t TxMailbox;
+    uint32_t timeout = 100; // 最大等待100ms
     CAN_TxHeaderTypeDef txHeader;
+    
+    if (len > 8) {
+        Error_Handler(); // 根据具体需求，可选择截断或进入错误处理
+    }
+    
     /* 配置CAN发送帧参数 */
     txHeader.StdId = canid;       // 标准标识符，可根据实际需求修改
     txHeader.ExtId = 0;           // 对于标准帧，扩展标识符无效
@@ -39,8 +44,14 @@ void CAN_Send_STD_DATA_Msg_Serial(uint32_t canid, uint8_t* data, uint8_t len)
     txHeader.DLC = len;           // 数据长度
     txHeader.TransmitGlobalTime = DISABLE; // 不发送全局时间
     /* 如果没有发送邮箱，延迟等待（如果有实时操作系统，发起调度是更加好的方案） */
-    if (HAL_CAN_GetTxMailboxesFreeLevel(&hcan) == 0) {
+    while ((HAL_CAN_GetTxMailboxesFreeLevel(&hcan) == 0) && (timeout > 0)) {
         LL_mDelay(1);
+        timeout--;
+    }
+    /* 判断是否超时未获得邮箱 */
+    if ((timeout == 0) && (HAL_CAN_GetTxMailboxesFreeLevel(&hcan) == 0)) {
+        canSendError++; // 记录一次发送超时错误
+        return;
     }
     /* 发送CAN消息 */
     if (HAL_CAN_AddTxMessage(&hcan, &txHeader, data, &TxMailbox) != HAL_OK) {
@@ -67,6 +78,10 @@ void CAN_Send_STD_DATA_Msg_Serial(uint32_t canid, uint8_t* data, uint8_t len)
   */
 uint8_t CAN_Send_STD_DATA_Msg_No_Serial(uint32_t canid, uint8_t* data, uint8_t len)
 {
+    if (len > 8) {
+        Error_Handler(); // 根据具体需求，可选择截断或进入错误处理
+    }
+    
     if (txmail_free > 0) {
         uint32_t TxMailbox;
         CAN_TxHeaderTypeDef txHeader;
@@ -151,6 +166,8 @@ uint8_t CAN_Send_CANMsg_FromRingBuffer(void)
   */
 void CAN_Config(void)
 {
+    lwrb_init((lwrb_t*)&g_CanRxRBHandler, (uint8_t*)g_CanRxRBDataBuffer, sizeof(g_CanRxRBDataBuffer) + 1); // ringbuffer初始化
+    
     txmail_free = HAL_CAN_GetTxMailboxesFreeLevel(&hcan); // 获取发送邮箱的空闲数量，一般都是3个
     HAL_CAN_ActivateNotification(&hcan, CAN_IT_TX_MAILBOX_EMPTY); // 启动发送完成中断
     HAL_CAN_ActivateNotification(&hcan, CAN_IT_RX_FIFO1_MSG_PENDING); // 启动接收FIFO1中断，当FIFO1中有消息到达时，产生中断
@@ -159,8 +176,6 @@ void CAN_Config(void)
     if (HAL_CAN_Start(&hcan) != HAL_OK) {
       Error_Handler(); // 启动失败，进入错误处理
     }
-    /* ringbuffer */
-    lwrb_init((lwrb_t*)&g_CanRxRBHandler, (uint8_t*)g_CanRxRBDataBuffer, sizeof(g_CanRxRBDataBuffer) + 1); // ringbuffer初始化
 }
 
 /**

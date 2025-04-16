@@ -1,16 +1,25 @@
 #include "myCanDrive_reg.h"
 
-volatile uint8_t txmail_free = 0;
-CAN_ESR_t gCanESR = {0,};
-volatile uint32_t g_RxCount = 0;    // 记录接收报文总数
+volatile uint8_t txmail_free = 0;        // 空闲邮箱的数量
+volatile uint32_t canSendError = 0;      // 统计发送失败次数
+CAN_ESR_t gCanESR = {0,};                // 解析错误
+volatile uint32_t g_RxCount = 0;         // 记录接收报文总数
 volatile uint32_t g_RxOverflowError = 0; // 记录接收溢出错误
-CANMsg_t g_CanMsg = {0,}; // 全局变量，易于观察
+volatile uint32_t g_RXRingbufferOverflow = 0; // 统计ringbuffer溢出次数
+
+/* ringbuffer */
+volatile lwrb_t g_CanRxRBHandler; // 实例化ringbuffer
+volatile CANMsg_t g_CanRxRBDataBuffer[50] = {0,}; // ringbuffer缓存（最多可以存50个CAN消息）
+
 /**
   * @brief  使用直接寄存器操作的CAN初始化配置
   * @retval note
   */
 void CAN_Config(void)
 {
+    /* ringbuffer */
+    lwrb_init((lwrb_t*)&g_CanRxRBHandler, (uint8_t*)g_CanRxRBDataBuffer, sizeof(g_CanRxRBDataBuffer) + 1); // ringbuffer初始化
+    
     /* 1. 使能 CAN1 和 GPIOA 时钟 */
     RCC->APB1ENR |= (1UL << 25);  // 使能 CAN1 时钟
     RCC->APB2ENR |= (1UL << 2);   // 使能 GPIOA 时钟
@@ -84,13 +93,30 @@ void CAN_Config(void)
     // 开启CAN消息挂号中断（接收中断）
     NVIC_SetPriority(CAN1_RX1_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 0, 0));
     NVIC_EnableIRQ(CAN1_RX1_IRQn);
-    //CAN1->IER |= CAN_IER_FMPIE1; // 使能接收FIFO1中断（消息挂号中断）
+    CAN1->IER |= CAN_IER_FMPIE1; // 使能接收FIFO1中断（消息挂号中断）
     CAN1->IER |= CAN_IER_FOVIE1; // 使能接收FIFO1溢出中断
     
     /* 11.获取一次发送邮箱的数量 */
     txmail_free = ((CAN1->TSR & CAN_TSR_TME0) ? 1 : 0) +
              ((CAN1->TSR & CAN_TSR_TME1) ? 1 : 0) +
              ((CAN1->TSR & CAN_TSR_TME2) ? 1 : 0);
+}
+
+/**
+  * @brief  获取空闲邮箱的索引(寄存器方式)
+  * @retval 空闲邮箱的索引(0, 1, 2)，若无空闲邮箱则返回 0xFF
+  */
+__STATIC_INLINE uint8_t CAN_Get_Free_Mailbox(void)
+{
+    uint8_t mailbox;
+    for (mailbox = 0; mailbox < 3; mailbox++) {
+        // 检查邮箱对应的 TIR 寄存器的 TXRQ 位是否为 0
+        // TXRQ 位定义为 (1UL << 0) ，若为 0 表示该邮箱没有处于发送请求中
+        if ((CAN1->sTxMailBox[mailbox].TIR & (1UL << 0)) == 0) {
+            return mailbox;
+        }
+    }
+    return 0xFF; // 没有空闲邮箱
 }
 
 /**
@@ -103,21 +129,20 @@ void CAN_Config(void)
 uint8_t CAN_SendMessage_Blocking(uint32_t stdId, uint8_t *data, uint8_t DLC)
 {
     uint8_t mailbox;
-    uint32_t timeout = 0xFFFF;
-    /* 寻找空闲邮箱 */
-    for(mailbox = 0; mailbox < 3; mailbox++) {
-      if((CAN1->sTxMailBox[mailbox].TIR & (1UL << 0)) == 0)
-         break;
+    uint32_t timeout = 100; // 最大等待100ms
+    if (DLC > 8) {
+        Error_Handler(); // 根据具体需求，可选择截断或进入错误处理
     }
-    if(mailbox >= 3)
+    mailbox = CAN_Get_Free_Mailbox(); // 寻找空闲邮箱
+    if(mailbox == 0xFF)
         return 1; // 无空闲邮箱
     /* 清空该邮箱 */
-    CAN1->sTxMailBox[mailbox].TIR  = 0;
+    CAN1->sTxMailBox[mailbox].TIR  = 0; // 数据帧、标准帧标识符
     CAN1->sTxMailBox[mailbox].TDTR = 0;
     CAN1->sTxMailBox[mailbox].TDLR = 0;
     CAN1->sTxMailBox[mailbox].TDHR = 0;
     /* 标准ID写入TIR的[31:21]、标准帧, RTR=0, IDE=0 */
-    CAN1->sTxMailBox[mailbox].TIR |= (stdId << 21);
+    CAN1->sTxMailBox[mailbox].TIR |= (stdId << 21); // 设置标准帧ID
     /* 配置DLC */
     CAN1->sTxMailBox[mailbox].TDTR = (DLC & 0x0F);  // 设置CAN报文的长度。使用&运算的目的是保证只有变量DLC的低四位写入TDTR寄存器，不会干涉到其他位。
     /* 填充数据 */
@@ -133,14 +158,18 @@ uint8_t CAN_SendMessage_Blocking(uint32_t stdId, uint8_t *data, uint8_t DLC)
           CAN1->sTxMailBox[mailbox].TDHR |= ((uint32_t)data[i]) << (8 * (i-4));
         }
     }
-    /* 发起发送请求 */
-    CAN1->sTxMailBox[mailbox].TIR |= CAN_TI0R_TXRQ;
+    CAN1->sTxMailBox[mailbox].TIR |= CAN_TI0R_TXRQ; // 发起发送请求
     /* 轮询等待TXRQ清零或超时 */
-    while((CAN1->sTxMailBox[mailbox].TIR & CAN_TI0R_TXRQ) && --timeout);
-    if(timeout == 0) {
-        // 发送失败(无ACK或位错误), 返回2
+    while((CAN1->sTxMailBox[mailbox].TIR & CAN_TI0R_TXRQ) && (timeout > 0)) {
+        LL_mDelay(1);
+        timeout--;
+    }
+    /* 阻塞结束，发送超时失败 */
+    if ((CAN1->sTxMailBox[mailbox].TIR & CAN_TI0R_TXRQ) && (timeout == 0)) {
+        canSendError++;
         return 2;
     }
+    
     return 0; // 发送成功
 }
 
@@ -154,13 +183,18 @@ uint8_t CAN_SendMessage_Blocking(uint32_t stdId, uint8_t *data, uint8_t DLC)
 uint8_t CAN_SendMessage_NonBlocking(uint32_t stdId, uint8_t *data, uint8_t DLC)
 {
     uint8_t mailbox;
+    if (DLC > 8) {
+        Error_Handler(); // 根据具体需求，可选择截断或进入错误处理
+    }
+    
     if (txmail_free > 0) {
+        mailbox = CAN_Get_Free_Mailbox(); // 既然有空闲邮箱，看看到底哪个空闲
         /* 清空该邮箱并配置ID、DLC和数据 */
-        CAN1->sTxMailBox[mailbox].TIR  = 0;
+        CAN1->sTxMailBox[mailbox].TIR  = 0; // 数据帧、标准帧标识符
         CAN1->sTxMailBox[mailbox].TDTR = (DLC & 0x0F);
         CAN1->sTxMailBox[mailbox].TDLR = 0;
         CAN1->sTxMailBox[mailbox].TDHR = 0;
-        CAN1->sTxMailBox[mailbox].TIR |= (stdId << 21);
+        CAN1->sTxMailBox[mailbox].TIR |= (stdId << 21); // 设置标准帧ID
 
         /* 填充数据 */
         for(uint8_t i = 0; i < DLC && i < 8; i++) {
@@ -233,6 +267,31 @@ void CAN_BusOff_Recover(void)
 {
     CAN1->MCR |= CAN_MCR_SLEEP;  // 进入睡眠模式（停止收发）
     CAN_Config();                // 重新初始化一次CAN
+}
+
+/**
+  * @brief  从ringbuffer中取出所有的CANMsg_t消息并依次发送到CAN总线上
+  * @return 0：所有消息发送成功  
+  *         1：发送过程中出现发送邮箱不足或发送错误  
+  *         2：没有一条完整的CAN消息可供发送
+  */
+uint8_t CAN_Send_CANMsg_FromRingBuffer(void)
+{
+    uint8_t ret = 2;  // 默认返回2表示没有消息可发
+    while(lwrb_get_full((lwrb_t*)&g_CanRxRBHandler) >= sizeof(CANMsg_t)) {
+        ret = 0; // 已有消息可发送
+        if(txmail_free == 0) {
+            ret = 1;  // 没有可用的发送邮箱
+            break;
+        }
+        CANMsg_t canMsg;
+        lwrb_read((lwrb_t*)&g_CanRxRBHandler, &canMsg, sizeof(CANMsg_t)); // 从ringbuffer中读取一条CAN消息
+        if (CAN_SendMessage_NonBlocking(canMsg.RxHeader.StdId, canMsg.RxData, canMsg.RxHeader.DLC)) { // 使用非串行方式发送消息
+            ret = 1; // 如果发送失败（例如发送邮箱不足或其他错误），记录错误后退出
+            break;
+        }
+    }
+    return ret;
 }
 
 /**
@@ -314,14 +373,15 @@ __STATIC_INLINE void CAN_FIFO1_Overflow_Handler(void)
   */
 __STATIC_INLINE void CAN_FIFO1_Message_Pending_Handler(void)
 {
+    CANMsg_t canMsg = {0,};
     while (CAN1->RF1R & CAN_RF1R_FMP1) { // 当FIFO1中还有待处理的报文时，循环读取
-        CAN_Get_Message_From_FIFO1(&g_CanMsg.RxHeader, (uint8_t*)g_CanMsg.RxData); // 从FIFO1中获取CAN报文的详细内容
-        /* 在这里添加对接收到数据的处理代码
-         * 例如调用用户自定义的函数处理数据：
-         * Process_CAN_Message(&g_CanMsg.RxHeader, g_CanMsg.RxData);
-         * 或者将接收到的数据放入环形缓冲区ringbuffer。
-         */
         g_RxCount++; // 更新全局接收报文计数器
+        CAN_Get_Message_From_FIFO1(&canMsg.RxHeader, (uint8_t*)canMsg.RxData); // 从FIFO1中获取CAN报文的详细内容
+        if(lwrb_get_free((lwrb_t*)&g_CanRxRBHandler) < sizeof(CANMsg_t)) { // 判断ringbuffer是否被挤满
+            g_RXRingbufferOverflow++;    // 累加ringbuffer溢出全局计数器
+            lwrb_reset((lwrb_t*)&g_CanRxRBHandler); // 清空ringbuffer
+        }
+        lwrb_write((lwrb_t*)&g_CanRxRBHandler, &canMsg, sizeof(CANMsg_t)); // 将CAN报文放入ringbuffer
     }
 }
 
@@ -352,7 +412,6 @@ void USB_HP_CAN1_TX_IRQHandler(void)
                  ((CAN1->TSR & CAN_TSR_TME1) ? 1 : 0) +
                  ((CAN1->TSR & CAN_TSR_TME2) ? 1 : 0);
     __enable_irq();
-
 }
 
 /**
@@ -371,5 +430,3 @@ void CAN1_RX1_IRQHandler(void)
         // 其他错误
     }
 }
-
-

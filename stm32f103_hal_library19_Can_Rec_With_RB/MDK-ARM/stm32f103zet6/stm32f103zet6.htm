@@ -1,9 +1,9 @@
 <!doctype html public "-//w3c//dtd html 4.0 transitional//en">
 <html><head>
-<title>Static Call Graph - [stm32f103zet6\stm32f103zet6.axf]</title></head>
+<title>Static Call Graph - [.\stm32f103zet6\stm32f103zet6.axf]</title></head>
 <body><HR>
-<H1>Static Call Graph for image stm32f103zet6\stm32f103zet6.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Tue Apr 15 21:18:34 2025
+<H1>Static Call Graph for image .\stm32f103zet6\stm32f103zet6.axf</H1><HR>
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Wed Apr 16 16:48:45 2025
 <BR><P>
 <H3>Maximum Stack Usage =        144 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -362,12 +362,12 @@ Global Symbols
 <P><STRONG><a name="[51]"></a>CAN_Config</STRONG> (Thumb, 134 bytes, Stack size 56 bytes, mycandrive.o(.text.CAN_Config))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = CAN_Config &rArr; HAL_CAN_Start
 </UL>
-<BR>[Calls]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_init
-<LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_ActivateNotification
-<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_GetTxMailboxesFreeLevel
-<LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_Start
-<LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_ConfigFilter
-<LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
+<BR>[Calls]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_init
+<LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_ActivateNotification
+<LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_GetTxMailboxesFreeLevel
+<LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_Start
+<LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_ConfigFilter
+<LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -376,13 +376,13 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[1f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN1_RX1_IRQHandler
 </UL>
 
-<P><STRONG><a name="[58]"></a>CAN_Send_CANMsg_FromRingBuffer</STRONG> (Thumb, 162 bytes, Stack size 104 bytes, mycandrive.o(.text.CAN_Send_CANMsg_FromRingBuffer))
+<P><STRONG><a name="[58]"></a>CAN_Send_CANMsg_FromRingBuffer</STRONG> (Thumb, 170 bytes, Stack size 104 bytes, mycandrive.o(.text.CAN_Send_CANMsg_FromRingBuffer))
 <BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = CAN_Send_CANMsg_FromRingBuffer &rArr; lwrb_read
 </UL>
 <BR>[Calls]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_read
 <LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_full
 <LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_AddTxMessage
-<LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
+<LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -390,13 +390,13 @@ Global Symbols
 <P><STRONG><a name="[7]"></a>DebugMon_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f1xx_it.o(.text.DebugMon_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
-<P><STRONG><a name="[55]"></a>Error_Handler</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, main.o(.text.Error_Handler))
+<P><STRONG><a name="[56]"></a>Error_Handler</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, main.o(.text.Error_Handler))
 <BR><BR>[Called By]<UL><LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Send_CANMsg_FromRingBuffer
 <LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Config
 <LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_CAN_Init
 </UL>
 
-<P><STRONG><a name="[53]"></a>HAL_CAN_ActivateNotification</STRONG> (Thumb, 46 bytes, Stack size 0 bytes, stm32f1xx_hal_can.o(.text.HAL_CAN_ActivateNotification))
+<P><STRONG><a name="[54]"></a>HAL_CAN_ActivateNotification</STRONG> (Thumb, 46 bytes, Stack size 0 bytes, stm32f1xx_hal_can.o(.text.HAL_CAN_ActivateNotification))
 <BR><BR>[Called By]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Config
 </UL>
 
@@ -406,7 +406,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Send_CANMsg_FromRingBuffer
 </UL>
 
-<P><STRONG><a name="[54]"></a>HAL_CAN_ConfigFilter</STRONG> (Thumb, 234 bytes, Stack size 16 bytes, stm32f1xx_hal_can.o(.text.HAL_CAN_ConfigFilter))
+<P><STRONG><a name="[55]"></a>HAL_CAN_ConfigFilter</STRONG> (Thumb, 234 bytes, Stack size 16 bytes, stm32f1xx_hal_can.o(.text.HAL_CAN_ConfigFilter))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = HAL_CAN_ConfigFilter
 </UL>
 <BR>[Called By]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Config
@@ -426,7 +426,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_RxFifo1MsgPendingCallback
 </UL>
 
-<P><STRONG><a name="[52]"></a>HAL_CAN_GetTxMailboxesFreeLevel</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, stm32f1xx_hal_can.o(.text.HAL_CAN_GetTxMailboxesFreeLevel))
+<P><STRONG><a name="[53]"></a>HAL_CAN_GetTxMailboxesFreeLevel</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, stm32f1xx_hal_can.o(.text.HAL_CAN_GetTxMailboxesFreeLevel))
 <BR><BR>[Called By]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Config
 </UL>
 
@@ -499,7 +499,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_IRQHandler
 </UL>
 
-<P><STRONG><a name="[56]"></a>HAL_CAN_Start</STRONG> (Thumb, 90 bytes, Stack size 16 bytes, stm32f1xx_hal_can.o(.text.HAL_CAN_Start))
+<P><STRONG><a name="[57]"></a>HAL_CAN_Start</STRONG> (Thumb, 90 bytes, Stack size 16 bytes, stm32f1xx_hal_can.o(.text.HAL_CAN_Start))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = HAL_CAN_Start
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
@@ -542,7 +542,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[6b]"></a>HAL_GetTick</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, stm32f1xx_hal.o(.text.HAL_GetTick))
-<BR><BR>[Called By]<UL><LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_Start
+<BR><BR>[Called By]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_Start
 <LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_Init
 </UL>
 
@@ -622,7 +622,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 108<LI>Call Chain = MX_CAN_Init &rArr; HAL_CAN_Init &rArr; HAL_CAN_MspInit &rArr; HAL_GPIO_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_Init
-<LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
+<LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -694,7 +694,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Send_CANMsg_FromRingBuffer
 </UL>
 
-<P><STRONG><a name="[57]"></a>lwrb_init</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_init))
+<P><STRONG><a name="[52]"></a>lwrb_init</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_init))
 <BR><BR>[Called By]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Config
 </UL>
 

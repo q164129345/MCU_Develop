@@ -114,6 +114,23 @@ void CAN_Config(void)
 }
 
 /**
+  * @brief  获取空闲邮箱的索引(寄存器方式)
+  * @retval 空闲邮箱的索引(0, 1, 2)，若无空闲邮箱则返回 0xFF
+  */
+__STATIC_INLINE uint8_t CAN_Get_Free_Mailbox(void)
+{
+    uint8_t mailbox;
+    for (mailbox = 0; mailbox < 3; mailbox++) {
+        // 检查邮箱对应的 TIR 寄存器的 TXRQ 位是否为 0
+        // TXRQ 位定义为 (1UL << 0) ，若为 0 表示该邮箱没有处于发送请求中
+        if ((CAN1->sTxMailBox[mailbox].TIR & (1UL << 0)) == 0) {
+            return mailbox;
+        }
+    }
+    return 0xFF; // 没有空闲邮箱
+}
+
+/**
   * @brief  直接操作寄存器实现CAN消息发送(标准数据帧)，代码会阻塞，直到CAN消息被成功发送出去
   * @param  stdId: 标准ID(11位)
   * @param  data: 数据指针
@@ -123,21 +140,20 @@ void CAN_Config(void)
 uint8_t CAN_SendMessage_Blocking(uint32_t stdId, uint8_t *data, uint8_t DLC)
 {
     uint8_t mailbox;
-    uint32_t timeout = 0xFFFF;
-    /* 寻找空闲邮箱 */
-    for(mailbox = 0; mailbox < 3; mailbox++) {
-      if((CAN1->sTxMailBox[mailbox].TIR & (1UL << 0)) == 0)
-         break;
+    uint32_t timeout = 100; // 最大等待100ms
+    if (DLC > 8) {
+        Error_Handler(); // 根据具体需求，可选择截断或进入错误处理
     }
-    if(mailbox >= 3)
+    mailbox = CAN_Get_Free_Mailbox(); // 寻找空闲邮箱
+    if(mailbox == 0xFF)
         return 1; // 无空闲邮箱
     /* 清空该邮箱 */
-    CAN1->sTxMailBox[mailbox].TIR  = 0;
+    CAN1->sTxMailBox[mailbox].TIR  = 0; // 数据帧、标准帧标识符
     CAN1->sTxMailBox[mailbox].TDTR = 0;
     CAN1->sTxMailBox[mailbox].TDLR = 0;
     CAN1->sTxMailBox[mailbox].TDHR = 0;
     /* 标准ID写入TIR的[31:21]、标准帧, RTR=0, IDE=0 */
-    CAN1->sTxMailBox[mailbox].TIR |= (stdId << 21);
+    CAN1->sTxMailBox[mailbox].TIR |= (stdId << 21); // 设置标准帧ID
     /* 配置DLC */
     CAN1->sTxMailBox[mailbox].TDTR = (DLC & 0x0F);  // 设置CAN报文的长度。使用&运算的目的是保证只有变量DLC的低四位写入TDTR寄存器，不会干涉到其他位。
     /* 填充数据 */
@@ -153,14 +169,18 @@ uint8_t CAN_SendMessage_Blocking(uint32_t stdId, uint8_t *data, uint8_t DLC)
           CAN1->sTxMailBox[mailbox].TDHR |= ((uint32_t)data[i]) << (8 * (i-4));
         }
     }
-    /* 发起发送请求 */
-    CAN1->sTxMailBox[mailbox].TIR |= CAN_TI0R_TXRQ;
+    CAN1->sTxMailBox[mailbox].TIR |= CAN_TI0R_TXRQ; // 发起发送请求
     /* 轮询等待TXRQ清零或超时 */
-    while((CAN1->sTxMailBox[mailbox].TIR & CAN_TI0R_TXRQ) && --timeout);
-    if(timeout == 0) {
-        // 发送失败(无ACK或位错误), 返回2
+    while((CAN1->sTxMailBox[mailbox].TIR & CAN_TI0R_TXRQ) && (timeout > 0)) {
+        LL_mDelay(1);
+        timeout--;
+    }
+    /* 阻塞结束，发送超时失败 */
+    if ((CAN1->sTxMailBox[mailbox].TIR & CAN_TI0R_TXRQ) && (timeout == 0)) {
+        canSendError++;
         return 2;
     }
+    
     return 0; // 发送成功
 }
 
@@ -174,13 +194,18 @@ uint8_t CAN_SendMessage_Blocking(uint32_t stdId, uint8_t *data, uint8_t DLC)
 uint8_t CAN_SendMessage_NonBlocking(uint32_t stdId, uint8_t *data, uint8_t DLC)
 {
     uint8_t mailbox;
+    if (DLC > 8) {
+        Error_Handler(); // 根据具体需求，可选择截断或进入错误处理
+    }
+    
     if (txmail_free > 0) {
+        mailbox = CAN_Get_Free_Mailbox(); // 既然有空闲邮箱，看看到底哪个空闲
         /* 清空该邮箱并配置ID、DLC和数据 */
-        CAN1->sTxMailBox[mailbox].TIR  = 0;
+        CAN1->sTxMailBox[mailbox].TIR  = 0; // 数据帧、标准帧标识符
         CAN1->sTxMailBox[mailbox].TDTR = (DLC & 0x0F);
         CAN1->sTxMailBox[mailbox].TDLR = 0;
         CAN1->sTxMailBox[mailbox].TDHR = 0;
-        CAN1->sTxMailBox[mailbox].TIR |= (stdId << 21);
+        CAN1->sTxMailBox[mailbox].TIR |= (stdId << 21); // 设置标准帧ID
 
         /* 填充数据 */
         for(uint8_t i = 0; i < DLC && i < 8; i++) {

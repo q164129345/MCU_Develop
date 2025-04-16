@@ -1,4 +1,4 @@
-stm32f103zet6/lwrb.o: ..\lwrb\lwrb\src\lwrb\lwrb.c \
+./stm32f103zet6/lwrb.o: ..\lwrb\lwrb\src\lwrb\lwrb.c \
   ..\lwrb\lwrb\src\include\lwrb\lwrb.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stddef.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdint.h \

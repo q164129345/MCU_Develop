@@ -3,11 +3,11 @@
 <title>Static Call Graph - [stm32f103zet6\stm32f103zet6.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image stm32f103zet6\stm32f103zet6.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Mon Apr 14 18:06:45 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Wed Apr 16 16:44:28 2025
 <BR><P>
-<H3>Maximum Stack Usage =         92 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        104 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-main &rArr; MX_GPIO_Init &rArr; LL_GPIO_Init
+CAN1_RX1_IRQHandler &rArr; lwrb_write
 <P>
 <H3>
 Mutually Recursive functions
@@ -103,7 +103,7 @@ Global Symbols
 <P><STRONG><a name="[48]"></a>__main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry.o(.ARM.Collect$$$$00000000))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(.text)
 </UL>
-<P><STRONG><a name="[56]"></a>_main_stk</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry2.o(.ARM.Collect$$$$00000001))
+<P><STRONG><a name="[5f]"></a>_main_stk</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry2.o(.ARM.Collect$$$$00000001))
 
 <P><STRONG><a name="[49]"></a>_main_scatterload</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry5.o(.ARM.Collect$$$$00000004))
 <BR><BR>[Calls]<UL><LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
@@ -113,15 +113,15 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
 </UL>
 
-<P><STRONG><a name="[57]"></a>_main_clock</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry7b.o(.ARM.Collect$$$$00000008))
+<P><STRONG><a name="[60]"></a>_main_clock</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry7b.o(.ARM.Collect$$$$00000008))
 
-<P><STRONG><a name="[58]"></a>_main_cpp_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry8b.o(.ARM.Collect$$$$0000000A))
+<P><STRONG><a name="[61]"></a>_main_cpp_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry8b.o(.ARM.Collect$$$$0000000A))
 
-<P><STRONG><a name="[59]"></a>_main_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry9a.o(.ARM.Collect$$$$0000000B))
+<P><STRONG><a name="[62]"></a>_main_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry9a.o(.ARM.Collect$$$$0000000B))
 
-<P><STRONG><a name="[5a]"></a>__rt_final_cpp</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry10a.o(.ARM.Collect$$$$0000000D))
+<P><STRONG><a name="[63]"></a>__rt_final_cpp</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry10a.o(.ARM.Collect$$$$0000000D))
 
-<P><STRONG><a name="[5b]"></a>__rt_final_exit</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry11a.o(.ARM.Collect$$$$0000000F))
+<P><STRONG><a name="[64]"></a>__rt_final_exit</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry11a.o(.ARM.Collect$$$$0000000F))
 
 <P><STRONG><a name="[0]"></a>Reset_Handler</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, startup_stm32f103xe.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
@@ -304,13 +304,22 @@ Global Symbols
 <P><STRONG><a name="[a]"></a>WWDG_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_stm32f103xe.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
+<P><STRONG><a name="[5c]"></a>__aeabi_memcpy</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, memcpya.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_write
+<LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_read
+</UL>
+
+<P><STRONG><a name="[65]"></a>__aeabi_memcpy4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memcpya.o(.text), UNUSED)
+
+<P><STRONG><a name="[66]"></a>__aeabi_memcpy8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memcpya.o(.text), UNUSED)
+
 <P><STRONG><a name="[4a]"></a>__scatterload</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, init.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main_after_scatterload
 </UL>
 <BR>[Called By]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_main_scatterload
 </UL>
 
-<P><STRONG><a name="[5c]"></a>__scatterload_rt2</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, init.o(.text), UNUSED)
+<P><STRONG><a name="[67]"></a>__scatterload_rt2</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, init.o(.text), UNUSED)
 
 <P><STRONG><a name="[4]"></a>BusFault_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f1xx_it.o(.text.BusFault_Handler))
 <BR><BR>[Calls]<UL><LI><a href="#[4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BusFault_Handler
@@ -319,32 +328,50 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
-<P><STRONG><a name="[1f]"></a>CAN1_RX1_IRQHandler</STRONG> (Thumb, 396 bytes, Stack size 28 bytes, mycandrive_reg.o(.text.CAN1_RX1_IRQHandler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = CAN1_RX1_IRQHandler
+<P><STRONG><a name="[1f]"></a>CAN1_RX1_IRQHandler</STRONG> (Thumb, 424 bytes, Stack size 72 bytes, mycandrive_reg.o(.text.CAN1_RX1_IRQHandler))
+<BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = CAN1_RX1_IRQHandler &rArr; lwrb_write
+</UL>
+<BR>[Calls]<UL><LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_reset
+<LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_free
+<LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_write
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
-<P><STRONG><a name="[4c]"></a>CAN_BusOff_Recover</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, mycandrive_reg.o(.text.CAN_BusOff_Recover))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = CAN_BusOff_Recover &rArr; CAN_Config
+<P><STRONG><a name="[4f]"></a>CAN_BusOff_Recover</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, mycandrive_reg.o(.text.CAN_BusOff_Recover))
+<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = CAN_BusOff_Recover &rArr; CAN_Config
 </UL>
-<BR>[Calls]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Config
+<BR>[Calls]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Config
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[55]"></a>CAN_Check_Error</STRONG> (Thumb, 102 bytes, Stack size 0 bytes, mycandrive_reg.o(.text.CAN_Check_Error))
+<P><STRONG><a name="[5e]"></a>CAN_Check_Error</STRONG> (Thumb, 102 bytes, Stack size 0 bytes, mycandrive_reg.o(.text.CAN_Check_Error))
 <BR><BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[4d]"></a>CAN_Config</STRONG> (Thumb, 472 bytes, Stack size 8 bytes, mycandrive_reg.o(.text.CAN_Config))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = CAN_Config
+<P><STRONG><a name="[50]"></a>CAN_Config</STRONG> (Thumb, 496 bytes, Stack size 16 bytes, mycandrive_reg.o(.text.CAN_Config))
+<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = CAN_Config
 </UL>
-<BR>[Called By]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_BusOff_Recover
+<BR>[Calls]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_init
+</UL>
+<BR>[Called By]<UL><LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_BusOff_Recover
 <LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[54]"></a>CAN_SendMessage_NonBlocking</STRONG> (Thumb, 340 bytes, Stack size 24 bytes, mycandrive_reg.o(.text.CAN_SendMessage_NonBlocking))
-<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = CAN_SendMessage_NonBlocking
+<P><STRONG><a name="[52]"></a>CAN_SendMessage_NonBlocking</STRONG> (Thumb, 390 bytes, Stack size 32 bytes, mycandrive_reg.o(.text.CAN_SendMessage_NonBlocking))
+<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = CAN_SendMessage_NonBlocking
+</UL>
+<BR>[Calls]<UL><LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
+</UL>
+<BR>[Called By]<UL><LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Send_CANMsg_FromRingBuffer
+</UL>
+
+<P><STRONG><a name="[54]"></a>CAN_Send_CANMsg_FromRingBuffer</STRONG> (Thumb, 90 bytes, Stack size 56 bytes, mycandrive_reg.o(.text.CAN_Send_CANMsg_FromRingBuffer))
+<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = CAN_Send_CANMsg_FromRingBuffer &rArr; lwrb_read
+</UL>
+<BR>[Calls]<UL><LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_read
+<LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_full
+<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_SendMessage_NonBlocking
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -352,6 +379,10 @@ Global Symbols
 <P><STRONG><a name="[7]"></a>DebugMon_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f1xx_it.o(.text.DebugMon_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
+<P><STRONG><a name="[53]"></a>Error_Handler</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, main.o(.text.Error_Handler))
+<BR><BR>[Called By]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_SendMessage_NonBlocking
+</UL>
+
 <P><STRONG><a name="[2]"></a>HardFault_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f1xx_it.o(.text.HardFault_Handler))
 <BR><BR>[Calls]<UL><LI><a href="#[2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HardFault_Handler
 </UL>
@@ -359,30 +390,30 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
-<P><STRONG><a name="[4f]"></a>LL_GPIO_Init</STRONG> (Thumb, 190 bytes, Stack size 36 bytes, stm32f1xx_ll_gpio.o(.text.LL_GPIO_Init))
+<P><STRONG><a name="[58]"></a>LL_GPIO_Init</STRONG> (Thumb, 190 bytes, Stack size 36 bytes, stm32f1xx_ll_gpio.o(.text.LL_GPIO_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = LL_GPIO_Init
 </UL>
-<BR>[Called By]<UL><LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
+<BR>[Called By]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
 </UL>
 
-<P><STRONG><a name="[51]"></a>LL_Init1msTick</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, stm32f1xx_ll_utils.o(.text.LL_Init1msTick))
-<BR><BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
+<P><STRONG><a name="[5a]"></a>LL_Init1msTick</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, stm32f1xx_ll_utils.o(.text.LL_Init1msTick))
+<BR><BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 </UL>
 
-<P><STRONG><a name="[52]"></a>LL_SetSystemCoreClock</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, stm32f1xx_ll_utils.o(.text.LL_SetSystemCoreClock))
-<BR><BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
+<P><STRONG><a name="[5b]"></a>LL_SetSystemCoreClock</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, stm32f1xx_ll_utils.o(.text.LL_SetSystemCoreClock))
+<BR><BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 </UL>
 
-<P><STRONG><a name="[53]"></a>LL_mDelay</STRONG> (Thumb, 70 bytes, Stack size 4 bytes, stm32f1xx_ll_utils.o(.text.LL_mDelay))
+<P><STRONG><a name="[5d]"></a>LL_mDelay</STRONG> (Thumb, 70 bytes, Stack size 4 bytes, stm32f1xx_ll_utils.o(.text.LL_mDelay))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = LL_mDelay
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[4e]"></a>MX_GPIO_Init</STRONG> (Thumb, 146 bytes, Stack size 48 bytes, gpio.o(.text.MX_GPIO_Init))
+<P><STRONG><a name="[57]"></a>MX_GPIO_Init</STRONG> (Thumb, 146 bytes, Stack size 48 bytes, gpio.o(.text.MX_GPIO_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 84<LI>Call Chain = MX_GPIO_Init &rArr; LL_GPIO_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_GPIO_Init
+<BR>[Calls]<UL><LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_GPIO_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -410,11 +441,11 @@ Global Symbols
 <P><STRONG><a name="[9]"></a>SysTick_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f1xx_it.o(.text.SysTick_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
-<P><STRONG><a name="[50]"></a>SystemClock_Config</STRONG> (Thumb, 272 bytes, Stack size 8 bytes, main.o(.text.SystemClock_Config))
+<P><STRONG><a name="[59]"></a>SystemClock_Config</STRONG> (Thumb, 272 bytes, Stack size 8 bytes, main.o(.text.SystemClock_Config))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = SystemClock_Config
 </UL>
-<BR>[Calls]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_SetSystemCoreClock
-<LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_Init1msTick
+<BR>[Calls]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_SetSystemCoreClock
+<LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_Init1msTick
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -432,24 +463,56 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
-<P><STRONG><a name="[46]"></a>main</STRONG> (Thumb, 246 bytes, Stack size 8 bytes, main.o(.text.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 92<LI>Call Chain = main &rArr; MX_GPIO_Init &rArr; LL_GPIO_Init
+<P><STRONG><a name="[4d]"></a>lwrb_get_free</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_get_free))
+<BR><BR>[Called By]<UL><LI><a href="#[1f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN1_RX1_IRQHandler
 </UL>
-<BR>[Calls]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_BusOff_Recover
-<LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Check_Error
-<LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_SendMessage_NonBlocking
-<LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_mDelay
-<LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Config
-<LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
-<LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
+
+<P><STRONG><a name="[55]"></a>lwrb_get_full</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_get_full))
+<BR><BR>[Called By]<UL><LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Send_CANMsg_FromRingBuffer
+</UL>
+
+<P><STRONG><a name="[51]"></a>lwrb_init</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_init))
+<BR><BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Config
+</UL>
+
+<P><STRONG><a name="[56]"></a>lwrb_read</STRONG> (Thumb, 170 bytes, Stack size 32 bytes, lwrb.o(.text.lwrb_read))
+<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = lwrb_read
+</UL>
+<BR>[Calls]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy
+</UL>
+<BR>[Called By]<UL><LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Send_CANMsg_FromRingBuffer
+</UL>
+
+<P><STRONG><a name="[4e]"></a>lwrb_reset</STRONG> (Thumb, 42 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_reset))
+<BR><BR>[Called By]<UL><LI><a href="#[1f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN1_RX1_IRQHandler
+</UL>
+
+<P><STRONG><a name="[4c]"></a>lwrb_write</STRONG> (Thumb, 170 bytes, Stack size 32 bytes, lwrb.o(.text.lwrb_write))
+<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = lwrb_write
+</UL>
+<BR>[Calls]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy
+</UL>
+<BR>[Called By]<UL><LI><a href="#[1f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN1_RX1_IRQHandler
+</UL>
+
+<P><STRONG><a name="[46]"></a>main</STRONG> (Thumb, 206 bytes, Stack size 8 bytes, main.o(.text.main))
+<BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = main &rArr; CAN_Send_CANMsg_FromRingBuffer &rArr; lwrb_read
+</UL>
+<BR>[Calls]<UL><LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_BusOff_Recover
+<LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Check_Error
+<LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_mDelay
+<LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Send_CANMsg_FromRingBuffer
+<LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Config
+<LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
+<LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
 </UL>
-<P><STRONG><a name="[5d]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
+<P><STRONG><a name="[68]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
 
-<P><STRONG><a name="[5e]"></a>__scatterload_null</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_null), UNUSED)
+<P><STRONG><a name="[69]"></a>__scatterload_null</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_null), UNUSED)
 
-<P><STRONG><a name="[5f]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
+<P><STRONG><a name="[6a]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 <P>
 <H3>
 Local Symbols

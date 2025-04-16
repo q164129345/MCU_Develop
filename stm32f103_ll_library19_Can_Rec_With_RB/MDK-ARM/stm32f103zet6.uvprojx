@@ -55,7 +55,7 @@
           <CreateHexFile>1</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
-          <ListingPath></ListingPath>
+          <ListingPath>..\</ListingPath>
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
           <CreateBatchFile>0</CreateBatchFile>
@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_FULL_LL_DRIVER,STM32F103xE,HSE_VALUE=8000000,HSE_STARTUP_TIMEOUT=100,LSE_STARTUP_TIMEOUT=5000,LSE_VALUE=32768,HSI_VALUE=8000000,LSI_VALUE=40000,VDD_VALUE=3300,PREFETCH_ENABLE=1</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;..\BSP</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;..\BSP;..\lwrb\lwrb\src\include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -509,6 +509,21 @@
               <FileName>myCanDrive_reg.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\BSP\myCanDrive_reg.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>LwRB</GroupName>
+          <Files>
+            <File>
+              <FileName>lwrb.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lwrb\lwrb\src\lwrb\lwrb.c</FilePath>
+            </File>
+            <File>
+              <FileName>lwrb_ex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\lwrb\lwrb\src\lwrb\lwrb_ex.c</FilePath>
             </File>
           </Files>
         </Group>

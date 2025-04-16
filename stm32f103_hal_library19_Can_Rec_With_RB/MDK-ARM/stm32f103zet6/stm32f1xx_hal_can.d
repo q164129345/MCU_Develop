@@ -1,4 +1,4 @@
-stm32f103zet6/stm32f1xx_hal_can.o: \
+./stm32f103zet6/stm32f1xx_hal_can.o: \
   ..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_can.c \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h \
   ..\Core\Inc\stm32f1xx_hal_conf.h \

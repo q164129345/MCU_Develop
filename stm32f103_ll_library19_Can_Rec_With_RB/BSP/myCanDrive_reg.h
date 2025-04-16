@@ -85,7 +85,7 @@ typedef struct
 
 typedef struct {
     CAN_RxHeaderTypeDef RxHeader;
-    volatile uint8_t RxData[8];
+    uint8_t RxData[8];
 }CANMsg_t;
 
 void CAN_Config(void);
@@ -93,6 +93,7 @@ uint8_t CAN_SendMessage_Blocking(uint32_t stdId, uint8_t *data, uint8_t DLC);
 uint8_t CAN_SendMessage_NonBlocking(uint32_t stdId, uint8_t *data, uint8_t DLC);
 uint8_t CAN_Check_Error(void);
 void CAN_BusOff_Recover(void);
+uint8_t CAN_Send_CANMsg_FromRingBuffer(void);
 
 #ifdef __cplusplus
 }

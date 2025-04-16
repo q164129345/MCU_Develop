@@ -28,7 +28,6 @@
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
-volatile uint32_t canSendError = 0;
 volatile uint8_t g_BusOffCount = 0;
 /* USER CODE END PTD */
 
@@ -109,13 +108,6 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     LL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
-      
-    /* CAN发送 */
-    uint8_t txData[8] = {0x11, 0x22, 0x33, 0x44,
-                         0x55, 0x66, 0x77, 0x88};
-    if (CAN_SendMessage_NonBlocking(0x123, txData, 8)) {
-        canSendError++;  // 因为发送邮箱满了，所以当前消息发送失败
-    }
 
     /* 监控CAN错误 */
     if (CAN_Check_Error() == 0x03) { // 因为错误太严重，进入离线状态
@@ -124,6 +116,8 @@ int main(void)
     } else {
         // 其他错误与没有错误
     }
+    
+    CAN_Send_CANMsg_FromRingBuffer(); // 将ringbuffer里的CAN报文发出去
     
     LL_mDelay(50);
   }

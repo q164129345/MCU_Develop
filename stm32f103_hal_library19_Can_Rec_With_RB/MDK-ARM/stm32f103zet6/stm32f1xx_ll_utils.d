@@ -1,4 +1,4 @@
-stm32f103zet6/stm32f1xx_ll_utils.o: \
+./stm32f103zet6/stm32f1xx_ll_utils.o: \
   ..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_ll_utils.c \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_ll_rcc.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h \
