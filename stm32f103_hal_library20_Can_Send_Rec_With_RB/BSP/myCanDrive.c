@@ -3,6 +3,7 @@
 volatile uint8_t txmail_free = 0;             // 空闲邮箱的数量
 volatile uint32_t canSendError = 0;           // 统计发送失败次数
 volatile uint32_t g_RxCount = 0;              // 统计接收的CAN报文总数
+volatile uint32_t g_HandleRxMsg = 0;          // 统计从ringbuffer拿出来处理的CAN报文的数量
 volatile uint32_t g_RxOverflowError = 0;      // 统计RX FIFO1溢出数量
 volatile uint32_t g_RXRingbufferOverflow = 0; // 统计ringbuffer溢出次数
 
@@ -137,29 +138,49 @@ static void CAN_FilterConfig_AllMessages(CAN_HandleTypeDef *hcan)
 }
 
 /**
-  * @brief  从ringbuffer中取出所有的CANMsg_t消息并依次发送到CAN总线上
-  * @return 0：所有消息发送成功  
-  *         1：发送过程中出现发送邮箱不足或发送错误  
-  *         2：没有一条完整的CAN消息可供发送
-  */
-uint8_t CAN_Send_CANMsg_FromRingBuffer(void)
+ * @brief  从环形缓冲区中读取并处理所有挂起的 CAN 消息
+ * @details 本函数轮询全局环形缓冲区 g_CanRxRBHandler，只要其中可用数据
+ *          大于或等于一个完整的 CANMsg_t 消息长度，就不断：
+ *            1. 将一条消息读取到本地变量 canMsg
+ *            2. 全局计数器 g_HandleRxMsg 自增，记录已处理的消息数
+ *            3. 根据 canMsg.RxHeader.StdId 在 switch-case 中分发到具体的业务处理分支
+ * @note   - 用户需在 switch-case 中填充不同 StdId 对应的处理逻辑  
+ *         - 若无更多消息可读，函数返回  
+ * @retval None
+ */
+void CAN_Data_Process(void)
 {
-    uint8_t ret = 2;  // 默认返回2表示没有消息可发
     while(lwrb_get_full((lwrb_t*)&g_CanRxRBHandler) >= sizeof(CANMsg_t)) {
-        ret = 0; // 已有消息可发送
-        if(txmail_free == 0) {
-            ret = 1;  // 没有可用的发送邮箱
-            break;
-        }
         CANMsg_t canMsg;
         lwrb_read((lwrb_t*)&g_CanRxRBHandler, &canMsg, sizeof(CANMsg_t)); // 从ringbuffer中读取一条CAN消息
-        if (CAN_Send_STD_DATA_Msg_No_Serial(canMsg.RxHeader.StdId, canMsg.RxData, canMsg.RxHeader.DLC)) { // 使用非串行方式发送消息
-            ret = 1; // 如果发送失败（例如发送邮箱不足或其他错误），记录错误后退出
-            break;
-        }
+        g_HandleRxMsg++; // 有一条CAN消息从ringbuffer拿出来处理
+        /* 在这里，根据CANID处理业务代码.等等 */
+//        switch(canMsg.RxHeader.StdId) {
+//            case 0x200:
+//                // TODO: 处理 ID = 0x200 的消息
+//                break;
+//            case 0x201:
+//                // TODO: 处理 ID = 0x201 的消息
+//                break;
+//            case 0x202:
+//            case 0x203:
+//                break;
+//            default:
+//                break;
+//        }
     }
-    return ret;
 }
+
+void CAN_Send_CANMsg_To_CANBUS(void)
+{
+    
+    
+    
+    
+    
+}
+
+
 
 /**
   * @brief  CAN初始化

@@ -98,7 +98,6 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     LL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
-    CAN_Send_CANMsg_FromRingBuffer(); // 将ringbuffer的CAN消息发送出去
     LL_mDelay(50);
   }
   /* USER CODE END 3 */

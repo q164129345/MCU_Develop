@@ -29,7 +29,6 @@ typedef struct {
 
 void CAN_Send_STD_DATA_Msg_Serial(uint32_t canid, uint8_t* data, uint8_t len);
 uint8_t CAN_Send_Msg_No_Serial(CAN_TxHeaderTypeDef* txHeader, uint8_t* data, uint8_t len);
-uint8_t CAN_Send_CANMsg_FromRingBuffer(void);
 void CAN_Config(void);
 void HAL_CAN_RxFifo1MsgPendingCallback(CAN_HandleTypeDef *hcan);
 void CAN_FIFO1_Overflow_Handler(void);
