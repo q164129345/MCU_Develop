@@ -10,7 +10,7 @@
       <TargetName>stm32f103zet6</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>6210000::V6.21::ARMCLANG</pCCUsed>
+      <pCCUsed>6160000::V6.16::ARMCLANG</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -186,7 +186,6 @@
             <RvdsVP>0</RvdsVP>
             <RvdsMve>0</RvdsMve>
             <RvdsCdeCp>0</RvdsCdeCp>
-            <nBranchProt>0</nBranchProt>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
@@ -508,22 +507,22 @@
             <File>
               <FileName>myCanDrive_reg.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\BSP\myCanDrive_reg.c</FilePath>
+              <FilePath>..\BSP\myCanDrive\myCanDrive_reg.c</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
-          <GroupName>LwRB</GroupName>
+          <GroupName>Lwrb</GroupName>
           <Files>
             <File>
               <FileName>lwrb.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lwrb\lwrb\src\lwrb\lwrb.c</FilePath>
+              <FilePath>..\BSP\lwrb\lwrb.c</FilePath>
             </File>
             <File>
               <FileName>lwrb_ex.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\lwrb\lwrb\src\lwrb\lwrb_ex.c</FilePath>
+              <FilePath>..\BSP\lwrb\lwrb_ex.c</FilePath>
             </File>
           </Files>
         </Group>

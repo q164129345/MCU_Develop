@@ -409,7 +409,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\BSP\myCanDrive_reg.c</PathWithFileName>
+      <PathWithFileName>..\BSP\myCanDrive\myCanDrive_reg.c</PathWithFileName>
       <FilenameWithoutPath>myCanDrive_reg.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -417,7 +417,7 @@
   </Group>
 
   <Group>
-    <GroupName>LwRB</GroupName>
+    <GroupName>Lwrb</GroupName>
     <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
@@ -429,7 +429,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\lwrb\lwrb\src\lwrb\lwrb.c</PathWithFileName>
+      <PathWithFileName>..\BSP\lwrb\lwrb.c</PathWithFileName>
       <FilenameWithoutPath>lwrb.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -441,7 +441,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\lwrb\lwrb\src\lwrb\lwrb_ex.c</PathWithFileName>
+      <PathWithFileName>..\BSP\lwrb\lwrb_ex.c</PathWithFileName>
       <FilenameWithoutPath>lwrb_ex.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>

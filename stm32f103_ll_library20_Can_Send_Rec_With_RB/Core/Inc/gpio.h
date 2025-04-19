@@ -29,7 +29,8 @@ extern "C" {
 #include "main.h"
 
 /* USER CODE BEGIN Includes */
-
+#include "lwrb/lwrb.h"
+#include "myCanDrive/myCanDrive_reg.h"
 /* USER CODE END Includes */
 
 /* USER CODE BEGIN Private defines */
