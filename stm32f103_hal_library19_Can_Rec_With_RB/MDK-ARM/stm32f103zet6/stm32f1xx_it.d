@@ -36,7 +36,7 @@
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_ll_dma.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_ll_gpio.h \
   C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdio.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\string.h ..\BSP\lwrb.h \
+  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\string.h ..\BSP\lwrb\lwrb.h \
   C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdatomic.h \
-  ..\Core\Inc\stm32f1xx_it.h ..\BSP\myCanDrive.h ..\Core\Inc\can.h \
-  ..\Core\Inc\main.h
+  ..\BSP\myCanDrive\myCanDrive.h ..\Core\Inc\can.h ..\Core\Inc\main.h \
+  ..\Core\Inc\stm32f1xx_it.h

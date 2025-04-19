@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_FULL_LL_DRIVER,STM32F103xE,USE_HAL_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../BSP;..\BSP</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../BSP</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1347,7 +1347,7 @@
             <File>
               <FileName>myCanDrive.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\BSP\myCanDrive.c</FilePath>
+              <FilePath>..\BSP\myCanDrive\myCanDrive.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1357,12 +1357,12 @@
             <File>
               <FileName>lwrb.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\BSP\lwrb.c</FilePath>
+              <FilePath>..\BSP\lwrb\lwrb.c</FilePath>
             </File>
             <File>
               <FileName>lwrb_ex.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\BSP\lwrb_ex.c</FilePath>
+              <FilePath>..\BSP\lwrb\lwrb_ex.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -31,7 +31,7 @@
  * Author:          Tilen MAJERLE <tilen@majerle.eu>
  * Version:         v3.2.0
  */
-#include "lwrb.h"
+#include "lwrb/lwrb.h"
 
 #if defined(LWRB_DEV)
 

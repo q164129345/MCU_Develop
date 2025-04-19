@@ -43,7 +43,8 @@ extern "C" {
 /* USER CODE BEGIN Includes */
 #include "stdio.h"
 #include "string.h"
-#include "lwrb.h"
+#include "lwrb/lwrb.h"
+#include "myCanDrive/myCanDrive.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

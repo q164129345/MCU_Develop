@@ -1,5 +1,6 @@
-./stm32f103zet6/mycandrive.o: ..\BSP\myCanDrive.c ..\BSP\myCanDrive.h \
-  ..\Core\Inc\main.h ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h \
+./stm32f103zet6/mycandrive.o: ..\BSP\myCanDrive\myCanDrive.c \
+  ..\BSP\myCanDrive\myCanDrive.h ..\Core\Inc\main.h \
+  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h \
   ..\Core\Inc\stm32f1xx_hal_conf.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h \
@@ -36,6 +37,6 @@
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_ll_dma.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_ll_gpio.h \
   C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdio.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\string.h ..\BSP\lwrb.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdatomic.h ..\Core\Inc\can.h \
-  ..\Core\Inc\main.h
+  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\string.h ..\BSP\lwrb\lwrb.h \
+  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdatomic.h \
+  ..\BSP\myCanDrive\myCanDrive.h ..\Core\Inc\can.h ..\Core\Inc\main.h
