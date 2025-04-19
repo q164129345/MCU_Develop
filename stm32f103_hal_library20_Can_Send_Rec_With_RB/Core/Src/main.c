@@ -23,7 +23,6 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "myCanDrive.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
