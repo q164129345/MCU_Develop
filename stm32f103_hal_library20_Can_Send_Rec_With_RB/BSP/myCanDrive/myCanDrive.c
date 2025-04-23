@@ -2,14 +2,19 @@
 
 volatile uint8_t txmail_free = 0;             // 空闲邮箱的数量
 volatile uint32_t canSendError = 0;           // 统计发送失败次数
-volatile uint32_t g_RxCount = 0;              // 统计接收的CAN报文总数
+volatile uint64_t g_RxCount = 0;              // 统计接收的CAN报文总数
+volatile uint64_t g_TxCount = 0;              // 统计发送的CAN报文总数
 volatile uint32_t g_HandleRxMsg = 0;          // 统计从ringbuffer拿出来处理的CAN报文的数量
 volatile uint32_t g_RxOverflowError = 0;      // 统计RX FIFO1溢出数量
 volatile uint32_t g_RXRingbufferOverflow = 0; // 统计ringbuffer溢出次数
 
-/* ringbuffer */
-volatile lwrb_t g_CanRxRBHandler; // 实例化ringbuffer
-volatile CANMsg_t g_CanRxRBDataBuffer[50] = {0,}; // ringbuffer缓存（最多可以存50个CAN消息）
+/* CAN接收ringbuffer */
+volatile lwrb_t g_CanRxRBHandler; // 实例化RX ringbuffer
+volatile CANMsg_t g_CanRxRBDataBuffer[50] = {0,}; // RX ringbuffer缓存（最多可以存50个CAN消息）
+
+/* CAN发送ringbuffer */
+volatile lwrb_t g_CanTxRBHandler; // 实例化TX ringbuffer
+volatile CANTXMsg_t g_CanTxRBDataBuffer[50] = {0,}; // TX ringbuffer缓存（最多可以存50个将要发送的CAN消息）
 
 /**
   * @brief  发送一个标准数据帧的CAN消息（串行方式）
@@ -59,6 +64,7 @@ void CAN_Send_STD_DATA_Msg_Serial(uint32_t canid, uint8_t* data, uint8_t len)
     /* 发送失败，进入错误处理 */
         Error_Handler();
     }
+    g_TxCount++; // 成功发送一帧CAN报文
 }
 
 /**
@@ -99,6 +105,7 @@ uint8_t CAN_Send_STD_DATA_Msg_No_Serial(uint32_t canid, uint8_t* data, uint8_t l
             Error_Handler();
         }
         txmail_free--; // 用掉一个发送邮箱
+        g_TxCount++; // 成功发送一帧CAN报文
         return 0;
     } else {
         canSendError++; // 发送邮箱满了，溢出
@@ -150,6 +157,7 @@ static void CAN_FilterConfig_AllMessages(CAN_HandleTypeDef *hcan)
  */
 void CAN_Data_Process(void)
 {
+    /* 如果至少有一帧CAN消息，进入while循环，从ringbuffer取出CAN报文，接着分析，处理。 */
     while(lwrb_get_full((lwrb_t*)&g_CanRxRBHandler) >= sizeof(CANMsg_t)) {
         CANMsg_t canMsg;
         lwrb_read((lwrb_t*)&g_CanRxRBHandler, &canMsg, sizeof(CANMsg_t)); // 从ringbuffer中读取一条CAN消息
@@ -170,24 +178,118 @@ void CAN_Data_Process(void)
 //        }
     }
 }
-
-void CAN_Send_CANMsg_To_CANBUS(void)
+/**
+ * @brief      尝试发送一帧待发 CAN 报文（从 TX RingBuffer → CAN 邮箱）
+ *
+ * 按照「先 peek、成功后 skip」的 0 丢帧策略：  
+ * 1. 若没有空闲邮箱或 RingBuffer 中无完整报文，则立即返回。  
+ * 2. `lwrb_peek()` 仅复制最前面的报文；  
+ * 3. 调用 @ref CAN_Send_STD_DATA_Msg_No_Serial 发送；  
+ * 4. 仅在发送成功时执行 `lwrb_skip()` 真正弹出这帧。  
+ *
+ * @note  
+ * - 该函数既可在中断环境，也可在主循环环境调用；调用方需自行保证
+ *   与 RingBuffer 相关的并发互斥（示例代码已在主循环临时关闭
+ *   `CAN_IT_TX_MAILBOX_EMPTY`）。  
+ * - 发送失败仅累加 @p canSendError 计数，不会移除报文，等待下次重试。  
+ *
+ * @retval true   成功将 1 帧报文写入邮箱，并已从 RingBuffer 移除  
+ * @retval false  无可用邮箱 / 无待发送数据 / 发送失败
+ */
+static bool CAN_TxOnceFromRB(void)
 {
-    
-    
-    
-    
-    
+    CANTXMsg_t msg;
+    if (txmail_free == 0) {
+        return false; // 没邮箱
+    }
+    if (lwrb_get_full((lwrb_t*)&g_CanTxRBHandler) < sizeof(CANTXMsg_t)) {
+        return false; // 没数据
+    }
+    /* 将TX ringbuffer的消息搬运到TX发送邮箱 */
+    lwrb_peek((lwrb_t*)&g_CanTxRBHandler, 0, &msg, sizeof(CANTXMsg_t)); // 只窥视(peek)一帧，不弹出
+    if (CAN_Send_STD_DATA_Msg_No_Serial(msg.CanId, msg.data, msg.Len) == 0) {
+        lwrb_skip((lwrb_t*)&g_CanTxRBHandler, sizeof(CANTXMsg_t)); // 成功：正式把这帧从 RingBuffer 删掉
+        return true;
+    }
+    canSendError++; // 理论上很少到这里
+    return false;
 }
 
+/**
+ * @brief     在 CAN TX 完成中断中调用的快速续发函数
+ *
+ * 连续调用 @ref CAN_TxOnceFromRB 直到无法再写入邮箱（邮箱满或
+ * RingBuffer 没数据）。因处于 ISR，不执行任何关中断操作。
+ *
+ * @note 仅应在 @p USB_HP_CAN1_TX_IRQHandler 等发送完成 IRQ 回调里调用。
+ */
+void CAN_Get_CANMsg_From_RB_To_TXMailBox_IT(void)
+{
+    while (CAN_TxOnceFromRB()) { }
+}
 
+/**
+ * @brief     主循环周期调用的批量补发函数
+ *
+ * 为避免与 ISR 并发访问同一 TX RingBuffer：  
+ * - 进入函数前暂时关闭 `CAN_IT_TX_MAILBOX_EMPTY` 中断；  
+ * - 通过循环调用 @ref CAN_TxOnceFromRB 将所有空闲邮箱填满；  
+ * - 结束后重新开启中断。  
+ *
+ * @note 建议在 1 ms 或更快的系统节拍内调用一次，以防极端负载下
+ *       ISR 频率不足以清空 RingBuffer。
+ */
+void CAN_Get_CANMsg_From_RB_To_TXMailBox(void)
+{
+    /* 关 TX-Mailbox-Empty 中断，防止并发 */
+    __HAL_CAN_DISABLE_IT(&hcan, CAN_IT_TX_MAILBOX_EMPTY);
+    /* 把仍然空着的邮箱一次发完 */
+    while (CAN_TxOnceFromRB()) { }
+    /* 恢复中断 */
+    __HAL_CAN_ENABLE_IT(&hcan, CAN_IT_TX_MAILBOX_EMPTY);
+}
+
+/**
+ * @brief  将一帧标准 CAN 数据帧写入 Tx 环形缓冲区
+ *
+ * 上层应用调用此函数即可“排队”发送一帧标准 CAN 报文；  
+ * 发送驱动（中断 + 主循环）会异步地把缓冲区中的报文
+ * 取出并写入 CAN1 的 3 个发送邮箱，实现**非阻塞发送**。
+ *
+ * @param[in]  canid  11 位标准标识符（范围 0 – 0x7FF）
+ * @param[in]  data   指向待发送数据的缓冲区（0 – 8 字节）
+ * @param[in]  len    数据长度（DLC），取值 0 – 8
+ *
+ * @retval true   已成功把本帧写入 Tx RingBuffer  
+ * @retval false  Tx RingBuffer 空间不足，当前帧被丢弃
+ *
+ * @note
+ * - **线程安全**：本函数可在主循环或任务上下文中调用；  
+ *   由于硬中断只读缓冲区而不写，且 @p lwrb_write() 已实现
+ *   读写并发安全，因此无需额外临界区。  
+ * - 当缓冲区满时本实现直接返回 @c false 而不覆盖旧数据；若
+ *   需要“新数据优先”策略，可先调用 @p lwrb_skip() 弹出最旧
+ *   一帧后再写入，并应在代码中作明确注释。 
+ */
+bool CAN_Send_CAN_STD_Message(uint32_t canid, uint8_t* data, uint8_t len)
+{
+    if (lwrb_get_free((lwrb_t*)&g_CanTxRBHandler) < sizeof(CANTXMsg_t)) {
+        return false;
+    }
+    /* 往TX Ringbuffer里放入一帧CAN报文 */
+    CANTXMsg_t canMsg = { .CanId = canid, .Len = len };
+    memcpy(canMsg.data, data, len);
+    lwrb_write((lwrb_t*)&g_CanTxRBHandler, &canMsg, sizeof(CANTXMsg_t)); 
+    return true;
+}
 
 /**
   * @brief  CAN初始化
   */
 void CAN_Config(void)
 {
-    lwrb_init((lwrb_t*)&g_CanRxRBHandler, (uint8_t*)g_CanRxRBDataBuffer, sizeof(g_CanRxRBDataBuffer) + 1); // ringbuffer初始化
+    lwrb_init((lwrb_t*)&g_CanRxRBHandler, (uint8_t*)g_CanRxRBDataBuffer, sizeof(g_CanRxRBDataBuffer) + 1); // RX Ringbuffer初始化
+    lwrb_init((lwrb_t*)&g_CanTxRBHandler, (uint8_t*)g_CanTxRBDataBuffer, sizeof(g_CanTxRBDataBuffer) + 1); // TX Ringbuffer初始化
     
     txmail_free = HAL_CAN_GetTxMailboxesFreeLevel(&hcan); // 获取发送邮箱的空闲数量，一般都是3个
     HAL_CAN_ActivateNotification(&hcan, CAN_IT_TX_MAILBOX_EMPTY); // 启动发送完成中断
@@ -195,7 +297,7 @@ void CAN_Config(void)
     HAL_CAN_ActivateNotification(&hcan, CAN_IT_RX_FIFO1_OVERRUN); // 启动接收FIFO1溢出中断
     CAN_FilterConfig_AllMessages(&hcan); // 配置过滤器
     if (HAL_CAN_Start(&hcan) != HAL_OK) {
-      Error_Handler(); // 启动失败，进入错误处理
+        Error_Handler(); // 启动失败，进入错误处理
     }
 }
 
@@ -236,4 +338,28 @@ void CAN_FIFO1_Overflow_Handler(void)
         g_RxOverflowError++;
     }
 }
+
+/**
+  * @brief  公共的 CAN 发送完成回调
+  * @note   HAL 在 USB_HP_CAN1_TX_IRQHandler()→HAL_CAN_IRQHandler() 里，
+  *         会依次检测 RQCP0/1/2 并分别调用 3 个弱回调。
+  *         我们让它们全部别名到此函数即可。
+  */
+void CAN_TxCompleteCommonCallback(CAN_HandleTypeDef *hcan)
+{
+    /* 通过寄存器方式（更加高效），更新发送邮箱的空闲数量 */
+    txmail_free = ((hcan->Instance->TSR & CAN_TSR_TME0) ? 1 : 0) +
+                 ((hcan->Instance->TSR & CAN_TSR_TME1) ? 1 : 0) +
+                 ((hcan->Instance->TSR & CAN_TSR_TME2) ? 1 : 0);
+    /* 将TX ringbuffer的CAN报文搬到CAN TX邮箱 */
+    CAN_Get_CANMsg_From_RB_To_TXMailBox_IT();
+}
+
+/* ---------- 把 3 个弱回调全部映射到同一个实现 ---------- */
+void HAL_CAN_TxMailbox0CompleteCallback(CAN_HandleTypeDef *hcan)
+        __attribute__((alias("CAN_TxCompleteCommonCallback")));
+void HAL_CAN_TxMailbox1CompleteCallback(CAN_HandleTypeDef *hcan)
+        __attribute__((alias("CAN_TxCompleteCommonCallback")));
+void HAL_CAN_TxMailbox2CompleteCallback(CAN_HandleTypeDef *hcan)
+        __attribute__((alias("CAN_TxCompleteCommonCallback")));
 
