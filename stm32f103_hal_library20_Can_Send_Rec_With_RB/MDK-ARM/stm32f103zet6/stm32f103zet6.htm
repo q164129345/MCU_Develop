@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\stm32f103zet6\stm32f103zet6.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\stm32f103zet6\stm32f103zet6.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Wed Apr 23 16:10:11 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Wed Apr 23 18:06:38 2025
 <BR><P>
 <H3>Maximum Stack Usage =        144 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -304,10 +304,10 @@ Global Symbols
 <P><STRONG><a name="[a]"></a>WWDG_IRQHandler</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, startup_stm32f103xe.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
-<P><STRONG><a name="[5c]"></a>__aeabi_memcpy</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, memcpya.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_write
+<P><STRONG><a name="[5d]"></a>__aeabi_memcpy</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, memcpya.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_write
 <LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_peek
-<LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Send_CAN_STD_Message
+<LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Send_CAN_STD_Message
 </UL>
 
 <P><STRONG><a name="[8f]"></a>__aeabi_memcpy4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memcpya.o(.text), UNUSED)
@@ -377,51 +377,52 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[1f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN1_RX1_IRQHandler
 </UL>
 
-<P><STRONG><a name="[58]"></a>CAN_Get_CANMsg_From_RB_To_TXMailBox</STRONG> (Thumb, 40 bytes, Stack size 8 bytes, mycandrive.o(.text.CAN_Get_CANMsg_From_RB_To_TXMailBox))
+<P><STRONG><a name="[58]"></a>CAN_Get_CANMsg_From_RB_To_TXMailBox</STRONG> (Thumb, 72 bytes, Stack size 8 bytes, mycandrive.o(.text.CAN_Get_CANMsg_From_RB_To_TXMailBox))
 <BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = CAN_Get_CANMsg_From_RB_To_TXMailBox &rArr; CAN_TxOnceFromRB &rArr; lwrb_peek
 </UL>
-<BR>[Calls]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_TxOnceFromRB
+<BR>[Calls]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_full
+<LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_TxOnceFromRB
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[5a]"></a>CAN_Send_CAN_STD_Message</STRONG> (Thumb, 88 bytes, Stack size 40 bytes, mycandrive.o(.text.CAN_Send_CAN_STD_Message))
+<P><STRONG><a name="[5b]"></a>CAN_Send_CAN_STD_Message</STRONG> (Thumb, 88 bytes, Stack size 40 bytes, mycandrive.o(.text.CAN_Send_CAN_STD_Message))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = CAN_Send_CAN_STD_Message &rArr; lwrb_write
 </UL>
-<BR>[Calls]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy
-<LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_write
-<LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_free
+<BR>[Calls]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy
+<LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_write
+<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_free
 </UL>
-<BR>[Called By]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Test_Send50Frames_Use_Ringbuffer
+<BR>[Called By]<UL><LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Test_Send50Frames_Use_Ringbuffer
 </UL>
 
-<P><STRONG><a name="[5e]"></a>CAN_Send_STD_DATA_Msg_No_Serial</STRONG> (Thumb, 112 bytes, Stack size 48 bytes, mycandrive.o(.text.CAN_Send_STD_DATA_Msg_No_Serial))
+<P><STRONG><a name="[5f]"></a>CAN_Send_STD_DATA_Msg_No_Serial</STRONG> (Thumb, 112 bytes, Stack size 48 bytes, mycandrive.o(.text.CAN_Send_STD_DATA_Msg_No_Serial))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = CAN_Send_STD_DATA_Msg_No_Serial &rArr; HAL_CAN_AddTxMessage
 </UL>
-<BR>[Calls]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_AddTxMessage
+<BR>[Calls]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_AddTxMessage
 <LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
 </UL>
-<BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Test_Send50Frames
+<BR>[Called By]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Test_Send50Frames
 </UL>
 
-<P><STRONG><a name="[60]"></a>CAN_Test_Send50Frames</STRONG> (Thumb, 630 bytes, Stack size 16 bytes, main.o(.text.CAN_Test_Send50Frames))
+<P><STRONG><a name="[61]"></a>CAN_Test_Send50Frames</STRONG> (Thumb, 630 bytes, Stack size 16 bytes, main.o(.text.CAN_Test_Send50Frames))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = CAN_Test_Send50Frames &rArr; CAN_Send_STD_DATA_Msg_No_Serial &rArr; HAL_CAN_AddTxMessage
 </UL>
-<BR>[Calls]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Send_STD_DATA_Msg_No_Serial
+<BR>[Calls]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Send_STD_DATA_Msg_No_Serial
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[61]"></a>CAN_Test_Send50Frames_Use_Ringbuffer</STRONG> (Thumb, 630 bytes, Stack size 16 bytes, main.o(.text.CAN_Test_Send50Frames_Use_Ringbuffer))
+<P><STRONG><a name="[62]"></a>CAN_Test_Send50Frames_Use_Ringbuffer</STRONG> (Thumb, 630 bytes, Stack size 16 bytes, main.o(.text.CAN_Test_Send50Frames_Use_Ringbuffer))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = CAN_Test_Send50Frames_Use_Ringbuffer &rArr; CAN_Send_CAN_STD_Message &rArr; lwrb_write
 </UL>
-<BR>[Calls]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Send_CAN_STD_Message
+<BR>[Calls]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Send_CAN_STD_Message
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[62]"></a>CAN_TxCompleteCommonCallback</STRONG> (Thumb, 46 bytes, Stack size 8 bytes, mycandrive.o(.text.CAN_TxCompleteCommonCallback), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_TxOnceFromRB
+<P><STRONG><a name="[63]"></a>CAN_TxCompleteCommonCallback</STRONG> (Thumb, 46 bytes, Stack size 8 bytes, mycandrive.o(.text.CAN_TxCompleteCommonCallback), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_TxOnceFromRB
 </UL>
 
 <P><STRONG><a name="[67]"></a>HAL_CAN_TxMailbox0CompleteCallback</STRONG> (Thumb, 46 bytes, Stack size 8 bytes, mycandrive.o(.text.CAN_TxCompleteCommonCallback))
@@ -446,21 +447,21 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
 <P><STRONG><a name="[56]"></a>Error_Handler</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, main.o(.text.Error_Handler))
-<BR><BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_TxOnceFromRB
+<BR><BR>[Called By]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_TxOnceFromRB
 <LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Config
 <LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_CAN_Init
-<LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Send_STD_DATA_Msg_No_Serial
+<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Send_STD_DATA_Msg_No_Serial
 </UL>
 
 <P><STRONG><a name="[54]"></a>HAL_CAN_ActivateNotification</STRONG> (Thumb, 46 bytes, Stack size 0 bytes, stm32f1xx_hal_can.o(.text.HAL_CAN_ActivateNotification))
 <BR><BR>[Called By]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Config
 </UL>
 
-<P><STRONG><a name="[5f]"></a>HAL_CAN_AddTxMessage</STRONG> (Thumb, 168 bytes, Stack size 8 bytes, stm32f1xx_hal_can.o(.text.HAL_CAN_AddTxMessage))
+<P><STRONG><a name="[60]"></a>HAL_CAN_AddTxMessage</STRONG> (Thumb, 168 bytes, Stack size 8 bytes, stm32f1xx_hal_can.o(.text.HAL_CAN_AddTxMessage))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = HAL_CAN_AddTxMessage
 </UL>
-<BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_TxOnceFromRB
-<LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Send_STD_DATA_Msg_No_Serial
+<BR>[Called By]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_TxOnceFromRB
+<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Send_STD_DATA_Msg_No_Serial
 </UL>
 
 <P><STRONG><a name="[55]"></a>HAL_CAN_ConfigFilter</STRONG> (Thumb, 234 bytes, Stack size 16 bytes, stm32f1xx_hal_can.o(.text.HAL_CAN_ConfigFilter))
@@ -544,8 +545,8 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_reset
-<LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_write
-<LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_free
+<LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_write
+<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_free
 <LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_GetRxFifoFillLevel
 <LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_GetRxMessage
 </UL>
@@ -731,13 +732,14 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
-<P><STRONG><a name="[5b]"></a>lwrb_get_free</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_get_free))
+<P><STRONG><a name="[5c]"></a>lwrb_get_free</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_get_free))
 <BR><BR>[Called By]<UL><LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_RxFifo1MsgPendingCallback
-<LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Send_CAN_STD_Message
+<LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Send_CAN_STD_Message
 </UL>
 
-<P><STRONG><a name="[63]"></a>lwrb_get_full</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_get_full))
-<BR><BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_TxOnceFromRB
+<P><STRONG><a name="[59]"></a>lwrb_get_full</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_get_full))
+<BR><BR>[Called By]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_TxOnceFromRB
+<LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Get_CANMsg_From_RB_To_TXMailBox
 </UL>
 
 <P><STRONG><a name="[52]"></a>lwrb_init</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_init))
@@ -747,9 +749,9 @@ Global Symbols
 <P><STRONG><a name="[64]"></a>lwrb_peek</STRONG> (Thumb, 134 bytes, Stack size 24 bytes, lwrb.o(.text.lwrb_peek))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = lwrb_peek
 </UL>
-<BR>[Calls]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy
+<BR>[Calls]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy
 </UL>
-<BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_TxOnceFromRB
+<BR>[Called By]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_TxOnceFromRB
 </UL>
 
 <P><STRONG><a name="[7c]"></a>lwrb_reset</STRONG> (Thumb, 42 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_reset))
@@ -759,16 +761,16 @@ Global Symbols
 <P><STRONG><a name="[65]"></a>lwrb_skip</STRONG> (Thumb, 76 bytes, Stack size 8 bytes, lwrb.o(.text.lwrb_skip))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = lwrb_skip
 </UL>
-<BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_TxOnceFromRB
+<BR>[Called By]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_TxOnceFromRB
 </UL>
 
-<P><STRONG><a name="[5d]"></a>lwrb_write</STRONG> (Thumb, 170 bytes, Stack size 32 bytes, lwrb.o(.text.lwrb_write))
+<P><STRONG><a name="[5e]"></a>lwrb_write</STRONG> (Thumb, 170 bytes, Stack size 32 bytes, lwrb.o(.text.lwrb_write))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = lwrb_write
 </UL>
-<BR>[Calls]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy
+<BR>[Calls]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy
 </UL>
 <BR>[Called By]<UL><LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_RxFifo1MsgPendingCallback
-<LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Send_CAN_STD_Message
+<LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Send_CAN_STD_Message
 </UL>
 
 <P><STRONG><a name="[46]"></a>main</STRONG> (Thumb, 140 bytes, Stack size 0 bytes, main.o(.text.main))
@@ -781,8 +783,8 @@ Global Symbols
 <LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 <LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Init
-<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Test_Send50Frames
-<LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Test_Send50Frames_Use_Ringbuffer
+<LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Test_Send50Frames
+<LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Test_Send50Frames_Use_Ringbuffer
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
 </UL>
@@ -795,16 +797,16 @@ Global Symbols
 <H3>
 Local Symbols
 </H3>
-<P><STRONG><a name="[59]"></a>CAN_TxOnceFromRB</STRONG> (Thumb, 162 bytes, Stack size 64 bytes, mycandrive.o(.text.CAN_TxOnceFromRB))
+<P><STRONG><a name="[5a]"></a>CAN_TxOnceFromRB</STRONG> (Thumb, 162 bytes, Stack size 64 bytes, mycandrive.o(.text.CAN_TxOnceFromRB))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = CAN_TxOnceFromRB &rArr; lwrb_peek
 </UL>
 <BR>[Calls]<UL><LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_skip
 <LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_peek
-<LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_full
-<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_AddTxMessage
+<LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_full
+<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_CAN_AddTxMessage
 <LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
 </UL>
-<BR>[Called By]<UL><LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_TxCompleteCommonCallback
+<BR>[Called By]<UL><LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_TxCompleteCommonCallback
 <LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Get_CANMsg_From_RB_To_TXMailBox
 </UL>
 <P>

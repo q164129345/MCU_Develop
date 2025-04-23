@@ -179,7 +179,7 @@ void CAN_Data_Process(void)
     }
 }
 /**
- * @brief      尝试发送一帧待发 CAN 报文（从 TX RingBuffer → CAN 邮箱）
+ * @brief 尝试发送一帧待发 CAN 报文（从 TX RingBuffer → CAN 邮箱）
  *
  * 按照「先 peek、成功后 skip」的 0 丢帧策略：  
  * 1. 若没有空闲邮箱或 RingBuffer 中无完整报文，则立即返回。  
@@ -241,6 +241,13 @@ void CAN_Get_CANMsg_From_RB_To_TXMailBox_IT(void)
  */
 void CAN_Get_CANMsg_From_RB_To_TXMailBox(void)
 {
+    /* ----------- 早退出：无数据 或 无空闲邮箱 ----------- */
+    if (txmail_free == 0) {
+        return; // 邮箱全满
+    }
+    if (lwrb_get_full((lwrb_t*)&g_CanTxRBHandler) < sizeof(CANTXMsg_t)) {
+        return; // 缓冲区没数据
+    }
     /* 关 TX-Mailbox-Empty 中断，防止并发 */
     __HAL_CAN_DISABLE_IT(&hcan, CAN_IT_TX_MAILBOX_EMPTY);
     /* 把仍然空着的邮箱一次发完 */
