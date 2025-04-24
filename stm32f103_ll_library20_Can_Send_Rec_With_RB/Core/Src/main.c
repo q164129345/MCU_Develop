@@ -27,8 +27,9 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
 volatile uint8_t g_BusOffCount = 0;
+uint8_t testRB = 0;
+uint8_t test = 0;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -37,7 +38,28 @@ volatile uint8_t g_BusOffCount = 0;
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
+// 一次性发送50条报文
+void CAN_Test_Send50Frames_Use_Ringbuffer(void)
+{
+    uint8_t payload[8] = { 0x01, 0x02, 0x03, 0x04,
+                           0x05, 0x06, 0x07, 0x08 };
+    uint8_t sent = 0;
 
+    for (uint32_t id = 0x200; id < 0x200 + 50; ++id) {
+        CAN_Send_CAN_STD_Message(id, payload, sizeof(payload)); // 往Tx ringbuffer一口气丢50个CAN报文
+    }
+}
+
+void CAN_Test_Send50Frames(void)
+{
+    uint8_t payload[8] = { 0x01, 0x02, 0x03, 0x04,
+                           0x05, 0x06, 0x07, 0x08 };
+    uint8_t sent = 0;
+
+    for (uint32_t id = 0x200; id < 0x200 + 50; ++id) {
+        CAN_SendMessage_NonBlocking(id, payload, sizeof(payload)); // 没有经过Tx ringbuffer，一口气往发送邮箱发送50个CAN报文
+    }
+}
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -64,7 +86,7 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+  uint32_t fre = 0;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -107,19 +129,32 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    LL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
+    if (fre % 100 == 0) {
+        LL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
 
-    /* 监控CAN错误 */
-    if (CAN_Check_Error() == 0x03) { // 因为错误太严重，进入离线状态
-        g_BusOffCount++;      // 每发生一次busoff严重错误，记录一次
-        CAN_BusOff_Recover(); // 离线状态恢复
-    } else {
-        // 其他错误与没有错误
+        /* 监控CAN错误 */
+        if (CAN_Check_Error() == 0x03) { // 因为错误太严重，进入离线状态
+            g_BusOffCount++;      // 每发生一次busoff严重错误，记录一次
+            CAN_BusOff_Recover(); // 离线状态恢复
+        } else {
+            // 其他错误与没有错误
+        }
     }
     
-    CAN_Send_CANMsg_FromRingBuffer(); // 将ringbuffer里的CAN报文发出去
+    /* 测试代码 */
+    if (testRB == 1) {
+        testRB = 0;
+        CAN_Test_Send50Frames_Use_Ringbuffer();
+    }
     
-    LL_mDelay(50);
+    if (test == 1) {
+        test = 0;
+        CAN_Test_Send50Frames();
+    }
+
+    CAN_Get_CANMsg_From_RB_To_TXMailBox(); // 主循环周期调用的批量补发函数
+    fre++;
+    LL_mDelay(1);
   }
   /* USER CODE END 3 */
 }

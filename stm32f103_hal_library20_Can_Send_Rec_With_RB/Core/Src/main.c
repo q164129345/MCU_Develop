@@ -133,10 +133,9 @@ int main(void)
         test = 0;
         CAN_Test_Send50Frames();
     }
-    
     CAN_Get_CANMsg_From_RB_To_TXMailBox(); // 主循环周期调用的批量补发函数
-    LL_mDelay(1);
     fre++;
+    LL_mDelay(1);
   }
   /* USER CODE END 3 */
 }

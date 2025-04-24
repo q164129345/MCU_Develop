@@ -88,12 +88,21 @@ typedef struct {
     uint8_t RxData[8];
 }CANMsg_t;
 
+typedef struct {
+    uint32_t CanId;
+    uint8_t  Len;
+    uint8_t  data[8];
+}CANTXMsg_t;
+
+
 void CAN_Config(void);
 uint8_t CAN_SendMessage_Blocking(uint32_t stdId, uint8_t *data, uint8_t DLC);
 uint8_t CAN_SendMessage_NonBlocking(uint32_t stdId, uint8_t *data, uint8_t DLC);
 uint8_t CAN_Check_Error(void);
 void CAN_BusOff_Recover(void);
-uint8_t CAN_Send_CANMsg_FromRingBuffer(void);
+bool CAN_Send_CAN_STD_Message(uint32_t canid, uint8_t* data, uint8_t len);
+void CAN_Get_CANMsg_From_RB_To_TXMailBox(void);
+void CAN_Get_CANMsg_From_RB_To_TXMailBox_IT(void);
 
 #ifdef __cplusplus
 }

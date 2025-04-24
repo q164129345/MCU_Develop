@@ -4,7 +4,7 @@ volatile uint8_t txmail_free = 0;             // 空闲邮箱的数量
 volatile uint32_t canSendError = 0;           // 统计发送失败次数
 volatile uint64_t g_RxCount = 0;              // 统计接收的CAN报文总数
 volatile uint64_t g_TxCount = 0;              // 统计发送的CAN报文总数
-volatile uint32_t g_HandleRxMsg = 0;          // 统计从ringbuffer拿出来处理的CAN报文的数量
+volatile uint64_t g_HandleRxMsg = 0;          // 统计从RX Ringbuffer拿出来处理的CAN报文的数量
 volatile uint32_t g_RxOverflowError = 0;      // 统计RX FIFO1溢出数量
 volatile uint32_t g_RXRingbufferOverflow = 0; // 统计ringbuffer溢出次数
 
