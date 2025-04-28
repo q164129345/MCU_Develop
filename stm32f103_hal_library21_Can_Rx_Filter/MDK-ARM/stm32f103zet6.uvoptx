@@ -187,7 +187,7 @@
         <Ww>
           <count>5</count>
           <WinNumber>1</WinNumber>
-          <ItemText>g_CanRxRBDataBuffer,0x0A</ItemText>
+          <ItemText>g_CanRxRBDataBuffer,0x10</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>
