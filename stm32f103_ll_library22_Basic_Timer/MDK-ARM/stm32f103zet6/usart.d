@@ -1,4 +1,4 @@
-stm32f103zet6/stm32f1xx_it.o: ..\Core\Src\stm32f1xx_it.c \
+stm32f103zet6/usart.o: ..\Core\Src\usart.c ..\Core\Inc\usart.h \
   ..\Core\Inc\main.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_ll_dma.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h \
@@ -24,5 +24,4 @@ stm32f103zet6/stm32f1xx_it.o: ..\Core\Src\stm32f1xx_it.c \
   C:\Keil_v5\ARM\ARMCLANG\include\string.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdbool.h ..\BSP\lwrb\lwrb.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stddef.h \
-  C:\Keil_v5\ARM\ARMCLANG\include\stdatomic.h ..\Core\Inc\stm32f1xx_it.h \
-  ..\BSP\myUsartDrive\myUsartDrive.h
+  C:\Keil_v5\ARM\ARMCLANG\include\stdatomic.h
