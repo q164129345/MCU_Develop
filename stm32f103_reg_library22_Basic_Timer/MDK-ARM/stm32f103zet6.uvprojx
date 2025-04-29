@@ -510,6 +510,11 @@
               <FileType>1</FileType>
               <FilePath>..\BSP\myCanDrive\myCanDrive_reg.c</FilePath>
             </File>
+            <File>
+              <FileName>myUsartDrive_reg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\myUsartDrive\myUsartDrive_reg.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

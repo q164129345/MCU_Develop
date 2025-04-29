@@ -4,9 +4,9 @@ stm32f103zet6/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xe.h \
   ..\Drivers\CMSIS\Include\core_cm3.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdint.h \
-  D:\Coding\MCU_Develop\stm32f103_ll_library21_Can_Rx_Filter\Drivers\CMSIS\Include\cmsis_version.h \
-  D:\Coding\MCU_Develop\stm32f103_ll_library21_Can_Rx_Filter\Drivers\CMSIS\Include\cmsis_compiler.h \
-  D:\Coding\MCU_Develop\stm32f103_ll_library21_Can_Rx_Filter\Drivers\CMSIS\Include\cmsis_armclang.h \
+  D:\Coding\MCU_Develop\stm32f103_reg_library22_Basic_Timer\Drivers\CMSIS\Include\cmsis_version.h \
+  D:\Coding\MCU_Develop\stm32f103_reg_library22_Basic_Timer\Drivers\CMSIS\Include\cmsis_compiler.h \
+  D:\Coding\MCU_Develop\stm32f103_reg_library22_Basic_Timer\Drivers\CMSIS\Include\cmsis_armclang.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h \
@@ -23,4 +23,5 @@ stm32f103zet6/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdbool.h ..\BSP\lwrb\lwrb.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stddef.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdatomic.h ..\Core\Inc\gpio.h \
-  ..\BSP\myCanDrive\myCanDrive_reg.h
+  ..\BSP\myCanDrive\myCanDrive_reg.h \
+  ..\BSP\myUsartDrive\myUsartDrive_reg.h

@@ -1,19 +1,19 @@
 /**
  * @file myUsartDrive.h
- * @brief Register definitions for USART driver module
+ * @brief Low-layer driver interface definitions for USART1 module
  * 
- * This header file contains register definitions and related structures
- * for the USART (Universal Synchronous/Asynchronous Receiver Transmitter) 
- * driver module. It provides the hardware abstraction layer for USART 
- * controller registers.
+ * This header file contains function declarations, buffer definitions, and 
+ * low-level control interfaces for USART1 using STM32 LL (Low-Layer) library.
  * 
- * @note This file is intended for low-level register access and control of USART peripherals.
+ * @note This file is intended for low-level register access and control of USART1 
+ *       peripherals, based on the STM32 LL library.
  * 
  * @version 1.0.0
- * @date 2025-03-31
+ * @date 2025-04-29
  * @author Wallace.zhang
  * 
  * @copyright
+ * (C) 2025 Wallace.zhang. All rights reserved.
  * 
  * @license SPDX-License-Identifier: MIT
  */
@@ -26,23 +26,52 @@ extern "C" {
 
 #include "main.h"
 
+/** 
+ * @brief USART RX buffer size definition (unit: bytes)
+ */
 #define RX_BUFFER_SIZE 1024U
+
+/** 
+ * @brief USART TX buffer size definition (unit: bytes)
+ */
 #define TX_BUFFER_SIZE 1024U
 
-
-
+/**
+ * @brief Send a string over USART1 using DMA
+ * @param data Pointer to the data to send
+ * @param len  Number of bytes to send
+ */
 void USART1_SendString_DMA(const char *data, uint16_t len);
+
+/**
+ * @brief Reinitialize USART1 receiving DMA
+ */
 void USART1_Reinit(void);
 
-void USART1_TX_DMA1_Channel4_Handler(void);
-void USART1_RX_DMA1_Channel5_Handler(void);
+/**
+ * @brief DMA1_Channel4 interrupt handler for USART1 TX
+ */
+void USART1_TX_DMA1_Channel4_Interrupt_Handler(void);
+
+/**
+ * @brief DMA1_Channel5 interrupt handler for USART1 RX
+ */
+void USART1_RX_DMA1_Channel5_Interrupt_Handler(void);
+
+/**
+ * @brief USART1 global interrupt handler (RX idle detection, error handling)
+ */
 void USART1_RX_Interrupt_Handler(void);
+
+/**
+ * @brief USART1 main module run function (should be called in main loop)
+ */
 void USART1_Module_Run(void);
+
+/**
+ * @brief Configure USART1 peripheral and DMA channels
+ */
 void USART1_Config(void);
-
-
-
-
 
 #ifdef __cplusplus
 }

@@ -22,14 +22,12 @@
 #include "stm32f1xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "myCanDrive/myCanDrive_reg.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
-extern volatile uint8_t txmail_free;
-extern volatile uint32_t g_RxCount;
-extern CANMsg_t g_CanMsg;
+
 /* USER CODE END TD */
 
 /* Private define ------------------------------------------------------------*/
@@ -202,6 +200,5 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /* USER CODE BEGIN 1 */
-
 
 /* USER CODE END 1 */

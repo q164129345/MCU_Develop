@@ -140,7 +140,7 @@ __STATIC_INLINE uint8_t DMA1_Channel4_Error_Handler(void) {
  * - 中断处理过程中，必须及时清除TC中断标志，否则中断会持续触发。
  * - 禁用DMA发送请求前，确保DMA传输已经完成。
  */
-void USART1_TX_DMA1_Channel4_Handler(void)
+void USART1_TX_DMA1_Channel4_Interrupt_Handler(void)
 {
     if (DMA1_Channel4_Error_Handler()) { // 监控传输错误
         dma1Channel4Error++;
@@ -209,7 +209,7 @@ __STATIC_INLINE uint8_t DMA1_Channel5_Error_Hanlder(void) {
  * - 中断服务函数中务必及时清除HT/TC中断标志，否则中断会持续触发。
  * - 注意同步DMA接收缓存(rx_buffer)与用户缓存(tx_buffer)的数据一致性。
  */
-void USART1_RX_DMA1_Channel5_Handler(void)
+void USART1_RX_DMA1_Channel5_Interrupt_Handler(void)
 {
     if (DMA1_Channel5_Error_Hanlder()) { // 监控传输失败
         dma1Channel5Error++;
