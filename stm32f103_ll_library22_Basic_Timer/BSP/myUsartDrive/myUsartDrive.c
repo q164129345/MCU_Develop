@@ -116,6 +116,30 @@ __STATIC_INLINE uint8_t DMA1_Channel4_Error_Handler(void) {
     }
 }
 
+/**
+ * @brief  USART1发送DMA1_Channel4中断处理函数
+ * 
+ * 处理USART1通过DMA1通道4发送过程中产生的中断，包括：
+ * - DMA传输错误
+ * - 传输完成（TC，Transfer Complete）
+ * 
+ * @note
+ * - 使用LL库操作DMA和USART寄存器位。
+ * - 发送完成后关闭DMA发送通道，并清除USART的DMAT请求位。
+ * - 通过标志变量tx_dma_busy指示发送完成，允许下一次发送。
+ * 
+ * @details
+ * 1. 检查DMA传输错误并统计错误次数。
+ * 2. 检查发送完成中断（TC）：
+ *    - 清除TC中断标志。
+ *    - 禁用DMA1_Channel4，防止误触发。
+ *    - 禁止USART1的DMA发送请求（DMAT位清零）。
+ *    - 清除发送忙标志(tx_dma_busy = 0)。
+ * 
+ * @warning
+ * - 中断处理过程中，必须及时清除TC中断标志，否则中断会持续触发。
+ * - 禁用DMA发送请求前，确保DMA传输已经完成。
+ */
 void USART1_TX_DMA1_Channel4_Handler(void)
 {
     if (DMA1_Channel4_Error_Handler()) { // 监控传输错误
@@ -156,6 +180,35 @@ __STATIC_INLINE uint8_t DMA1_Channel5_Error_Hanlder(void) {
     }
 }
 
+/**
+ * @brief  USART1接收DMA1_Channel5中断处理函数
+ * 
+ * 处理USART1通过DMA1通道5接收过程中产生的中断，包括：
+ * - DMA传输错误
+ * - 半传输完成（HT，Half Transfer）
+ * - 全传输完成（TC，Transfer Complete）
+ * 
+ * @note
+ * - 使用LL库操作DMA中断标志，确保高效处理中断源。
+ * - 半传输中断表示前半区(0~511字节)接收完成；
+ * - 完成中断表示后半区(512~1023字节)接收完成；
+ * - 接收数据通过memcpy拷贝到发送缓存tx_buffer，并置位rx_complete。
+ * 
+ * @details
+ * 1. 检查DMA传输错误并统计错误次数。
+ * 2. 半传输中断：
+ *    - 清除HT标志。
+ *    - 复制接收缓存前半部分数据。
+ *    - 设置接收数据长度与完成标志。
+ * 3. 完成中断：
+ *    - 清除TC标志。
+ *    - 复制接收缓存后半部分数据。
+ *    - 设置接收数据长度与完成标志。
+ * 
+ * @warning
+ * - 中断服务函数中务必及时清除HT/TC中断标志，否则中断会持续触发。
+ * - 注意同步DMA接收缓存(rx_buffer)与用户缓存(tx_buffer)的数据一致性。
+ */
 void USART1_RX_DMA1_Channel5_Handler(void)
 {
     if (DMA1_Channel5_Error_Hanlder()) { // 监控传输失败
