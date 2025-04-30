@@ -1,16 +1,19 @@
 #include "myUsartDrive/myUsartDrive.h"
 #include "usart.h"
 
-volatile uint8_t rx_buffer[RX_BUFFER_SIZE];
-volatile uint8_t rx_complete = 0;
-volatile uint16_t recvd_length = 0;
+volatile uint8_t rx_buffer[RX_BUFFER_SIZE]; // 接收DMA专用缓存区
+uint64_t g_Usart1_RXCount = 0;              // 统计接收的字节数
 
-volatile uint8_t tx_buffer[TX_BUFFER_SIZE];
-volatile uint8_t tx_dma_busy = 0;
+uint8_t tx_buffer[TX_BUFFER_SIZE];          // 发送DMA专用缓存区
+volatile uint8_t tx_dma_busy = 0;           // DMA发送标志位（1：正在发送，0：空闲）
 
 volatile uint16_t usart1Error = 0;
 volatile uint16_t dma1Channel4Error = 0;
 volatile uint16_t dma1Channel5Error = 0;
+
+/* usart1接收ringbuffer */
+volatile lwrb_t g_Usart1RxRBHandler; // 实例化ringbuffer
+volatile uint8_t g_Usart1RxRB[RX_BUFFER_SIZE] = {0,}; // usart1接收ringbuffer缓存区
 
 /**
   * @brief  配置DMA1通道5用于USART1_RX接收。
@@ -35,19 +38,20 @@ static void DMA1_Channel5_Configure(void) {
   */
 void USART1_SendString_DMA(const char *data, uint16_t len)
 {
-    if (len == 0) { // 不能让DMA发送0个字节，会导致没办法进入发送完成中断，然后卡死这个函数。
+    if (len == 0 || len > TX_BUFFER_SIZE) { // 不能让DMA发送0个字节，会导致没办法进入发送完成中断，然后卡死这个函数。
         return;
     }
     // 等待上一次DMA传输完成
     while(tx_dma_busy);
     tx_dma_busy = 1; // 标记DMA正在发送
+    memcpy(tx_buffer, data, len); // 将需要发送的数据放入DMA发送缓存区
     // 如果DMA通道4正在使能，则先禁用以便重新配置
     if (LL_DMA_IsEnabledChannel(DMA1, LL_DMA_CHANNEL_4)) {
         LL_DMA_DisableChannel(DMA1, LL_DMA_CHANNEL_4);
         while(LL_DMA_IsEnabledChannel(DMA1, LL_DMA_CHANNEL_4));
     }
     // 配置DMA通道4：内存地址、外设地址及数据传输长度
-    LL_DMA_SetMemoryAddress(DMA1, LL_DMA_CHANNEL_4, (uint32_t)data);
+    LL_DMA_SetMemoryAddress(DMA1, LL_DMA_CHANNEL_4, (uint32_t)tx_buffer);
     LL_DMA_SetPeriphAddress(DMA1, LL_DMA_CHANNEL_4, (uint32_t)&USART1->DR);
     LL_DMA_SetDataLength(DMA1, LL_DMA_CHANNEL_4, len);
     // 开启USART1的DMA发送请求（CR3中DMAT置1，通常为第7位）
@@ -217,16 +221,14 @@ void USART1_RX_DMA1_Channel5_Interrupt_Handler(void)
         // 清除半传输标志
         LL_DMA_ClearFlag_HT5(DMA1);
         // 处理前 512 字节数据（偏移 0~511）
-        memcpy((void*)tx_buffer, (const void*)rx_buffer, RX_BUFFER_SIZE/2);
-        recvd_length = RX_BUFFER_SIZE/2;
-        rx_complete = 1;
+        lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, (uint8_t*)rx_buffer, RX_BUFFER_SIZE/2); // 写入ringbuffer
+        g_Usart1_RXCount += RX_BUFFER_SIZE/2;
     } else if(LL_DMA_IsActiveFlag_TC5(DMA1)) { // 判断是否产生传输完成中断（后半区完成）
         // 清除传输完成标志
         LL_DMA_ClearFlag_TC5(DMA1);
         // 处理后 512 字节数据（偏移 512~1023）
-        memcpy((void*)tx_buffer, (const void*)(rx_buffer + RX_BUFFER_SIZE/2), RX_BUFFER_SIZE/2);
-        recvd_length = RX_BUFFER_SIZE/2;
-        rx_complete = 1;
+        lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, (uint8_t*)(rx_buffer + RX_BUFFER_SIZE/2), RX_BUFFER_SIZE/2); // 写入ringbuffer
+        g_Usart1_RXCount += RX_BUFFER_SIZE/2;
     }
 }
 
@@ -252,6 +254,32 @@ __STATIC_INLINE uint8_t USART1_Error_Handler(void) {
         return 0;
     }
 }
+
+uint8_t USART1_Put_Data_Into_Ringbuffer(const void* data, uint16_t len)
+{
+    uint8_t ret = 0;
+    if (len >= RX_BUFFER_SIZE) {
+        if (len > RX_BUFFER_SIZE) {
+            len = RX_BUFFER_SIZE;
+            ret = 1;  // 数据长度大于ringbuffer总空间，输入的数据被丢弃
+        }
+        lwrb_reset((lwrb_t*)&g_Usart1RxRBHandler); // 重置ringbuffer
+        lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, data, len); // 将数据放入ringbuffer
+    } else {
+        lwrb_sz_t freeSpace = lwrb_get_free((lwrb_t*)&g_Usart1RxRBHandler);
+        
+        if (freeSpace > len) { // ringbuffer有多余空闲放入数据
+            lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, data, len);
+        } else {
+            lwrb_skip((lwrb_t*)&g_Usart1RxRBHandler, len - freeSpace); // 只skip必要的空间
+            lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, data, len); // 将数据放入ringbuffer
+            ret = 2; // ringbuffer的旧数据被丢弃，放入新数据
+        }
+    }
+    return ret;
+}
+
+
 
 /**
  * @brief  USART1中断处理函数
@@ -298,19 +326,18 @@ void USART1_RX_Interrupt_Handler(void)
             // 还在接收前半区：接收数据量 = (1K - remaining)，但肯定不足 512 字节
             count = RX_BUFFER_SIZE - remaining;
             if (count != 0) { // 避免与传输完成中断冲突，多复制一次
-                memcpy((void*)tx_buffer, (const void*)rx_buffer, count);
+                g_Usart1_RXCount += count;
+                lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, (uint8_t*)rx_buffer, count); // 写入ringbuffer
             }
         } else {
             // 前半区已写满，当前在后半区：后半区接收数据量 = (RX_BUFFER_SIZE/2 - remaining)
             count = (RX_BUFFER_SIZE/2) - remaining;
             if (count != 0) { // 避免与传输过半中断冲突，多复制一次
-                memcpy((void*)tx_buffer, (const void*)(rx_buffer + RX_BUFFER_SIZE/2), count);
+                g_Usart1_RXCount += count;
+                lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, (uint8_t*)rx_buffer + RX_BUFFER_SIZE/2, count); // 写入ringbuffer
             }
         }
-        if (count != 0) {
-            recvd_length = count;
-            rx_complete = 1;
-        }
+
         // 重新设置 DMA 传输长度并使能 DMA
         LL_DMA_SetDataLength(DMA1, LL_DMA_CHANNEL_5, RX_BUFFER_SIZE);
         LL_DMA_EnableChannel(DMA1, LL_DMA_CHANNEL_5);
@@ -320,19 +347,14 @@ void USART1_RX_Interrupt_Handler(void)
 /**
  * @brief  USART1模块运行任务
  * 
- * 在主循环中调用本函数，当接收到一帧完整数据（rx_complete置位）后，
- * 通过DMA方式将接收到的数据（tx_buffer）发送出去。
- * 发送完成后清除rx_complete标志，准备接收下一帧数据。
+ * 在主循环中调用本函数，当ringbuffer有数据时，可以处理
  * 
  * @note
- * - 依赖rx_complete标志指示是否有完整接收数据。
- * - 使用USART1 + DMA发送，提高发送效率，避免CPU阻塞。
  */
 void USART1_Module_Run(void)
 {
-    if (rx_complete) {
-        USART1_SendString_DMA((const char*)tx_buffer, recvd_length);
-        rx_complete = 0; // 清除标志，等待下一次接收
+    if (lwrb_get_full((lwrb_t*)&g_Usart1RxRBHandler)) {
+        
     }
 }
 
@@ -352,6 +374,8 @@ void USART1_Module_Run(void)
  */
 void USART1_Config(void)
 {
+    lwrb_init((lwrb_t*)&g_Usart1RxRBHandler, (uint8_t*)g_Usart1RxRB, sizeof(g_Usart1RxRB) + 1); // RX ringbuffer初始化
+    
     LL_USART_EnableDMAReq_RX(USART1); // 使能USART1_RX的DMA请求
     LL_USART_EnableIT_IDLE(USART1);   // 开启USART1接收空闲中断
   
