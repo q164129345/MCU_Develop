@@ -1,16 +1,70 @@
 #include "myUsartDrive/myUsartDrive_reg.h"
 
-volatile uint8_t rx_buffer[RX_BUFFER_SIZE];
-volatile uint8_t rx_complete = 0;
-volatile uint16_t recvd_length = 0;
+volatile uint8_t rx_buffer[RX_BUFFER_SIZE]; // 接收DMA专用缓冲区
+uint64_t g_Usart1_RXCount = 0;              // 统计接收的字节数
 
-volatile uint8_t tx_buffer[TX_BUFFER_SIZE];
-volatile uint8_t tx_dma_busy = 0;
+volatile uint8_t tx_buffer[TX_BUFFER_SIZE]; // 发送DMA专用缓存区
+volatile uint8_t tx_dma_busy = 0;           // DMA发送标志位（1：正在发送，0：空闲）
 
 volatile uint16_t usart1Error = 0;
 volatile uint16_t dma1Channel4Error = 0;
 volatile uint16_t dma1Channel5Error = 0;
 
+/* usart1接收ringbuffer */
+volatile lwrb_t g_Usart1RxRBHandler; // 实例化ringbuffer
+volatile uint8_t g_Usart1RxRB[RX_BUFFER_SIZE] = {0,}; // usart1接收ringbuffer缓存区
+
+/**
+  * @brief  将数据写入USART1接收ringbuffer中。
+
+  * @param[in] data 指向要写入的数据缓冲区
+  * @param[in] len  要写入的数据长度（单位：字节）
+  * 
+  * @retval 0 数据成功写入，无数据丢弃
+  * @retval 1 ringbuffer剩余空间不足，旧数据被丢弃以容纳新数据
+  * @retval 2 数据长度超过ringbuffer总容量，全部旧数据被清空，且新数据也有丢失
+  * @retval 3 空数据指针
+  * @note 
+  * - 使用lwrb库操作ringbuffer。
+  * - 当len > RX_BUFFER_SIZE时，为防止写入越界，会强行截断为RX_BUFFER_SIZE大小。
+  * - 若ringbuffer空间不足，将调用 `lwrb_skip()` 跳过旧数据，优先保留最新数据。
+  */
+static uint8_t USART1_Put_Data_Into_Ringbuffer(const void* data, uint16_t len)
+{
+    uint8_t ret = 0;
+    if (data == NULL) return ret = 3;
+    
+    lwrb_sz_t freeSpace = lwrb_get_free((lwrb_t*)&g_Usart1RxRBHandler); // ringbuffer剩余空间
+    
+    if (len < RX_BUFFER_SIZE) { // 新数据长度小于ringbuffer的总容量
+        if (len <= freeSpace) { // 足够的剩余空间
+            lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, data, len); // 将数据放入ringbuffer
+        } else { // 没有足够的空间，所以要跳过部分旧数据
+            lwrb_sz_t used = lwrb_get_full((lwrb_t*)&g_Usart1RxRBHandler); // 使用了多少空间
+            lwrb_sz_t skip_len = len - freeSpace;
+            if (skip_len > used) { // 关键！跳过的数据长度不能超过已有数据总长，避免越界（比如，有58bytes，不能跳过59bytes，最多只能跳过58bytes)
+                skip_len = used;
+            }
+            lwrb_skip((lwrb_t*)&g_Usart1RxRBHandler, skip_len); // 为了接收新的数据，丢弃部分旧的数据
+            lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, data, len); // 将数据放入ringbuffer
+            ret = 1;
+        }
+    } else if (len == RX_BUFFER_SIZE) { // 新数据长度等于ringbuffer的总容量
+        if (freeSpace < RX_BUFFER_SIZE) {
+            lwrb_reset((lwrb_t*)&g_Usart1RxRBHandler); // 重置ringbuffer
+            ret = 1;
+        }
+        lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, data, len); // 将数据放入ringbuffer
+    } else { // 新数据长度大于ringbuffer的总容量。数据太大，仅保留最后RX_BUFFER_SIZE字节
+        const uint8_t* byte_ptr = (const uint8_t*)data;
+        data = (const void*)(byte_ptr + (len - RX_BUFFER_SIZE)); // 指针偏移
+        lwrb_reset((lwrb_t*)&g_Usart1RxRBHandler);
+        lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, data, RX_BUFFER_SIZE);
+        ret = 2;
+    }
+    
+    return ret;
+}
 
 __STATIC_INLINE void Enable_Peripherals_Clock(void)
 {
@@ -157,16 +211,14 @@ __STATIC_INLINE void USART1_RX_DMA1_Channel5_Interrupt_Handler(void)
         dma1Channel5Error++;
     } else if (DMA1->ISR & (1UL << 18)) { // 半传输中断
         DMA1->IFCR |= (1UL << 18);
+        g_Usart1_RXCount += RX_BUFFER_SIZE/2; // 统计接收字节数
         // 前半缓冲区处理
-        memcpy((void*)tx_buffer, (const void*)rx_buffer, RX_BUFFER_SIZE / 2);
-        recvd_length = RX_BUFFER_SIZE / 2;
-        rx_complete = 1;
+        USART1_Put_Data_Into_Ringbuffer((uint8_t*)rx_buffer, RX_BUFFER_SIZE/2); // 写入ringbuffer
     } else if (DMA1->ISR & (1UL << 17)) { // 传输完成中断
         DMA1->IFCR |= (1UL << 17);
+        g_Usart1_RXCount += RX_BUFFER_SIZE/2; // 统计接收字节数
         // 后半缓冲区处理
-        memcpy((void*)tx_buffer, (const void*)(rx_buffer + RX_BUFFER_SIZE / 2), RX_BUFFER_SIZE / 2);
-        recvd_length = RX_BUFFER_SIZE / 2;
-        rx_complete = 1;
+        USART1_Put_Data_Into_Ringbuffer((uint8_t*)rx_buffer, RX_BUFFER_SIZE/2); // 写入ringbuffer
     }
 }
 
@@ -193,19 +245,18 @@ __STATIC_INLINE void USART1_RX_Interrupt_Handler(void)
             // 还在接收前半区：接收数据量 = (总长度 - remaining)，不足512字节
             count = RX_BUFFER_SIZE - remaining;
             if (count != 0) {  // 避免与传输完成中断冲突，多复制一次
-                memcpy((void*)tx_buffer, (const void*)rx_buffer, count);
+                /* 在这里，将接收的数据进行处理，或者写入ringbuffer，在主循环再处理（强烈建议这个做法） */
+                //lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, (uint8_t*)rx_buffer, count); // 写入ringbuffer
+                USART1_Put_Data_Into_Ringbuffer((uint8_t*)rx_buffer, count);
             }
         } else {
             // 前半区已满，当前在后半区：后半区接收数据量 = (前半区长度 - remaining)
             count = (RX_BUFFER_SIZE / 2) - remaining;
             if (count != 0) {  // 避免与传输过半中断冲突，多复制一次
-                memcpy((void*)tx_buffer, (const void*)rx_buffer + (RX_BUFFER_SIZE / 2), count);
+                USART1_Put_Data_Into_Ringbuffer((uint8_t*)rx_buffer + RX_BUFFER_SIZE/2, count);
             }
         }
-        if (count != 0) {
-            recvd_length = count;
-            rx_complete = 1;
-        }
+
         // 重置DMA接收：设置CNDTR寄存器为RX_BUFFER_SIZE
         DMA1_Channel5->CNDTR = RX_BUFFER_SIZE;
         // 重新使能DMA1通道5：设置EN位（bit0）
@@ -244,13 +295,14 @@ void USART1_SendString_DMA(const char *data, uint16_t len)
 
 void USART1_Module_Run(void)
 {
-    if (rx_complete) {
-        USART1_SendString_DMA((const char*)tx_buffer, recvd_length);
-        rx_complete = 0; // 清除标志，等待下一次接收
-    }
+
 }
 
 void USART1_Configure(void) {
+    
+    /* ringbuffer */
+    lwrb_init((lwrb_t*)&g_Usart1RxRBHandler, (uint8_t*)g_Usart1RxRB, sizeof(g_Usart1RxRB) + 1); // RX ringbuffer初始化
+    
     /* 1. 使能外设时钟 */
     // RCC->APB2ENR 寄存器控制 APB2 外设时钟
     RCC->APB2ENR |= (1UL << 14UL); // 使能 USART1 时钟 (位 14)
@@ -357,34 +409,6 @@ void USART1_IRQHandler(void)
 {
     USART1_RX_Interrupt_Handler();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

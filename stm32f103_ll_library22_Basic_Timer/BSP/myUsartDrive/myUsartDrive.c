@@ -185,77 +185,6 @@ __STATIC_INLINE uint8_t DMA1_Channel5_Error_Hanlder(void) {
 }
 
 /**
- * @brief  USART1接收DMA1_Channel5中断处理函数
- * 
- * 处理USART1通过DMA1通道5接收过程中产生的中断，包括：
- * - DMA传输错误
- * - 半传输完成（HT，Half Transfer）
- * - 全传输完成（TC，Transfer Complete）
- * 
- * @note
- * - 使用LL库操作DMA中断标志，确保高效处理中断源。
- * - 半传输中断表示前半区(0~511字节)接收完成；
- * - 完成中断表示后半区(512~1023字节)接收完成；
- * - 接收数据通过memcpy拷贝到发送缓存tx_buffer，并置位rx_complete。
- * 
- * @details
- * 1. 检查DMA传输错误并统计错误次数。
- * 2. 半传输中断：
- *    - 清除HT标志。
- *    - 复制接收缓存前半部分数据。
- *    - 设置接收数据长度与完成标志。
- * 3. 完成中断：
- *    - 清除TC标志。
- *    - 复制接收缓存后半部分数据。
- *    - 设置接收数据长度与完成标志。
- * 
- * @warning
- * - 中断服务函数中务必及时清除HT/TC中断标志，否则中断会持续触发。
- * - 注意同步DMA接收缓存(rx_buffer)与用户缓存(tx_buffer)的数据一致性。
- */
-void USART1_RX_DMA1_Channel5_Interrupt_Handler(void)
-{
-    if (DMA1_Channel5_Error_Hanlder()) { // 监控传输失败
-        dma1Channel5Error++;
-    } else if(LL_DMA_IsActiveFlag_HT5(DMA1)) { // 判断是否产生半传输中断（前半区完成）
-        // 清除半传输标志
-        LL_DMA_ClearFlag_HT5(DMA1);
-        // 处理前 512 字节数据（偏移 0~511）
-        lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, (uint8_t*)rx_buffer, RX_BUFFER_SIZE/2); // 写入ringbuffer
-        g_Usart1_RXCount += RX_BUFFER_SIZE/2;
-    } else if(LL_DMA_IsActiveFlag_TC5(DMA1)) { // 判断是否产生传输完成中断（后半区完成）
-        // 清除传输完成标志
-        LL_DMA_ClearFlag_TC5(DMA1);
-        // 处理后 512 字节数据（偏移 512~1023）
-        lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, (uint8_t*)(rx_buffer + RX_BUFFER_SIZE/2), RX_BUFFER_SIZE/2); // 写入ringbuffer
-        g_Usart1_RXCount += RX_BUFFER_SIZE/2;
-    }
-}
-
-/**
-  * @brief  检查USART1错误标志，并清除相关错误标志（ORE、NE、FE、PE）。
-  * @note   此函数基于LL库实现。当检测到USART1错误标志时，通过读取SR和DR清除错误，
-  *         并返回1表示存在错误；否则返回0。
-  * @retval uint8_t 错误状态：1表示检测到错误并已清除，0表示无错误。
-  */
-__STATIC_INLINE uint8_t USART1_Error_Handler(void) {
-    // 错误处理：检查USART错误标志（ORE、NE、FE、PE）
-    if (LL_USART_IsActiveFlag_ORE(USART1) ||
-        LL_USART_IsActiveFlag_NE(USART1)  ||
-        LL_USART_IsActiveFlag_FE(USART1)  ||
-        LL_USART_IsActiveFlag_PE(USART1))
-    {
-        // 通过读SR和DR来清除错误标志
-        volatile uint32_t tmp = USART1->SR;
-        tmp = USART1->DR;
-        (void)tmp;
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
-/**
   * @brief  将数据写入USART1接收ringbuffer中。
 
   * @param[in] data 指向要写入的数据缓冲区
@@ -306,6 +235,81 @@ static uint8_t USART1_Put_Data_Into_Ringbuffer(const void* data, uint16_t len)
     
     return ret;
 }
+
+/**
+ * @brief  USART1接收DMA1_Channel5中断处理函数
+ * 
+ * 处理USART1通过DMA1通道5接收过程中产生的中断，包括：
+ * - DMA传输错误
+ * - 半传输完成（HT，Half Transfer）
+ * - 全传输完成（TC，Transfer Complete）
+ * 
+ * @note
+ * - 使用LL库操作DMA中断标志，确保高效处理中断源。
+ * - 半传输中断表示前半区(0~511字节)接收完成；
+ * - 完成中断表示后半区(512~1023字节)接收完成；
+ * - 接收数据通过memcpy拷贝到发送缓存tx_buffer，并置位rx_complete。
+ * 
+ * @details
+ * 1. 检查DMA传输错误并统计错误次数。
+ * 2. 半传输中断：
+ *    - 清除HT标志。
+ *    - 复制接收缓存前半部分数据。
+ *    - 设置接收数据长度与完成标志。
+ * 3. 完成中断：
+ *    - 清除TC标志。
+ *    - 复制接收缓存后半部分数据。
+ *    - 设置接收数据长度与完成标志。
+ * 
+ * @warning
+ * - 中断服务函数中务必及时清除HT/TC中断标志，否则中断会持续触发。
+ * - 注意同步DMA接收缓存(rx_buffer)与用户缓存(tx_buffer)的数据一致性。
+ */
+void USART1_RX_DMA1_Channel5_Interrupt_Handler(void)
+{
+    if (DMA1_Channel5_Error_Hanlder()) { // 监控传输失败
+        dma1Channel5Error++;
+    } else if(LL_DMA_IsActiveFlag_HT5(DMA1)) { // 判断是否产生半传输中断（前半区完成）
+        // 清除半传输标志
+        LL_DMA_ClearFlag_HT5(DMA1);
+        g_Usart1_RXCount += RX_BUFFER_SIZE/2; // 统计接收字节数
+        // 处理前 512 字节数据（偏移 0~511）
+        // 在这里，将接收的数据进行处理，或者写入ringbuffer，在主循环再处理（强烈建议这个做法）
+        USART1_Put_Data_Into_Ringbuffer((uint8_t*)rx_buffer, RX_BUFFER_SIZE/2); // 写入ringbuffer
+    } else if(LL_DMA_IsActiveFlag_TC5(DMA1)) { // 判断是否产生传输完成中断（后半区完成）
+        // 清除传输完成标志
+        LL_DMA_ClearFlag_TC5(DMA1);
+        g_Usart1_RXCount += RX_BUFFER_SIZE/2; // 统计接收字节数
+        // 处理后 512 字节数据（偏移 512~1023）
+        // 在这里，将接收的数据进行处理，或者写入ringbuffer，在主循环再处理（强烈建议这个做法）
+        USART1_Put_Data_Into_Ringbuffer((uint8_t*)rx_buffer + RX_BUFFER_SIZE/2, RX_BUFFER_SIZE/2); // 写入ringbuffer
+    }
+}
+
+/**
+  * @brief  检查USART1错误标志，并清除相关错误标志（ORE、NE、FE、PE）。
+  * @note   此函数基于LL库实现。当检测到USART1错误标志时，通过读取SR和DR清除错误，
+  *         并返回1表示存在错误；否则返回0。
+  * @retval uint8_t 错误状态：1表示检测到错误并已清除，0表示无错误。
+  */
+__STATIC_INLINE uint8_t USART1_Error_Handler(void) {
+    // 错误处理：检查USART错误标志（ORE、NE、FE、PE）
+    if (LL_USART_IsActiveFlag_ORE(USART1) ||
+        LL_USART_IsActiveFlag_NE(USART1)  ||
+        LL_USART_IsActiveFlag_FE(USART1)  ||
+        LL_USART_IsActiveFlag_PE(USART1))
+    {
+        // 通过读SR和DR来清除错误标志
+        volatile uint32_t tmp = USART1->SR;
+        tmp = USART1->DR;
+        (void)tmp;
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+
 
 /**
  * @brief  USART1中断处理函数

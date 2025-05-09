@@ -3,7 +3,7 @@
 <title>Static Call Graph - [stm32f103zet6\stm32f103zet6.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image stm32f103zet6\stm32f103zet6.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Fri May  9 14:06:36 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Fri May  9 18:03:10 2025
 <BR><P>
 <H3>Maximum Stack Usage =        116 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -342,7 +342,7 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
 <P><STRONG><a name="[19]"></a>DMA1_Channel5_IRQHandler</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f1xx_it.o(.text.DMA1_Channel5_IRQHandler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = DMA1_Channel5_IRQHandler &rArr; USART1_RX_DMA1_Channel5_Interrupt_Handler &rArr; lwrb_write
+<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = DMA1_Channel5_IRQHandler &rArr; USART1_RX_DMA1_Channel5_Interrupt_Handler &rArr; lwrb_write
 </UL>
 <BR>[Calls]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_RX_DMA1_Channel5_Interrupt_Handler
 </UL>
@@ -474,10 +474,13 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[52]"></a>USART1_RX_DMA1_Channel5_Interrupt_Handler</STRONG> (Thumb, 174 bytes, Stack size 8 bytes, myusartdrive.o(.text.USART1_RX_DMA1_Channel5_Interrupt_Handler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = USART1_RX_DMA1_Channel5_Interrupt_Handler &rArr; lwrb_write
+<P><STRONG><a name="[52]"></a>USART1_RX_DMA1_Channel5_Interrupt_Handler</STRONG> (Thumb, 278 bytes, Stack size 16 bytes, myusartdrive.o(.text.USART1_RX_DMA1_Channel5_Interrupt_Handler))
+<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = USART1_RX_DMA1_Channel5_Interrupt_Handler &rArr; lwrb_write
 </UL>
 <BR>[Calls]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_write
+<LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_free
+<LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_skip
+<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_full
 </UL>
 <BR>[Called By]<UL><LI><a href="#[19]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DMA1_Channel5_IRQHandler
 </UL>
@@ -514,11 +517,13 @@ Global Symbols
 <P><STRONG><a name="[4d]"></a>lwrb_get_free</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_get_free))
 <BR><BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Put_Data_Into_Ringbuffer
 <LI><a href="#[1f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN1_RX1_IRQHandler
+<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_RX_DMA1_Channel5_Interrupt_Handler
 </UL>
 
 <P><STRONG><a name="[5f]"></a>lwrb_get_full</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_get_full))
 <BR><BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Put_Data_Into_Ringbuffer
 <LI><a href="#[1d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USB_HP_CAN1_TX_IRQHandler
+<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_RX_DMA1_Channel5_Interrupt_Handler
 <LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Module_Run
 </UL>
 
@@ -544,6 +549,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Put_Data_Into_Ringbuffer
 <LI><a href="#[1d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USB_HP_CAN1_TX_IRQHandler
+<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_RX_DMA1_Channel5_Interrupt_Handler
 </UL>
 
 <P><STRONG><a name="[4c]"></a>lwrb_write</STRONG> (Thumb, 170 bytes, Stack size 32 bytes, lwrb.o(.text.lwrb_write))
