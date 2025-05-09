@@ -255,31 +255,57 @@ __STATIC_INLINE uint8_t USART1_Error_Handler(void) {
     }
 }
 
-uint8_t USART1_Put_Data_Into_Ringbuffer(const void* data, uint16_t len)
+/**
+  * @brief  将数据写入USART1接收ringbuffer中。
+
+  * @param[in] data 指向要写入的数据缓冲区
+  * @param[in] len  要写入的数据长度（单位：字节）
+  * 
+  * @retval 0 数据成功写入，无数据丢弃
+  * @retval 1 ringbuffer剩余空间不足，旧数据被丢弃以容纳新数据
+  * @retval 2 数据长度超过ringbuffer总容量，全部旧数据被清空，且新数据也有丢失
+  * @retval 3 空数据指针
+  * @note 
+  * - 使用lwrb库操作ringbuffer。
+  * - 当len > RX_BUFFER_SIZE时，为防止写入越界，会强行截断为RX_BUFFER_SIZE大小。
+  * - 若ringbuffer空间不足，将调用 `lwrb_skip()` 跳过旧数据，优先保留最新数据。
+  */
+static uint8_t USART1_Put_Data_Into_Ringbuffer(const void* data, uint16_t len)
 {
     uint8_t ret = 0;
-    if (len >= RX_BUFFER_SIZE) {
-        if (len > RX_BUFFER_SIZE) {
-            len = RX_BUFFER_SIZE;
-            ret = 1;  // 数据长度大于ringbuffer总空间，输入的数据被丢弃
-        }
-        lwrb_reset((lwrb_t*)&g_Usart1RxRBHandler); // 重置ringbuffer
-        lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, data, len); // 将数据放入ringbuffer
-    } else {
-        lwrb_sz_t freeSpace = lwrb_get_free((lwrb_t*)&g_Usart1RxRBHandler);
-        
-        if (freeSpace > len) { // ringbuffer有多余空闲放入数据
-            lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, data, len);
-        } else {
-            lwrb_skip((lwrb_t*)&g_Usart1RxRBHandler, len - freeSpace); // 只skip必要的空间
+    if (data == NULL) return ret = 3;
+    
+    lwrb_sz_t freeSpace = lwrb_get_free((lwrb_t*)&g_Usart1RxRBHandler); // ringbuffer剩余空间
+    
+    if (len < RX_BUFFER_SIZE) { // 新数据长度小于ringbuffer的总容量
+        if (len <= freeSpace) { // 足够的剩余空间
             lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, data, len); // 将数据放入ringbuffer
-            ret = 2; // ringbuffer的旧数据被丢弃，放入新数据
+        } else { // 没有足够的空间，所以要跳过部分旧数据
+            lwrb_sz_t used = lwrb_get_full((lwrb_t*)&g_Usart1RxRBHandler); // 使用了多少空间
+            lwrb_sz_t skip_len = len - freeSpace;
+            if (skip_len > used) { // 关键！跳过的数据长度不能超过已有数据总长，避免越界（比如，有58bytes，不能跳过59bytes，最多只能跳过58bytes)
+                skip_len = used;
+            }
+            lwrb_skip((lwrb_t*)&g_Usart1RxRBHandler, skip_len); // 为了接收新的数据，丢弃部分旧的数据
+            lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, data, len); // 将数据放入ringbuffer
+            ret = 1;
         }
+    } else if (len == RX_BUFFER_SIZE) { // 新数据长度等于ringbuffer的总容量
+        if (freeSpace < RX_BUFFER_SIZE) {
+            lwrb_reset((lwrb_t*)&g_Usart1RxRBHandler); // 重置ringbuffer
+            ret = 1;
+        }
+        lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, data, len); // 将数据放入ringbuffer
+    } else { // 新数据长度大于ringbuffer的总容量。数据太大，仅保留最后RX_BUFFER_SIZE字节
+        const uint8_t* byte_ptr = (const uint8_t*)data;
+        data = (const void*)(byte_ptr + (len - RX_BUFFER_SIZE)); // 指针偏移
+        lwrb_reset((lwrb_t*)&g_Usart1RxRBHandler);
+        lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, data, RX_BUFFER_SIZE);
+        ret = 2;
     }
+    
     return ret;
 }
-
-
 
 /**
  * @brief  USART1中断处理函数
@@ -327,14 +353,18 @@ void USART1_RX_Interrupt_Handler(void)
             count = RX_BUFFER_SIZE - remaining;
             if (count != 0) { // 避免与传输完成中断冲突，多复制一次
                 g_Usart1_RXCount += count;
-                lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, (uint8_t*)rx_buffer, count); // 写入ringbuffer
+                /* 在这里，将接收的数据进行处理，或者写入ringbuffer，在主循环再处理（强烈建议这个做法） */
+                //lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, (uint8_t*)rx_buffer, count); // 写入ringbuffer
+                USART1_Put_Data_Into_Ringbuffer((uint8_t*)rx_buffer, count);
             }
         } else {
             // 前半区已写满，当前在后半区：后半区接收数据量 = (RX_BUFFER_SIZE/2 - remaining)
             count = (RX_BUFFER_SIZE/2) - remaining;
             if (count != 0) { // 避免与传输过半中断冲突，多复制一次
                 g_Usart1_RXCount += count;
-                lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, (uint8_t*)rx_buffer + RX_BUFFER_SIZE/2, count); // 写入ringbuffer
+                /* 在这里，将接收的数据进行处理，或者写入ringbuffer，在主循环再处理（强烈建议这个做法） */
+                //lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, (uint8_t*)rx_buffer + RX_BUFFER_SIZE/2, count); // 写入ringbuffer
+                USART1_Put_Data_Into_Ringbuffer((uint8_t*)rx_buffer + RX_BUFFER_SIZE/2, count);
             }
         }
 
@@ -353,8 +383,9 @@ void USART1_RX_Interrupt_Handler(void)
  */
 void USART1_Module_Run(void)
 {
+    /* 在主循环里，读取ringbuffer数据，处理 */
     if (lwrb_get_full((lwrb_t*)&g_Usart1RxRBHandler)) {
-        
+        // 处理数据
     }
 }
 

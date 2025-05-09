@@ -3,7 +3,7 @@
  * @brief Register-level access and basic driver interfaces for USART1 module
  * 
  * This header file contains low-level register access definitions, basic configuration 
- * parameters, and function prototypes for USART1 driver, based on STM32 LL (Low-Layer) library.
+ * parameters, and function prototypes for USART1 driver, hardware abstraction layer for USART1 controller registers.
  * 
  * @note This file provides register-level access and minimal driver functions 
  *       for USART1 peripheral control.

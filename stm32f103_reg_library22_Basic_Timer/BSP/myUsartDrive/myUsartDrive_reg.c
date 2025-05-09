@@ -334,16 +334,25 @@ void USART1_Reinit(void)
     USART1_Configure();
 }
 
+/**
+  * @brief This function handles DMA1 channel4 global interrupt.
+  */
 void DMA1_Channel4_IRQHandler(void)
 {
     USART1_TX_DMA1_Channel4_Interrupt_Handler();
 }
 
+/**
+  * @brief This function handles DMA1 channel5 global interrupt.
+  */
 void DMA1_Channel5_IRQHandler(void)
 {
     USART1_RX_DMA1_Channel5_Interrupt_Handler();
 }
 
+/**
+  * @brief This function handles USART1 global interrupt.
+  */
 void USART1_IRQHandler(void)
 {
     USART1_RX_Interrupt_Handler();
