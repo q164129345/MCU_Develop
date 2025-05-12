@@ -447,7 +447,7 @@ uint8_t USART1_Put_TxData_To_Ringbuffer(const void* data, uint16_t len)
 }
 
 /**
- * @brief  USART1模块运行任务
+ * @brief  USART1模块运行任务，回调周期建议1ms
  * 
  * 在主循环中调用本函数，当ringbuffer有数据时，可以处理
  * 
