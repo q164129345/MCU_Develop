@@ -23,6 +23,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "myUsartDrive/myUsartDrive_reg.h"
+#include "myTIM6Drive/myTIM6Drive_reg.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -98,7 +100,8 @@ int main(void)
   /* USER CODE BEGIN 2 */
   USART1_Configure();
   /* USER CODE END 2 */
-
+  TIM6_RegInit();
+  TIM6_RegStartWithIRQ();
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)

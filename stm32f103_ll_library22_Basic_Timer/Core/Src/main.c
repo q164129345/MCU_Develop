@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "dma.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -99,8 +100,11 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_USART1_UART_Init();
+  MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
   USART1_Config();
+  LL_TIM_EnableIT_UPDATE(TIM6); // 启动TIM6溢出中断
+  LL_TIM_EnableCounter(TIM6);   // 启动TIM6
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -108,13 +112,10 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    // 测试串口发送、接收代码
-//    const char *msg = "012345678";
-//    uint16_t status = USART1_Put_TxData_To_Ringbuffer(msg, strlen(msg));
+
     /* USER CODE BEGIN 3 */
     if (fre % 100 == 0) {
         LL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
-
     }
 
     USART1_Module_Run(); // 1.处理接收ringbuffer的消息。2.将发送ringbuffer的消息，使用DMA一次性发送出去。

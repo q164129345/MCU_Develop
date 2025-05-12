@@ -241,6 +241,24 @@ void USART1_IRQHandler(void)
   /* USER CODE END USART1_IRQn 1 */
 }
 
+/**
+  * @brief This function handles TIM6 global interrupt.
+  */
+void TIM6_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM6_IRQn 0 */
+  if (LL_TIM_IsActiveFlag_UPDATE(TIM6)) {
+      LL_TIM_ClearFlag_UPDATE(TIM6); // 清除中断标志，不清除它会持续进入该中断
+      // 发送字符串"Hello,World\n"
+      const char *msg = "Hello,World\n";
+      uint16_t status = USART1_Put_TxData_To_Ringbuffer(msg, strlen(msg));
+  }
+  /* USER CODE END TIM6_IRQn 0 */
+  /* USER CODE BEGIN TIM6_IRQn 1 */
+
+  /* USER CODE END TIM6_IRQn 1 */
+}
+
 /* USER CODE BEGIN 1 */
 
 

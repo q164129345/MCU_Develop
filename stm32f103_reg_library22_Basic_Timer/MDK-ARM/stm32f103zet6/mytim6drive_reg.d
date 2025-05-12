@@ -1,5 +1,5 @@
-stm32f103zet6/gpio.o: ..\Core\Src\gpio.c ..\Core\Inc\gpio.h \
-  ..\Core\Inc\main.h \
+stm32f103zet6/mytim6drive_reg.o: ..\BSP\myTIM6Drive\myTIM6Drive_reg.c \
+  ..\BSP\myTIM6Drive\myTIM6Drive_reg.h ..\Core\Inc\main.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_ll_rcc.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xe.h \
@@ -24,4 +24,4 @@ stm32f103zet6/gpio.o: ..\Core\Src\gpio.c ..\Core\Inc\gpio.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdbool.h ..\BSP\lwrb\lwrb.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stddef.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdatomic.h \
-  ..\BSP\myCanDrive\myCanDrive_reg.h
+  ..\BSP\myUsartDrive\myUsartDrive_reg.h

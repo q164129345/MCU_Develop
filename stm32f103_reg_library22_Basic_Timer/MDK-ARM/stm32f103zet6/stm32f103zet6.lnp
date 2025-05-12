@@ -11,6 +11,7 @@
 "stm32f103zet6\system_stm32f1xx.o"
 "stm32f103zet6\mycandrive_reg.o"
 "stm32f103zet6\myusartdrive_reg.o"
+"stm32f103zet6\mytim6drive_reg.o"
 "stm32f103zet6\lwrb.o"
 "stm32f103zet6\lwrb_ex.o"
 --library_type=microlib --strict --scatter "stm32f103zet6\stm32f103zet6.sct"

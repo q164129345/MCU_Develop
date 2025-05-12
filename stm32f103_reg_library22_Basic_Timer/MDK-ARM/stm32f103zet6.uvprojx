@@ -515,6 +515,11 @@
               <FileType>1</FileType>
               <FilePath>..\BSP\myUsartDrive\myUsartDrive_reg.c</FilePath>
             </File>
+            <File>
+              <FileName>myTIM6Drive_reg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\myTIM6Drive\myTIM6Drive_reg.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

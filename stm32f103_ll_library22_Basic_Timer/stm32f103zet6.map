@@ -20,12 +20,14 @@ Section Cross References
     startup_stm32f103xe.o(RESET) refers to mycandrive_reg.o(.text.USB_HP_CAN1_TX_IRQHandler) for USB_HP_CAN1_TX_IRQHandler
     startup_stm32f103xe.o(RESET) refers to mycandrive_reg.o(.text.CAN1_RX1_IRQHandler) for CAN1_RX1_IRQHandler
     startup_stm32f103xe.o(RESET) refers to stm32f1xx_it.o(.text.USART1_IRQHandler) for USART1_IRQHandler
+    startup_stm32f103xe.o(RESET) refers to stm32f1xx_it.o(.text.TIM6_IRQHandler) for TIM6_IRQHandler
     startup_stm32f103xe.o(.text) refers to system_stm32f1xx.o(.text.SystemInit) for SystemInit
     startup_stm32f103xe.o(.text) refers to entry.o(.ARM.Collect$$$$00000000) for __main
     main.o(.text.main) refers to main.o(.text.SystemClock_Config) for SystemClock_Config
     main.o(.text.main) refers to gpio.o(.text.MX_GPIO_Init) for MX_GPIO_Init
     main.o(.text.main) refers to dma.o(.text.MX_DMA_Init) for MX_DMA_Init
     main.o(.text.main) refers to usart.o(.text.MX_USART1_UART_Init) for MX_USART1_UART_Init
+    main.o(.text.main) refers to tim.o(.text.MX_TIM6_Init) for MX_TIM6_Init
     main.o(.text.main) refers to myusartdrive.o(.text.USART1_Config) for USART1_Config
     main.o(.text.main) refers to myusartdrive.o(.text.USART1_Module_Run) for USART1_Module_Run
     main.o(.text.main) refers to stm32f1xx_ll_utils.o(.text.LL_mDelay) for LL_mDelay
@@ -37,6 +39,8 @@ Section Cross References
     gpio.o(.text.MX_GPIO_Init) refers to stm32f1xx_ll_gpio.o(.text.LL_GPIO_Init) for LL_GPIO_Init
     gpio.o(.ARM.exidx.text.MX_GPIO_Init) refers to gpio.o(.text.MX_GPIO_Init) for [Anonymous Symbol]
     dma.o(.ARM.exidx.text.MX_DMA_Init) refers to dma.o(.text.MX_DMA_Init) for [Anonymous Symbol]
+    tim.o(.text.MX_TIM6_Init) refers to stm32f1xx_ll_tim.o(.text.LL_TIM_Init) for LL_TIM_Init
+    tim.o(.ARM.exidx.text.MX_TIM6_Init) refers to tim.o(.text.MX_TIM6_Init) for [Anonymous Symbol]
     usart.o(.text.MX_USART1_UART_Init) refers to stm32f1xx_ll_gpio.o(.text.LL_GPIO_Init) for LL_GPIO_Init
     usart.o(.text.MX_USART1_UART_Init) refers to stm32f1xx_ll_usart.o(.text.LL_USART_Init) for LL_USART_Init
     usart.o(.ARM.exidx.text.MX_USART1_UART_Init) refers to usart.o(.text.MX_USART1_UART_Init) for [Anonymous Symbol]
@@ -55,6 +59,8 @@ Section Cross References
     stm32f1xx_it.o(.ARM.exidx.text.DMA1_Channel5_IRQHandler) refers to stm32f1xx_it.o(.text.DMA1_Channel5_IRQHandler) for [Anonymous Symbol]
     stm32f1xx_it.o(.text.USART1_IRQHandler) refers to myusartdrive.o(.text.USART1_RX_Interrupt_Handler) for USART1_RX_Interrupt_Handler
     stm32f1xx_it.o(.ARM.exidx.text.USART1_IRQHandler) refers to stm32f1xx_it.o(.text.USART1_IRQHandler) for [Anonymous Symbol]
+    stm32f1xx_it.o(.text.TIM6_IRQHandler) refers to myusartdrive.o(.text.USART1_Put_TxData_To_Ringbuffer) for USART1_Put_TxData_To_Ringbuffer
+    stm32f1xx_it.o(.ARM.exidx.text.TIM6_IRQHandler) refers to stm32f1xx_it.o(.text.TIM6_IRQHandler) for [Anonymous Symbol]
     stm32f1xx_ll_gpio.o(.ARM.exidx.text.LL_GPIO_DeInit) refers to stm32f1xx_ll_gpio.o(.text.LL_GPIO_DeInit) for [Anonymous Symbol]
     stm32f1xx_ll_gpio.o(.ARM.exidx.text.LL_GPIO_Init) refers to stm32f1xx_ll_gpio.o(.text.LL_GPIO_Init) for [Anonymous Symbol]
     stm32f1xx_ll_gpio.o(.ARM.exidx.text.LL_GPIO_StructInit) refers to stm32f1xx_ll_gpio.o(.text.LL_GPIO_StructInit) for [Anonymous Symbol]
@@ -66,12 +72,19 @@ Section Cross References
     stm32f1xx_ll_exti.o(.ARM.exidx.text.LL_EXTI_DeInit) refers to stm32f1xx_ll_exti.o(.text.LL_EXTI_DeInit) for [Anonymous Symbol]
     stm32f1xx_ll_exti.o(.ARM.exidx.text.LL_EXTI_Init) refers to stm32f1xx_ll_exti.o(.text.LL_EXTI_Init) for [Anonymous Symbol]
     stm32f1xx_ll_exti.o(.ARM.exidx.text.LL_EXTI_StructInit) refers to stm32f1xx_ll_exti.o(.text.LL_EXTI_StructInit) for [Anonymous Symbol]
-    stm32f1xx_ll_usart.o(.ARM.exidx.text.LL_USART_DeInit) refers to stm32f1xx_ll_usart.o(.text.LL_USART_DeInit) for [Anonymous Symbol]
-    stm32f1xx_ll_usart.o(.text.LL_USART_Init) refers to stm32f1xx_ll_rcc.o(.text.LL_RCC_GetSystemClocksFreq) for LL_RCC_GetSystemClocksFreq
-    stm32f1xx_ll_usart.o(.ARM.exidx.text.LL_USART_Init) refers to stm32f1xx_ll_usart.o(.text.LL_USART_Init) for [Anonymous Symbol]
-    stm32f1xx_ll_usart.o(.ARM.exidx.text.LL_USART_StructInit) refers to stm32f1xx_ll_usart.o(.text.LL_USART_StructInit) for [Anonymous Symbol]
-    stm32f1xx_ll_usart.o(.ARM.exidx.text.LL_USART_ClockInit) refers to stm32f1xx_ll_usart.o(.text.LL_USART_ClockInit) for [Anonymous Symbol]
-    stm32f1xx_ll_usart.o(.ARM.exidx.text.LL_USART_ClockStructInit) refers to stm32f1xx_ll_usart.o(.text.LL_USART_ClockStructInit) for [Anonymous Symbol]
+    stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_DeInit) refers to stm32f1xx_ll_tim.o(.text.LL_TIM_DeInit) for [Anonymous Symbol]
+    stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_StructInit) refers to stm32f1xx_ll_tim.o(.text.LL_TIM_StructInit) for [Anonymous Symbol]
+    stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_Init) refers to stm32f1xx_ll_tim.o(.text.LL_TIM_Init) for [Anonymous Symbol]
+    stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_OC_StructInit) refers to stm32f1xx_ll_tim.o(.text.LL_TIM_OC_StructInit) for [Anonymous Symbol]
+    stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_OC_Init) refers to stm32f1xx_ll_tim.o(.text.LL_TIM_OC_Init) for [Anonymous Symbol]
+    stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_IC_StructInit) refers to stm32f1xx_ll_tim.o(.text.LL_TIM_IC_StructInit) for [Anonymous Symbol]
+    stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_IC_Init) refers to stm32f1xx_ll_tim.o(.text.LL_TIM_IC_Init) for [Anonymous Symbol]
+    stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_ENCODER_StructInit) refers to stm32f1xx_ll_tim.o(.text.LL_TIM_ENCODER_StructInit) for [Anonymous Symbol]
+    stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_ENCODER_Init) refers to stm32f1xx_ll_tim.o(.text.LL_TIM_ENCODER_Init) for [Anonymous Symbol]
+    stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_HALLSENSOR_StructInit) refers to stm32f1xx_ll_tim.o(.text.LL_TIM_HALLSENSOR_StructInit) for [Anonymous Symbol]
+    stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_HALLSENSOR_Init) refers to stm32f1xx_ll_tim.o(.text.LL_TIM_HALLSENSOR_Init) for [Anonymous Symbol]
+    stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_BDTR_StructInit) refers to stm32f1xx_ll_tim.o(.text.LL_TIM_BDTR_StructInit) for [Anonymous Symbol]
+    stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_BDTR_Init) refers to stm32f1xx_ll_tim.o(.text.LL_TIM_BDTR_Init) for [Anonymous Symbol]
     stm32f1xx_ll_rcc.o(.ARM.exidx.text.LL_RCC_DeInit) refers to stm32f1xx_ll_rcc.o(.text.LL_RCC_DeInit) for [Anonymous Symbol]
     stm32f1xx_ll_rcc.o(.text.LL_RCC_GetSystemClocksFreq) refers to system_stm32f1xx.o(.rodata.AHBPrescTable) for AHBPrescTable
     stm32f1xx_ll_rcc.o(.text.LL_RCC_GetSystemClocksFreq) refers to system_stm32f1xx.o(.rodata.APBPrescTable) for APBPrescTable
@@ -100,6 +113,12 @@ Section Cross References
     stm32f1xx_ll_utils.o(.ARM.exidx.text.UTILS_EnablePLLAndSwitchSystem) refers to stm32f1xx_ll_utils.o(.text.UTILS_EnablePLLAndSwitchSystem) for [Anonymous Symbol]
     stm32f1xx_ll_utils.o(.text.LL_PLL_ConfigSystemClock_HSE) refers to stm32f1xx_ll_utils.o(.text.UTILS_EnablePLLAndSwitchSystem) for UTILS_EnablePLLAndSwitchSystem
     stm32f1xx_ll_utils.o(.ARM.exidx.text.LL_PLL_ConfigSystemClock_HSE) refers to stm32f1xx_ll_utils.o(.text.LL_PLL_ConfigSystemClock_HSE) for [Anonymous Symbol]
+    stm32f1xx_ll_usart.o(.ARM.exidx.text.LL_USART_DeInit) refers to stm32f1xx_ll_usart.o(.text.LL_USART_DeInit) for [Anonymous Symbol]
+    stm32f1xx_ll_usart.o(.text.LL_USART_Init) refers to stm32f1xx_ll_rcc.o(.text.LL_RCC_GetSystemClocksFreq) for LL_RCC_GetSystemClocksFreq
+    stm32f1xx_ll_usart.o(.ARM.exidx.text.LL_USART_Init) refers to stm32f1xx_ll_usart.o(.text.LL_USART_Init) for [Anonymous Symbol]
+    stm32f1xx_ll_usart.o(.ARM.exidx.text.LL_USART_StructInit) refers to stm32f1xx_ll_usart.o(.text.LL_USART_StructInit) for [Anonymous Symbol]
+    stm32f1xx_ll_usart.o(.ARM.exidx.text.LL_USART_ClockInit) refers to stm32f1xx_ll_usart.o(.text.LL_USART_ClockInit) for [Anonymous Symbol]
+    stm32f1xx_ll_usart.o(.ARM.exidx.text.LL_USART_ClockStructInit) refers to stm32f1xx_ll_usart.o(.text.LL_USART_ClockStructInit) for [Anonymous Symbol]
     system_stm32f1xx.o(.ARM.exidx.text.SystemInit) refers to system_stm32f1xx.o(.text.SystemInit) for [Anonymous Symbol]
     system_stm32f1xx.o(.text.SystemCoreClockUpdate) refers to system_stm32f1xx.o(.data.SystemCoreClock) for SystemCoreClock
     system_stm32f1xx.o(.text.SystemCoreClockUpdate) refers to system_stm32f1xx.o(.rodata.AHBPrescTable) for AHBPrescTable
@@ -252,6 +271,8 @@ Removing Unused input sections from the image.
     Removing gpio.o(.ARM.exidx.text.MX_GPIO_Init), (8 bytes).
     Removing dma.o(.text), (0 bytes).
     Removing dma.o(.ARM.exidx.text.MX_DMA_Init), (8 bytes).
+    Removing tim.o(.text), (0 bytes).
+    Removing tim.o(.ARM.exidx.text.MX_TIM6_Init), (8 bytes).
     Removing usart.o(.text), (0 bytes).
     Removing usart.o(.ARM.exidx.text.MX_USART1_UART_Init), (8 bytes).
     Removing stm32f1xx_it.o(.text), (0 bytes).
@@ -267,6 +288,7 @@ Removing Unused input sections from the image.
     Removing stm32f1xx_it.o(.ARM.exidx.text.DMA1_Channel4_IRQHandler), (8 bytes).
     Removing stm32f1xx_it.o(.ARM.exidx.text.DMA1_Channel5_IRQHandler), (8 bytes).
     Removing stm32f1xx_it.o(.ARM.exidx.text.USART1_IRQHandler), (8 bytes).
+    Removing stm32f1xx_it.o(.ARM.exidx.text.TIM6_IRQHandler), (8 bytes).
     Removing stm32f1xx_ll_gpio.o(.text), (0 bytes).
     Removing stm32f1xx_ll_gpio.o(.text.LL_GPIO_DeInit), (116 bytes).
     Removing stm32f1xx_ll_gpio.o(.ARM.exidx.text.LL_GPIO_DeInit), (8 bytes).
@@ -290,16 +312,32 @@ Removing Unused input sections from the image.
     Removing stm32f1xx_ll_exti.o(.ARM.exidx.text.LL_EXTI_Init), (8 bytes).
     Removing stm32f1xx_ll_exti.o(.text.LL_EXTI_StructInit), (12 bytes).
     Removing stm32f1xx_ll_exti.o(.ARM.exidx.text.LL_EXTI_StructInit), (8 bytes).
-    Removing stm32f1xx_ll_usart.o(.text), (0 bytes).
-    Removing stm32f1xx_ll_usart.o(.text.LL_USART_DeInit), (216 bytes).
-    Removing stm32f1xx_ll_usart.o(.ARM.exidx.text.LL_USART_DeInit), (8 bytes).
-    Removing stm32f1xx_ll_usart.o(.ARM.exidx.text.LL_USART_Init), (8 bytes).
-    Removing stm32f1xx_ll_usart.o(.text.LL_USART_StructInit), (22 bytes).
-    Removing stm32f1xx_ll_usart.o(.ARM.exidx.text.LL_USART_StructInit), (8 bytes).
-    Removing stm32f1xx_ll_usart.o(.text.LL_USART_ClockInit), (54 bytes).
-    Removing stm32f1xx_ll_usart.o(.ARM.exidx.text.LL_USART_ClockInit), (8 bytes).
-    Removing stm32f1xx_ll_usart.o(.text.LL_USART_ClockStructInit), (12 bytes).
-    Removing stm32f1xx_ll_usart.o(.ARM.exidx.text.LL_USART_ClockStructInit), (8 bytes).
+    Removing stm32f1xx_ll_tim.o(.text), (0 bytes).
+    Removing stm32f1xx_ll_tim.o(.text.LL_TIM_DeInit), (368 bytes).
+    Removing stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_DeInit), (8 bytes).
+    Removing stm32f1xx_ll_tim.o(.text.LL_TIM_StructInit), (18 bytes).
+    Removing stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_StructInit), (8 bytes).
+    Removing stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_Init), (8 bytes).
+    Removing stm32f1xx_ll_tim.o(.text.LL_TIM_OC_StructInit), (20 bytes).
+    Removing stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_OC_StructInit), (8 bytes).
+    Removing stm32f1xx_ll_tim.o(.text.LL_TIM_OC_Init), (516 bytes).
+    Removing stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_OC_Init), (8 bytes).
+    Removing stm32f1xx_ll_tim.o(.text.LL_TIM_IC_StructInit), (16 bytes).
+    Removing stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_IC_StructInit), (8 bytes).
+    Removing stm32f1xx_ll_tim.o(.text.LL_TIM_IC_Init), (230 bytes).
+    Removing stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_IC_Init), (8 bytes).
+    Removing stm32f1xx_ll_tim.o(.text.LL_TIM_ENCODER_StructInit), (26 bytes).
+    Removing stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_ENCODER_StructInit), (8 bytes).
+    Removing stm32f1xx_ll_tim.o(.text.LL_TIM_ENCODER_Init), (100 bytes).
+    Removing stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_ENCODER_Init), (8 bytes).
+    Removing stm32f1xx_ll_tim.o(.text.LL_TIM_HALLSENSOR_StructInit), (12 bytes).
+    Removing stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_HALLSENSOR_StructInit), (8 bytes).
+    Removing stm32f1xx_ll_tim.o(.text.LL_TIM_HALLSENSOR_Init), (92 bytes).
+    Removing stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_HALLSENSOR_Init), (8 bytes).
+    Removing stm32f1xx_ll_tim.o(.text.LL_TIM_BDTR_StructInit), (18 bytes).
+    Removing stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_BDTR_StructInit), (8 bytes).
+    Removing stm32f1xx_ll_tim.o(.text.LL_TIM_BDTR_Init), (60 bytes).
+    Removing stm32f1xx_ll_tim.o(.ARM.exidx.text.LL_TIM_BDTR_Init), (8 bytes).
     Removing stm32f1xx_ll_rcc.o(.text), (0 bytes).
     Removing stm32f1xx_ll_rcc.o(.text.LL_RCC_DeInit), (154 bytes).
     Removing stm32f1xx_ll_rcc.o(.ARM.exidx.text.LL_RCC_DeInit), (8 bytes).
@@ -330,6 +368,16 @@ Removing Unused input sections from the image.
     Removing stm32f1xx_ll_utils.o(.ARM.exidx.text.UTILS_EnablePLLAndSwitchSystem), (8 bytes).
     Removing stm32f1xx_ll_utils.o(.text.LL_PLL_ConfigSystemClock_HSE), (158 bytes).
     Removing stm32f1xx_ll_utils.o(.ARM.exidx.text.LL_PLL_ConfigSystemClock_HSE), (8 bytes).
+    Removing stm32f1xx_ll_usart.o(.text), (0 bytes).
+    Removing stm32f1xx_ll_usart.o(.text.LL_USART_DeInit), (216 bytes).
+    Removing stm32f1xx_ll_usart.o(.ARM.exidx.text.LL_USART_DeInit), (8 bytes).
+    Removing stm32f1xx_ll_usart.o(.ARM.exidx.text.LL_USART_Init), (8 bytes).
+    Removing stm32f1xx_ll_usart.o(.text.LL_USART_StructInit), (22 bytes).
+    Removing stm32f1xx_ll_usart.o(.ARM.exidx.text.LL_USART_StructInit), (8 bytes).
+    Removing stm32f1xx_ll_usart.o(.text.LL_USART_ClockInit), (54 bytes).
+    Removing stm32f1xx_ll_usart.o(.ARM.exidx.text.LL_USART_ClockInit), (8 bytes).
+    Removing stm32f1xx_ll_usart.o(.text.LL_USART_ClockStructInit), (12 bytes).
+    Removing stm32f1xx_ll_usart.o(.ARM.exidx.text.LL_USART_ClockStructInit), (8 bytes).
     Removing system_stm32f1xx.o(.text), (0 bytes).
     Removing system_stm32f1xx.o(.ARM.exidx.text.SystemInit), (8 bytes).
     Removing system_stm32f1xx.o(.text.SystemCoreClockUpdate), (92 bytes).
@@ -367,7 +415,6 @@ Removing Unused input sections from the image.
     Removing myusartdrive.o(.ARM.exidx.text.USART1_RX_DMA1_Channel5_Interrupt_Handler), (8 bytes).
     Removing myusartdrive.o(.ARM.exidx.text.USART1_Put_Data_Into_Ringbuffer), (8 bytes).
     Removing myusartdrive.o(.ARM.exidx.text.USART1_RX_Interrupt_Handler), (8 bytes).
-    Removing myusartdrive.o(.text.USART1_Put_TxData_To_Ringbuffer), (180 bytes).
     Removing myusartdrive.o(.ARM.exidx.text.USART1_Put_TxData_To_Ringbuffer), (8 bytes).
     Removing myusartdrive.o(.ARM.exidx.text.USART1_Module_Run), (8 bytes).
     Removing myusartdrive.o(.ARM.exidx.text.USART1_Config), (8 bytes).
@@ -408,7 +455,7 @@ Removing Unused input sections from the image.
     Removing lwrb.o(.ARM.exidx.text.lwrb_find), (8 bytes).
     Removing lwrb_ex.o(.text), (0 bytes).
 
-165 unused section(s) (total 9558 bytes) removed from the image.
+193 unused section(s) (total 10974 bytes) removed from the image.
 
 ==============================================================================
 
@@ -451,9 +498,11 @@ Image Symbol Table
     stm32f1xx_ll_gpio.c                      0x00000000   Number         0  stm32f1xx_ll_gpio.o ABSOLUTE
     stm32f1xx_ll_pwr.c                       0x00000000   Number         0  stm32f1xx_ll_pwr.o ABSOLUTE
     stm32f1xx_ll_rcc.c                       0x00000000   Number         0  stm32f1xx_ll_rcc.o ABSOLUTE
+    stm32f1xx_ll_tim.c                       0x00000000   Number         0  stm32f1xx_ll_tim.o ABSOLUTE
     stm32f1xx_ll_usart.c                     0x00000000   Number         0  stm32f1xx_ll_usart.o ABSOLUTE
     stm32f1xx_ll_utils.c                     0x00000000   Number         0  stm32f1xx_ll_utils.o ABSOLUTE
     system_stm32f1xx.c                       0x00000000   Number         0  system_stm32f1xx.o ABSOLUTE
+    tim.c                                    0x00000000   Number         0  tim.o ABSOLUTE
     usart.c                                  0x00000000   Number         0  usart.o ABSOLUTE
     RESET                                    0x08000000   Section      304  startup_stm32f103xe.o(RESET)
     .ARM.Collect$$$$00000000                 0x08000130   Section        0  entry.o(.ARM.Collect$$$$00000000)
@@ -481,40 +530,44 @@ Image Symbol Table
     [Anonymous Symbol]                       0x080005d0   Section        0  stm32f1xx_ll_utils.o(.text.LL_Init1msTick)
     [Anonymous Symbol]                       0x080005f8   Section        0  stm32f1xx_ll_rcc.o(.text.LL_RCC_GetSystemClocksFreq)
     [Anonymous Symbol]                       0x08000684   Section        0  stm32f1xx_ll_utils.o(.text.LL_SetSystemCoreClock)
-    [Anonymous Symbol]                       0x08000690   Section        0  stm32f1xx_ll_usart.o(.text.LL_USART_Init)
-    [Anonymous Symbol]                       0x08000788   Section        0  stm32f1xx_ll_utils.o(.text.LL_mDelay)
-    [Anonymous Symbol]                       0x080007d0   Section        0  dma.o(.text.MX_DMA_Init)
-    [Anonymous Symbol]                       0x08000824   Section        0  gpio.o(.text.MX_GPIO_Init)
-    [Anonymous Symbol]                       0x080008b8   Section        0  usart.o(.text.MX_USART1_UART_Init)
-    [Anonymous Symbol]                       0x08000a28   Section        0  stm32f1xx_it.o(.text.MemManage_Handler)
-    [Anonymous Symbol]                       0x08000a2c   Section        0  stm32f1xx_it.o(.text.NMI_Handler)
-    [Anonymous Symbol]                       0x08000a30   Section        0  stm32f1xx_it.o(.text.PendSV_Handler)
-    [Anonymous Symbol]                       0x08000a34   Section        0  stm32f1xx_it.o(.text.SVC_Handler)
-    [Anonymous Symbol]                       0x08000a38   Section        0  stm32f1xx_it.o(.text.SysTick_Handler)
-    [Anonymous Symbol]                       0x08000a3c   Section        0  main.o(.text.SystemClock_Config)
-    [Anonymous Symbol]                       0x08000b4c   Section        0  system_stm32f1xx.o(.text.SystemInit)
-    [Anonymous Symbol]                       0x08000b50   Section        0  myusartdrive.o(.text.USART1_Config)
-    [Anonymous Symbol]                       0x08000c58   Section        0  stm32f1xx_it.o(.text.USART1_IRQHandler)
-    [Anonymous Symbol]                       0x08000c5c   Section        0  myusartdrive.o(.text.USART1_Module_Run)
-    USART1_Put_Data_Into_Ringbuffer          0x08000d65   Thumb Code   130  myusartdrive.o(.text.USART1_Put_Data_Into_Ringbuffer)
-    [Anonymous Symbol]                       0x08000d64   Section        0  myusartdrive.o(.text.USART1_Put_Data_Into_Ringbuffer)
-    [Anonymous Symbol]                       0x08000de8   Section        0  myusartdrive.o(.text.USART1_RX_DMA1_Channel5_Interrupt_Handler)
-    [Anonymous Symbol]                       0x08000f00   Section        0  myusartdrive.o(.text.USART1_RX_Interrupt_Handler)
-    [Anonymous Symbol]                       0x08000fd8   Section        0  myusartdrive.o(.text.USART1_TX_DMA1_Channel4_Interrupt_Handler)
-    [Anonymous Symbol]                       0x080010b8   Section        0  mycandrive_reg.o(.text.USB_HP_CAN1_TX_IRQHandler)
-    [Anonymous Symbol]                       0x08001174   Section        0  stm32f1xx_it.o(.text.UsageFault_Handler)
-    [Anonymous Symbol]                       0x08001178   Section        0  lwrb.o(.text.lwrb_get_free)
-    [Anonymous Symbol]                       0x08001198   Section        0  lwrb.o(.text.lwrb_get_full)
-    [Anonymous Symbol]                       0x080011b8   Section        0  lwrb.o(.text.lwrb_init)
-    [Anonymous Symbol]                       0x080011dc   Section        0  lwrb.o(.text.lwrb_peek)
-    [Anonymous Symbol]                       0x08001264   Section        0  lwrb.o(.text.lwrb_read)
-    [Anonymous Symbol]                       0x08001310   Section        0  lwrb.o(.text.lwrb_reset)
-    [Anonymous Symbol]                       0x0800133c   Section        0  lwrb.o(.text.lwrb_skip)
-    [Anonymous Symbol]                       0x08001388   Section        0  lwrb.o(.text.lwrb_write)
-    [Anonymous Symbol]                       0x08001434   Section        0  main.o(.text.main)
-    i.__scatterload_copy                     0x08001516   Section       14  handlers.o(i.__scatterload_copy)
-    i.__scatterload_null                     0x08001524   Section        2  handlers.o(i.__scatterload_null)
-    i.__scatterload_zeroinit                 0x08001526   Section       14  handlers.o(i.__scatterload_zeroinit)
+    [Anonymous Symbol]                       0x08000690   Section        0  stm32f1xx_ll_tim.o(.text.LL_TIM_Init)
+    [Anonymous Symbol]                       0x08000764   Section        0  stm32f1xx_ll_usart.o(.text.LL_USART_Init)
+    [Anonymous Symbol]                       0x0800085c   Section        0  stm32f1xx_ll_utils.o(.text.LL_mDelay)
+    [Anonymous Symbol]                       0x080008a4   Section        0  dma.o(.text.MX_DMA_Init)
+    [Anonymous Symbol]                       0x080008f8   Section        0  gpio.o(.text.MX_GPIO_Init)
+    [Anonymous Symbol]                       0x0800098c   Section        0  tim.o(.text.MX_TIM6_Init)
+    [Anonymous Symbol]                       0x08000a34   Section        0  usart.o(.text.MX_USART1_UART_Init)
+    [Anonymous Symbol]                       0x08000ba4   Section        0  stm32f1xx_it.o(.text.MemManage_Handler)
+    [Anonymous Symbol]                       0x08000ba8   Section        0  stm32f1xx_it.o(.text.NMI_Handler)
+    [Anonymous Symbol]                       0x08000bac   Section        0  stm32f1xx_it.o(.text.PendSV_Handler)
+    [Anonymous Symbol]                       0x08000bb0   Section        0  stm32f1xx_it.o(.text.SVC_Handler)
+    [Anonymous Symbol]                       0x08000bb4   Section        0  stm32f1xx_it.o(.text.SysTick_Handler)
+    [Anonymous Symbol]                       0x08000bb8   Section        0  main.o(.text.SystemClock_Config)
+    [Anonymous Symbol]                       0x08000cc8   Section        0  system_stm32f1xx.o(.text.SystemInit)
+    [Anonymous Symbol]                       0x08000ccc   Section        0  stm32f1xx_it.o(.text.TIM6_IRQHandler)
+    [Anonymous Symbol]                       0x08000cfc   Section        0  myusartdrive.o(.text.USART1_Config)
+    [Anonymous Symbol]                       0x08000e04   Section        0  stm32f1xx_it.o(.text.USART1_IRQHandler)
+    [Anonymous Symbol]                       0x08000e08   Section        0  myusartdrive.o(.text.USART1_Module_Run)
+    USART1_Put_Data_Into_Ringbuffer          0x08000f11   Thumb Code   130  myusartdrive.o(.text.USART1_Put_Data_Into_Ringbuffer)
+    [Anonymous Symbol]                       0x08000f10   Section        0  myusartdrive.o(.text.USART1_Put_Data_Into_Ringbuffer)
+    [Anonymous Symbol]                       0x08000f94   Section        0  myusartdrive.o(.text.USART1_Put_TxData_To_Ringbuffer)
+    [Anonymous Symbol]                       0x08001048   Section        0  myusartdrive.o(.text.USART1_RX_DMA1_Channel5_Interrupt_Handler)
+    [Anonymous Symbol]                       0x08001160   Section        0  myusartdrive.o(.text.USART1_RX_Interrupt_Handler)
+    [Anonymous Symbol]                       0x08001238   Section        0  myusartdrive.o(.text.USART1_TX_DMA1_Channel4_Interrupt_Handler)
+    [Anonymous Symbol]                       0x08001318   Section        0  mycandrive_reg.o(.text.USB_HP_CAN1_TX_IRQHandler)
+    [Anonymous Symbol]                       0x080013d4   Section        0  stm32f1xx_it.o(.text.UsageFault_Handler)
+    [Anonymous Symbol]                       0x080013d8   Section        0  lwrb.o(.text.lwrb_get_free)
+    [Anonymous Symbol]                       0x080013f8   Section        0  lwrb.o(.text.lwrb_get_full)
+    [Anonymous Symbol]                       0x08001418   Section        0  lwrb.o(.text.lwrb_init)
+    [Anonymous Symbol]                       0x0800143c   Section        0  lwrb.o(.text.lwrb_peek)
+    [Anonymous Symbol]                       0x080014c4   Section        0  lwrb.o(.text.lwrb_read)
+    [Anonymous Symbol]                       0x08001570   Section        0  lwrb.o(.text.lwrb_reset)
+    [Anonymous Symbol]                       0x0800159c   Section        0  lwrb.o(.text.lwrb_skip)
+    [Anonymous Symbol]                       0x080015e8   Section        0  lwrb.o(.text.lwrb_write)
+    [Anonymous Symbol]                       0x08001694   Section        0  main.o(.text.main)
+    i.__scatterload_copy                     0x08001792   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x080017a0   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x080017a2   Section       14  handlers.o(i.__scatterload_zeroinit)
     .L_MergedGlobals                         0x20000008   Data          80  mycandrive_reg.o(.bss..L_MergedGlobals)
     [Anonymous Symbol]                       0x20000008   Section        0  mycandrive_reg.o(.bss..L_MergedGlobals)
     .L_MergedGlobals                         0x20000058   Data          72  myusartdrive.o(.bss..L_MergedGlobals)
@@ -586,7 +639,6 @@ Image Symbol Table
     TIM3_IRQHandler                          0x0800015f   Thumb Code     0  startup_stm32f103xe.o(.text)
     TIM4_IRQHandler                          0x0800015f   Thumb Code     0  startup_stm32f103xe.o(.text)
     TIM5_IRQHandler                          0x0800015f   Thumb Code     0  startup_stm32f103xe.o(.text)
-    TIM6_IRQHandler                          0x0800015f   Thumb Code     0  startup_stm32f103xe.o(.text)
     TIM7_IRQHandler                          0x0800015f   Thumb Code     0  startup_stm32f103xe.o(.text)
     TIM8_BRK_IRQHandler                      0x0800015f   Thumb Code     0  startup_stm32f103xe.o(.text)
     TIM8_CC_IRQHandler                       0x0800015f   Thumb Code     0  startup_stm32f103xe.o(.text)
@@ -616,42 +668,46 @@ Image Symbol Table
     LL_Init1msTick                           0x080005d1   Thumb Code    40  stm32f1xx_ll_utils.o(.text.LL_Init1msTick)
     LL_RCC_GetSystemClocksFreq               0x080005f9   Thumb Code   140  stm32f1xx_ll_rcc.o(.text.LL_RCC_GetSystemClocksFreq)
     LL_SetSystemCoreClock                    0x08000685   Thumb Code    12  stm32f1xx_ll_utils.o(.text.LL_SetSystemCoreClock)
-    LL_USART_Init                            0x08000691   Thumb Code   246  stm32f1xx_ll_usart.o(.text.LL_USART_Init)
-    LL_mDelay                                0x08000789   Thumb Code    70  stm32f1xx_ll_utils.o(.text.LL_mDelay)
-    MX_DMA_Init                              0x080007d1   Thumb Code    82  dma.o(.text.MX_DMA_Init)
-    MX_GPIO_Init                             0x08000825   Thumb Code   146  gpio.o(.text.MX_GPIO_Init)
-    MX_USART1_UART_Init                      0x080008b9   Thumb Code   368  usart.o(.text.MX_USART1_UART_Init)
-    MemManage_Handler                        0x08000a29   Thumb Code     2  stm32f1xx_it.o(.text.MemManage_Handler)
-    NMI_Handler                              0x08000a2d   Thumb Code     2  stm32f1xx_it.o(.text.NMI_Handler)
-    PendSV_Handler                           0x08000a31   Thumb Code     2  stm32f1xx_it.o(.text.PendSV_Handler)
-    SVC_Handler                              0x08000a35   Thumb Code     2  stm32f1xx_it.o(.text.SVC_Handler)
-    SysTick_Handler                          0x08000a39   Thumb Code     2  stm32f1xx_it.o(.text.SysTick_Handler)
-    SystemClock_Config                       0x08000a3d   Thumb Code   272  main.o(.text.SystemClock_Config)
-    SystemInit                               0x08000b4d   Thumb Code     2  system_stm32f1xx.o(.text.SystemInit)
-    USART1_Config                            0x08000b51   Thumb Code   262  myusartdrive.o(.text.USART1_Config)
-    USART1_IRQHandler                        0x08000c59   Thumb Code     4  stm32f1xx_it.o(.text.USART1_IRQHandler)
-    USART1_Module_Run                        0x08000c5d   Thumb Code   264  myusartdrive.o(.text.USART1_Module_Run)
-    USART1_RX_DMA1_Channel5_Interrupt_Handler 0x08000de9   Thumb Code   278  myusartdrive.o(.text.USART1_RX_DMA1_Channel5_Interrupt_Handler)
-    USART1_RX_Interrupt_Handler              0x08000f01   Thumb Code   214  myusartdrive.o(.text.USART1_RX_Interrupt_Handler)
-    USART1_TX_DMA1_Channel4_Interrupt_Handler 0x08000fd9   Thumb Code   222  myusartdrive.o(.text.USART1_TX_DMA1_Channel4_Interrupt_Handler)
-    USB_HP_CAN1_TX_IRQHandler                0x080010b9   Thumb Code   188  mycandrive_reg.o(.text.USB_HP_CAN1_TX_IRQHandler)
-    UsageFault_Handler                       0x08001175   Thumb Code     2  stm32f1xx_it.o(.text.UsageFault_Handler)
-    lwrb_get_free                            0x08001179   Thumb Code    32  lwrb.o(.text.lwrb_get_free)
-    lwrb_get_full                            0x08001199   Thumb Code    32  lwrb.o(.text.lwrb_get_full)
-    lwrb_init                                0x080011b9   Thumb Code    36  lwrb.o(.text.lwrb_init)
-    lwrb_peek                                0x080011dd   Thumb Code   134  lwrb.o(.text.lwrb_peek)
-    lwrb_read                                0x08001265   Thumb Code   170  lwrb.o(.text.lwrb_read)
-    lwrb_reset                               0x08001311   Thumb Code    42  lwrb.o(.text.lwrb_reset)
-    lwrb_skip                                0x0800133d   Thumb Code    76  lwrb.o(.text.lwrb_skip)
-    lwrb_write                               0x08001389   Thumb Code   170  lwrb.o(.text.lwrb_write)
-    main                                     0x08001435   Thumb Code   226  main.o(.text.main)
-    __scatterload_copy                       0x08001517   Thumb Code    14  handlers.o(i.__scatterload_copy)
-    __scatterload_null                       0x08001525   Thumb Code     2  handlers.o(i.__scatterload_null)
-    __scatterload_zeroinit                   0x08001527   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
-    AHBPrescTable                            0x08001534   Data          16  system_stm32f1xx.o(.rodata.AHBPrescTable)
-    APBPrescTable                            0x08001544   Data           8  system_stm32f1xx.o(.rodata.APBPrescTable)
-    Region$$Table$$Base                      0x0800154c   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x0800156c   Number         0  anon$$obj.o(Region$$Table)
+    LL_TIM_Init                              0x08000691   Thumb Code   210  stm32f1xx_ll_tim.o(.text.LL_TIM_Init)
+    LL_USART_Init                            0x08000765   Thumb Code   246  stm32f1xx_ll_usart.o(.text.LL_USART_Init)
+    LL_mDelay                                0x0800085d   Thumb Code    70  stm32f1xx_ll_utils.o(.text.LL_mDelay)
+    MX_DMA_Init                              0x080008a5   Thumb Code    82  dma.o(.text.MX_DMA_Init)
+    MX_GPIO_Init                             0x080008f9   Thumb Code   146  gpio.o(.text.MX_GPIO_Init)
+    MX_TIM6_Init                             0x0800098d   Thumb Code   168  tim.o(.text.MX_TIM6_Init)
+    MX_USART1_UART_Init                      0x08000a35   Thumb Code   368  usart.o(.text.MX_USART1_UART_Init)
+    MemManage_Handler                        0x08000ba5   Thumb Code     2  stm32f1xx_it.o(.text.MemManage_Handler)
+    NMI_Handler                              0x08000ba9   Thumb Code     2  stm32f1xx_it.o(.text.NMI_Handler)
+    PendSV_Handler                           0x08000bad   Thumb Code     2  stm32f1xx_it.o(.text.PendSV_Handler)
+    SVC_Handler                              0x08000bb1   Thumb Code     2  stm32f1xx_it.o(.text.SVC_Handler)
+    SysTick_Handler                          0x08000bb5   Thumb Code     2  stm32f1xx_it.o(.text.SysTick_Handler)
+    SystemClock_Config                       0x08000bb9   Thumb Code   272  main.o(.text.SystemClock_Config)
+    SystemInit                               0x08000cc9   Thumb Code     2  system_stm32f1xx.o(.text.SystemInit)
+    TIM6_IRQHandler                          0x08000ccd   Thumb Code    32  stm32f1xx_it.o(.text.TIM6_IRQHandler)
+    USART1_Config                            0x08000cfd   Thumb Code   262  myusartdrive.o(.text.USART1_Config)
+    USART1_IRQHandler                        0x08000e05   Thumb Code     4  stm32f1xx_it.o(.text.USART1_IRQHandler)
+    USART1_Module_Run                        0x08000e09   Thumb Code   264  myusartdrive.o(.text.USART1_Module_Run)
+    USART1_Put_TxData_To_Ringbuffer          0x08000f95   Thumb Code   180  myusartdrive.o(.text.USART1_Put_TxData_To_Ringbuffer)
+    USART1_RX_DMA1_Channel5_Interrupt_Handler 0x08001049   Thumb Code   278  myusartdrive.o(.text.USART1_RX_DMA1_Channel5_Interrupt_Handler)
+    USART1_RX_Interrupt_Handler              0x08001161   Thumb Code   214  myusartdrive.o(.text.USART1_RX_Interrupt_Handler)
+    USART1_TX_DMA1_Channel4_Interrupt_Handler 0x08001239   Thumb Code   222  myusartdrive.o(.text.USART1_TX_DMA1_Channel4_Interrupt_Handler)
+    USB_HP_CAN1_TX_IRQHandler                0x08001319   Thumb Code   188  mycandrive_reg.o(.text.USB_HP_CAN1_TX_IRQHandler)
+    UsageFault_Handler                       0x080013d5   Thumb Code     2  stm32f1xx_it.o(.text.UsageFault_Handler)
+    lwrb_get_free                            0x080013d9   Thumb Code    32  lwrb.o(.text.lwrb_get_free)
+    lwrb_get_full                            0x080013f9   Thumb Code    32  lwrb.o(.text.lwrb_get_full)
+    lwrb_init                                0x08001419   Thumb Code    36  lwrb.o(.text.lwrb_init)
+    lwrb_peek                                0x0800143d   Thumb Code   134  lwrb.o(.text.lwrb_peek)
+    lwrb_read                                0x080014c5   Thumb Code   170  lwrb.o(.text.lwrb_read)
+    lwrb_reset                               0x08001571   Thumb Code    42  lwrb.o(.text.lwrb_reset)
+    lwrb_skip                                0x0800159d   Thumb Code    76  lwrb.o(.text.lwrb_skip)
+    lwrb_write                               0x080015e9   Thumb Code   170  lwrb.o(.text.lwrb_write)
+    main                                     0x08001695   Thumb Code   254  main.o(.text.main)
+    __scatterload_copy                       0x08001793   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x080017a1   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x080017a3   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    AHBPrescTable                            0x080017b0   Data          16  system_stm32f1xx.o(.rodata.AHBPrescTable)
+    APBPrescTable                            0x080017c0   Data           8  system_stm32f1xx.o(.rodata.APBPrescTable)
+    Region$$Table$$Base                      0x080017c8   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x080017e8   Number         0  anon$$obj.o(Region$$Table)
     SystemCoreClock                          0x20000000   Data           4  system_stm32f1xx.o(.data.SystemCoreClock)
     txmail_free                              0x20000008   Data           1  mycandrive_reg.o(.bss..L_MergedGlobals)
     canSendError                             0x2000000c   Data           4  mycandrive_reg.o(.bss..L_MergedGlobals)
@@ -683,113 +739,118 @@ Memory Map of the image
 
   Image Entry point : 0x08000131
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00001578, Max: 0x00080000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x000017f0, Max: 0x00080000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x0000156c, Max: 0x00080000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x000017e8, Max: 0x00080000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x08000000   0x08000000   0x00000130   Data   RO            3    RESET               startup_stm32f103xe.o
-    0x08000130   0x08000130   0x00000000   Code   RO          331  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
-    0x08000130   0x08000130   0x00000004   Code   RO          340    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
-    0x08000134   0x08000134   0x00000004   Code   RO          343    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
-    0x08000138   0x08000138   0x00000000   Code   RO          345    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
-    0x08000138   0x08000138   0x00000000   Code   RO          347    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
-    0x08000138   0x08000138   0x00000008   Code   RO          348    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
-    0x08000140   0x08000140   0x00000000   Code   RO          350    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
-    0x08000140   0x08000140   0x00000000   Code   RO          352    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
-    0x08000140   0x08000140   0x00000004   Code   RO          341    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
+    0x08000130   0x08000130   0x00000000   Code   RO          377  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
+    0x08000130   0x08000130   0x00000004   Code   RO          386    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
+    0x08000134   0x08000134   0x00000004   Code   RO          389    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
+    0x08000138   0x08000138   0x00000000   Code   RO          391    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
+    0x08000138   0x08000138   0x00000000   Code   RO          393    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
+    0x08000138   0x08000138   0x00000008   Code   RO          394    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
+    0x08000140   0x08000140   0x00000000   Code   RO          396    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
+    0x08000140   0x08000140   0x00000000   Code   RO          398    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
+    0x08000140   0x08000140   0x00000004   Code   RO          387    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
     0x08000144   0x08000144   0x00000024   Code   RO            4    .text               startup_stm32f103xe.o
-    0x08000168   0x08000168   0x00000024   Code   RO          334    .text               mc_w.l(memcpya.o)
-    0x0800018c   0x0800018c   0x00000030   Code   RO          354    .text               mc_w.l(init.o)
-    0x080001bc   0x080001bc   0x00000002   Code   RO           58    .text.BusFault_Handler  stm32f1xx_it.o
+    0x08000168   0x08000168   0x00000024   Code   RO          380    .text               mc_w.l(memcpya.o)
+    0x0800018c   0x0800018c   0x00000030   Code   RO          400    .text               mc_w.l(init.o)
+    0x080001bc   0x080001bc   0x00000002   Code   RO           67    .text.BusFault_Handler  stm32f1xx_it.o
     0x080001be   0x080001be   0x00000002   PAD
-    0x080001c0   0x080001c0   0x000001ac   Code   RO          235    .text.CAN1_RX1_IRQHandler  mycandrive_reg.o
-    0x0800036c   0x0800036c   0x00000186   Code   RO          219    .text.CAN_SendMessage_NonBlocking  mycandrive_reg.o
+    0x080001c0   0x080001c0   0x000001ac   Code   RO          281    .text.CAN1_RX1_IRQHandler  mycandrive_reg.o
+    0x0800036c   0x0800036c   0x00000186   Code   RO          265    .text.CAN_SendMessage_NonBlocking  mycandrive_reg.o
     0x080004f2   0x080004f2   0x00000002   PAD
-    0x080004f4   0x080004f4   0x00000004   Code   RO           70    .text.DMA1_Channel4_IRQHandler  stm32f1xx_it.o
-    0x080004f8   0x080004f8   0x00000004   Code   RO           72    .text.DMA1_Channel5_IRQHandler  stm32f1xx_it.o
-    0x080004fc   0x080004fc   0x00000002   Code   RO           64    .text.DebugMon_Handler  stm32f1xx_it.o
+    0x080004f4   0x080004f4   0x00000004   Code   RO           79    .text.DMA1_Channel4_IRQHandler  stm32f1xx_it.o
+    0x080004f8   0x080004f8   0x00000004   Code   RO           81    .text.DMA1_Channel5_IRQHandler  stm32f1xx_it.o
+    0x080004fc   0x080004fc   0x00000002   Code   RO           73    .text.DebugMon_Handler  stm32f1xx_it.o
     0x080004fe   0x080004fe   0x00000002   PAD
     0x08000500   0x08000500   0x0000000a   Code   RO           15    .text.Error_Handler  main.o
     0x0800050a   0x0800050a   0x00000002   PAD
-    0x0800050c   0x0800050c   0x00000002   Code   RO           54    .text.HardFault_Handler  stm32f1xx_it.o
+    0x0800050c   0x0800050c   0x00000002   Code   RO           63    .text.HardFault_Handler  stm32f1xx_it.o
     0x0800050e   0x0800050e   0x00000002   PAD
-    0x08000510   0x08000510   0x000000be   Code   RO           85    .text.LL_GPIO_Init  stm32f1xx_ll_gpio.o
+    0x08000510   0x08000510   0x000000be   Code   RO           97    .text.LL_GPIO_Init  stm32f1xx_ll_gpio.o
     0x080005ce   0x080005ce   0x00000002   PAD
-    0x080005d0   0x080005d0   0x00000028   Code   RO          178    .text.LL_Init1msTick  stm32f1xx_ll_utils.o
-    0x080005f8   0x080005f8   0x0000008c   Code   RO          154    .text.LL_RCC_GetSystemClocksFreq  stm32f1xx_ll_rcc.o
-    0x08000684   0x08000684   0x0000000c   Code   RO          182    .text.LL_SetSystemCoreClock  stm32f1xx_ll_utils.o
-    0x08000690   0x08000690   0x000000f6   Code   RO          136    .text.LL_USART_Init  stm32f1xx_ll_usart.o
-    0x08000786   0x08000786   0x00000002   PAD
-    0x08000788   0x08000788   0x00000046   Code   RO          180    .text.LL_mDelay     stm32f1xx_ll_utils.o
-    0x080007ce   0x080007ce   0x00000002   PAD
-    0x080007d0   0x080007d0   0x00000052   Code   RO           35    .text.MX_DMA_Init   dma.o
-    0x08000822   0x08000822   0x00000002   PAD
-    0x08000824   0x08000824   0x00000092   Code   RO           26    .text.MX_GPIO_Init  gpio.o
-    0x080008b6   0x080008b6   0x00000002   PAD
-    0x080008b8   0x080008b8   0x00000170   Code   RO           43    .text.MX_USART1_UART_Init  usart.o
-    0x08000a28   0x08000a28   0x00000002   Code   RO           56    .text.MemManage_Handler  stm32f1xx_it.o
-    0x08000a2a   0x08000a2a   0x00000002   PAD
-    0x08000a2c   0x08000a2c   0x00000002   Code   RO           52    .text.NMI_Handler   stm32f1xx_it.o
-    0x08000a2e   0x08000a2e   0x00000002   PAD
-    0x08000a30   0x08000a30   0x00000002   Code   RO           66    .text.PendSV_Handler  stm32f1xx_it.o
-    0x08000a32   0x08000a32   0x00000002   PAD
-    0x08000a34   0x08000a34   0x00000002   Code   RO           62    .text.SVC_Handler   stm32f1xx_it.o
-    0x08000a36   0x08000a36   0x00000002   PAD
-    0x08000a38   0x08000a38   0x00000002   Code   RO           68    .text.SysTick_Handler  stm32f1xx_it.o
-    0x08000a3a   0x08000a3a   0x00000002   PAD
-    0x08000a3c   0x08000a3c   0x00000110   Code   RO           13    .text.SystemClock_Config  main.o
-    0x08000b4c   0x08000b4c   0x00000002   Code   RO          200    .text.SystemInit    system_stm32f1xx.o
-    0x08000b4e   0x08000b4e   0x00000002   PAD
-    0x08000b50   0x08000b50   0x00000106   Code   RO          266    .text.USART1_Config  myusartdrive.o
-    0x08000c56   0x08000c56   0x00000002   PAD
-    0x08000c58   0x08000c58   0x00000004   Code   RO           74    .text.USART1_IRQHandler  stm32f1xx_it.o
-    0x08000c5c   0x08000c5c   0x00000108   Code   RO          264    .text.USART1_Module_Run  myusartdrive.o
-    0x08000d64   0x08000d64   0x00000082   Code   RO          258    .text.USART1_Put_Data_Into_Ringbuffer  myusartdrive.o
-    0x08000de6   0x08000de6   0x00000002   PAD
-    0x08000de8   0x08000de8   0x00000116   Code   RO          256    .text.USART1_RX_DMA1_Channel5_Interrupt_Handler  myusartdrive.o
-    0x08000efe   0x08000efe   0x00000002   PAD
-    0x08000f00   0x08000f00   0x000000d6   Code   RO          260    .text.USART1_RX_Interrupt_Handler  myusartdrive.o
-    0x08000fd6   0x08000fd6   0x00000002   PAD
-    0x08000fd8   0x08000fd8   0x000000de   Code   RO          254    .text.USART1_TX_DMA1_Channel4_Interrupt_Handler  myusartdrive.o
-    0x080010b6   0x080010b6   0x00000002   PAD
-    0x080010b8   0x080010b8   0x000000bc   Code   RO          233    .text.USB_HP_CAN1_TX_IRQHandler  mycandrive_reg.o
-    0x08001174   0x08001174   0x00000002   Code   RO           60    .text.UsageFault_Handler  stm32f1xx_it.o
-    0x08001176   0x08001176   0x00000002   PAD
-    0x08001178   0x08001178   0x00000020   Code   RO          297    .text.lwrb_get_free  lwrb.o
-    0x08001198   0x08001198   0x00000020   Code   RO          303    .text.lwrb_get_full  lwrb.o
-    0x080011b8   0x080011b8   0x00000024   Code   RO          281    .text.lwrb_init     lwrb.o
-    0x080011dc   0x080011dc   0x00000086   Code   RO          305    .text.lwrb_peek     lwrb.o
-    0x08001262   0x08001262   0x00000002   PAD
-    0x08001264   0x08001264   0x000000aa   Code   RO          299    .text.lwrb_read     lwrb.o
-    0x0800130e   0x0800130e   0x00000002   PAD
-    0x08001310   0x08001310   0x0000002a   Code   RO          307    .text.lwrb_reset    lwrb.o
-    0x0800133a   0x0800133a   0x00000002   PAD
-    0x0800133c   0x0800133c   0x0000004c   Code   RO          313    .text.lwrb_skip     lwrb.o
-    0x08001388   0x08001388   0x000000aa   Code   RO          293    .text.lwrb_write    lwrb.o
-    0x08001432   0x08001432   0x00000002   PAD
-    0x08001434   0x08001434   0x000000e2   Code   RO           11    .text.main          main.o
-    0x08001516   0x08001516   0x0000000e   Code   RO          358    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x08001524   0x08001524   0x00000002   Code   RO          359    i.__scatterload_null  mc_w.l(handlers.o)
-    0x08001526   0x08001526   0x0000000e   Code   RO          360    i.__scatterload_zeroinit  mc_w.l(handlers.o)
-    0x08001534   0x08001534   0x00000010   Data   RO          205    .rodata.AHBPrescTable  system_stm32f1xx.o
-    0x08001544   0x08001544   0x00000008   Data   RO          206    .rodata.APBPrescTable  system_stm32f1xx.o
-    0x0800154c   0x0800154c   0x00000020   Data   RO          357    Region$$Table       anon$$obj.o
+    0x080005d0   0x080005d0   0x00000028   Code   RO          206    .text.LL_Init1msTick  stm32f1xx_ll_utils.o
+    0x080005f8   0x080005f8   0x0000008c   Code   RO          182    .text.LL_RCC_GetSystemClocksFreq  stm32f1xx_ll_rcc.o
+    0x08000684   0x08000684   0x0000000c   Code   RO          210    .text.LL_SetSystemCoreClock  stm32f1xx_ll_utils.o
+    0x08000690   0x08000690   0x000000d2   Code   RO          150    .text.LL_TIM_Init   stm32f1xx_ll_tim.o
+    0x08000762   0x08000762   0x00000002   PAD
+    0x08000764   0x08000764   0x000000f6   Code   RO          230    .text.LL_USART_Init  stm32f1xx_ll_usart.o
+    0x0800085a   0x0800085a   0x00000002   PAD
+    0x0800085c   0x0800085c   0x00000046   Code   RO          208    .text.LL_mDelay     stm32f1xx_ll_utils.o
+    0x080008a2   0x080008a2   0x00000002   PAD
+    0x080008a4   0x080008a4   0x00000052   Code   RO           35    .text.MX_DMA_Init   dma.o
+    0x080008f6   0x080008f6   0x00000002   PAD
+    0x080008f8   0x080008f8   0x00000092   Code   RO           26    .text.MX_GPIO_Init  gpio.o
+    0x0800098a   0x0800098a   0x00000002   PAD
+    0x0800098c   0x0800098c   0x000000a8   Code   RO           43    .text.MX_TIM6_Init  tim.o
+    0x08000a34   0x08000a34   0x00000170   Code   RO           52    .text.MX_USART1_UART_Init  usart.o
+    0x08000ba4   0x08000ba4   0x00000002   Code   RO           65    .text.MemManage_Handler  stm32f1xx_it.o
+    0x08000ba6   0x08000ba6   0x00000002   PAD
+    0x08000ba8   0x08000ba8   0x00000002   Code   RO           61    .text.NMI_Handler   stm32f1xx_it.o
+    0x08000baa   0x08000baa   0x00000002   PAD
+    0x08000bac   0x08000bac   0x00000002   Code   RO           75    .text.PendSV_Handler  stm32f1xx_it.o
+    0x08000bae   0x08000bae   0x00000002   PAD
+    0x08000bb0   0x08000bb0   0x00000002   Code   RO           71    .text.SVC_Handler   stm32f1xx_it.o
+    0x08000bb2   0x08000bb2   0x00000002   PAD
+    0x08000bb4   0x08000bb4   0x00000002   Code   RO           77    .text.SysTick_Handler  stm32f1xx_it.o
+    0x08000bb6   0x08000bb6   0x00000002   PAD
+    0x08000bb8   0x08000bb8   0x00000110   Code   RO           13    .text.SystemClock_Config  main.o
+    0x08000cc8   0x08000cc8   0x00000002   Code   RO          246    .text.SystemInit    system_stm32f1xx.o
+    0x08000cca   0x08000cca   0x00000002   PAD
+    0x08000ccc   0x08000ccc   0x00000030   Code   RO           85    .text.TIM6_IRQHandler  stm32f1xx_it.o
+    0x08000cfc   0x08000cfc   0x00000106   Code   RO          312    .text.USART1_Config  myusartdrive.o
+    0x08000e02   0x08000e02   0x00000002   PAD
+    0x08000e04   0x08000e04   0x00000004   Code   RO           83    .text.USART1_IRQHandler  stm32f1xx_it.o
+    0x08000e08   0x08000e08   0x00000108   Code   RO          310    .text.USART1_Module_Run  myusartdrive.o
+    0x08000f10   0x08000f10   0x00000082   Code   RO          304    .text.USART1_Put_Data_Into_Ringbuffer  myusartdrive.o
+    0x08000f92   0x08000f92   0x00000002   PAD
+    0x08000f94   0x08000f94   0x000000b4   Code   RO          308    .text.USART1_Put_TxData_To_Ringbuffer  myusartdrive.o
+    0x08001048   0x08001048   0x00000116   Code   RO          302    .text.USART1_RX_DMA1_Channel5_Interrupt_Handler  myusartdrive.o
+    0x0800115e   0x0800115e   0x00000002   PAD
+    0x08001160   0x08001160   0x000000d6   Code   RO          306    .text.USART1_RX_Interrupt_Handler  myusartdrive.o
+    0x08001236   0x08001236   0x00000002   PAD
+    0x08001238   0x08001238   0x000000de   Code   RO          300    .text.USART1_TX_DMA1_Channel4_Interrupt_Handler  myusartdrive.o
+    0x08001316   0x08001316   0x00000002   PAD
+    0x08001318   0x08001318   0x000000bc   Code   RO          279    .text.USB_HP_CAN1_TX_IRQHandler  mycandrive_reg.o
+    0x080013d4   0x080013d4   0x00000002   Code   RO           69    .text.UsageFault_Handler  stm32f1xx_it.o
+    0x080013d6   0x080013d6   0x00000002   PAD
+    0x080013d8   0x080013d8   0x00000020   Code   RO          343    .text.lwrb_get_free  lwrb.o
+    0x080013f8   0x080013f8   0x00000020   Code   RO          349    .text.lwrb_get_full  lwrb.o
+    0x08001418   0x08001418   0x00000024   Code   RO          327    .text.lwrb_init     lwrb.o
+    0x0800143c   0x0800143c   0x00000086   Code   RO          351    .text.lwrb_peek     lwrb.o
+    0x080014c2   0x080014c2   0x00000002   PAD
+    0x080014c4   0x080014c4   0x000000aa   Code   RO          345    .text.lwrb_read     lwrb.o
+    0x0800156e   0x0800156e   0x00000002   PAD
+    0x08001570   0x08001570   0x0000002a   Code   RO          353    .text.lwrb_reset    lwrb.o
+    0x0800159a   0x0800159a   0x00000002   PAD
+    0x0800159c   0x0800159c   0x0000004c   Code   RO          359    .text.lwrb_skip     lwrb.o
+    0x080015e8   0x080015e8   0x000000aa   Code   RO          339    .text.lwrb_write    lwrb.o
+    0x08001692   0x08001692   0x00000002   PAD
+    0x08001694   0x08001694   0x000000fe   Code   RO           11    .text.main          main.o
+    0x08001792   0x08001792   0x0000000e   Code   RO          404    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x080017a0   0x080017a0   0x00000002   Code   RO          405    i.__scatterload_null  mc_w.l(handlers.o)
+    0x080017a2   0x080017a2   0x0000000e   Code   RO          406    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x080017b0   0x080017b0   0x00000010   Data   RO          251    .rodata.AHBPrescTable  system_stm32f1xx.o
+    0x080017c0   0x080017c0   0x00000008   Data   RO          252    .rodata.APBPrescTable  system_stm32f1xx.o
+    0x080017c8   0x080017c8   0x00000020   Data   RO          403    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08001570, Size: 0x00001ca0, Max: 0x00010000, ABSOLUTE)
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x080017e8, Size: 0x00001ca0, Max: 0x00010000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x08001570   0x00000004   Data   RW          204    .data.SystemCoreClock  system_stm32f1xx.o
-    0x20000004   0x08001574   0x00000004   PAD
-    0x20000008        -       0x00000050   Zero   RW          241    .bss..L_MergedGlobals  mycandrive_reg.o
-    0x20000058        -       0x00000048   Zero   RW          272    .bss..L_MergedGlobals  myusartdrive.o
-    0x200000a0        -       0x00000400   Zero   RW          268    .bss.g_Usart1RxRB   myusartdrive.o
-    0x200004a0        -       0x00000800   Zero   RW          269    .bss.g_Usart1TxRB   myusartdrive.o
-    0x20000ca0        -       0x00000400   Zero   RW          270    .bss.rx_buffer      myusartdrive.o
-    0x200010a0        -       0x00000800   Zero   RW          271    .bss.tx_buffer      myusartdrive.o
+    0x20000000   0x080017e8   0x00000004   Data   RW          250    .data.SystemCoreClock  system_stm32f1xx.o
+    0x20000004   0x080017ec   0x00000004   PAD
+    0x20000008        -       0x00000050   Zero   RW          287    .bss..L_MergedGlobals  mycandrive_reg.o
+    0x20000058        -       0x00000048   Zero   RW          318    .bss..L_MergedGlobals  myusartdrive.o
+    0x200000a0        -       0x00000400   Zero   RW          314    .bss.g_Usart1RxRB   myusartdrive.o
+    0x200004a0        -       0x00000800   Zero   RW          315    .bss.g_Usart1TxRB   myusartdrive.o
+    0x20000ca0        -       0x00000400   Zero   RW          316    .bss.rx_buffer      myusartdrive.o
+    0x200010a0        -       0x00000800   Zero   RW          317    .bss.tx_buffer      myusartdrive.o
     0x200018a0        -       0x00000400   Zero   RW            1    STACK               startup_stm32f103xe.o
 
 
@@ -800,25 +861,27 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-        82          0          0          0          0       3970   dma.o
-       146          0          0          0          0       2056   gpio.o
-       692          0          0          0          0      12919   lwrb.o
-       508          0          0          0          0       7047   main.o
-      1006          0          0          0         80      13926   mycandrive_reg.o
-      1370          0          0          0       6216      14066   myusartdrive.o
-        36          8        304          0       1024        812   startup_stm32f103xe.o
-        30          0          0          0          0       1530   stm32f1xx_it.o
-       190          0          0          0          0       3243   stm32f1xx_ll_gpio.o
-       140          0          0          0          0       6804   stm32f1xx_ll_rcc.o
-       246          0          0          0          0       4704   stm32f1xx_ll_usart.o
-       122          0          0          0          0       7882   stm32f1xx_ll_utils.o
-         2          0         24          4          0       1612   system_stm32f1xx.o
-       368          0          0          0          0       7338   usart.o
+        82          0          0          0          0       3959   dma.o
+       146          0          0          0          0       2045   gpio.o
+       692          0          0          0          0      12908   lwrb.o
+       536          0          0          0          0       7619   main.o
+      1006          0          0          0         80      13915   mycandrive_reg.o
+      1550          0          0          0       6216      14055   myusartdrive.o
+        36          8        304          0       1024        800   startup_stm32f103xe.o
+        78         16          0          0          0       2995   stm32f1xx_it.o
+       190          0          0          0          0       3232   stm32f1xx_ll_gpio.o
+       140          0          0          0          0       6793   stm32f1xx_ll_rcc.o
+       210          0          0          0          0      10935   stm32f1xx_ll_tim.o
+       246          0          0          0          0       4693   stm32f1xx_ll_usart.o
+       122          0          0          0          0       7871   stm32f1xx_ll_utils.o
+         2          0         24          4          0       1601   system_stm32f1xx.o
+       168          0          0          0          0       5378   tim.o
+       368          0          0          0          0       7327   usart.o
 
     ----------------------------------------------------------------------
-      4990          8        360          4       7324      87909   Object Totals
+      5626         24        360          4       7324     106126   Object Totals
          0          0         32          0          0          0   (incl. Generated)
-        52          0          0          0          4          0   (incl. Padding)
+        54          0          0          0          4          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -856,15 +919,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      5124         26        360          4       7324      87957   Grand Totals
-      5124         26        360          4       7324      87957   ELF Image Totals
-      5124         26        360          4          0          0   ROM Totals
+      5760         42        360          4       7324     106134   Grand Totals
+      5760         42        360          4       7324     106134   ELF Image Totals
+      5760         42        360          4          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 5484 (   5.36kB)
+    Total RO  Size (Code + RO Data)                 6120 (   5.98kB)
     Total RW  Size (RW Data + ZI Data)              7328 (   7.16kB)
-    Total ROM Size (Code + RO Data + RW Data)       5488 (   5.36kB)
+    Total ROM Size (Code + RO Data + RW Data)       6124 (   5.98kB)
 
 ==============================================================================
 
