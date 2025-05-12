@@ -173,13 +173,14 @@ void USART1_SendString(const char *str) {
   */
 void USART1_SendString_DMA(const char *data, uint16_t len)
 {
-    if (len == 0) {
+    if (len == 0 || len > TX_BUFFER_SIZE) { // 不能让DMA发送0个字节，会导致没办法进入发送完成中断，然后卡死这个函数。
         return;
     }
-    // 等待上一次DMA传输完成（也可以添加超时机制）
+    // 等待上一次DMA传输完成
     while(tx_dma_busy);
     tx_dma_busy = 1; // 标记DMA正在发送
-    
+    memcpy(tx_buffer, data, len); // 将需要发送的数据放入DMA发送缓存区
+
     // 如果DMA通道4正在使能，则先禁用以便重新配置
     if (LL_DMA_IsEnabledChannel(DMA1, LL_DMA_CHANNEL_4))
     {
@@ -203,12 +204,13 @@ void USART1_SendString_DMA(const char *data, uint16_t len)
 #else
 void USART1_SendString_DMA(const char *data, uint16_t len)
 {
-    if (len == 0) {
+    if (len == 0 || len > TX_BUFFER_SIZE) { // 不能让DMA发送0个字节，会导致没办法进入发送完成中断，然后卡死这个函数。
         return;
     }
     // 等待上一次DMA传输完成（也可以添加超时机制）
     while(tx_dma_busy);
     tx_dma_busy = 1; // 标记DMA正在发送
+    memcpy((uint8_t*)tx_buffer, data, len);
     // 如果DMA通道4正在使能，则先禁用以便重新配置
     if(DMA1_Channel4->CCR & 1UL) { // 检查EN位（bit0）是否置位
         DMA1_Channel4->CCR &= ~1UL;  // 禁用DMA通道4（清除EN位）

@@ -245,14 +245,15 @@ __STATIC_INLINE void USART1_RX_Interrupt_Handler(void)
             // 还在接收前半区：接收数据量 = (总长度 - remaining)，不足512字节
             count = RX_BUFFER_SIZE - remaining;
             if (count != 0) {  // 避免与传输完成中断冲突，多复制一次
+                g_Usart1_RXCount += count;
                 /* 在这里，将接收的数据进行处理，或者写入ringbuffer，在主循环再处理（强烈建议这个做法） */
-                //lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, (uint8_t*)rx_buffer, count); // 写入ringbuffer
                 USART1_Put_Data_Into_Ringbuffer((uint8_t*)rx_buffer, count);
             }
         } else {
             // 前半区已满，当前在后半区：后半区接收数据量 = (前半区长度 - remaining)
             count = (RX_BUFFER_SIZE / 2) - remaining;
             if (count != 0) {  // 避免与传输过半中断冲突，多复制一次
+                g_Usart1_RXCount += count;
                 USART1_Put_Data_Into_Ringbuffer((uint8_t*)rx_buffer + RX_BUFFER_SIZE/2, count);
             }
         }
@@ -272,12 +273,13 @@ __STATIC_INLINE void USART1_RX_Interrupt_Handler(void)
   */
 void USART1_SendString_DMA(const char *data, uint16_t len)
 {
-    if (len == 0) {
+    if (len == 0 || len > TX_BUFFER_SIZE) { // 不能让DMA发送0个字节，会导致没办法进入发送完成中断，然后卡死这个函数。
         return;
     }
     // 等待上一次DMA传输完成（也可以添加超时机制）
     while(tx_dma_busy);
     tx_dma_busy = 1; // 标记DMA正在发送
+    memcpy((uint8_t*)tx_buffer, data, len);
     // 如果DMA通道4正在使能，则先禁用以便重新配置
     if(DMA1_Channel4->CCR & 1UL) { // 检查EN位（bit0）是否置位
         DMA1_Channel4->CCR &= ~1UL;  // 禁用DMA通道4（清除EN位）
@@ -295,6 +297,10 @@ void USART1_SendString_DMA(const char *data, uint16_t len)
 
 void USART1_Module_Run(void)
 {
+    /* 在主循环里，读取ringbuffer数据，处理 */
+    if (lwrb_get_full((lwrb_t*)&g_Usart1RxRBHandler)) {
+        // 处理数据
+    }
 
 }
 

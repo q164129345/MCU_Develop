@@ -53,7 +53,7 @@ extern "C" {
 #define RX_BUFFER_SIZE 2048U
 #define TX_BUFFER_SIZE 2048U
 
-#define USE_LL_LIBRARY 1
+#define USE_LL_LIBRARY 0
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/

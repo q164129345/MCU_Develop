@@ -358,7 +358,6 @@ void USART1_RX_Interrupt_Handler(void)
             if (count != 0) { // 避免与传输完成中断冲突，多复制一次
                 g_Usart1_RXCount += count;
                 /* 在这里，将接收的数据进行处理，或者写入ringbuffer，在主循环再处理（强烈建议这个做法） */
-                //lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, (uint8_t*)rx_buffer, count); // 写入ringbuffer
                 USART1_Put_Data_Into_Ringbuffer((uint8_t*)rx_buffer, count);
             }
         } else {
@@ -367,7 +366,6 @@ void USART1_RX_Interrupt_Handler(void)
             if (count != 0) { // 避免与传输过半中断冲突，多复制一次
                 g_Usart1_RXCount += count;
                 /* 在这里，将接收的数据进行处理，或者写入ringbuffer，在主循环再处理（强烈建议这个做法） */
-                //lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, (uint8_t*)rx_buffer + RX_BUFFER_SIZE/2, count); // 写入ringbuffer
                 USART1_Put_Data_Into_Ringbuffer((uint8_t*)rx_buffer + RX_BUFFER_SIZE/2, count);
             }
         }
