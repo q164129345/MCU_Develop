@@ -37,6 +37,11 @@ extern "C" {
 #define TX_BUFFER_SIZE 2048U
 
 /**
+  * @brief  阻塞方式发送以 NUL 结尾的字符串
+  */
+void USART1_SendString_Blocking(const char* str);
+
+/**
  * @brief Send a string over USART1 using DMA
  * @param data Pointer to the data to send
  * @param len  Number of bytes to send

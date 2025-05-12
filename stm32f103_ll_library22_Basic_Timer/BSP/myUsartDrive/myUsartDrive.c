@@ -32,6 +32,23 @@ __STATIC_INLINE uint8_t USART1_Get_TX_DMA_Busy(void)
 }
 
 /**
+  * @brief  阻塞方式发送以 NUL 结尾的字符串
+  * @param  str 指向以 '\0' 结尾的待发送字符串缓冲区
+  * @note   本函数通过轮询 TXE 标志位（USART_SR.TXE，位7）来判断发送数据寄存器是否空：
+  *         - 当 TXE = 1 时，表示 DR 寄存器已空，可写入下一个字节  
+  *         - 通过向 DR 寄存器写入数据（LL_USART_TransmitData8）触发发送  
+  *         - 重复上述过程，直到遇到字符串结束符 '\0'  
+  * @retval None
+  */
+void USART1_SendString_Blocking(const char* str)
+{
+    while (*str) {
+        while (!LL_USART_IsActiveFlag_TXE(USART1));
+        LL_USART_TransmitData8(USART1, *str++);
+    }
+}
+
+/**
   * @brief  配置DMA1通道5用于USART1_RX接收。
   * @note   此函数基于LL库实现。它将DMA1通道5的内存地址配置为rx_buffer，
   *         外设地址配置为USART1数据寄存器的地址，并设置传输数据长度为RX_BUFFER_SIZE，
@@ -52,7 +69,7 @@ static void DMA1_Channel5_Configure(void) {
   * @param  len:  待发送数据长度
   * @retval None
   */
-void USART1_SendString_DMA(const uint8_t *data, uint16_t len)
+static void USART1_SendString_DMA(const uint8_t *data, uint16_t len)
 {
     if (len == 0 || len > TX_BUFFER_SIZE) { // 不能让DMA发送0个字节，会导致没办法进入发送完成中断，然后卡死这个函数。
         return;
@@ -411,7 +428,7 @@ uint8_t USART1_Put_TxData_To_Ringbuffer(const void* data, uint16_t len)
     }
 
     lwrb_sz_t capacity  = TX_BUFFER_SIZE;
-    lwrb_sz_t freeSpace = lwrb_get_free((lwrb_t*)&g_Usart1TxRBHandler);
+    lwrb_sz_t freeSpace = lwrb_get_free((lwrb_t*)&g_Usart1TxRBHandler); // 获取剩余空间
 
     if (len < capacity) {
         if (len <= freeSpace) {
@@ -447,7 +464,7 @@ uint8_t USART1_Put_TxData_To_Ringbuffer(const void* data, uint16_t len)
 }
 
 /**
- * @brief  USART1模块运行任务
+ * @brief  USART1模块运行任务，回调周期建议1ms
  * 
  * 在主循环中调用本函数，当ringbuffer有数据时，可以处理
  * 

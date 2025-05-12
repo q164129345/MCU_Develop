@@ -104,8 +104,9 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    //const char *msg = "012345678";
-    //uint16_t status = USART1_Put_TxData_To_Ringbuffer(msg, strlen(msg));
+    // ต๗สิด๚ย๋
+//    const char *msg = "012345678";
+//    uint16_t status = USART1_Put_TxData_To_Ringbuffer(msg, strlen(msg));
     /* USER CODE BEGIN 3 */
     if (fre % 100 == 0) {
         LL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);

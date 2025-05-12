@@ -108,6 +108,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+    // 测试串口发送、接收代码
 //    const char *msg = "012345678";
 //    uint16_t status = USART1_Put_TxData_To_Ringbuffer(msg, strlen(msg));
     /* USER CODE BEGIN 3 */
@@ -115,7 +116,8 @@ int main(void)
         LL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
 
     }
-    USART1_Module_Run();
+
+    USART1_Module_Run(); // 1.处理接收ringbuffer的消息。2.将发送ringbuffer的消息，使用DMA一次性发送出去。
     
     fre++;
     LL_mDelay(1);

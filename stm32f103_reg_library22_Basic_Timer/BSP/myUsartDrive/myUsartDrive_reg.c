@@ -30,6 +30,24 @@ __STATIC_INLINE uint8_t USART1_Get_TX_DMA_Busy(void)
 }
 
 /**
+  * @brief  阻塞方式发送以 NUL 结尾的字符串
+  * @param  str 指向以 '\0' 结尾的待发送字符串缓冲区
+  * @note   本函数通过轮询 TXE 标志位（USART_SR.TXE，位7）来判断发送数据寄存器是否空：
+  *         - 当 TXE = 1 时，表示 DR 寄存器已空，可写入下一个字节  
+  *         - 通过向 DR 寄存器写入数据（LL_USART_TransmitData8）触发发送  
+  *         - 重复上述过程，直到遇到字符串结束符 '\0'  
+  * @retval None
+  */
+void USART1_SendString_Blocking(const char* str)
+{
+    /* 寄存器方式 */
+    while(*str) {
+        while(!(USART1->SR & (0x01UL << 7UL))); // 等待TXE = 1
+        USART1->DR = *str++;
+    }
+}
+
+/**
   * @brief  将数据写入USART1接收ringbuffer中。
 
   * @param[in] data 指向要写入的数据缓冲区
@@ -421,7 +439,7 @@ uint8_t USART1_Put_TxData_To_Ringbuffer(const void* data, uint16_t len)
     }
 
     lwrb_sz_t capacity  = TX_BUFFER_SIZE;
-    lwrb_sz_t freeSpace = lwrb_get_free((lwrb_t*)&g_Usart1TxRBHandler);
+    lwrb_sz_t freeSpace = lwrb_get_free((lwrb_t*)&g_Usart1TxRBHandler); // 获取剩余空间
 
     if (len < capacity) {
         if (len <= freeSpace) {
