@@ -116,6 +116,7 @@ int main(void)
         LL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
 
     }
+
     USART1_Module_Run(); // 1.处理接收ringbuffer的消息。2.将发送ringbuffer的消息，使用DMA一次性发送出去。
     
     fre++;
