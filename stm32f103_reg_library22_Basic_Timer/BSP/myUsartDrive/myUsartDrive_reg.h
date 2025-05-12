@@ -34,14 +34,19 @@ extern "C" {
 /** 
  * @brief USART TX buffer size definition (unit: bytes)
  */
-#define TX_BUFFER_SIZE 1024U
+#define TX_BUFFER_SIZE 2048U
 
 /**
  * @brief Send a string over USART1 using DMA
  * @param data Pointer to the data to send
  * @param len  Number of bytes to send
  */
-void USART1_SendString_DMA(const char *data, uint16_t len);
+void USART1_SendString_DMA(const uint8_t *data, uint16_t len);
+
+/**
+  * @brief   将数据写入 USART1 发送 ringbuffer 中
+  */
+uint8_t USART1_Put_TxData_To_Ringbuffer(const void* data, uint16_t len);
 
 /**
  * @brief Reinitialize USART1 RX DMA reception

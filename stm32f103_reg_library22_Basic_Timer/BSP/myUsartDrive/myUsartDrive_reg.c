@@ -5,14 +5,29 @@ uint64_t g_Usart1_RXCount = 0;              // 统计接收的字节数
 
 volatile uint8_t tx_buffer[TX_BUFFER_SIZE]; // 发送DMA专用缓存区
 volatile uint8_t tx_dma_busy = 0;           // DMA发送标志位（1：正在发送，0：空闲）
+uint64_t g_Usart1_TXCount = 0;              // 统计发送的字节数
 
 volatile uint16_t usart1Error = 0;
 volatile uint16_t dma1Channel4Error = 0;
 volatile uint16_t dma1Channel5Error = 0;
 
-/* usart1接收ringbuffer */
+/* usart1 ringbuffer */
 volatile lwrb_t g_Usart1RxRBHandler; // 实例化ringbuffer
 volatile uint8_t g_Usart1RxRB[RX_BUFFER_SIZE] = {0,}; // usart1接收ringbuffer缓存区
+
+volatile lwrb_t g_Usart1TxRBHandler; // 实例化ringbuffer
+volatile uint8_t g_Usart1TxRB[TX_BUFFER_SIZE] = {0,}; // usart1发送ringbuffer缓存区
+
+/**
+  * @brief   获取 USART1 TX DMA 传输忙状态
+  * @note    通过读取全局标志 tx_dma_busy 判断当前 USART1 的 DMA 发送通道是否正在工作
+  * @retval  0 表示 DMA 发送空闲，可发起新的传输
+  * @retval  1 表示 DMA 发送忙，请等待当前传输完成
+  */
+__STATIC_INLINE uint8_t USART1_Get_TX_DMA_Busy(void)
+{
+    return tx_dma_busy;
+}
 
 /**
   * @brief  将数据写入USART1接收ringbuffer中。
@@ -66,17 +81,27 @@ static uint8_t USART1_Put_Data_Into_Ringbuffer(const void* data, uint16_t len)
     return ret;
 }
 
-__STATIC_INLINE void Enable_Peripherals_Clock(void)
-{
-    SET_BIT(RCC->APB2ENR, 1UL << 0UL);  // 启动AFIO时钟  // 一般的工程都要开
-    SET_BIT(RCC->APB1ENR, 1UL << 28UL); // 启动PWR时钟   // 一般的工程都要开
-    SET_BIT(RCC->APB2ENR, 1UL << 5UL);  // 启动GPIOD时钟 // 晶振时钟
-    SET_BIT(RCC->APB2ENR, 1UL << 2UL);  // 启动GPIOA时钟 // SWD接口
-    __NOP(); // 稍微延时一下下
-}
-
-// 配置USART1_RX的DMA1通道5
-__STATIC_INLINE void DMA1_Channel5_Configure(void)
+/**
+  * @brief  配置 DMA1 通道5，用于 USART1 RX 的循环接收
+  * @note   本函数完成以下操作：
+  *         1. 使能 DMA1 时钟，并配置 DMA1_Channel5 中断优先级与使能中断  
+  *         2. 禁用 DMA 通道5，并等待其完全关闭  
+  *         3. 设置外设地址 (CPAR=USART1->DR)、存储器地址 (CMAR=rx_buffer)  
+  *            以及传输数据长度 (CNDTR=RX_BUFFER_SIZE)  
+  *         4. 配置 CCR 寄存器各项参数：
+  *            - DIR   = 0 (外设 → 存储器)
+  *            - CIRC  = 1 (循环模式)
+  *            - PINC  = 0 (外设地址不递增)
+  *            - MINC  = 1 (存储器地址递增)
+  *            - PSIZE = 00 (外设数据宽度 8 位)
+  *            - MSIZE = 00 (存储器数据宽度 8 位)
+  *            - PL    = 11 (优先级：非常高)
+  *            - MEM2MEM = 0 (非存储器到存储器模式)
+  *            - 传输完成中断 (TCIE) 与 过半传输中断 (HTIE) 使能
+  *         5. 使能 DMA 通道5，启动循环接收
+  * @retval None
+  */
+static void DMA1_Channel5_Configure(void)
 {
     // 时钟
     RCC->AHBENR |= (1UL << 0UL); // 开启DMA1时钟
@@ -113,8 +138,22 @@ __STATIC_INLINE void DMA1_Channel5_Configure(void)
     DMA1_Channel5->CCR |= 1UL;  // 置EN位启动通道
 }
 
-// 配置DMA1的通道4：普通模式，内存到外设(flash->USART1_TX)，优先级高，存储器地址递增、数据大小都是8bit
-__STATIC_INLINE void DMA1_Channel4_Configure(void)
+/**
+  * @brief  配置 DMA1 通道4，用于 USART1 TX 的内存到外设传输
+  * @note   本函数完成以下步骤：
+  *         1. 使能 DMA1 时钟 (RCC->AHBENR.DMA1EN, bit0)  
+  *         2. 设置并开启 DMA1_Channel4 中断，优先级为 2 (NVIC)  
+  *         3. 配置传输方向为内存到外设 (CCR.DIR=1, bit4)  
+  *         4. 设置通道优先级为高 (CCR.PL=10, bits12–13)  
+  *         5. 关闭循环模式 (CCR.CIRC=0, bit5)  
+  *         6. 配置地址递增模式：外设地址不递增 (CCR.PINC=0, bit6)，  
+  *            存储器地址递增 (CCR.MINC=1, bit7)  
+  *         7. 外设与存储器数据宽度均为 8 位 (CCR.PSIZE=00, bits8–9;  
+  *            CCR.MSIZE=00, bits10–11)  
+  *         8. 使能传输完成中断 (CCR.TCIE=1, bit1)  
+  * @retval None
+  */
+static void DMA1_Channel4_Configure(void)
 {
     // 开启时钟
     RCC->AHBENR |= (1UL << 0UL); // 开启DMA1时钟
@@ -139,6 +178,17 @@ __STATIC_INLINE void DMA1_Channel4_Configure(void)
     DMA1_Channel4->CCR |= (1UL << 1UL);   // 开启发送完成中断
 }
 
+/**
+  * @brief  USART1 错误处理函数
+  * @note   本函数以寄存器方式检查 USART1 状态寄存器（SR）中的错误标志：
+  *            - PE  (位0)：奇偶校验错误  
+  *            - FE  (位1)：帧错误  
+  *            - NE  (位2)：噪声错误  
+  *            - ORE (位3)：接收过载错误  
+  *         若任一错误标志被置位，则通过依次读取 SR 和 DR 清除所有错误标志。
+  * @retval 0 无错误  
+  * @retval 1 检测到错误并已清除
+  */
 __STATIC_INLINE uint8_t USART1_Error_Handler(void)
 {
     // 寄存器方式：检查错误标志（PE、FE、NE、ORE分别位0~3）
@@ -153,6 +203,17 @@ __STATIC_INLINE uint8_t USART1_Error_Handler(void)
     }
 }
 
+/**
+  * @brief  DMA1 通道4 错误处理函数
+  * @note   以寄存器方式检查 DMA1 ISR 寄存器中的传输错误标志 TEIF4 (ISR bit15)，
+  *         若检测到错误，则执行以下操作：
+  *           - 在 IFCR 寄存器中写 1 清除 TEIF4 标志 (IFCR bit15)
+  *           - 禁用 DMA1 通道4（CCR.EN = 0）
+  *           - 清除 USART1 CR3 寄存器中的 DMAT 位（bit7），停止 DMA 发送请求
+  *           - 将全局标志 tx_dma_busy 清零，允许重新发起 DMA 传输
+  * @retval 0 无错误
+  * @retval 1 检测到传输错误并已处理
+  */
 __STATIC_INLINE uint8_t DMA1_Channel4_Error_Handler(void)
 {
     // 检查传输错误（TE）标志，假设TE对应位(1UL << 15)（请根据具体芯片参考手册确认）
@@ -171,6 +232,17 @@ __STATIC_INLINE uint8_t DMA1_Channel4_Error_Handler(void)
     }
 }
 
+/**
+  * @brief  DMA1 通道5 错误处理函数
+  * @note   以寄存器方式检查 DMA1 ISR 寄存器中的传输错误标志 TEIF5 (假设为 bit19)，
+  *         若检测到错误，则按以下步骤处理：
+  *           1. 在 IFCR 寄存器中写 1 清除 TEIF5 标志 (IFCR bit19)
+  *           2. 禁用 DMA1 通道5（CCR.EN = 0）
+  *           3. 重置传输计数寄存器 CNDTR 为 RX_BUFFER_SIZE
+  *           4. 重新使能 DMA1 通道5（CCR.EN = 1）
+  * @retval 0 无错误
+  * @retval 1 检测到传输错误并已处理
+  */
 __STATIC_INLINE uint8_t DMA1_Channel5_Error_Hanlder(void)
 {
     // 检查传输错误（TE）标志，假设TE对应位(1UL << 19)（请确认具体位）
@@ -189,6 +261,16 @@ __STATIC_INLINE uint8_t DMA1_Channel5_Error_Hanlder(void)
     }
 }
 
+/**
+  * @brief  USART1 TX DMA1_Channel4 传输完成/错误中断处理
+  * @note   - 先调用 DMA1_Channel4_Error_Handler() 检查并处理传输错误  
+  *         - 若无错误且检测到传输完成 (ISR.TCIF4, bit13)，则：  
+  *           1. 在 IFCR 中写1清除 TCIF4 标志 (IFCR bit13)  
+  *           2. 禁用 DMA 通道4（CCR.EN = 0）  
+  *           3. 清除 USART1 CR3 中的 DMAT 位 (bit7)，停止 DMA 发送请求  
+  *           4. 将 tx_dma_busy 标志置 0，通知发送已完成  
+  * @retval None
+  */
 __STATIC_INLINE void USART1_TX_DMA1_Channel4_Interrupt_Handler(void)
 {
     if (DMA1_Channel4_Error_Handler()) { // 监控传输错误
@@ -205,6 +287,19 @@ __STATIC_INLINE void USART1_TX_DMA1_Channel4_Interrupt_Handler(void)
     }
 }
 
+/**
+  * @brief  USART1 RX DMA1_Channel5 半传输/传输完成/错误中断处理
+  * @note   - 先调用 DMA1_Channel5_Error_Hanlder() 检查并处理传输错误  
+  *         - 若检测到半传输 (ISR.HTIF5, bit18)：  
+  *           1. 在 IFCR 中写1清除 HTIF5 标志 (IFCR bit18)  
+  *           2. 累加 RX_BUFFER_SIZE/2 字节到 g_Usart1_RXCount  
+  *           3. 将缓冲区前半区数据写入 ringbuffer  
+  *         - 若检测到传输完成 (ISR.TCIF5, bit17)：  
+  *           1. 在 IFCR 中写1清除 TCIF5 标志 (IFCR bit17)  
+  *           2. 累加 RX_BUFFER_SIZE/2 字节到 g_Usart1_RXCount  
+  *           3. 将缓冲区后半区数据写入 ringbuffer  
+  * @retval None
+  */
 __STATIC_INLINE void USART1_RX_DMA1_Channel5_Interrupt_Handler(void)
 {
     if (DMA1_Channel5_Error_Hanlder()) { // 监控传输错误
@@ -222,6 +317,16 @@ __STATIC_INLINE void USART1_RX_DMA1_Channel5_Interrupt_Handler(void)
     }
 }
 
+/**
+  * @brief  USART1 IDLE 中断及错误中断处理
+  * @note   - 调用 USART1_Error_Handler() 检测并清除 PE/FE/NE/ORE 错误  
+  *         - 若检测到 IDLE (SR.IDLE, bit4)：  
+  *           1. 读 SR、DR 清除 IDLE 标志  
+  *           2. 禁用 DMA1_Channel5（CCR.EN = 0），获取 CNDTR 剩余字节数  
+  *           3. 计算本次接收数据长度，并写入 ringbuffer  
+  *           4. 重置 CNDTR 为 RX_BUFFER_SIZE 并重新使能通道  
+  * @retval None
+  */
 __STATIC_INLINE void USART1_RX_Interrupt_Handler(void)
 {
     if (USART1_Error_Handler()) { // 监控串口错误
@@ -271,7 +376,7 @@ __STATIC_INLINE void USART1_RX_Interrupt_Handler(void)
   * @param  len:  待发送数据长度
   * @retval None
   */
-void USART1_SendString_DMA(const char *data, uint16_t len)
+void USART1_SendString_DMA(const uint8_t *data, uint16_t len)
 {
     if (len == 0 || len > TX_BUFFER_SIZE) { // 不能让DMA发送0个字节，会导致没办法进入发送完成中断，然后卡死这个函数。
         return;
@@ -279,7 +384,7 @@ void USART1_SendString_DMA(const char *data, uint16_t len)
     // 等待上一次DMA传输完成（也可以添加超时机制）
     while(tx_dma_busy);
     tx_dma_busy = 1; // 标记DMA正在发送
-    memcpy((uint8_t*)tx_buffer, data, len);
+    
     // 如果DMA通道4正在使能，则先禁用以便重新配置
     if(DMA1_Channel4->CCR & 1UL) { // 检查EN位（bit0）是否置位
         DMA1_Channel4->CCR &= ~1UL;  // 禁用DMA通道4（清除EN位）
@@ -295,19 +400,101 @@ void USART1_SendString_DMA(const char *data, uint16_t len)
     DMA1_Channel4->CCR |= 1UL;
 }
 
-void USART1_Module_Run(void)
+/**
+  * @brief   将数据写入 USART1 发送 ringbuffer 中
+  * @param[in] data 指向要写入的待发送数据缓冲区
+  * @param[in] len  要写入的数据长度（单位：字节）
+  * @retval  0 数据成功写入，无数据丢弃
+  * @retval  1 ringbuffer 空间不足，丢弃部分旧数据以容纳新数据
+  * @retval  2 数据长度超过 ringbuffer 总容量，仅保留最后 TX_BUFFER_SIZE 字节
+  * @retval  3 空数据指针
+  * @note
+  *   - 使用 lwrb 库操作发送 ringbuffer（g_Usart1TxRBHandler）
+  *   - 若 len > TX_BUFFER_SIZE，会截断为最后 TX_BUFFER_SIZE 字节
+  *   - 若空间不足，将调用 lwrb_skip() 丢弃旧数据
+  */
+uint8_t USART1_Put_TxData_To_Ringbuffer(const void* data, uint16_t len)
 {
-    /* 在主循环里，读取ringbuffer数据，处理 */
-    if (lwrb_get_full((lwrb_t*)&g_Usart1RxRBHandler)) {
-        // 处理数据
+    uint8_t ret = 0;
+    if (data == NULL) {
+        return 3;
     }
 
+    lwrb_sz_t capacity  = TX_BUFFER_SIZE;
+    lwrb_sz_t freeSpace = lwrb_get_free((lwrb_t*)&g_Usart1TxRBHandler);
+
+    if (len < capacity) {
+        if (len <= freeSpace) {
+            // 直接写入
+            lwrb_write((lwrb_t*)&g_Usart1TxRBHandler, data, len);
+        } else {
+            // 空间不足，丢弃旧数据
+            lwrb_sz_t used     = lwrb_get_full((lwrb_t*)&g_Usart1TxRBHandler);
+            lwrb_sz_t skip_len = len - freeSpace;
+            if (skip_len > used) {
+                skip_len = used;
+            }
+            lwrb_skip((lwrb_t*)&g_Usart1TxRBHandler, skip_len);
+            lwrb_write((lwrb_t*)&g_Usart1TxRBHandler, data, len);
+            ret = 1;
+        }
+    } else if (len == capacity) {
+        // 刚好等于容量
+        if (freeSpace < capacity) {
+            lwrb_reset((lwrb_t*)&g_Usart1TxRBHandler);
+            ret = 1;
+        }
+        lwrb_write((lwrb_t*)&g_Usart1TxRBHandler, data, len);
+    } else {
+        // len > 容量，仅保留最后 capacity 字节
+        const uint8_t* ptr = (const uint8_t*)data + (len - capacity);
+        lwrb_reset((lwrb_t*)&g_Usart1TxRBHandler);
+        lwrb_write((lwrb_t*)&g_Usart1TxRBHandler, ptr, capacity);
+        ret = 2;
+    }
+
+    return ret;
 }
 
+void USART1_Module_Run(void)
+{
+    /* 1. 接收数据处理（示例） */
+    if (lwrb_get_full((lwrb_t*)&g_Usart1RxRBHandler)) {
+        // TODO: 调用你的接收处理函数，比如：
+        // Process_Usart1_RxData();
+    }
+    
+    /* 2. 发送数据：有数据 & DMA 空闲 */
+    uint16_t available = lwrb_get_full((lwrb_t*)&g_Usart1TxRBHandler);
+    if (available && 0x00 == USART1_Get_TX_DMA_Busy()) {
+        uint16_t len = (available > TX_BUFFER_SIZE) ? TX_BUFFER_SIZE : (uint16_t)available; // 计算待发长度
+        lwrb_read((lwrb_t*)&g_Usart1TxRBHandler, (uint8_t*)tx_buffer, len); // 从环形缓冲区读取到 DMA 缓冲区
+        g_Usart1_TXCount += len; // 统计发送总数
+        USART1_SendString_DMA((uint8_t*)tx_buffer, len); // 发起 DMA 发送
+    }
+}
+
+/**
+  * @brief  配置 USART1 外设，包括时钟、GPIO、串口参数、中断与 DMA
+  * @note   本函数按以下步骤完成 USART1 的初始化：
+  *         1. 初始化收发环形缓冲区（lwrb）  
+  *         2. 使能 USART1 与 GPIOA 外设时钟  
+  *         3. 配置 PA9（TX）为 10MHz 复用推挽输出，PA10（RX）为浮空输入  
+  *         4. 配置 USART1 全局中断，优先级为 0  
+  *         5. 设置波特率：72MHz PCLK2，过采样16，BRR=39.0625  
+  *         6. 配置数据格式：8 位数据、1 个停止位、无校验  
+  *         7. 使能发送（TE）与接收（RE）功能  
+  *         8. 关闭硬件流控、LIN、时钟输出、智能卡、IrDA、半双工模式  
+  *         9. 使能空闲中断（IDLEIE）  
+  *        10. 使能 DMA 接收请求（DMAR），并调用 DMA1_Channel5/4 初始化函数  
+  *        11. 最后使能 USART（UE）  
+  * @retval None
+  */
 void USART1_Configure(void) {
     
     /* ringbuffer */
     lwrb_init((lwrb_t*)&g_Usart1RxRBHandler, (uint8_t*)g_Usart1RxRB, sizeof(g_Usart1RxRB) + 1); // RX ringbuffer初始化
+    lwrb_init((lwrb_t*)&g_Usart1TxRBHandler, (uint8_t*)g_Usart1TxRB, sizeof(g_Usart1TxRB) + 1); // TX ringbuffer初始化
     
     /* 1. 使能外设时钟 */
     // RCC->APB2ENR 寄存器控制 APB2 外设时钟
