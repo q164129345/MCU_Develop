@@ -428,7 +428,7 @@ uint8_t USART1_Put_TxData_To_Ringbuffer(const void* data, uint16_t len)
     }
 
     lwrb_sz_t capacity  = TX_BUFFER_SIZE;
-    lwrb_sz_t freeSpace = lwrb_get_free((lwrb_t*)&g_Usart1TxRBHandler);
+    lwrb_sz_t freeSpace = lwrb_get_free((lwrb_t*)&g_Usart1TxRBHandler); // ªÒ»° £”‡ø’º‰
 
     if (len < capacity) {
         if (len <= freeSpace) {
