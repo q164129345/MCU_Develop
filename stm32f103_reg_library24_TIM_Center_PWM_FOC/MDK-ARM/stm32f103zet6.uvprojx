@@ -525,6 +525,16 @@
               <FileType>1</FileType>
               <FilePath>..\BSP\TIM5PWMOutput\TIM5PWMOutput_reg.c</FilePath>
             </File>
+            <File>
+              <FileName>TIM1_FOC_PWM_reg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\TIM1FOCPWM\TIM1_FOC_PWM_reg.c</FilePath>
+            </File>
+            <File>
+              <FileName>TIM1_FOC_PWM_reg.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\TIM1FOCPWM\TIM1_FOC_PWM_reg.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

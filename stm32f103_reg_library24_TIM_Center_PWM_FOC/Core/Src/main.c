@@ -101,8 +101,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   USART1_Configure();
   /* USER CODE END 2 */
-  TIM5_PWM_Init(72-1, 1000, 500); // 72分频、PWM周期1ms，占空比50%
-  TIM5_PWM_Start(); // 输出PWM波形
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)

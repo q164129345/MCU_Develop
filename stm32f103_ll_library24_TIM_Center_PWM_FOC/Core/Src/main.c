@@ -100,16 +100,28 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_USART1_UART_Init();
-  MX_TIM5_Init();
+  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
   USART1_Config();
   
-  LL_TIM_CC_EnableChannel(TIM5, LL_TIM_CHANNEL_CH1); // 使能CH1通道
-  LL_TIM_EnableCounter(TIM5); // 使能定时器计数
+  // 分别使能6个通道
+  LL_TIM_CC_EnableChannel(TIM1, LL_TIM_CHANNEL_CH1);
+  LL_TIM_CC_EnableChannel(TIM1, LL_TIM_CHANNEL_CH1N);
+  LL_TIM_CC_EnableChannel(TIM1, LL_TIM_CHANNEL_CH2);
+  LL_TIM_CC_EnableChannel(TIM1, LL_TIM_CHANNEL_CH2N);
+  LL_TIM_CC_EnableChannel(TIM1, LL_TIM_CHANNEL_CH3);
+  LL_TIM_CC_EnableChannel(TIM1, LL_TIM_CHANNEL_CH3N);
+  LL_TIM_EnableAllOutputs(TIM1); // 主输出使能（把 BDTR 寄存器的 MOE（主输出使能，bit15）置 1，从而真正打开高级定时器的输出死区、刹车等保护之后的 PWM 输出。）
+  LL_TIM_EnableCounter(TIM1); // 启动定时器
+  
+  // 通过软件方式修改各个通道的占空比
+  LL_TIM_OC_SetCompareCH1(TIM1, 1800);  // 写入 TIM1->CCR1
+  LL_TIM_OC_SetCompareCH2(TIM1, 1800);  // 写入 TIM1->CCR2
+  LL_TIM_OC_SetCompareCH3(TIM1, 1800);  // 写入 TIM1->CCR3
+  LL_TIM_GenerateEvent_UPDATE(TIM1);   // 修改 CCR 之后，如果想立即生效，可手动触发一次更新
+  
   /* USER CODE END 2 */
-  /* 可选代码，修改PWM的占空比与PWM的周期 */
-  LL_TIM_OC_SetCompareCH1(TIM5,100); // 改变占空比
-  LL_TIM_SetAutoReload(TIM5, 2000 - 1); // 将PWM的周期改为2ms
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
