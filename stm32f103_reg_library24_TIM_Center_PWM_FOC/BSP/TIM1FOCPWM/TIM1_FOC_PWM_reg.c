@@ -74,13 +74,16 @@ void TIM1_Set_Compare_Value(uint32_t CH1CompareValue, uint32_t CH2CompareValue, 
 
 /**
   * @brief  启动 TIM1，开始输出 PWM
-  * @note   会重新触发一次更新事件，确保预装载值写入立即生效
+  * @note   会重新触发一次更新事件，确保预装载值写入立即生效；  
+  *         并重新打开主输出，使 PWM 端口有效。
   */
 void TIM1_PWM_Start(void)
 {
     /* 1. 触发更新事件，刷新 ARR/CCR */
     TIM1->EGR = TIM_EGR_UG;
-    /* 2. 使能定时器计数 */
+    /* 2. 使能主输出 */
+    TIM1->BDTR |= TIM_BDTR_MOE;
+    /* 3. 使能定时器计数 */
     TIM1->CR1 |= TIM_CR1_CEN;
 }
 
@@ -102,7 +105,7 @@ void TIM1_PWM_Stop(void)
   * @param  duty1    通道 1 的比较值 (CCR1)，决定占空比
   * @param  duty2    通道 2 的比较值 (CCR2)
   * @param  duty3    通道 3 的比较值 (CCR3)
-  * @note   产生 PWM 模式 1，带互补输出，自动重载、比较寄存器均作预装载
+  * @note   产生 PWM 模式 3，带互补输出，自动重载、比较寄存器均作预装载，高电平有效
   */
 void TIM1_PWM_Init(uint16_t period,
                    uint16_t duty1,
@@ -135,22 +138,26 @@ void TIM1_PWM_Init(uint16_t period,
     TIM1->CCR2 = duty2;
     TIM1->CCR3 = duty3;
     
-    /* 6. 使能通道输出及互补输出 */
+    /* 6. 清除所有极性位，高电平有效 */
+    TIM1->CCER &= ~(
+         TIM_CCER_CC1P | TIM_CCER_CC1NP
+       | TIM_CCER_CC2P | TIM_CCER_CC2NP
+       | TIM_CCER_CC3P | TIM_CCER_CC3NP
+    );
+    
+    /* 7. 使能通道输出及互补输出 */
     TIM1->CCER |= TIM_CCER_CC1E  | TIM_CCER_CC1NE
                 | TIM_CCER_CC2E  | TIM_CCER_CC2NE
                 | TIM_CCER_CC3E  | TIM_CCER_CC3NE;
     
-    /* 7. 设置死区时间（100 个定时器时钟周期，大约 1.39μs） */
+    /* 8. 设置死区时间（100 个定时器时钟周期，大约 1.39μs） */
     TIM1_SetDeadTime(100);
     
-    /* 8. 主输出使能（BDTR 寄存器的 MOE 位）*/
+    /* 9. 主输出使能（BDTR 寄存器的 MOE 位）*/
     TIM1->BDTR |= TIM_BDTR_MOE;
 
-    /* 9. 触发一次更新事件，立即把 ARR/CCR/CCMR1 等预装载寄存器写入工作寄存器 */
-    TIM1->EGR = TIM_EGR_UG;
-
-    /* 10. 启动定时器计数 */
-    //TIM1->CR1 |= TIM_CR1_CEN;
+    /* 10. 触发一次更新事件，立即把 ARR/CCR/CCMR1 等预装载寄存器写入工作寄存器 */
+    TIM1_GenerateEvent_UPDATE();
 }
 
 
