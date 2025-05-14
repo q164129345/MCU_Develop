@@ -25,6 +25,7 @@
 #include "myUsartDrive/myUsartDrive_reg.h"
 #include "myTIM6Drive/myTIM6Drive_reg.h"
 #include "TIM5PWMOutput/TIM5PWMOutput_reg.h"
+#include "TIM1FOCPWM/TIM1_FOC_PWM_reg.h"
 
 /* USER CODE END Includes */
 
@@ -101,7 +102,9 @@ int main(void)
   /* USER CODE BEGIN 2 */
   USART1_Configure();
   /* USER CODE END 2 */
-
+  TIM1_PWM_Init(3600, 1800, 1800, 1800); // 初始化PWM频率10K，占空比50%
+  TIM1_PWM_Start(); // 启动三相PWM
+  //TIM1_Set_Compare_Value(900, 900, 900);
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)

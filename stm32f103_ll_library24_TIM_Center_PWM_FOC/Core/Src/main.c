@@ -115,9 +115,9 @@ int main(void)
   LL_TIM_EnableCounter(TIM1); // 启动定时器
   
   // 通过软件方式修改各个通道的占空比
-  LL_TIM_OC_SetCompareCH1(TIM1, 1800);  // 写入 TIM1->CCR1
-  LL_TIM_OC_SetCompareCH2(TIM1, 1800);  // 写入 TIM1->CCR2
-  LL_TIM_OC_SetCompareCH3(TIM1, 1800);  // 写入 TIM1->CCR3
+  LL_TIM_OC_SetCompareCH1(TIM1, 900);  // 写入 TIM1->CCR1
+  LL_TIM_OC_SetCompareCH2(TIM1, 900);  // 写入 TIM1->CCR2
+  LL_TIM_OC_SetCompareCH3(TIM1, 900);  // 写入 TIM1->CCR3
   LL_TIM_GenerateEvent_UPDATE(TIM1);   // 修改 CCR 之后，如果想立即生效，可手动触发一次更新
   
   /* USER CODE END 2 */

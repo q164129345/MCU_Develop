@@ -26,4 +26,5 @@ stm32f103zet6/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
   ..\BSP\myCanDrive\myCanDrive_reg.h \
   ..\BSP\myUsartDrive\myUsartDrive_reg.h \
   ..\BSP\myTIM6Drive\myTIM6Drive_reg.h \
-  ..\BSP\TIM5PWMOutput\TIM5PWMOutput_reg.h
+  ..\BSP\TIM5PWMOutput\TIM5PWMOutput_reg.h \
+  ..\BSP\TIM1FOCPWM\TIM1_FOC_PWM_reg.h
