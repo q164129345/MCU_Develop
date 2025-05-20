@@ -109,8 +109,8 @@ int main(void)
   {
     /* USER CODE END WHILE */
     // 测试串口发送、接收代码
-    const char *msg = "0123456789";
-    uint16_t status = USART1_Put_TxData_To_Ringbuffer(msg, strlen(msg));
+//    const char *msg = "0123456789";
+//    uint16_t status = USART1_Put_TxData_To_Ringbuffer(msg, strlen(msg));
     /* USER CODE BEGIN 3 */
     if (fre % 100 == 0) {
         LL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
