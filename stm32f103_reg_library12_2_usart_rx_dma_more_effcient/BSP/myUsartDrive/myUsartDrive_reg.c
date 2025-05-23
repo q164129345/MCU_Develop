@@ -324,7 +324,7 @@ __STATIC_INLINE void USART1_TX_DMA1_Channel4_Interrupt_Handler(void)
 __STATIC_INLINE void USART1_DMA_RX_Copy(void)
 {
     uint16_t bufsize = sizeof(rx_buffer);
-    uint16_t curr_pos = bufsize - LL_DMA_GetDataLength(DMA1, LL_DMA_CHANNEL_5); // 计算当前的写指针位置
+    uint16_t curr_pos = bufsize - DMA1_Channel5->CNDTR; // 计算当前的写指针位置
     uint16_t last_pos = g_DMARxLastPos; // 上一次读指针位置
     
     if (curr_pos != last_pos) {
