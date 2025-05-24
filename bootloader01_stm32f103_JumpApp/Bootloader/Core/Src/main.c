@@ -113,7 +113,7 @@ int main(void)
                gUsart1RXDMABuffer, gUsart1RXRBBuffer, sizeof(gUsart1RXDMABuffer),
                gUsart1TXDMABuffer, gUsart1TXRBBuffer, sizeof(gUsart1TXDMABuffer));
   
-  printf("SysTick:%d\n", HAL_GetTick()); //! 往通道0写入消息
+  log_printf("SysTick:%d\n", HAL_GetTick()); //! 往通道0写入消息
   /* USER CODE END 2 */
 
   /* Infinite loop */
