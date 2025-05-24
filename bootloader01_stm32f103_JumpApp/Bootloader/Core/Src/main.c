@@ -25,6 +25,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "bsp_usart_hal.h"
+#include "retarget_rtt.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,6 +46,8 @@ USART_Driver_t gUsart1Drv = {
     .hdma_rx = &hdma_usart1_rx,
     .hdma_tx = &hdma_usart1_tx,
 };
+
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -104,10 +107,13 @@ int main(void)
   MX_DMA_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
+  Retarget_RTT_Init(); //! RTT重定向printf
   //! USART1初始化
   USART_Config(&gUsart1Drv,
                gUsart1RXDMABuffer, gUsart1RXRBBuffer, sizeof(gUsart1RXDMABuffer),
                gUsart1TXDMABuffer, gUsart1TXRBBuffer, sizeof(gUsart1TXDMABuffer));
+  
+  printf("SysTick:%d\n", HAL_GetTick()); //! 往通道0写入消息
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -125,8 +131,8 @@ int main(void)
     //! 2ms
     if (0 == fre % 2) {
         //! 测试发送
-        const char *msg = "0123456789";
-        USART_Put_TxData_To_Ringbuffer(&gUsart1Drv, msg, strlen(msg));
+//        const char *msg = "0123456789";
+//        USART_Put_TxData_To_Ringbuffer(&gUsart1Drv, msg, strlen(msg));
         
         //! 处理已经接收的数据
         //! 连续从ringbuffer里拿出数据来解释，直到没有数据

@@ -7,9 +7,9 @@ stm32f103zet6/gpio.o: ..\Core\Src\gpio.c ..\Core\Inc\gpio.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xe.h \
   ..\Drivers\CMSIS\Include\core_cm3.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdint.h \
-  D:\Coding\MCU_Develop\stm32f103_hal_usart_dma_ringbuffer\Drivers\CMSIS\Include\cmsis_version.h \
-  D:\Coding\MCU_Develop\stm32f103_hal_usart_dma_ringbuffer\Drivers\CMSIS\Include\cmsis_compiler.h \
-  D:\Coding\MCU_Develop\stm32f103_hal_usart_dma_ringbuffer\Drivers\CMSIS\Include\cmsis_armclang.h \
+  D:\Coding\MCU_Develop\bootloader01_stm32f103_JumpApp\Bootloader\Drivers\CMSIS\Include\cmsis_version.h \
+  D:\Coding\MCU_Develop\bootloader01_stm32f103_JumpApp\Bootloader\Drivers\CMSIS\Include\cmsis_compiler.h \
+  D:\Coding\MCU_Develop\bootloader01_stm32f103_JumpApp\Bootloader\Drivers\CMSIS\Include\cmsis_armclang.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h \
@@ -29,5 +29,8 @@ stm32f103zet6/gpio.o: ..\Core\Src\gpio.c ..\Core\Inc\gpio.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdio.h \
   C:\Keil_v5\ARM\ARMCLANG\include\string.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdbool.h ..\BSP\lwrb\lwrb.h \
-  C:\Keil_v5\ARM\ARMCLANG\include\stdatomic.h \
+  C:\Keil_v5\ARM\ARMCLANG\include\stdatomic.h ..\SEGGER_RTT\SEGGER_RTT.h \
+  ..\SEGGER_RTT\SEGGER_RTT_Conf.h \
+  C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h \
+  C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h \
   ..\BSP\myCanDrive\myCanDrive_reg.h
