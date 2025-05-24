@@ -281,7 +281,13 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
 {
     if (huart == gUsart1Drv.huart) {
         gUsart1Drv.errorRX++;
-        // 你也可以在这里插入系统日志、报警等功能
+        //! 你也可以在这里插入系统日志、报警等功能、或者当错误累计到一定程度，重启USART
+//        // 1. 先关闭串口（去初始化）
+//        HAL_UART_DeInit(huart);
+//        // 2. 重新初始化串口（CubeMX生成的初始化函数）
+//        MX_USART1_UART_Init();
+//        // 3. 重新启动DMA接收，避免丢失后续数据
+//        HAL_UART_Receive_DMA(huart, gUsart1Drv.rxDMABuffer, gUsart1Drv.rxBufSize);
     }
     //! 若有多路串口，可继续 else if (huart == xx)
 }
