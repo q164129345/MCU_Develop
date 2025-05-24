@@ -125,8 +125,8 @@ int main(void)
     //! 2ms
     if (0 == fre % 2) {
         //! 测试发送
-//        const char *msg = "0123456789";
-//        USART_Put_TxData_To_Ringbuffer(&gUsart1Drv, msg, strlen(msg));
+        const char *msg = "0123456789";
+        USART_Put_TxData_To_Ringbuffer(&gUsart1Drv, msg, strlen(msg));
         
         //! 处理已经接收的数据
         //! 连续从ringbuffer里拿出数据来解释，直到没有数据
