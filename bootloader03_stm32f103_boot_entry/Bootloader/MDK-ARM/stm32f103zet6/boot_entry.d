@@ -7,9 +7,9 @@ stm32f103zet6/boot_entry.o: ..\IAP\boot_entry.c ..\IAP\boot_entry.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xe.h \
   ..\Drivers\CMSIS\Include\core_cm3.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdint.h \
-  D:\Coding\MCU_Develop\bootloader04_stm32f103_JumpApp\Bootloader\Drivers\CMSIS\Include\cmsis_version.h \
-  D:\Coding\MCU_Develop\bootloader04_stm32f103_JumpApp\Bootloader\Drivers\CMSIS\Include\cmsis_compiler.h \
-  D:\Coding\MCU_Develop\bootloader04_stm32f103_JumpApp\Bootloader\Drivers\CMSIS\Include\cmsis_armclang.h \
+  D:\Coding\MCU_Develop\bootloader03_stm32f103_boot_entry\Bootloader\Drivers\CMSIS\Include\cmsis_version.h \
+  D:\Coding\MCU_Develop\bootloader03_stm32f103_boot_entry\Bootloader\Drivers\CMSIS\Include\cmsis_compiler.h \
+  D:\Coding\MCU_Develop\bootloader03_stm32f103_boot_entry\Bootloader\Drivers\CMSIS\Include\cmsis_armclang.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h \
@@ -33,4 +33,4 @@ stm32f103zet6/boot_entry.o: ..\IAP\boot_entry.c ..\IAP\boot_entry.h \
   ..\SEGGER_RTT\SEGGER_RTT_Conf.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h ..\component\retarget_rtt.h \
-  ..\IAP\bootloader_define.h ..\IAP\flash_map.h ..\IAP\app_jump.h
+  ..\IAP\bootloader_define.h ..\IAP\flash_map.h

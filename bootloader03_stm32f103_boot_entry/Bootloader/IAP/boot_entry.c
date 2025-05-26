@@ -1,6 +1,5 @@
 #include "boot_entry.h"
 #include "flash_map.h"
-#include "app_jump.h"
 
 /**
   * @brief  上电，系统早期初始化回调（main()前自动调用）
@@ -18,20 +17,13 @@
 __attribute__((constructor))
 static void _SystemStart(void)
 {
-    uint64_t flag = IAP_GetUpdateFlag();
     Retarget_RTT_Init(); //! RTT重定向printf
     
     log_printf("System Start!\n");
     
     /*! 检查复位更新标志 */
-    if (flag == BOOTLOADER_RESET_MAGIC_WORD) {
-        IAP_Ready_To_Jump_App(); //! 清理MCU环境，准备跳转App程序
-    }
 
     /*! 后续添加升级模式判断 */
-    
-    
-    /*! 清除固件更新标志 */
-    IAP_SetUpdateFlag(0);
+    /*! 增加检测一个按键，强制进入Bootloader升级模式等等 */
 }
 
