@@ -26,6 +26,7 @@
 /* USER CODE BEGIN Includes */
 #include "bsp_usart_hal.h"
 #include "retarget_rtt.h"
+#include "app_jump.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -83,6 +84,7 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+  log_printf("Entering the main initialization of the bootloader.\n");
   uint32_t fre = 0;
   /* USER CODE END 1 */
 
@@ -107,13 +109,13 @@ int main(void)
   MX_DMA_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  Retarget_RTT_Init(); //! RTT重定向printf
+  //Retarget_RTT_Init(); //! RTT重定向printf
   //! USART1初始化
   USART_Config(&gUsart1Drv,
                gUsart1RXDMABuffer, gUsart1RXRBBuffer, sizeof(gUsart1RXDMABuffer),
                gUsart1TXDMABuffer, gUsart1TXRBBuffer, sizeof(gUsart1TXDMABuffer));
   
-  log_printf("SysTick:%d\n", HAL_GetTick()); //! 往通道0写入消息
+  log_printf("Bootloader init successfully:%d\n", HAL_GetTick()); //! bootloader初始化完成
   /* USER CODE END 2 */
 
   /* Infinite loop */

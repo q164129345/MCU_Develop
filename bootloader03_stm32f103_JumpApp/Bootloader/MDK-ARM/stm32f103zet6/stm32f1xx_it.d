@@ -32,6 +32,6 @@ stm32f103zet6/stm32f1xx_it.o: ..\Core\Src\stm32f1xx_it.c \
   C:\Keil_v5\ARM\ARMCLANG\include\stdatomic.h ..\SEGGER_RTT\SEGGER_RTT.h \
   ..\SEGGER_RTT\SEGGER_RTT_Conf.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h \
-  C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h ..\Core\Inc\stm32f1xx_it.h \
-  ..\BSP\bsp_usart_hal\bsp_usart_hal.h ..\Core\Inc\usart.h \
-  ..\Core\Inc\dma.h
+  C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h ..\component\retarget_rtt.h \
+  ..\Core\Inc\stm32f1xx_it.h ..\BSP\bsp_usart_hal\bsp_usart_hal.h \
+  ..\Core\Inc\usart.h ..\Core\Inc\dma.h

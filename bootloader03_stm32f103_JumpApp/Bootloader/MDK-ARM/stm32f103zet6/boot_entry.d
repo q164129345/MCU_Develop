@@ -1,4 +1,4 @@
-stm32f103zet6/stm32f1xx_hal_msp.o: ..\Core\Src\stm32f1xx_hal_msp.c \
+stm32f103zet6/boot_entry.o: ..\IAP\boot_entry.c ..\IAP\boot_entry.h \
   ..\Core\Inc\main.h ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h \
   ..\Core\Inc\stm32f1xx_hal_conf.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h \
@@ -32,4 +32,5 @@ stm32f103zet6/stm32f1xx_hal_msp.o: ..\Core\Src\stm32f1xx_hal_msp.c \
   C:\Keil_v5\ARM\ARMCLANG\include\stdatomic.h ..\SEGGER_RTT\SEGGER_RTT.h \
   ..\SEGGER_RTT\SEGGER_RTT_Conf.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h \
-  C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h ..\component\retarget_rtt.h
+  C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h ..\component\retarget_rtt.h \
+  ..\IAP\bootloader_define.h ..\IAP\flash_map.h ..\IAP\app_jump.h

@@ -32,4 +32,4 @@ stm32f103zet6/usart.o: ..\Core\Src\usart.c ..\Core\Inc\usart.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdatomic.h ..\SEGGER_RTT\SEGGER_RTT.h \
   ..\SEGGER_RTT\SEGGER_RTT_Conf.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h \
-  C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h
+  C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h ..\component\retarget_rtt.h

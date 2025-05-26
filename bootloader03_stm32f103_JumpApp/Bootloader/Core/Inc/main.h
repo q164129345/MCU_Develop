@@ -36,6 +36,8 @@ extern "C" {
 #include "stdbool.h"
 #include "lwrb/lwrb.h"
 #include "SEGGER_RTT.h"
+#include "retarget_rtt.h"
+
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

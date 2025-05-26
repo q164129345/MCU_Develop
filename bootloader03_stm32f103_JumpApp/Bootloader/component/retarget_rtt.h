@@ -13,7 +13,7 @@ extern "C" {
   * @note   用法与printf一致，输出自动包含当前函数名和行号
   */
 #define log_printf(fmt, ...) \
-    printf("[%s(%d)] " fmt, __FUNCTION__, __LINE__, ##__VA_ARGS__)
+printf("%s-%s(%d):" fmt, __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
 
 /**
   * @brief  重定向printf输出到RTT通道0
