@@ -90,8 +90,6 @@ static void IAP_JumpToApp(uint32_t app_addr)
     /*! 告诉CPU，App的中断向量表地址 */
     SCB->VTOR = AppAddr;
     
-    log_printf("Jump to App, MSP and VTOR = %d, AppEntry = %d\n", AppAddr, (AppAddr + 4));
-    
     /*! 跳转至应用程序入口，函数不再返回 */
     AppEntry();
     
@@ -140,13 +138,19 @@ void IAP_Ready_To_Jump_App(void)
     if (IAP_GetUpdateFlag() == BOOTLOADER_RESET_MAGIC_WORD) {
         log_printf("The second time enter this function, clean the flag and then Jump to Application.\n");
         
+        /*! 保证RTT打印完log(延迟约1ms) */
+        Delay_MS_By_NOP(1);
+        
         /*! 清除固件更新标志位 */
         IAP_SetUpdateFlag(0);
         
         /*! 跳转App */
         IAP_JumpToApp(FLASH_APP_START_ADDR);
     } else {
-        log_printf("The first time enter this function, clean up the MCU environment");
+        log_printf("The first time enter this function, clean up the MCU environment.\n");
+        
+        /*! 保证RTT打印完log(延迟约1ms) */
+        Delay_MS_By_NOP(1);
         
         /*! 设置标志位 */
         IAP_SetUpdateFlag(BOOTLOADER_RESET_MAGIC_WORD);

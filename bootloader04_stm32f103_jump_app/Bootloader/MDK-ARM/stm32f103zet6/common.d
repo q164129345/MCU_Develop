@@ -1,6 +1,5 @@
-stm32f103zet6/stm32f1xx_hal_gpio.o: \
-  ..\Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_gpio.c \
-  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h \
+stm32f103zet6/common.o: ..\component\common.c ..\component\common.h \
+  ..\Core\Inc\main.h ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h \
   ..\Core\Inc\stm32f1xx_hal_conf.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_def.h \
@@ -26,4 +25,12 @@ stm32f103zet6/stm32f1xx_hal_gpio.o: \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_flash_ex.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h \
-  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h
+  ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h \
+  C:\Keil_v5\ARM\ARMCLANG\include\stdio.h \
+  C:\Keil_v5\ARM\ARMCLANG\include\string.h \
+  C:\Keil_v5\ARM\ARMCLANG\include\stdbool.h ..\BSP\lwrb\lwrb.h \
+  C:\Keil_v5\ARM\ARMCLANG\include\stdatomic.h ..\SEGGER_RTT\SEGGER_RTT.h \
+  ..\SEGGER_RTT\SEGGER_RTT_Conf.h \
+  C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h \
+  C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h ..\component\retarget_rtt.h \
+  ..\IAP\bootloader_define.h ..\IAP\flash_map.h

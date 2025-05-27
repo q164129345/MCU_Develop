@@ -84,6 +84,7 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+  
   log_printf("Entering the main initialization of the bootloader.\n");
   uint32_t fre = 0;
   /* USER CODE END 1 */

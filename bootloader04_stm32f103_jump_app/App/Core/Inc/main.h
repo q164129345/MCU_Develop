@@ -50,6 +50,8 @@ extern "C" {
 #include "lwrb/lwrb.h"
 #include "SEGGER_RTT.h"
 #include "retarget_rtt.h"
+#include "bootloader_define.h"
+#include "flash_map.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

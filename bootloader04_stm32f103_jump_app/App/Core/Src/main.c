@@ -90,13 +90,15 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
+  SCB->VTOR = FLASH_APP_START_ADDR; //! 设置中断向量表
+  __enable_irq(); //! 开启全局中断
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-  USART1_Configure();
+  Retarget_RTT_Init(); //! 初始化RTT的通道0并重定向printf
+  USART1_Configure();  //! 初始化USART1
   /* USER CODE END 2 */
 
   /* Infinite loop */

@@ -48,7 +48,6 @@ USART_Driver_t gUsart1Drv = {
     .hdma_tx = &hdma_usart1_tx,
 };
 
-
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -125,6 +124,12 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    if (fre > 5000) {
+        log_printf("5S Timeout.\n");
+        HAL_Delay(1);
+        IAP_Ready_To_Jump_App(); // 清理MCU环境，准备跳转App
+    }
+    
     //! 30ms
     if (0 == fre % 30) {
         HAL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);

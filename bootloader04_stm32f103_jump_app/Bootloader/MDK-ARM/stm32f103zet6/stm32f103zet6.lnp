@@ -28,6 +28,7 @@
 "stm32f103zet6\segger_rtt_asm_armv7m.o"
 "stm32f103zet6\segger_rtt_printf.o"
 "stm32f103zet6\retarget_rtt.o"
+"stm32f103zet6\common.o"
 "stm32f103zet6\app_jump.o"
 "stm32f103zet6\boot_entry.o"
 --library_type=microlib --strict --scatter "stm32f103zet6\stm32f103zet6.sct"
