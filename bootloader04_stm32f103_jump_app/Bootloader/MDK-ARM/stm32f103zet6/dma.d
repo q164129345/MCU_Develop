@@ -33,4 +33,4 @@ stm32f103zet6/dma.o: ..\Core\Src\dma.c ..\Core\Inc\dma.h \
   ..\SEGGER_RTT\SEGGER_RTT_Conf.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h ..\component\retarget_rtt.h \
-  ..\IAP\bootloader_define.h ..\IAP\flash_map.h
+  ..\IAP\bootloader_define.h ..\IAP\flash_map.h ..\component\common.h

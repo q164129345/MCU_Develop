@@ -28,4 +28,4 @@ stm32f103zet6/stm32f1xx_it.o: ..\Core\Src\stm32f1xx_it.c \
   C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h ..\component\retarget_rtt.h \
   ..\IAP\bootloader_define.h ..\IAP\flash_map.h \
-  ..\Core\Inc\stm32f1xx_it.h
+  ..\Core\Inc\stm32f1xx_it.h ..\BSP\bsp_systick\bsp_systick.h

@@ -515,6 +515,16 @@
               <FileType>1</FileType>
               <FilePath>..\BSP\myUsartDrive\myUsartDrive_reg.c</FilePath>
             </File>
+            <File>
+              <FileName>bsp_systick.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\bsp_systick\bsp_systick.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_systick.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\bsp_systick\bsp_systick.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -569,6 +579,11 @@
               <FileName>retarget_rtt.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\component\retarget_rtt.c</FilePath>
+            </File>
+            <File>
+              <FileName>MultiTimer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\component\MultiTimer.c</FilePath>
             </File>
           </Files>
         </Group>

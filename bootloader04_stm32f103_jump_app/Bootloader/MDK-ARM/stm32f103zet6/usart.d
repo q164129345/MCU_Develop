@@ -33,4 +33,4 @@ stm32f103zet6/usart.o: ..\Core\Src\usart.c ..\Core\Inc\usart.h \
   ..\SEGGER_RTT\SEGGER_RTT_Conf.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h ..\component\retarget_rtt.h \
-  ..\IAP\bootloader_define.h ..\IAP\flash_map.h
+  ..\IAP\bootloader_define.h ..\IAP\flash_map.h ..\component\common.h

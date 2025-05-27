@@ -33,7 +33,7 @@ stm32f103zet6/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
   ..\SEGGER_RTT\SEGGER_RTT_Conf.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h ..\component\retarget_rtt.h \
-  ..\IAP\bootloader_define.h ..\IAP\flash_map.h ..\Core\Inc\dma.h \
-  ..\Core\Inc\usart.h ..\Core\Inc\gpio.h \
+  ..\IAP\bootloader_define.h ..\IAP\flash_map.h ..\component\common.h \
+  ..\Core\Inc\dma.h ..\Core\Inc\usart.h ..\Core\Inc\gpio.h \
   ..\BSP\myCanDrive\myCanDrive_reg.h \
   ..\BSP\bsp_usart_hal\bsp_usart_hal.h ..\IAP\app_jump.h

@@ -52,6 +52,7 @@ extern "C" {
 #include "retarget_rtt.h"
 #include "bootloader_define.h"
 #include "flash_map.h"
+
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -73,7 +74,7 @@ extern "C" {
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-
+uint64_t SysTick_GetTick(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

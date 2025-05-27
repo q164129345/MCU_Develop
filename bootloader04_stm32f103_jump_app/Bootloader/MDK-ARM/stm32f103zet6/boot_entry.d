@@ -33,4 +33,5 @@ stm32f103zet6/boot_entry.o: ..\IAP\boot_entry.c ..\IAP\boot_entry.h \
   ..\SEGGER_RTT\SEGGER_RTT_Conf.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h ..\component\retarget_rtt.h \
-  ..\IAP\bootloader_define.h ..\IAP\flash_map.h ..\IAP\app_jump.h
+  ..\IAP\bootloader_define.h ..\IAP\flash_map.h ..\component\common.h \
+  ..\IAP\app_jump.h

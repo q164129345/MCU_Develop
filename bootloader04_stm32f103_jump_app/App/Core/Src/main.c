@@ -23,15 +23,22 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "myUsartDrive/myUsartDrive_reg.h"
+#include "bsp_systick/bsp_systick.h"
+#include "MultiTimer.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
+MultiTimer gTimer1;
+MultiTimer gTimer2;
+void Timer1_Callback(MultiTimer *timer, void *userData);
+void Timer2_Callback(MultiTimer *timer, void *userData);
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -63,7 +70,6 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  uint32_t fre = 0;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -83,7 +89,7 @@ int main(void)
   LL_GPIO_AF_Remap_SWJ_NOJTAG();
 
   /* USER CODE BEGIN Init */
-
+  
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -92,13 +98,19 @@ int main(void)
   /* USER CODE BEGIN SysInit */
   SCB->VTOR = FLASH_APP_START_ADDR; //! 设置中断向量表
   __enable_irq(); //! 开启全局中断
+  
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-  Retarget_RTT_Init(); //! 初始化RTT的通道0并重定向printf
+  SysTick_Init();      //! 初始化SysTick，使能1ms中断
+  //Retarget_RTT_Init(); //! 初始化RTT的通道0并重定向printf
   USART1_Configure();  //! 初始化USART1
+ 
+  MultiTimerInstall(SysTick_GetTicks); //! 给MultiTimer提供1ms的时间戳
+  MultiTimerStart(&gTimer1, 5, Timer1_Callback, NULL);
+  MultiTimerStart(&gTimer2, 500, Timer2_Callback, NULL);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -107,20 +119,7 @@ int main(void)
   {
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
-    if (fre % 200 == 0) {
-        // 调试代码
-        const char *msg = "012345678";
-        uint16_t status = USART1_Put_TxData_To_Ringbuffer(msg, strlen(msg));
-        LL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
-    }
-    USART1_Module_Run();
-    
-    if (fre % 1000 == 0) {
-        log_printf("App is running.\n");
-    }
-    
-    fre++;
-    LL_mDelay(1);
+    MultiTimerYield();
   }
   /* USER CODE END 3 */
 }
@@ -165,6 +164,27 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+void Timer1_Callback(MultiTimer *timer, void *userData)
+{
+    //! USART1模块运行
+    USART1_Module_Run();
+    
+    //! 重新启动定时器
+    MultiTimerStart(timer, 5, Timer1_Callback, NULL);
+}
+
+void Timer2_Callback(MultiTimer *timer, void *userData)
+{
+    //! 调试代码
+    const char *msg = "012345678";
+    uint16_t status = USART1_Put_TxData_To_Ringbuffer(msg, strlen(msg));
+    
+    //! 心跳LED
+    LL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
+    
+    //! 重新启动定时器
+    MultiTimerStart(timer, 500, Timer2_Callback, NULL);
+}
 
 /* USER CODE END 4 */
 
