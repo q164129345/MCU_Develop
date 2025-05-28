@@ -19,43 +19,6 @@ volatile uint64_t update_flag __attribute__((at(FIRMWARE_UPDATE_VAR_ADDR), zero_
 #endif
 
 /**
-  * @brief  去初始化Bootloader已用外设，避免影响App运行
-  * @note
-  *   - 复位系统时钟为默认HSI
-  *   - 关闭全局中断与SysTick
-  *   - 去初始化USART1及其DMA
-  *   - 清除所有NVIC中断和挂起标志
-  *   - 跳转App前必须调用本函数
-  */
-//void IAP_DeInitHardware(void)
-//{
-//    /*! 系统时钟复位为默认状态（使用HSI） */
-//    HAL_RCC_DeInit();
-//   
-//    /*! 关闭SysTick定时器 */
-//    SysTick->CTRL = 0;
-//    SysTick->LOAD = 0;
-//    SysTick->VAL  = 0;
-
-//    /*! bootloader程序初始化的外设，全部都要DeInit，否则会影响App的运行 */
-//    /*! 本实例的bootloader只用到DMA与USART1 */
-//    /*! 串口去初始化 */
-//    HAL_UART_DeInit(&huart1);
-
-//    /*! DMA去初始化 */
-//    HAL_DMA_DeInit(huart1.hdmarx);
-//    HAL_DMA_DeInit(huart1.hdmatx);
-
-//    /*! NVIC中断彻底关闭和清挂起 */
-//    for (uint8_t i = 0; i < 8; ++i) {
-//        NVIC->ICER[i] = 0xFFFFFFFF;
-//        NVIC->ICPR[i] = 0xFFFFFFFF;
-//    }
-
-//    //__enable_irq();   /*!< 重新打开中断（跳转前可不使能） */
-//}
-
-/**
   * @brief  跳转到指定应用程序入口（不返回）
   * @param  app_addr  应用程序向量表地址（通常为App分区起始地址）
   * @note

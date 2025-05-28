@@ -520,11 +520,6 @@
               <FileType>1</FileType>
               <FilePath>..\BSP\bsp_systick\bsp_systick.c</FilePath>
             </File>
-            <File>
-              <FileName>bsp_systick.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\BSP\bsp_systick\bsp_systick.h</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>

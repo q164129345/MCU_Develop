@@ -96,6 +96,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
+  
   SCB->VTOR = FLASH_APP_START_ADDR; //! 设置中断向量表
   __enable_irq(); //! 开启全局中断
   
@@ -119,7 +120,7 @@ int main(void)
   {
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
-    MultiTimerYield();
+    MultiTimerYield(); //! MultiTimer模块运行
   }
   /* USER CODE END 3 */
 }
@@ -164,15 +165,29 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+/**
+  * @brief  Timer1定时回调函数
+  * @note   主要用于周期性运行USART1模块处理函数，并重新启动定时器，实现周期性调度
+  * @param  timer    定时器指针，由MultiTimer库自动传递
+  * @param  userData 用户数据指针（本函数未使用，可为NULL）
+  * @retval None
+  */
 void Timer1_Callback(MultiTimer *timer, void *userData)
 {
     //! USART1模块运行
     USART1_Module_Run();
     
-    //! 重新启动定时器
+    //! 重新启动定时器（5ms)
     MultiTimerStart(timer, 5, Timer1_Callback, NULL);
 }
 
+/**
+  * @brief  Timer2定时回调函数
+  * @note   主要用于测试串口发送与LED心跳灯切换，并重新启动定时器
+  * @param  timer    定时器指针，由MultiTimer库自动传递
+  * @param  userData 用户数据指针（本函数未使用，可为NULL）
+  * @retval None
+  */
 void Timer2_Callback(MultiTimer *timer, void *userData)
 {
     //! 调试代码
@@ -182,7 +197,7 @@ void Timer2_Callback(MultiTimer *timer, void *userData)
     //! 心跳LED
     LL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
     
-    //! 重新启动定时器
+    //! 重新启动定时器(500ms)
     MultiTimerStart(timer, 500, Timer2_Callback, NULL);
 }
 

@@ -9,8 +9,6 @@ extern "C" {
 
 
 
-void IAP_Ready_To_Jump_App(void);
-
 
 #ifdef __cplusplus
 }

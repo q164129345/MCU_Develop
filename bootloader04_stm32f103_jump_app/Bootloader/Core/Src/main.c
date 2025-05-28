@@ -124,6 +124,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    //! 开机5S后，跳转App
     if (fre > 5000) {
         log_printf("5S Timeout.\n");
         HAL_Delay(1);
@@ -132,15 +133,11 @@ int main(void)
     
     //! 30ms
     if (0 == fre % 30) {
-        HAL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
+        HAL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin); //! 心跳灯快闪（在bootlaoder程序里，心跳灯快闪。App程序，心跳灯慢闪。肉眼区分当前跑什么程序）
     }
     
     //! 2ms
     if (0 == fre % 2) {
-        //! 测试发送
-//        const char *msg = "0123456789";
-//        USART_Put_TxData_To_Ringbuffer(&gUsart1Drv, msg, strlen(msg));
-        
         //! 处理已经接收的数据
         //! 连续从ringbuffer里拿出数据来解释，直到没有数据
 //        while(USART_Get_The_Existing_Amount_Of_Data(&gUsart1Drv)) {
@@ -148,7 +145,6 @@ int main(void)
 //            USART_Take_A_Piece_Of_Data(&gUsart1Drv, &data);
 //            // 将data丢给data_process(data)，解析数据
 //        }
-        
         USART_Module_Run(&gUsart1Drv); //! Usart1模块运行
     }
     
