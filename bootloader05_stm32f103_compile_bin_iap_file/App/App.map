@@ -1065,14 +1065,14 @@ Image component sizes
        292          0          0          0          8       2468   multitimer.o
       1006          0          0          0         80      13928   mycandrive_reg.o
       1554          0          0          0       6224      11391   myusartdrive_reg.o
-        36          8        304          0       1024        804   startup_stm32f103xe.o
+        36          8        304          0       1024        816   startup_stm32f103xe.o
         20          0          0          0          0       1154   stm32f1xx_it.o
        190          0          0          0          0       3245   stm32f1xx_ll_gpio.o
         52          0          0          0          0       7884   stm32f1xx_ll_utils.o
          2          0          0          4          0       1614   system_stm32f1xx.o
 
     ----------------------------------------------------------------------
-      4778         20        336          4       7396      69304   Object Totals
+      4778         20        336          4       7396      69316   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         42          0          0          0          4          0   (incl. Padding)
 
@@ -1112,8 +1112,8 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      4912         38        336          4       7396      69392   Grand Totals
-      4912         38        336          4       7396      69392   ELF Image Totals
+      4912         38        336          4       7396      69404   Grand Totals
+      4912         38        336          4       7396      69404   ELF Image Totals
       4912         38        336          4          0          0   ROM Totals
 
 ==============================================================================
