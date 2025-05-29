@@ -1,0 +1,25 @@
+--cpu Cortex-M3
+".\outputs\startup_stm32f103xe.o"
+".\outputs\main.o"
+".\outputs\gpio.o"
+".\outputs\stm32f1xx_it.o"
+".\outputs\stm32f1xx_ll_gpio.o"
+".\outputs\stm32f1xx_ll_pwr.o"
+".\outputs\stm32f1xx_ll_exti.o"
+".\outputs\stm32f1xx_ll_rcc.o"
+".\outputs\stm32f1xx_ll_utils.o"
+".\outputs\system_stm32f1xx.o"
+".\outputs\mycandrive_reg.o"
+".\outputs\myusartdrive_reg.o"
+".\outputs\bsp_systick.o"
+".\outputs\lwrb.o"
+".\outputs\lwrb_ex.o"
+".\outputs\segger_rtt.o"
+".\outputs\segger_rtt_asm_armv7m.o"
+".\outputs\segger_rtt_printf.o"
+".\outputs\retarget_rtt.o"
+".\outputs\multitimer.o"
+--library_type=microlib --strict --scatter ".\Outputs\App.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "..\App.map" -o .\Outputs\App.axf
