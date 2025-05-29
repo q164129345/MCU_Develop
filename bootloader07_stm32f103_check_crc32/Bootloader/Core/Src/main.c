@@ -27,6 +27,7 @@
 #include "bsp_usart_hal.h"
 #include "retarget_rtt.h"
 #include "app_jump.h"
+#include "soft_crc32.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -52,6 +53,32 @@ USART_Driver_t gUsart1Drv = {
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
+uint32_t gCalc = 0;
+uint32_t gStored = 0;
+
+#define FW_TOTAL_LEN 5260U //! 固件的长度，在App编译的log上得到，记得+4
+
+/**
+  * @brief  进行固件软件CRC32自检，确保固件完整性
+  * @note   
+  * - 此函数通过软件方式计算固件的CRC32校验码；
+  * - 与固件末尾存储的CRC32值进行比较；
+  * - 若匹配，打印“校验通过”；否则，打印“校验失败”并显示差异。
+  * @retval 无
+  */
+void CRC_SelfTest_SW(void)
+{
+    gCalc   = Calculate_Firmware_CRC32_SW(FLASH_DL_START_ADDR, FW_TOTAL_LEN - 4u); //! 最后4个字节是CRC32码，不需要做CRC运算
+    gStored = *(uint32_t *)(FLASH_DL_START_ADDR + FW_TOTAL_LEN - 4u);
+
+    SEGGER_RTT_printf(0,
+        (gCalc == gStored) ?
+        "SW CRC OK  : 0x%08lX\r\n" :
+        "SW CRC FAIL: calc=0x%08lX, stored=0x%08lX\r\n",
+        gCalc, gStored);
+}
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -125,15 +152,19 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     //! 开机5S后，跳转App
-    if (fre > 5000) {
-        log_printf("5S Timeout.\n");
-        HAL_Delay(1);
-        IAP_Ready_To_Jump_App(); // 清理MCU环境，准备跳转App
-    }
+//    if (fre > 5000) {
+//        log_printf("5S Timeout.\n");
+//        HAL_Delay(1);
+//        IAP_Ready_To_Jump_App(); // 清理MCU环境，准备跳转App
+//    }
     
     //! 30ms
     if (0 == fre % 30) {
         HAL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin); //! 心跳灯快闪（在bootlaoder程序里，心跳灯快闪。App程序，心跳灯慢闪。肉眼区分当前跑什么程序）
+    }
+    
+    if (fre > 1000) {
+        if (0 == gCalc) CRC_SelfTest_SW(); //! 开机1S后，执行一次CRC32校验
     }
     
     //! 2ms

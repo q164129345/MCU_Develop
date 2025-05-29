@@ -7,9 +7,9 @@ stm32f103zet6/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xe.h \
   ..\Drivers\CMSIS\Include\core_cm3.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdint.h \
-  D:\Coding\MCU_Develop\bootloader04_stm32f103_jump_app\Bootloader\Drivers\CMSIS\Include\cmsis_version.h \
-  D:\Coding\MCU_Develop\bootloader04_stm32f103_jump_app\Bootloader\Drivers\CMSIS\Include\cmsis_compiler.h \
-  D:\Coding\MCU_Develop\bootloader04_stm32f103_jump_app\Bootloader\Drivers\CMSIS\Include\cmsis_armclang.h \
+  D:\Coding\MCU_Develop\bootloader07_stm32f103_check_crc32\Bootloader\Drivers\CMSIS\Include\cmsis_version.h \
+  D:\Coding\MCU_Develop\bootloader07_stm32f103_check_crc32\Bootloader\Drivers\CMSIS\Include\cmsis_compiler.h \
+  D:\Coding\MCU_Develop\bootloader07_stm32f103_check_crc32\Bootloader\Drivers\CMSIS\Include\cmsis_armclang.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h \
@@ -36,4 +36,5 @@ stm32f103zet6/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
   ..\IAP\bootloader_define.h ..\IAP\flash_map.h ..\component\common.h \
   ..\Core\Inc\dma.h ..\Core\Inc\usart.h ..\Core\Inc\gpio.h \
   ..\BSP\myCanDrive\myCanDrive_reg.h \
-  ..\BSP\bsp_usart_hal\bsp_usart_hal.h ..\IAP\app_jump.h
+  ..\BSP\bsp_usart_hal\bsp_usart_hal.h ..\IAP\app_jump.h \
+  ..\IAP\soft_crc32.h

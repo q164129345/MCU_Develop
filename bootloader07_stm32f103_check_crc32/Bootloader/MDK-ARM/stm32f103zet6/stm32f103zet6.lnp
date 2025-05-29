@@ -31,6 +31,7 @@
 "stm32f103zet6\common.o"
 "stm32f103zet6\app_jump.o"
 "stm32f103zet6\boot_entry.o"
+"stm32f103zet6\soft_crc32.o"
 --library_type=microlib --strict --scatter "stm32f103zet6\stm32f103zet6.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F103xE,USE_HAL_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../BSP;../lwrb/lwrb/src/include;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;..\BSP\bsp_usart_hal;..\SEGGER_RTT;..\component;..\IAP</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../BSP;../lwrb/lwrb/src/include;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../BSP/bsp_usart_hal;../SEGGER_RTT;../component;../IAP</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1539,6 +1539,11 @@
               <FileName>boot_entry.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\IAP\boot_entry.c</FilePath>
+            </File>
+            <File>
+              <FileName>soft_crc32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\IAP\soft_crc32.c</FilePath>
             </File>
           </Files>
         </Group>

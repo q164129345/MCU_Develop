@@ -8,9 +8,9 @@ stm32f103zet6/app_jump.o: ..\IAP\app_jump.c ..\IAP\app_jump.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xe.h \
   ..\Drivers\CMSIS\Include\core_cm3.h \
-  D:\Coding\MCU_Develop\bootloader04_stm32f103_jump_app\Bootloader\Drivers\CMSIS\Include\cmsis_version.h \
-  D:\Coding\MCU_Develop\bootloader04_stm32f103_jump_app\Bootloader\Drivers\CMSIS\Include\cmsis_compiler.h \
-  D:\Coding\MCU_Develop\bootloader04_stm32f103_jump_app\Bootloader\Drivers\CMSIS\Include\cmsis_armclang.h \
+  D:\Coding\MCU_Develop\bootloader07_stm32f103_check_crc32\Bootloader\Drivers\CMSIS\Include\cmsis_version.h \
+  D:\Coding\MCU_Develop\bootloader07_stm32f103_check_crc32\Bootloader\Drivers\CMSIS\Include\cmsis_compiler.h \
+  D:\Coding\MCU_Develop\bootloader07_stm32f103_check_crc32\Bootloader\Drivers\CMSIS\Include\cmsis_armclang.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h \
