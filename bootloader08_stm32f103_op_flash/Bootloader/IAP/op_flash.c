@@ -64,7 +64,7 @@ static OP_FlashStatus_t OP_Flash_Write(uint32_t addr, uint8_t *data, uint32_t le
         return OP_FLASH_ADDR_INVALID;
     }
     if ((addr % 4) != 0 || (length % 4) != 0) {
-        return OP_FLASH_ERROR; // 非4字节对齐
+        return OP_FLASH_ERROR; //!< 非4字节对齐
     }
 
     HAL_StatusTypeDef status = HAL_OK;
@@ -95,18 +95,18 @@ static OP_FlashStatus_t OP_Flash_Write(uint32_t addr, uint8_t *data, uint32_t le
 OP_FlashStatus_t OP_Flash_Copy(uint32_t src_addr, uint32_t dest_addr, uint32_t length)
 {
     if ((length == 0) || ((src_addr % 4) != 0) || ((dest_addr % 4) != 0) || (length % 4) != 0) {
-        return OP_FLASH_ERROR; // 对齐检查
+        return OP_FLASH_ERROR; //!< 对齐检查
     }
     if (!OP_Flash_IsValidAddr(src_addr) || !OP_Flash_IsValidAddr(dest_addr)) {
         return OP_FLASH_ADDR_INVALID;
     }
 
-    // 1. 擦除目标区
+    //! 1. 擦除目标区
     if (OP_Flash_Erase(dest_addr, length) != OP_FLASH_OK) {
         return OP_FLASH_ERROR;
     }
 
-    // 2. 逐步拷贝写入（分段缓存，节省RAM，防止溢出）
+    //! 2. 逐步拷贝写入（分段缓存，节省RAM，防止溢出）
     #define FLASH_COPY_BUFSIZE  256  //!< 拷贝缓冲，建议64~256（4字节对齐）
     uint8_t buffer[FLASH_COPY_BUFSIZE];
     uint32_t copied = 0;
