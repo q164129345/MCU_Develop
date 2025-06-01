@@ -28,6 +28,8 @@
 #include "retarget_rtt.h"
 #include "app_jump.h"
 #include "soft_crc32.h"
+#include "op_flash.h"
+#include "fw_verify.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -53,37 +55,9 @@ USART_Driver_t gUsart1Drv = {
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
-uint32_t gCalc = 0;
-uint32_t gStored = 0;
+uint32_t gOneTime = 0;
 
 #define FW_TOTAL_LEN 5260U //! 固件的长度，在App编译的log上得到，记得+4
-
-/**
-  * @brief  软件方式对固件区进行CRC32自检校验
-  * @note   本函数用于对下载区（FLASH_DL_START_ADDR）的固件进行CRC32完整性校验，防止升级过程中固件损坏。
-  *         校验时，跳过最后4字节（存放CRC32校验码），对其余所有字节做CRC32运算。
-  *         计算出的结果与固件最后4字节存储的校验码做对比，并通过RTT打印校验结果。
-  * @retval HAL_OK    校验通过
-  * @retval HAL_ERROR 校验失败
-  */
-uint8_t CRC_SelfTest_SW(void)
-{
-    gCalc   = Calculate_Firmware_CRC32_SW(FLASH_DL_START_ADDR, FW_TOTAL_LEN - 4u); //! 最后4个字节是CRC32码，不需要做CRC运算
-    gStored = *(uint32_t *)(FLASH_DL_START_ADDR + FW_TOTAL_LEN - 4u);
-
-    SEGGER_RTT_printf(0,
-        (gCalc == gStored) ?
-        "SW CRC OK  : 0x%08lX\r\n" :
-        "SW CRC FAIL: calc=0x%08lX, stored=0x%08lX\r\n",
-        gCalc, gStored);
-    
-    if (gCalc == gStored) {
-        return HAL_OK; //!< 校验通过
-    } else {
-        return HAL_ERROR;  //!< 校验失败
-    }
-}
 
 /* USER CODE END PD */
 
@@ -170,8 +144,22 @@ int main(void)
         HAL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin); //! 心跳灯快闪（在bootlaoder程序里，心跳灯快闪。App程序，心跳灯慢闪。肉眼区分当前跑什么程序）
     }
     
+    //! 开机1S后，执行一次CRC32校验。校验成功的话，将App缓存区的固件Copy到App区
     if (fre > 1000) {
-        if (0 == gCalc) CRC_SelfTest_SW(); //! 开机1S后，执行一次CRC32校验
+        if (0 == gOneTime) {
+            gOneTime++;
+            if (HAL_OK == FW_Firmware_Verification(FLASH_DL_START_ADDR, FW_TOTAL_LEN)) { //!< 校验CRC32
+                //! CRC32校验成功
+                if (OP_FLASH_OK == OP_Flash_Copy(FLASH_DL_START_ADDR, FLASH_APP_START_ADDR, FLASH_APP_SIZE)) { //!< 将App缓存区的所有二进制复制到App区
+                    log_printf("The firmware copy to the app area was successful.\r\n"); //!< 升级固件成功
+                } else {
+                    log_printf("The firmware copy to the app area failed\r\n"); //!< 升级固件失败
+                }
+            } else {
+                //! CRC32校验失败
+                log_printf("There is a problem with the integrity of the firmware, and IAP Upgrade failure.\r\n");
+            }
+        }
     }
     
     //! 2ms

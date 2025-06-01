@@ -1546,14 +1546,14 @@
               <FilePath>..\IAP\soft_crc32.c</FilePath>
             </File>
             <File>
-              <FileName>op_flash.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\IAP\op_flash.h</FilePath>
-            </File>
-            <File>
               <FileName>op_flash.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\IAP\op_flash.c</FilePath>
+            </File>
+            <File>
+              <FileName>fw_verify.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\IAP\fw_verify.c</FilePath>
             </File>
           </Files>
         </Group>

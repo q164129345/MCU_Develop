@@ -761,12 +761,12 @@
     <File>
       <GroupNumber>9</GroupNumber>
       <FileNumber>38</FileNumber>
-      <FileType>5</FileType>
+      <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\IAP\op_flash.h</PathWithFileName>
-      <FilenameWithoutPath>op_flash.h</FilenameWithoutPath>
+      <PathWithFileName>..\IAP\op_flash.c</PathWithFileName>
+      <FilenameWithoutPath>op_flash.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -777,8 +777,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\IAP\op_flash.c</PathWithFileName>
-      <FilenameWithoutPath>op_flash.c</FilenameWithoutPath>
+      <PathWithFileName>..\IAP\fw_verify.c</PathWithFileName>
+      <FilenameWithoutPath>fw_verify.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
