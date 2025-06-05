@@ -3,9 +3,9 @@
 <title>Static Call Graph - [stm32f103zet6\stm32f103zet6.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image stm32f103zet6\stm32f103zet6.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Sun Jun  1 09:05:01 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Thu Jun  5 15:06:05 2025
 <BR><P>
-<H3>Maximum Stack Usage =        424 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        432 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 main &rArr; OP_Flash_Copy &rArr; HAL_FLASH_Program &rArr; FLASH_WaitForLastOperation
 <P>
@@ -423,6 +423,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = Delay_MS_By_NOP
 </UL>
 <BR>[Called By]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IAP_Ready_To_Jump_App
+<LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
 <P><STRONG><a name="[7e]"></a>Error_Handler</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, main.o(.text.Error_Handler))
@@ -715,11 +716,12 @@ Global Symbols
 <P><STRONG><a name="[84]"></a>IAP_Ready_To_Jump_App</STRONG> (Thumb, 172 bytes, Stack size 16 bytes, app_jump.o(.text.IAP_Ready_To_Jump_App))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = IAP_Ready_To_Jump_App &rArr; __2printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delay_MS_By_NOP
-<LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SystemReset
+<BR>[Calls]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SystemReset
+<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delay_MS_By_NOP
 <LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_SystemStart
+<LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
 <P><STRONG><a name="[a3]"></a>IAP_SetUpdateFlag</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, app_jump.o(.text.IAP_SetUpdateFlag))
@@ -938,10 +940,12 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Put_Data_Into_Ringbuffer
 </UL>
 
-<P><STRONG><a name="[46]"></a>main</STRONG> (Thumb, 416 bytes, Stack size 72 bytes, main.o(.text.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 424<LI>Call Chain = main &rArr; OP_Flash_Copy &rArr; HAL_FLASH_Program &rArr; FLASH_WaitForLastOperation
+<P><STRONG><a name="[46]"></a>main</STRONG> (Thumb, 436 bytes, Stack size 80 bytes, main.o(.text.main))
+<BR><BR>[Stack]<UL><LI>Max Depth = 432<LI>Call Chain = main &rArr; OP_Flash_Copy &rArr; HAL_FLASH_Program &rArr; FLASH_WaitForLastOperation
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Module_Run
+<BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IAP_Ready_To_Jump_App
+<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delay_MS_By_NOP
+<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Module_Run
 <LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OP_Flash_Copy
 <LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FW_Firmware_Verification
 <LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_TogglePin
@@ -1043,10 +1047,10 @@ Local Symbols
 <P><STRONG><a name="[50]"></a>_SystemStart</STRONG> (Thumb, 52 bytes, Stack size 16 bytes, boot_entry.o(.text._SystemStart))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = _SystemStart &rArr; Retarget_RTT_Init &rArr; SEGGER_RTT_SetTerminal
 </UL>
-<BR>[Calls]<UL><LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IAP_Ready_To_Jump_App
-<LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IAP_SetUpdateFlag
+<BR>[Calls]<UL><LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IAP_SetUpdateFlag
 <LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IAP_GetUpdateFlag
 <LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Retarget_RTT_Init
+<LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IAP_Ready_To_Jump_App
 <LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> boot_entry.o(.init_array)

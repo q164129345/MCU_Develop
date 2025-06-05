@@ -9,26 +9,29 @@ set INPUT_FILE=.\Output\App.bin
 set OUTPUT_FILE=.\Output\App_crc.bin
 
 rem ── 1. 计算原始 BIN 长度 ──
-for %%i in (%INPUT_FILE%) do set BIN_SIZE=%%~zi
-echo App.bin size: %BIN_SIZE% bytes
+for %%i in ("%INPUT_FILE%") do set BIN_SIZE=%%~zi
+echo App.bin size            : %BIN_SIZE% bytes
 
 rem ── 2. 追加 CRC32（小端）到文件尾 ──
 .\srec_cat.exe ^
-    %INPUT_FILE% -Binary ^
+    "%INPUT_FILE%" -Binary ^
     -crop 0 %BIN_SIZE% ^
     -crc32-l-e %BIN_SIZE% ^
-    -o %OUTPUT_FILE% -Binary
+    -o "%OUTPUT_FILE%" -Binary
 
-if not exist %OUTPUT_FILE% (
+if not exist "%OUTPUT_FILE%" (
     echo Failed to generate CRC32 bin file!
     goto :eof
 )
 
-rem ── 3. 裁剪最后 4 字节并打印 CRC32 ──
+rem ── 3. 获取追加 CRC32 后 BIN 长度 ──
+for %%i in ("%OUTPUT_FILE%") do set BIN_SIZE_CRC=%%~zi
+
+rem ── 4. 裁剪最后 4 字节并打印 CRC32 ──
 set /a END_ADDR=%BIN_SIZE%+4
 
 for /f "tokens=2-5" %%a in ('
-    .\srec_cat.exe %OUTPUT_FILE% -Binary ^
+    .\srec_cat.exe "%OUTPUT_FILE%" -Binary ^
         -crop %BIN_SIZE% !END_ADDR! ^
         -o - -hex-dump
 ') do (
@@ -41,7 +44,8 @@ for /f "tokens=2-5" %%a in ('
 
 :PRINT_CRC
 set CRC32=0x!CRC_B3!!CRC_B2!!CRC_B1!!CRC_B0!
-echo CRC32 (little-endian stored) : !CRC32!
+echo CRC32 (little-endian stored): !CRC32!
+echo App_crc.bin size        : !BIN_SIZE_CRC! bytes
 
 echo CRC32 appended successfully: %OUTPUT_FILE%
 endlocal

@@ -3,9 +3,9 @@
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xe.h \
   ..\Drivers\CMSIS\Include\core_cm3.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdint.h \
-  D:\Coding\MCU_Develop\bootloader07_stm32f103_check_crc32\App\Drivers\CMSIS\Include\cmsis_version.h \
-  D:\Coding\MCU_Develop\bootloader07_stm32f103_check_crc32\App\Drivers\CMSIS\Include\cmsis_compiler.h \
-  D:\Coding\MCU_Develop\bootloader07_stm32f103_check_crc32\App\Drivers\CMSIS\Include\cmsis_armclang.h \
+  D:\Coding\MCU_Develop\bootloader08_stm32f103_op_flash\App\Drivers\CMSIS\Include\cmsis_version.h \
+  D:\Coding\MCU_Develop\bootloader08_stm32f103_op_flash\App\Drivers\CMSIS\Include\cmsis_compiler.h \
+  D:\Coding\MCU_Develop\bootloader08_stm32f103_op_flash\App\Drivers\CMSIS\Include\cmsis_armclang.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_compat.h \
   C:\Keil_v5\ARM\ARMCLANG\include\arm_acle.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h

@@ -26,10 +26,10 @@ HAL_StatusTypeDef FW_Firmware_Verification(uint32_t startAddr, uint32_t firmware
 
     if (gCalc == gStored) {
         log_printf("CRC32 verification was successful. CRC:0x%08lX\r\n", gCalc);
-        return HAL_OK; //!< 校验通过
+        return HAL_OK; //!< CRC32校验通过
     } else {
         log_printf("CRC32 verification was failure: calc=0x%08lX, stored=0x%08lX\r\n", gCalc, gStored);
-        return HAL_ERROR;  //!< 校验失败
+        return HAL_ERROR;  //!< CRC32校验失败
     }
 }
 

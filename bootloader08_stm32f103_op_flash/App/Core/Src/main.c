@@ -191,7 +191,7 @@ void Timer1_Callback(MultiTimer *timer, void *userData)
 void Timer2_Callback(MultiTimer *timer, void *userData)
 {
     //! µ÷ÊÔ´úÂë
-    const char *msg = "0123456789";
+    const char *msg = "0123456789_App_Version:0.0.0.2";
     uint16_t status = USART1_Put_TxData_To_Ringbuffer(msg, strlen(msg));
     
     //! ĞÄÌøLED

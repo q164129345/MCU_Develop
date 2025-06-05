@@ -29,10 +29,6 @@ typedef enum
 
 /**
   * @brief  从源区拷贝数据到目标区（支持整区域拷贝，自动擦除目标区域）
-  * @param  src_addr    源区起始地址
-  * @param  dest_addr   目标区起始地址
-  * @param  length      拷贝长度（字节，需为4字节对齐）
-  * @retval OP_FlashStatus_t  操作结果
   */
 OP_FlashStatus_t OP_Flash_Copy(uint32_t src_addr, uint32_t dest_addr, uint32_t length);
 

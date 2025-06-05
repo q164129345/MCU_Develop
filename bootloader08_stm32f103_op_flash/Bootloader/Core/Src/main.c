@@ -57,7 +57,7 @@ USART_Driver_t gUsart1Drv = {
 /* USER CODE BEGIN PD */
 uint32_t gOneTime = 0;
 
-#define FW_TOTAL_LEN 5260U //! 固件的长度，在App编译的log上得到，记得+4
+#define FW_TOTAL_LEN 5284U //! 升级固件的长度，比如App_crc.bin的size（千万不要跟App.bin的size搞错！）
 
 /* USER CODE END PD */
 
@@ -152,12 +152,16 @@ int main(void)
                 //! CRC32校验成功
                 if (OP_FLASH_OK == OP_Flash_Copy(FLASH_DL_START_ADDR, FLASH_APP_START_ADDR, FLASH_APP_SIZE)) { //!< 将App缓存区的所有二进制复制到App区
                     log_printf("The firmware copy to the app area was successful.\r\n"); //!< 升级固件成功
+                    Delay_MS_By_NOP(500); //!< 延迟500ms，等待RTT打印完毕
+                    IAP_Ready_To_Jump_App(); //!< 清理MCU环境，准备跳转App
                 } else {
                     log_printf("The firmware copy to the app area failed\r\n"); //!< 升级固件失败
+                    //! 搬运固件失败，后续处理.....检查Flash范围是不是合理等
                 }
             } else {
                 //! CRC32校验失败
                 log_printf("There is a problem with the integrity of the firmware, and IAP Upgrade failure.\r\n");
+                //! CRC32校验失败后的处理....比如，反馈OTA升级失败的结果给上位机等
             }
         }
     }
