@@ -17,19 +17,19 @@ class BinReader:
         Return:
             bool: 是否加载成功
         """
-        if not os.path.exists(file_path):
+        if not os.path.exists(file_path): # 读取文件之前，先确认文件存在，避免程序崩溃
             print(f"错误：文件 {file_path} 不存在")
             return False
         
         try:
-            with open(file_path, 'rb') as f:
-                self.file_data = f.read()
+            with open(file_path, 'rb') as f: # 用只读、二进制方式打开文件
+                self.file_data = f.read()    # read()返回的是bytes对象，它是不可变的字节序列
             
-            self.file_size = len(self.file_data)
-            self.file_path = file_path
+            self.file_size = len(self.file_data) # 获取bytes对象的长度
+            self.file_path = file_path           # 保存固件的路径
             print(f"成功加载文件: {file_path}, 大小: {self.file_size} 字节")
             return True
-        except Exception as e:
+        except Exception as e: # 通用的异常处理方式
             print(f"加载文件时出错: {str(e)}")
             self.file_data = None
             self.file_size = 0
@@ -75,7 +75,7 @@ if __name__ == "__main__":
     reader = BinReader()
     
     # 加载文件
-    if reader.load_file("App_crc.bin"):
+    if reader.load_file("firmware/App_crc.bin"):
         # 获取文件大小
         print(f"文件大小: {reader.get_file_size()} 字节")
         
