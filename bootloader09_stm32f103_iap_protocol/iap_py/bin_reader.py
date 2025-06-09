@@ -69,7 +69,9 @@ class BinReader:
         
         return self.file_data[start_pos:end_pos]
 
-
+# Python特殊机制，
+# 1、允许bin_reader.py作为独立程序运行（如python bin_reader.py)；
+# 2、其他模块导入bin_reader.py时，这段代码将被忽略。
 if __name__ == "__main__":
     # 示例用法
     reader = BinReader()
