@@ -61,7 +61,7 @@ class BinReader:
             print(f"错误：起始位置 {start_pos} 超出文件范围(0-{self.file_size-1})")
             return None
         
-        end_pos = min(start_pos + length, self.file_size)
+        end_pos = min(start_pos + length, self.file_size) # 防止读取超出文件范围
         actual_length = end_pos - start_pos
         
         if actual_length < length:
