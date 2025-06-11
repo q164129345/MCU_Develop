@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+# Tested with Python 3.13.3
 import os
 
 class BinReader:
