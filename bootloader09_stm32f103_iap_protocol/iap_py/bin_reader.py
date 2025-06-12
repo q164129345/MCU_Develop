@@ -88,7 +88,7 @@ if __name__ == "__main__":
         length = 512     # 长度
         data = reader.get_data(start_pos, length)
         if data:
-            print(f"成功读取数据，长度: {len(data)} 字节")
+            print(f"成功读取文件{reader.file_path}的数据，长度: {len(data)} 字节")
             # 以0x格式打印前10个字节，并包含起始地址(完整32位格式)
             hex_bytes = [f"0x{b:02X}" for b in data[:10]]
             print(f"起始地址0x{start_pos:08X}，数据前10个字节: {' '.join(hex_bytes)}")
