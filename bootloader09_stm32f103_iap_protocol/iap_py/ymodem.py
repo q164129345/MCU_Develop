@@ -220,9 +220,10 @@ class YModem:
         print("错误: 等待最终确认超时")
         return False
     
-    def send_empty_packet(self):
+    def send_end_packet(self):
         """
-        Brief: 发送空数据包，表示没有更多文件要传输
+        Brief: YModem的结束帧,表示传输结束
+               结束帧:0x02(STX)  0x00(包号，跟起始帧一样)  0xFF(包号取反)  全部0x00  1024字节
         Return:
             bool: 是否成功发送
         """
@@ -241,7 +242,7 @@ if __name__ == "__main__":
     # 检查命令行参数
     if len(sys.argv) < 3:
         print("用法: python3 ymodem.py <串口> <固件文件>")
-        print("示例: python3 ymodem.py COM3 firmware.bin")
+        print("示例: python3 ymodem.py COM3 firmware/firmware.bin")
         sys.exit(1)
     
     port = sys.argv[1]
@@ -256,8 +257,8 @@ if __name__ == "__main__":
         
         # 发送固件文件
         if ymodem.send_file(firmware_file):
-            # 发送空数据包表示传输完成
-            ymodem.send_empty_packet()
+            # 发送结束帧表示传输完成
+            ymodem.send_end_packet()
             print("固件传输完成")
         else:
             print("固件传输失败")
