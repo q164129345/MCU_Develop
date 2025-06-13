@@ -2,14 +2,12 @@
 # Tested with Python 3.13.3
 
 import os
-import time
 import struct
 from bin_reader import BinReader
-from serial_manager import SerialManager
 
 class YModem:
     """
-    Brief: YModem协议实现，用于通过串口向STM32发送固件
+    Brief: YModem协议实现，专注于数据包的构建与解析
     """
     # YModem协议常量
     SOH = 0x01  # 128字节数据包开始标记
@@ -20,20 +18,24 @@ class YModem:
     CAN = 0x18  # 取消传输
     C = 0x43    # ASCII 'C'，表示CRC校验方式
 
+    # 响应状态码
+    STATUS_OK = 0       # 成功
+    STATUS_NAK = 1      # 需要重传
+    STATUS_CANCEL = 2   # 传输取消
+    STATUS_TIMEOUT = 3  # 超时
+    STATUS_SUCCESS = 4  # 升级成功
+
     # 数据包大小
     PACKET_SIZE_128 = 128
     PACKET_SIZE_1024 = 1024
     
-    def __init__(self, serial_manager):
+    def __init__(self):
         """
         Brief: 初始化YModem协议处理器
-        Params:
-            serial_manager: SerialManager实例，用于串口通信
         """
-        self.serial = serial_manager
         self.bin_reader = BinReader()
     
-    def _calculate_crc(self, data):
+    def calculate_crc(self, data):
         """
         Brief: 计算CRC-16校验值
         Params:
@@ -52,7 +54,7 @@ class YModem:
                     crc = (crc << 1) & 0xFFFF
         return crc
     
-    def _build_packet(self, packet_num, data):
+    def build_packet(self, packet_num, data):
         """
         Brief: 构建YModem数据包
         Params:
@@ -84,188 +86,79 @@ class YModem:
         packet += data  # 数据部分
         
         # 计算并添加CRC校验
-        crc = self._calculate_crc(data)
+        crc = self.calculate_crc(data)
         packet += struct.pack('>H', crc)  # 两字节CRC校验值
         
         return packet
     
-    def _send_packet(self, packet):
+    def parse_response(self, response_byte):
         """
-        Brief: 发送数据包并等待响应
+        Brief: 解析接收方的响应
         Params:
-            packet: 要发送的数据包
+            response_byte: 接收到的响应字节
         Return:
-            bool: 是否发送成功并收到正确响应
+            int: 状态码
         """
-        # 发送数据包
-        self.serial.Send_Bytes(packet)
-        
-        # 等待接收响应
-        start_time = time.time()
-        timeout = 5  # 5秒超时
-        
-        while (time.time() - start_time) < timeout:
-            if self.serial.ser.in_waiting > 0:
-                response = self.serial.ser.read(1)[0]  # 读取一个字节
-                
-                if response == self.ACK:
-                    return True
-                elif response == self.NAK:
-                    print("警告: 收到NAK，数据包被拒绝")
-                    return False
-                elif response == self.CAN:
-                    print("错误: 传输被取消")
-                    return False
-            
-            time.sleep(0.01)  # 短暂延时，避免CPU占用过高
-        
-        print("错误: 等待响应超时")
-        return False
+        if response_byte == self.ACK:
+            return self.STATUS_OK
+        elif response_byte == self.NAK:
+            return self.STATUS_NAK
+        elif response_byte == self.CAN:
+            return self.STATUS_CANCEL
+        else:
+            # 其他字节可能是特定的成功指示等
+            return self.STATUS_TIMEOUT
     
-    def _wait_for_c(self, timeout=10):
+    def get_eot_packet(self):
         """
-        Brief: 等待接收方发送'C'字符，表示准备好接收数据
-        Params:
-            timeout: 超时时间(秒)
+        Brief: 获取传输结束标记包
         Return:
-            bool: 是否收到'C'字符
+            bytes: EOT字节
         """
-        start_time = time.time()
-        
-        while (time.time() - start_time) < timeout:
-            if self.serial.ser.in_waiting > 0:
-                response = self.serial.ser.read(1)[0]
-                if response == self.C:
-                    return True
-            time.sleep(0.1)
-        
-        print("错误: 等待接收方准备信号超时")
-        return False
+        return bytes([self.EOT])
     
-    def send_file(self, file_path):
+    def build_end_packet(self):
         """
-        Brief: 使用YModem协议发送文件
-        Params:
-            file_path: 要发送的文件路径
+        Brief: 构建YModem的结束帧,表示传输结束
         Return:
-            bool: 是否成功发送
+            bytes: 结束帧数据包
         """
-        # 加载文件
-        if not self.bin_reader.load_file(file_path):
-            return False
-        
-        file_size = self.bin_reader.get_file_size()
-        file_name = os.path.basename(file_path)
-        
-        print(f"准备发送文件: {file_name}, 大小: {file_size} 字节")
-        
-        # 等待接收方准备好
-        if not self._wait_for_c():
-            return False
-        
-        # 发送文件名数据包(第0个包)
-        file_info = f"{file_name}\0{file_size}\0".encode('utf-8')
-        filename_packet = self._build_packet(0, file_info)
-        if not self._send_packet(filename_packet):
-            print("错误: 发送文件信息失败")
-            return False
-        
-        # 等待接收方准备好接收数据
-        if not self._wait_for_c():
-            return False
-        
-        # 发送文件数据
-        packet_num = 1
-        bytes_sent = 0
-        
-        while bytes_sent < file_size:
-            # 每次读取1024字节
-            chunk_size = self.PACKET_SIZE_1024
-            data = self.bin_reader.get_data(bytes_sent, chunk_size)
-            
-            if not data:
-                print("错误: 读取文件数据失败")
-                return False
-            
-            # 构建并发送数据包
-            data_packet = self._build_packet(packet_num, data)
-            if not self._send_packet(data_packet):
-                print(f"错误: 发送数据包 {packet_num} 失败")
-                return False
-            
-            bytes_sent += len(data)
-            packet_num = (packet_num + 1) % 256  # 包序号循环使用0-255
-            
-            # 显示进度
-            progress = min(100, int(bytes_sent * 100 / file_size))
-            print(f"\r发送进度: {progress}% ({bytes_sent}/{file_size} 字节)", end="")
-        
-        print("\n所有数据包发送完成")
-        
-        # 发送传输结束标记
-        self.serial.Send_Bytes(bytes([self.EOT]))
-        
-        # 等待接收方的最终确认
-        start_time = time.time()
-        timeout = 5
-        
-        while (time.time() - start_time) < timeout:
-            if self.serial.ser.in_waiting > 0:
-                response = self.serial.ser.read(1)[0]
-                if response == self.ACK:
-                    print("文件传输成功完成")
-                    return True
-            time.sleep(0.1)
-        
-        print("错误: 等待最终确认超时")
-        return False
-    
-    def send_end_packet(self):
-        """
-        Brief: YModem的结束帧,表示传输结束
-               结束帧:0x02(STX)  0x00(包号，跟起始帧一样)  0xFF(包号取反)  全部0x00  1024字节
-        Return:
-            bool: 是否成功发送
-        """
-        # 等待接收方准备好
-        if not self._wait_for_c():
-            return False
-        
         # 发送空文件名数据包，表示传输结束
-        empty_packet = self._build_packet(0, b'\0')
-        return self._send_packet(empty_packet)
+        return self.build_packet(0, b'\0')
 
 # 当直接运行ymodem.py时执行以下代码
 if __name__ == "__main__":
-    import sys
+    # 创建YModem实例和BinReader实例
+    ymodem = YModem()
+    bin_file_path = "firmware/App_crc.bin"
     
-    # 检查命令行参数
-    if len(sys.argv) < 3:
-        print("用法: python3 ymodem.py <串口> <固件文件>")
-        print("示例: python3 ymodem.py COM3 firmware/firmware.bin")
-        sys.exit(1)
+    # 加载二进制文件
+    if not ymodem.bin_reader.load_file(bin_file_path):
+        print(f"错误：无法加载文件 {bin_file_path}")
+        exit(1)
     
-    port = sys.argv[1]
-    firmware_file = sys.argv[2]
+    # 获取文件信息
+    file_size = ymodem.bin_reader.get_file_size()
+    file_name = os.path.basename(bin_file_path)
     
-    try:
-        # 创建SerialManager实例
-        serial_mgr = SerialManager(port, 115200)  # YModem通常使用115200波特率
-        
-        # 创建YModem实例
-        ymodem = YModem(serial_mgr)
-        
-        # 发送固件文件
-        if ymodem.send_file(firmware_file):
-            # 发送结束帧表示传输完成
-            ymodem.send_end_packet()
-            print("固件传输完成")
-        else:
-            print("固件传输失败")
-        
-        # 关闭串口
-        serial_mgr.close()
-        
-    except Exception as e:
-        print(f"错误: {str(e)}")
-        sys.exit(1)
+    # 创建第0包(文件信息包)
+    file_info = f"{file_name}\0{file_size}\0".encode('utf-8')
+    packet0 = ymodem.build_packet(0, file_info)
+    
+    # 创建第1包(数据包)，从文件中读取前1024字节
+    data_chunk = ymodem.bin_reader.get_data(0, ymodem.PACKET_SIZE_1024)
+    packet1 = ymodem.build_packet(1, data_chunk)
+    
+    # 打印文件信息
+    print(f"\n文件信息：{file_name}, 大小：{file_size} 字节")
+
+    # 打印第0包(十六进制)
+    print("第0包(文件信息包):")
+    hex_packet0 = " ".join([f"{b:02X}" for b in packet0])
+    print(hex_packet0)
+    
+    # 打印第1包(数据包)
+    print("\n第1包(数据包):")
+    hex_packet1 = " ".join([f"{b:02X}" for b in packet1])
+    print(hex_packet1)
+
