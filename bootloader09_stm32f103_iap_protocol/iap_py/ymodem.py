@@ -63,13 +63,9 @@ class YModem:
         Return:
             bytes: 构建好的数据包
         """
-        # 确定包类型和大小
-        if len(data) <= self.PACKET_SIZE_128:
-            packet_header = self.SOH
-            packet_size = self.PACKET_SIZE_128
-        else:
-            packet_header = self.STX
-            packet_size = self.PACKET_SIZE_1024
+        # 统一使用STX作为包头，数据包大小始终为1024字节
+        packet_header = self.STX
+        packet_size = self.PACKET_SIZE_1024
         
         # 如果数据不足，根据包类型选择填充字符
         if len(data) < packet_size:
@@ -80,7 +76,7 @@ class YModem:
             data = data[:packet_size]  # 截断到指定大小
         
         # 构建数据包：起始标记 + 包序号 + 包序号取反 + 数据 + CRC校验
-        packet = struct.pack('>B', packet_header)  # 起始标记(SOH或STX)
+        packet = struct.pack('>B', packet_header)  # 起始标记(统一使用STX)
         packet += struct.pack('>B', packet_num)    # 包序号
         packet += struct.pack('>B', 255 - packet_num)  # 包序号取反
         packet += data  # 数据部分
@@ -141,6 +137,9 @@ if __name__ == "__main__":
     file_size = ymodem.bin_reader.get_file_size()
     file_name = os.path.basename(bin_file_path)
     
+    # 打印文件信息
+    print(f"\n文件信息：{file_name}, 大小：{file_size} 字节")
+    
     # 创建第0包(文件信息包)
     file_info = f"{file_name}\0{file_size}\0".encode('utf-8')
     packet0 = ymodem.build_packet(0, file_info)
@@ -149,16 +148,49 @@ if __name__ == "__main__":
     data_chunk = ymodem.bin_reader.get_data(0, ymodem.PACKET_SIZE_1024)
     packet1 = ymodem.build_packet(1, data_chunk)
     
-    # 打印文件信息
-    print(f"\n文件信息：{file_name}, 大小：{file_size} 字节")
-
-    # 打印第0包(十六进制)
+    # 计算最后一包的位置和大小
+    last_packet_offset = (file_size // ymodem.PACKET_SIZE_1024) * ymodem.PACKET_SIZE_1024
+    last_packet_size = file_size - last_packet_offset
+    
+    # 如果文件大小正好是1024的倍数，最后一包就是最后1024字节
+    if last_packet_size == 0 and file_size > 0:
+        last_packet_offset = file_size - ymodem.PACKET_SIZE_1024
+        last_packet_size = ymodem.PACKET_SIZE_1024
+    
+    # 创建最后一包
+    last_packet_num = (last_packet_offset // ymodem.PACKET_SIZE_1024) + 1
+    last_data_chunk = ymodem.bin_reader.get_data(last_packet_offset, last_packet_size)
+    last_packet = ymodem.build_packet(last_packet_num, last_data_chunk)
+    
+    # 打印第0包(文件信息包)
     print("第0包(文件信息包):")
     hex_packet0 = " ".join([f"{b:02X}" for b in packet0])
     print(hex_packet0)
+    print(f"第0包长度: {len(packet0)-5} 字节数据 + 5 字节头尾 = {len(packet0)} 字节")  # 减去包头(1)+序号(1)+序号取反(1)+CRC(2)=5字节
     
     # 打印第1包(数据包)
     print("\n第1包(数据包):")
     hex_packet1 = " ".join([f"{b:02X}" for b in packet1])
     print(hex_packet1)
+    print(f"第1包长度: {len(packet1)-5} 字节数据 + 5 字节头尾 = {len(packet1)} 字节")
+    
+    # 打印最后一包(数据包)
+    print(f"\n最后一包(第{last_packet_num}包):")
+    print(f"偏移量: {last_packet_offset}, 实际数据大小: {last_packet_size} 字节")
+    hex_last_packet = " ".join([f"{b:02X}" for b in last_packet])
+    print(hex_last_packet)
+    print(f"最后一包长度: {len(last_packet)-5} 字节数据 + 5 字节头尾 = {len(last_packet)} 字节")
+    
+    # 打印最后一包数据的填充情况
+    if last_packet_size < ymodem.PACKET_SIZE_1024:
+        padding_start = min(20, last_packet_size)  # 显示最多20个字节的实际数据
+        padding_bytes = min(20, ymodem.PACKET_SIZE_1024 - last_packet_size)  # 显示最多20个填充字节
+        
+        # 显示最后一包的部分实际数据
+        actual_data = " ".join([f"{b:02X}" for b in last_data_chunk[-padding_start:]])
+        print(f"\n最后一包末尾{padding_start}个实际数据字节: {actual_data}")
+        
+        # 显示填充部分的开始
+        padding_preview = " ".join([f"{b:02X}" for b in last_packet[3+last_packet_size:3+last_packet_size+padding_bytes]])
+        print(f"填充部分开始{padding_bytes}个字节(应为0x1A): {padding_preview}")
 
