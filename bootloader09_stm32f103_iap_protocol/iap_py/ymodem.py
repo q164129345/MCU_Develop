@@ -101,17 +101,11 @@ class YModem:
             return self.STATUS_NAK
         elif response_byte == self.CAN:
             return self.STATUS_CANCEL
+        elif response_byte == self.EOT:
+            return self.STATUS_SUCCESS
         else:
             # 其他字节可能是特定的成功指示等
             return self.STATUS_TIMEOUT
-    
-    def get_eot_packet(self):
-        """
-        Brief: 获取传输结束标记包
-        Return:
-            bytes: EOT字节
-        """
-        return bytes([self.EOT])
     
     def build_end_packet(self):
         """
@@ -193,4 +187,12 @@ if __name__ == "__main__":
         # 显示填充部分的开始
         padding_preview = " ".join([f"{b:02X}" for b in last_packet[3+last_packet_size:3+last_packet_size+padding_bytes]])
         print(f"填充部分开始{padding_bytes}个字节(应为0x1A): {padding_preview}")
+
+    # 打印结束帧
+    packet_end = ymodem.build_end_packet()
+    print(f"\n结束帧:")
+    hex_packet_end = " ".join([f"{b:02X}" for b in packet_end])
+    print(hex_packet_end)
+    print(f"结束帧长度: {len(packet_end)-5} 字节数据 + 5 字节头尾 = {len(packet_end)} 字节")
+
 
