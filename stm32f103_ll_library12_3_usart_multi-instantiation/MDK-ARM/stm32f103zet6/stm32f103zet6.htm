@@ -3,9 +3,9 @@
 <title>Static Call Graph - [stm32f103zet6\stm32f103zet6.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image stm32f103zet6\stm32f103zet6.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Wed Jun 18 19:40:49 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Fri Jun 20 16:05:44 2025
 <BR><P>
-<H3>Maximum Stack Usage =        116 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        172 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 main &rArr; MX_USART1_UART_Init &rArr; LL_GPIO_Init
 <P>
@@ -103,7 +103,7 @@ Global Symbols
 <P><STRONG><a name="[48]"></a>__main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry.o(.ARM.Collect$$$$00000000))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(.text)
 </UL>
-<P><STRONG><a name="[68]"></a>_main_stk</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry2.o(.ARM.Collect$$$$00000001))
+<P><STRONG><a name="[69]"></a>_main_stk</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry2.o(.ARM.Collect$$$$00000001))
 
 <P><STRONG><a name="[49]"></a>_main_scatterload</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry5.o(.ARM.Collect$$$$00000004))
 <BR><BR>[Calls]<UL><LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
@@ -113,15 +113,15 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__scatterload
 </UL>
 
-<P><STRONG><a name="[69]"></a>_main_clock</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry7b.o(.ARM.Collect$$$$00000008))
+<P><STRONG><a name="[6a]"></a>_main_clock</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry7b.o(.ARM.Collect$$$$00000008))
 
-<P><STRONG><a name="[6a]"></a>_main_cpp_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry8b.o(.ARM.Collect$$$$0000000A))
+<P><STRONG><a name="[6b]"></a>_main_cpp_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry8b.o(.ARM.Collect$$$$0000000A))
 
-<P><STRONG><a name="[6b]"></a>_main_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry9a.o(.ARM.Collect$$$$0000000B))
+<P><STRONG><a name="[6c]"></a>_main_init</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry9a.o(.ARM.Collect$$$$0000000B))
 
-<P><STRONG><a name="[6c]"></a>__rt_final_cpp</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry10a.o(.ARM.Collect$$$$0000000D))
+<P><STRONG><a name="[6d]"></a>__rt_final_cpp</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry10a.o(.ARM.Collect$$$$0000000D))
 
-<P><STRONG><a name="[6d]"></a>__rt_final_exit</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry11a.o(.ARM.Collect$$$$0000000F))
+<P><STRONG><a name="[6e]"></a>__rt_final_exit</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, entry11a.o(.ARM.Collect$$$$0000000F))
 
 <P><STRONG><a name="[0]"></a>Reset_Handler</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, startup_stm32f103xe.o(.text))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
@@ -298,12 +298,16 @@ Global Symbols
 <P><STRONG><a name="[65]"></a>__aeabi_memcpy</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, memcpya.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_write
 <LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_peek
-<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_read
+<LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_read
 </UL>
 
-<P><STRONG><a name="[6e]"></a>__aeabi_memcpy4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memcpya.o(.text), UNUSED)
+<P><STRONG><a name="[6f]"></a>__aeabi_memcpy4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memcpya.o(.text), UNUSED)
 
-<P><STRONG><a name="[6f]"></a>__aeabi_memcpy8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memcpya.o(.text), UNUSED)
+<P><STRONG><a name="[70]"></a>__aeabi_memcpy8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memcpya.o(.text), UNUSED)
+
+<P><STRONG><a name="[68]"></a>strlen</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, strlen.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
 
 <P><STRONG><a name="[4a]"></a>__scatterload</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, init.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main_after_scatterload
@@ -311,7 +315,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_main_scatterload
 </UL>
 
-<P><STRONG><a name="[70]"></a>__scatterload_rt2</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, init.o(.text), UNUSED)
+<P><STRONG><a name="[71]"></a>__scatterload_rt2</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, init.o(.text), UNUSED)
 
 <P><STRONG><a name="[4]"></a>BusFault_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f1xx_it.o(.text.BusFault_Handler))
 <BR><BR>[Calls]<UL><LI><a href="#[4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BusFault_Handler
@@ -337,15 +341,15 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[1d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USB_HP_CAN1_TX_IRQHandler
 </UL>
 
-<P><STRONG><a name="[18]"></a>DMA1_Channel4_IRQHandler</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f1xx_it.o(.text.DMA1_Channel4_IRQHandler))
-<BR><BR>[Calls]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_TX_DMA1_Channel4_Interrupt_Handler
+<P><STRONG><a name="[18]"></a>DMA1_Channel4_IRQHandler</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, stm32f1xx_it.o(.text.DMA1_Channel4_IRQHandler))
+<BR><BR>[Calls]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_LL_DMA_TX_Interrupt_Handler
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
-<P><STRONG><a name="[19]"></a>DMA1_Channel5_IRQHandler</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f1xx_it.o(.text.DMA1_Channel5_IRQHandler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = DMA1_Channel5_IRQHandler &rArr; USART1_RX_DMA1_Channel5_Interrupt_Handler &rArr; USART1_Put_Data_Into_Ringbuffer &rArr; lwrb_write
+<P><STRONG><a name="[19]"></a>DMA1_Channel5_IRQHandler</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, stm32f1xx_it.o(.text.DMA1_Channel5_IRQHandler))
+<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = DMA1_Channel5_IRQHandler &rArr; USART_LL_DMA_RX_Interrupt_Handler &rArr; USART_LL_Put_RxData_Into_Ringbuffer &rArr; lwrb_write
 </UL>
-<BR>[Calls]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_RX_DMA1_Channel5_Interrupt_Handler
+<BR>[Calls]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_LL_DMA_RX_Interrupt_Handler
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
@@ -454,60 +458,60 @@ Global Symbols
 <P><STRONG><a name="[47]"></a>SystemInit</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, system_stm32f1xx.o(.text.SystemInit))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(.text)
 </UL>
-<P><STRONG><a name="[5b]"></a>USART1_Config</STRONG> (Thumb, 262 bytes, Stack size 8 bytes, myusartdrive.o(.text.USART1_Config))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = USART1_Config
+<P><STRONG><a name="[2f]"></a>USART1_IRQHandler</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, stm32f1xx_it.o(.text.USART1_IRQHandler))
+<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = USART1_IRQHandler &rArr; USART_LL_RX_Interrupt_Handler &rArr; USART_LL_Put_RxData_Into_Ringbuffer &rArr; lwrb_write
 </UL>
-<BR>[Calls]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_init
-</UL>
-<BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-</UL>
-
-<P><STRONG><a name="[2f]"></a>USART1_IRQHandler</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f1xx_it.o(.text.USART1_IRQHandler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = USART1_IRQHandler &rArr; USART1_RX_Interrupt_Handler &rArr; USART1_Put_Data_Into_Ringbuffer &rArr; lwrb_write
-</UL>
-<BR>[Calls]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_RX_Interrupt_Handler
+<BR>[Calls]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_LL_RX_Interrupt_Handler
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
-<P><STRONG><a name="[5e]"></a>USART1_Module_Run</STRONG> (Thumb, 264 bytes, Stack size 24 bytes, myusartdrive.o(.text.USART1_Module_Run))
-<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = USART1_Module_Run &rArr; lwrb_read
+<P><STRONG><a name="[5c]"></a>USART_LL_Config</STRONG> (Thumb, 310 bytes, Stack size 32 bytes, bsp_usart_drive.o(.text.USART_LL_Config))
+<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = USART_LL_Config
 </UL>
-<BR>[Calls]<UL><LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_read
-<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_full
+<BR>[Calls]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[63]"></a>USART1_Put_TxData_To_Ringbuffer</STRONG> (Thumb, 180 bytes, Stack size 24 bytes, myusartdrive.o(.text.USART1_Put_TxData_To_Ringbuffer))
-<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = USART1_Put_TxData_To_Ringbuffer &rArr; lwrb_write
+<P><STRONG><a name="[52]"></a>USART_LL_DMA_RX_Interrupt_Handler</STRONG> (Thumb, 486 bytes, Stack size 24 bytes, bsp_usart_drive.o(.text.USART_LL_DMA_RX_Interrupt_Handler))
+<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = USART_LL_DMA_RX_Interrupt_Handler &rArr; USART_LL_Put_RxData_Into_Ringbuffer &rArr; lwrb_write
+</UL>
+<BR>[Calls]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_LL_Put_RxData_Into_Ringbuffer
+</UL>
+<BR>[Called By]<UL><LI><a href="#[19]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DMA1_Channel5_IRQHandler
+</UL>
+
+<P><STRONG><a name="[51]"></a>USART_LL_DMA_TX_Interrupt_Handler</STRONG> (Thumb, 422 bytes, Stack size 0 bytes, bsp_usart_drive.o(.text.USART_LL_DMA_TX_Interrupt_Handler))
+<BR><BR>[Called By]<UL><LI><a href="#[18]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DMA1_Channel4_IRQHandler
+</UL>
+
+<P><STRONG><a name="[5f]"></a>USART_LL_Module_Run</STRONG> (Thumb, 284 bytes, Stack size 16 bytes, bsp_usart_drive.o(.text.USART_LL_Module_Run))
+<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = USART_LL_Module_Run &rArr; lwrb_read
+</UL>
+<BR>[Calls]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_read
+<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_full
+</UL>
+<BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[63]"></a>USART_LL_Put_TxData_To_Ringbuffer</STRONG> (Thumb, 154 bytes, Stack size 24 bytes, bsp_usart_drive.o(.text.USART_LL_Put_TxData_To_Ringbuffer))
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = USART_LL_Put_TxData_To_Ringbuffer &rArr; lwrb_write
 </UL>
 <BR>[Calls]<UL><LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_reset
 <LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_write
 <LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_free
 <LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_skip
-<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_full
+<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_full
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[52]"></a>USART1_RX_DMA1_Channel5_Interrupt_Handler</STRONG> (Thumb, 198 bytes, Stack size 24 bytes, myusartdrive.o(.text.USART1_RX_DMA1_Channel5_Interrupt_Handler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = USART1_RX_DMA1_Channel5_Interrupt_Handler &rArr; USART1_Put_Data_Into_Ringbuffer &rArr; lwrb_write
+<P><STRONG><a name="[5b]"></a>USART_LL_RX_Interrupt_Handler</STRONG> (Thumb, 186 bytes, Stack size 32 bytes, bsp_usart_drive.o(.text.USART_LL_RX_Interrupt_Handler))
+<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = USART_LL_RX_Interrupt_Handler &rArr; USART_LL_Put_RxData_Into_Ringbuffer &rArr; lwrb_write
 </UL>
-<BR>[Calls]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Put_Data_Into_Ringbuffer
-</UL>
-<BR>[Called By]<UL><LI><a href="#[19]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DMA1_Channel5_IRQHandler
-</UL>
-
-<P><STRONG><a name="[5d]"></a>USART1_RX_Interrupt_Handler</STRONG> (Thumb, 174 bytes, Stack size 24 bytes, myusartdrive.o(.text.USART1_RX_Interrupt_Handler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = USART1_RX_Interrupt_Handler &rArr; USART1_Put_Data_Into_Ringbuffer &rArr; lwrb_write
-</UL>
-<BR>[Calls]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Put_Data_Into_Ringbuffer
+<BR>[Calls]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_LL_Put_RxData_Into_Ringbuffer
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_IRQHandler
-</UL>
-
-<P><STRONG><a name="[51]"></a>USART1_TX_DMA1_Channel4_Interrupt_Handler</STRONG> (Thumb, 222 bytes, Stack size 0 bytes, myusartdrive.o(.text.USART1_TX_DMA1_Channel4_Interrupt_Handler))
-<BR><BR>[Called By]<UL><LI><a href="#[18]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DMA1_Channel4_IRQHandler
 </UL>
 
 <P><STRONG><a name="[1d]"></a>USB_HP_CAN1_TX_IRQHandler</STRONG> (Thumb, 188 bytes, Stack size 40 bytes, mycandrive_reg.o(.text.USB_HP_CAN1_TX_IRQHandler))
@@ -515,7 +519,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_skip
 <LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_peek
-<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_full
+<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_full
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_SendMessage_NonBlocking
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
@@ -528,20 +532,20 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
 <P><STRONG><a name="[4d]"></a>lwrb_get_free</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_get_free))
-<BR><BR>[Called By]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Put_Data_Into_Ringbuffer
+<BR><BR>[Called By]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_LL_Put_RxData_Into_Ringbuffer
 <LI><a href="#[1f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN1_RX1_IRQHandler
-<LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Put_TxData_To_Ringbuffer
+<LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_LL_Put_TxData_To_Ringbuffer
 </UL>
 
-<P><STRONG><a name="[5f]"></a>lwrb_get_full</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_get_full))
-<BR><BR>[Called By]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Put_Data_Into_Ringbuffer
+<P><STRONG><a name="[60]"></a>lwrb_get_full</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_get_full))
+<BR><BR>[Called By]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_LL_Put_RxData_Into_Ringbuffer
 <LI><a href="#[1d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USB_HP_CAN1_TX_IRQHandler
-<LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Put_TxData_To_Ringbuffer
-<LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Module_Run
+<LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_LL_Put_TxData_To_Ringbuffer
+<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_LL_Module_Run
 </UL>
 
-<P><STRONG><a name="[5c]"></a>lwrb_init</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_init))
-<BR><BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Config
+<P><STRONG><a name="[5d]"></a>lwrb_init</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_init))
+<BR><BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_LL_Config
 </UL>
 
 <P><STRONG><a name="[64]"></a>lwrb_peek</STRONG> (Thumb, 134 bytes, Stack size 24 bytes, lwrb.o(.text.lwrb_peek))
@@ -552,26 +556,26 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[1d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USB_HP_CAN1_TX_IRQHandler
 </UL>
 
-<P><STRONG><a name="[60]"></a>lwrb_read</STRONG> (Thumb, 170 bytes, Stack size 32 bytes, lwrb.o(.text.lwrb_read))
+<P><STRONG><a name="[61]"></a>lwrb_read</STRONG> (Thumb, 170 bytes, Stack size 32 bytes, lwrb.o(.text.lwrb_read))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = lwrb_read
 </UL>
 <BR>[Calls]<UL><LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy
 </UL>
-<BR>[Called By]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Module_Run
+<BR>[Called By]<UL><LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_LL_Module_Run
 </UL>
 
 <P><STRONG><a name="[4e]"></a>lwrb_reset</STRONG> (Thumb, 42 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_reset))
-<BR><BR>[Called By]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Put_Data_Into_Ringbuffer
+<BR><BR>[Called By]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_LL_Put_RxData_Into_Ringbuffer
 <LI><a href="#[1f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN1_RX1_IRQHandler
-<LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Put_TxData_To_Ringbuffer
+<LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_LL_Put_TxData_To_Ringbuffer
 </UL>
 
 <P><STRONG><a name="[62]"></a>lwrb_skip</STRONG> (Thumb, 76 bytes, Stack size 8 bytes, lwrb.o(.text.lwrb_skip))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = lwrb_skip
 </UL>
-<BR>[Called By]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Put_Data_Into_Ringbuffer
+<BR>[Called By]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_LL_Put_RxData_Into_Ringbuffer
 <LI><a href="#[1d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USB_HP_CAN1_TX_IRQHandler
-<LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Put_TxData_To_Ringbuffer
+<LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_LL_Put_TxData_To_Ringbuffer
 </UL>
 
 <P><STRONG><a name="[4c]"></a>lwrb_write</STRONG> (Thumb, 170 bytes, Stack size 32 bytes, lwrb.o(.text.lwrb_write))
@@ -579,18 +583,19 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy
 </UL>
-<BR>[Called By]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Put_Data_Into_Ringbuffer
+<BR>[Called By]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_LL_Put_RxData_Into_Ringbuffer
 <LI><a href="#[1f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN1_RX1_IRQHandler
-<LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Put_TxData_To_Ringbuffer
+<LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_LL_Put_TxData_To_Ringbuffer
 </UL>
 
-<P><STRONG><a name="[46]"></a>main</STRONG> (Thumb, 240 bytes, Stack size 8 bytes, main.o(.text.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 116<LI>Call Chain = main &rArr; MX_USART1_UART_Init &rArr; LL_GPIO_Init
+<P><STRONG><a name="[46]"></a>main</STRONG> (Thumb, 372 bytes, Stack size 64 bytes, main.o(.text.main))
+<BR><BR>[Stack]<UL><LI>Max Depth = 172<LI>Call Chain = main &rArr; MX_USART1_UART_Init &rArr; LL_GPIO_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Put_TxData_To_Ringbuffer
+<BR>[Calls]<UL><LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
+<LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_LL_Put_TxData_To_Ringbuffer
 <LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_mDelay
-<LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Module_Run
-<LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_Config
+<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_LL_Module_Run
+<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_LL_Config
 <LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_USART1_UART_Init
 <LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_DMA_Init
 <LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
@@ -598,26 +603,26 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
 </UL>
-<P><STRONG><a name="[71]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
+<P><STRONG><a name="[72]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)
 
-<P><STRONG><a name="[72]"></a>__scatterload_null</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_null), UNUSED)
+<P><STRONG><a name="[73]"></a>__scatterload_null</STRONG> (Thumb, 2 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_null), UNUSED)
 
-<P><STRONG><a name="[73]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
+<P><STRONG><a name="[74]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 <P>
 <H3>
 Local Symbols
 </H3>
-<P><STRONG><a name="[61]"></a>USART1_Put_Data_Into_Ringbuffer</STRONG> (Thumb, 130 bytes, Stack size 24 bytes, myusartdrive.o(.text.USART1_Put_Data_Into_Ringbuffer))
-<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = USART1_Put_Data_Into_Ringbuffer &rArr; lwrb_write
+<P><STRONG><a name="[5e]"></a>USART_LL_Put_RxData_Into_Ringbuffer</STRONG> (Thumb, 116 bytes, Stack size 24 bytes, bsp_usart_drive.o(.text.USART_LL_Put_RxData_Into_Ringbuffer))
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = USART_LL_Put_RxData_Into_Ringbuffer &rArr; lwrb_write
 </UL>
 <BR>[Calls]<UL><LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_reset
 <LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_write
 <LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_free
 <LI><a href="#[62]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_skip
-<LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_full
+<LI><a href="#[60]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_full
 </UL>
-<BR>[Called By]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_RX_Interrupt_Handler
-<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_RX_DMA1_Channel5_Interrupt_Handler
+<BR>[Called By]<UL><LI><a href="#[5b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_LL_RX_Interrupt_Handler
+<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_LL_DMA_RX_Interrupt_Handler
 </UL>
 <P>
 <H3>

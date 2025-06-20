@@ -1,4 +1,5 @@
-stm32f103zet6/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
+stm32f103zet6/bsp_usart_drive.o: ..\BSP\bsp_usart_drive\bsp_usart_drive.c \
+  ..\BSP\bsp_usart_drive\bsp_usart_drive.h ..\Core\Inc\main.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_ll_dma.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xe.h \
@@ -23,7 +24,4 @@ stm32f103zet6/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
   C:\Keil_v5\ARM\ARMCLANG\include\string.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdbool.h ..\BSP\lwrb\lwrb.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stddef.h \
-  C:\Keil_v5\ARM\ARMCLANG\include\stdatomic.h ..\Core\Inc\dma.h \
-  ..\Core\Inc\usart.h ..\Core\Inc\gpio.h \
-  ..\BSP\myCanDrive\myCanDrive_reg.h \
-  ..\BSP\bsp_usart_drive\bsp_usart_drive.h
+  C:\Keil_v5\ARM\ARMCLANG\include\stdatomic.h

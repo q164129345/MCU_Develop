@@ -99,6 +99,12 @@
           },
           {
             "path": "../BSP/myUsartDrive/myUsartDrive.c"
+          },
+          {
+            "path": "../BSP/bsp_usart_drive/bsp_usart_drive.c"
+          },
+          {
+            "path": "../BSP/bsp_usart_drive/bsp_usart_drive.h"
           }
         ],
         "folders": []
@@ -267,7 +273,6 @@
           "../Drivers/CMSIS/Include",
           "../BSP",
           "../lwrb/lwrb/src/include",
-          ".cmsis/include",
           "RTE/_stm32f103zet6"
         ],
         "libList": [],

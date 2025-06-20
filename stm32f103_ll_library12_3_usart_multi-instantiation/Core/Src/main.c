@@ -24,12 +24,20 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "myUsartDrive/myUsartDrive.h"
+//#include "myUsartDrive/myUsartDrive.h"
+#include "bsp_usart_drive/bsp_usart_drive.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+/* ===== USART1 实例定义 ===== */
+USART_LL_Driver_t usart1_driver;
 
+// USART1 缓冲区定义（这些就像每个邮递员的"工具包"）
+static uint8_t usart1_rx_dma_buffer[1024];      // DMA接收缓冲区：临时存放
+static uint8_t usart1_rx_rb_buffer[1024];       // 接收RingBuffer：长期存储
+static uint8_t usart1_tx_dma_buffer[2048];      // DMA发送缓冲区：临时存放  
+static uint8_t usart1_tx_rb_buffer[2048];       // 发送RingBuffer：发送队列
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -100,7 +108,17 @@ int main(void)
   MX_DMA_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  USART1_Config();
+  USART_LL_Config(&usart1_driver,
+                  USART1,                    // USART寄存器
+                  DMA1,                      // DMA控制器  
+                  LL_DMA_CHANNEL_4,          // TX DMA通道
+                  LL_DMA_CHANNEL_5,          // RX DMA通道
+                  usart1_rx_dma_buffer,      // RX DMA缓冲区
+                  usart1_rx_rb_buffer,       // RX RingBuffer
+                  sizeof(usart1_rx_dma_buffer),
+                  usart1_tx_dma_buffer,      // TX DMA缓冲区
+                  usart1_tx_rb_buffer,       // TX RingBuffer
+                  sizeof(usart1_tx_dma_buffer));
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -108,17 +126,19 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    // ���Դ��ڷ��͡����մ���
-    const char *msg = "0123456789";
-    uint16_t status = USART1_Put_TxData_To_Ringbuffer(msg, strlen(msg));
+    
     /* USER CODE BEGIN 3 */
     if (fre % 100 == 0) {
         LL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
-
-    }
-
-    USART1_Module_Run(); // 1.��������ringbuffer����Ϣ��2.������ringbuffer����Ϣ��ʹ��DMAһ���Է��ͳ�ȥ��
+        char message[] = "Hello from USART1!\r\n";
     
+        // 将数据放入发送队列（就像把信件投入邮箱）
+        uint8_t result = USART_LL_Put_TxData_To_Ringbuffer(&usart1_driver, 
+                                                          message, 
+                                                          strlen(message));
+    }
+    USART_LL_Module_Run(&usart1_driver);
+
     fre++;
     LL_mDelay(1);
   }

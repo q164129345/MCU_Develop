@@ -25,4 +25,4 @@ stm32f103zet6/stm32f1xx_it.o: ..\Core\Src\stm32f1xx_it.c \
   C:\Keil_v5\ARM\ARMCLANG\include\stdbool.h ..\BSP\lwrb\lwrb.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stddef.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdatomic.h ..\Core\Inc\stm32f1xx_it.h \
-  ..\BSP\myUsartDrive\myUsartDrive.h
+  ..\BSP\bsp_usart_drive\bsp_usart_drive.h

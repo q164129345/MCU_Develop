@@ -22,13 +22,14 @@
 #include "stm32f1xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "myUsartDrive/myUsartDrive.h"
+//#include "myUsartDrive/myUsartDrive.h"
+#include "bsp_usart_drive/bsp_usart_drive.h"
 
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
-
+extern USART_LL_Driver_t usart1_driver;
 /* USER CODE END TD */
 
 /* Private define ------------------------------------------------------------*/
@@ -206,11 +207,10 @@ void SysTick_Handler(void)
 void DMA1_Channel4_IRQHandler(void)
 {
   /* USER CODE BEGIN DMA1_Channel4_IRQn 0 */
-  USART1_TX_DMA1_Channel4_Interrupt_Handler();
   /* USER CODE END DMA1_Channel4_IRQn 0 */
 
   /* USER CODE BEGIN DMA1_Channel4_IRQn 1 */
-
+  USART_LL_DMA_TX_Interrupt_Handler(&usart1_driver);
   /* USER CODE END DMA1_Channel4_IRQn 1 */
 }
 
@@ -220,7 +220,7 @@ void DMA1_Channel4_IRQHandler(void)
 void DMA1_Channel5_IRQHandler(void)
 {
   /* USER CODE BEGIN DMA1_Channel5_IRQn 0 */
-  USART1_RX_DMA1_Channel5_Interrupt_Handler();
+  USART_LL_DMA_RX_Interrupt_Handler(&usart1_driver);
   /* USER CODE END DMA1_Channel5_IRQn 0 */
 
   /* USER CODE BEGIN DMA1_Channel5_IRQn 1 */
@@ -234,7 +234,7 @@ void DMA1_Channel5_IRQHandler(void)
 void USART1_IRQHandler(void)
 {
   /* USER CODE BEGIN USART1_IRQn 0 */
-  USART1_RX_Interrupt_Handler();
+  USART_LL_RX_Interrupt_Handler(&usart1_driver);
   /* USER CODE END USART1_IRQn 0 */
   /* USER CODE BEGIN USART1_IRQn 1 */
 

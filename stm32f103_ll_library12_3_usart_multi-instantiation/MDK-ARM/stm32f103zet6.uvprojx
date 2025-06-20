@@ -739,6 +739,16 @@
               <FileType>1</FileType>
               <FilePath>..\BSP\myUsartDrive\myUsartDrive.c</FilePath>
             </File>
+            <File>
+              <FileName>bsp_usart_drive.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\bsp_usart_drive\bsp_usart_drive.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_usart_drive.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\bsp_usart_drive\bsp_usart_drive.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

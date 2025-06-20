@@ -37,12 +37,12 @@ extern "C" {
 #define TX_BUFFER_SIZE 2048U
 
 /**
-  * @brief  ×èÈû·½Ê½·¢ËÍ×Ö·û´®
+  * @brief  é˜»å¡æ–¹å¼å‘é€å­—ç¬¦ä¸²
   */
 void USART1_SendString_Blocking(const char* str);
 
 /**
-  * @brief   ½«Êı¾İĞ´Èë USART1 ·¢ËÍ ringbuffer ÖĞ
+  * @brief   å°†æ•°æ®å†™å…¥ USART1 å‘é€ ringbuffer ä¸­
   */
 uint8_t USART1_Put_TxData_To_Ringbuffer(const void* data, uint16_t len);
 
