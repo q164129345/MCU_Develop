@@ -126,16 +126,14 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    
+    // char message[] = "Hello USART1!\r\n";
+    // // 将数据放入发送队列（就像把信件投入邮箱）
+    // uint8_t result = USART_LL_Put_TxData_To_Ringbuffer(&usart1_driver, 
+    //                                                   message, 
+    //                                                   strlen(message));
     /* USER CODE BEGIN 3 */
     if (fre % 100 == 0) {
         LL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
-        char message[] = "Hello from USART1!\r\n";
-    
-        // 将数据放入发送队列（就像把信件投入邮箱）
-        uint8_t result = USART_LL_Put_TxData_To_Ringbuffer(&usart1_driver, 
-                                                          message, 
-                                                          strlen(message));
     }
     USART_LL_Module_Run(&usart1_driver);
 
