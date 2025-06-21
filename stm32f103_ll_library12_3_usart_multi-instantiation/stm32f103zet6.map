@@ -288,6 +288,7 @@ Removing Unused input sections from the image.
     Removing main.o(.ARM.exidx.text.main), (8 bytes).
     Removing main.o(.ARM.exidx.text.SystemClock_Config), (8 bytes).
     Removing main.o(.ARM.exidx.text.Error_Handler), (8 bytes).
+    Removing main.o(.rodata.str1.4), (16 bytes).
     Removing main.o(.ARM.use_no_argv), (4 bytes).
     Removing gpio.o(.text), (0 bytes).
     Removing gpio.o(.ARM.exidx.text.MX_GPIO_Init), (8 bytes).
@@ -476,7 +477,7 @@ Removing Unused input sections from the image.
     Removing lwrb.o(.ARM.exidx.text.lwrb_find), (8 bytes).
     Removing lwrb_ex.o(.text), (0 bytes).
 
-192 unused section(s) (total 17460 bytes) removed from the image.
+193 unused section(s) (total 17476 bytes) removed from the image.
 
 ==============================================================================
 
@@ -584,11 +585,11 @@ Image Symbol Table
     [Anonymous Symbol]                       0x080015b0   Section        0  lwrb.o(.text.lwrb_skip)
     [Anonymous Symbol]                       0x080015fc   Section        0  lwrb.o(.text.lwrb_write)
     [Anonymous Symbol]                       0x080016a8   Section        0  main.o(.text.main)
-    i.__scatterload_copy                     0x08001834   Section       14  handlers.o(i.__scatterload_copy)
-    i.__scatterload_null                     0x08001842   Section        2  handlers.o(i.__scatterload_null)
-    i.__scatterload_zeroinit                 0x08001844   Section       14  handlers.o(i.__scatterload_zeroinit)
-    CHANNEL_OFFSET_TAB                       0x0800186a   Data           7  bsp_usart_drive.o(.rodata.CHANNEL_OFFSET_TAB)
-    [Anonymous Symbol]                       0x0800186a   Section        0  bsp_usart_drive.o(.rodata.CHANNEL_OFFSET_TAB)
+    i.__scatterload_copy                     0x0800181a   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x08001828   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x0800182a   Section       14  handlers.o(i.__scatterload_zeroinit)
+    CHANNEL_OFFSET_TAB                       0x08001850   Data           7  bsp_usart_drive.o(.rodata.CHANNEL_OFFSET_TAB)
+    [Anonymous Symbol]                       0x08001850   Section        0  bsp_usart_drive.o(.rodata.CHANNEL_OFFSET_TAB)
     .L_MergedGlobals                         0x20000008   Data          80  mycandrive_reg.o(.bss..L_MergedGlobals)
     [Anonymous Symbol]                       0x20000008   Section        0  mycandrive_reg.o(.bss..L_MergedGlobals)
     usart1_rx_dma_buffer                     0x200000d8   Data        1024  main.o(.bss.usart1_rx_dma_buffer)
@@ -726,14 +727,14 @@ Image Symbol Table
     lwrb_reset                               0x08001585   Thumb Code    42  lwrb.o(.text.lwrb_reset)
     lwrb_skip                                0x080015b1   Thumb Code    76  lwrb.o(.text.lwrb_skip)
     lwrb_write                               0x080015fd   Thumb Code   170  lwrb.o(.text.lwrb_write)
-    main                                     0x080016a9   Thumb Code   372  main.o(.text.main)
-    __scatterload_copy                       0x08001835   Thumb Code    14  handlers.o(i.__scatterload_copy)
-    __scatterload_null                       0x08001843   Thumb Code     2  handlers.o(i.__scatterload_null)
-    __scatterload_zeroinit                   0x08001845   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
-    AHBPrescTable                            0x08001852   Data          16  system_stm32f1xx.o(.rodata.AHBPrescTable)
-    APBPrescTable                            0x08001862   Data           8  system_stm32f1xx.o(.rodata.APBPrescTable)
-    Region$$Table$$Base                      0x08001874   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x08001894   Number         0  anon$$obj.o(Region$$Table)
+    main                                     0x080016a9   Thumb Code   370  main.o(.text.main)
+    __scatterload_copy                       0x0800181b   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x08001829   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x0800182b   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    AHBPrescTable                            0x08001838   Data          16  system_stm32f1xx.o(.rodata.AHBPrescTable)
+    APBPrescTable                            0x08001848   Data           8  system_stm32f1xx.o(.rodata.APBPrescTable)
+    Region$$Table$$Base                      0x08001858   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x08001878   Number         0  anon$$obj.o(Region$$Table)
     SystemCoreClock                          0x20000000   Data           4  system_stm32f1xx.o(.data.SystemCoreClock)
     txmail_free                              0x20000008   Data           1  mycandrive_reg.o(.bss..L_MergedGlobals)
     canSendError                             0x2000000c   Data           4  mycandrive_reg.o(.bss..L_MergedGlobals)
@@ -754,113 +755,113 @@ Memory Map of the image
 
   Image Entry point : 0x08000131
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x000018a0, Max: 0x00080000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x00001880, Max: 0x00080000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00001894, Max: 0x00080000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00001878, Max: 0x00080000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x08000000   0x08000000   0x00000130   Data   RO            3    RESET               startup_stm32f103xe.o
-    0x08000130   0x08000130   0x00000000   Code   RO          367  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
-    0x08000130   0x08000130   0x00000004   Code   RO          378    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
-    0x08000134   0x08000134   0x00000004   Code   RO          381    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
-    0x08000138   0x08000138   0x00000000   Code   RO          383    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
-    0x08000138   0x08000138   0x00000000   Code   RO          385    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
-    0x08000138   0x08000138   0x00000008   Code   RO          386    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
-    0x08000140   0x08000140   0x00000000   Code   RO          388    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
-    0x08000140   0x08000140   0x00000000   Code   RO          390    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
-    0x08000140   0x08000140   0x00000004   Code   RO          379    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
+    0x08000130   0x08000130   0x00000000   Code   RO          368  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
+    0x08000130   0x08000130   0x00000004   Code   RO          379    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
+    0x08000134   0x08000134   0x00000004   Code   RO          382    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
+    0x08000138   0x08000138   0x00000000   Code   RO          384    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
+    0x08000138   0x08000138   0x00000000   Code   RO          386    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
+    0x08000138   0x08000138   0x00000008   Code   RO          387    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
+    0x08000140   0x08000140   0x00000000   Code   RO          389    .ARM.Collect$$$$0000000D  mc_w.l(entry10a.o)
+    0x08000140   0x08000140   0x00000000   Code   RO          391    .ARM.Collect$$$$0000000F  mc_w.l(entry11a.o)
+    0x08000140   0x08000140   0x00000004   Code   RO          380    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
     0x08000144   0x08000144   0x00000024   Code   RO            4    .text               startup_stm32f103xe.o
-    0x08000168   0x08000168   0x00000024   Code   RO          370    .text               mc_w.l(memcpya.o)
-    0x0800018c   0x0800018c   0x0000000e   Code   RO          374    .text               mc_w.l(strlen.o)
+    0x08000168   0x08000168   0x00000024   Code   RO          371    .text               mc_w.l(memcpya.o)
+    0x0800018c   0x0800018c   0x0000000e   Code   RO          375    .text               mc_w.l(strlen.o)
     0x0800019a   0x0800019a   0x00000002   PAD
-    0x0800019c   0x0800019c   0x00000030   Code   RO          392    .text               mc_w.l(init.o)
-    0x080001cc   0x080001cc   0x00000002   Code   RO           63    .text.BusFault_Handler  stm32f1xx_it.o
+    0x0800019c   0x0800019c   0x00000030   Code   RO          393    .text               mc_w.l(init.o)
+    0x080001cc   0x080001cc   0x00000002   Code   RO           64    .text.BusFault_Handler  stm32f1xx_it.o
     0x080001ce   0x080001ce   0x00000002   PAD
-    0x080001d0   0x080001d0   0x000001ac   Code   RO          240    .text.CAN1_RX1_IRQHandler  mycandrive_reg.o
-    0x0800037c   0x0800037c   0x00000186   Code   RO          224    .text.CAN_SendMessage_NonBlocking  mycandrive_reg.o
+    0x080001d0   0x080001d0   0x000001ac   Code   RO          241    .text.CAN1_RX1_IRQHandler  mycandrive_reg.o
+    0x0800037c   0x0800037c   0x00000186   Code   RO          225    .text.CAN_SendMessage_NonBlocking  mycandrive_reg.o
     0x08000502   0x08000502   0x00000002   PAD
-    0x08000504   0x08000504   0x0000000c   Code   RO           75    .text.DMA1_Channel4_IRQHandler  stm32f1xx_it.o
-    0x08000510   0x08000510   0x0000000c   Code   RO           77    .text.DMA1_Channel5_IRQHandler  stm32f1xx_it.o
-    0x0800051c   0x0800051c   0x00000002   Code   RO           69    .text.DebugMon_Handler  stm32f1xx_it.o
+    0x08000504   0x08000504   0x0000000c   Code   RO           76    .text.DMA1_Channel4_IRQHandler  stm32f1xx_it.o
+    0x08000510   0x08000510   0x0000000c   Code   RO           78    .text.DMA1_Channel5_IRQHandler  stm32f1xx_it.o
+    0x0800051c   0x0800051c   0x00000002   Code   RO           70    .text.DebugMon_Handler  stm32f1xx_it.o
     0x0800051e   0x0800051e   0x00000002   PAD
     0x08000520   0x08000520   0x0000000a   Code   RO           15    .text.Error_Handler  main.o
     0x0800052a   0x0800052a   0x00000002   PAD
-    0x0800052c   0x0800052c   0x00000002   Code   RO           59    .text.HardFault_Handler  stm32f1xx_it.o
+    0x0800052c   0x0800052c   0x00000002   Code   RO           60    .text.HardFault_Handler  stm32f1xx_it.o
     0x0800052e   0x0800052e   0x00000002   PAD
-    0x08000530   0x08000530   0x000000be   Code   RO           90    .text.LL_GPIO_Init  stm32f1xx_ll_gpio.o
+    0x08000530   0x08000530   0x000000be   Code   RO           91    .text.LL_GPIO_Init  stm32f1xx_ll_gpio.o
     0x080005ee   0x080005ee   0x00000002   PAD
-    0x080005f0   0x080005f0   0x00000028   Code   RO          183    .text.LL_Init1msTick  stm32f1xx_ll_utils.o
-    0x08000618   0x08000618   0x0000008c   Code   RO          159    .text.LL_RCC_GetSystemClocksFreq  stm32f1xx_ll_rcc.o
-    0x080006a4   0x080006a4   0x0000000c   Code   RO          187    .text.LL_SetSystemCoreClock  stm32f1xx_ll_utils.o
-    0x080006b0   0x080006b0   0x000000f6   Code   RO          141    .text.LL_USART_Init  stm32f1xx_ll_usart.o
+    0x080005f0   0x080005f0   0x00000028   Code   RO          184    .text.LL_Init1msTick  stm32f1xx_ll_utils.o
+    0x08000618   0x08000618   0x0000008c   Code   RO          160    .text.LL_RCC_GetSystemClocksFreq  stm32f1xx_ll_rcc.o
+    0x080006a4   0x080006a4   0x0000000c   Code   RO          188    .text.LL_SetSystemCoreClock  stm32f1xx_ll_utils.o
+    0x080006b0   0x080006b0   0x000000f6   Code   RO          142    .text.LL_USART_Init  stm32f1xx_ll_usart.o
     0x080007a6   0x080007a6   0x00000002   PAD
-    0x080007a8   0x080007a8   0x00000046   Code   RO          185    .text.LL_mDelay     stm32f1xx_ll_utils.o
+    0x080007a8   0x080007a8   0x00000046   Code   RO          186    .text.LL_mDelay     stm32f1xx_ll_utils.o
     0x080007ee   0x080007ee   0x00000002   PAD
-    0x080007f0   0x080007f0   0x00000052   Code   RO           40    .text.MX_DMA_Init   dma.o
+    0x080007f0   0x080007f0   0x00000052   Code   RO           41    .text.MX_DMA_Init   dma.o
     0x08000842   0x08000842   0x00000002   PAD
-    0x08000844   0x08000844   0x00000092   Code   RO           31    .text.MX_GPIO_Init  gpio.o
+    0x08000844   0x08000844   0x00000092   Code   RO           32    .text.MX_GPIO_Init  gpio.o
     0x080008d6   0x080008d6   0x00000002   PAD
-    0x080008d8   0x080008d8   0x00000170   Code   RO           48    .text.MX_USART1_UART_Init  usart.o
-    0x08000a48   0x08000a48   0x00000002   Code   RO           61    .text.MemManage_Handler  stm32f1xx_it.o
+    0x080008d8   0x080008d8   0x00000170   Code   RO           49    .text.MX_USART1_UART_Init  usart.o
+    0x08000a48   0x08000a48   0x00000002   Code   RO           62    .text.MemManage_Handler  stm32f1xx_it.o
     0x08000a4a   0x08000a4a   0x00000002   PAD
-    0x08000a4c   0x08000a4c   0x00000002   Code   RO           57    .text.NMI_Handler   stm32f1xx_it.o
+    0x08000a4c   0x08000a4c   0x00000002   Code   RO           58    .text.NMI_Handler   stm32f1xx_it.o
     0x08000a4e   0x08000a4e   0x00000002   PAD
-    0x08000a50   0x08000a50   0x00000002   Code   RO           71    .text.PendSV_Handler  stm32f1xx_it.o
+    0x08000a50   0x08000a50   0x00000002   Code   RO           72    .text.PendSV_Handler  stm32f1xx_it.o
     0x08000a52   0x08000a52   0x00000002   PAD
-    0x08000a54   0x08000a54   0x00000002   Code   RO           67    .text.SVC_Handler   stm32f1xx_it.o
+    0x08000a54   0x08000a54   0x00000002   Code   RO           68    .text.SVC_Handler   stm32f1xx_it.o
     0x08000a56   0x08000a56   0x00000002   PAD
-    0x08000a58   0x08000a58   0x00000002   Code   RO           73    .text.SysTick_Handler  stm32f1xx_it.o
+    0x08000a58   0x08000a58   0x00000002   Code   RO           74    .text.SysTick_Handler  stm32f1xx_it.o
     0x08000a5a   0x08000a5a   0x00000002   PAD
     0x08000a5c   0x08000a5c   0x00000110   Code   RO           13    .text.SystemClock_Config  main.o
-    0x08000b6c   0x08000b6c   0x00000002   Code   RO          205    .text.SystemInit    system_stm32f1xx.o
+    0x08000b6c   0x08000b6c   0x00000002   Code   RO          206    .text.SystemInit    system_stm32f1xx.o
     0x08000b6e   0x08000b6e   0x00000002   PAD
-    0x08000b70   0x08000b70   0x0000000c   Code   RO           79    .text.USART1_IRQHandler  stm32f1xx_it.o
-    0x08000b7c   0x08000b7c   0x00000136   Code   RO          302    .text.USART_LL_Config  bsp_usart_drive.o
+    0x08000b70   0x08000b70   0x0000000c   Code   RO           80    .text.USART1_IRQHandler  stm32f1xx_it.o
+    0x08000b7c   0x08000b7c   0x00000136   Code   RO          303    .text.USART_LL_Config  bsp_usart_drive.o
     0x08000cb2   0x08000cb2   0x00000002   PAD
-    0x08000cb4   0x08000cb4   0x000001e6   Code   RO          298    .text.USART_LL_DMA_RX_Interrupt_Handler  bsp_usart_drive.o
+    0x08000cb4   0x08000cb4   0x000001e6   Code   RO          299    .text.USART_LL_DMA_RX_Interrupt_Handler  bsp_usart_drive.o
     0x08000e9a   0x08000e9a   0x00000002   PAD
-    0x08000e9c   0x08000e9c   0x000001a6   Code   RO          296    .text.USART_LL_DMA_TX_Interrupt_Handler  bsp_usart_drive.o
+    0x08000e9c   0x08000e9c   0x000001a6   Code   RO          297    .text.USART_LL_DMA_TX_Interrupt_Handler  bsp_usart_drive.o
     0x08001042   0x08001042   0x00000002   PAD
-    0x08001044   0x08001044   0x0000011c   Code   RO          290    .text.USART_LL_Module_Run  bsp_usart_drive.o
-    0x08001160   0x08001160   0x00000074   Code   RO          306    .text.USART_LL_Put_RxData_Into_Ringbuffer  bsp_usart_drive.o
-    0x080011d4   0x080011d4   0x0000009a   Code   RO          288    .text.USART_LL_Put_TxData_To_Ringbuffer  bsp_usart_drive.o
+    0x08001044   0x08001044   0x0000011c   Code   RO          291    .text.USART_LL_Module_Run  bsp_usart_drive.o
+    0x08001160   0x08001160   0x00000074   Code   RO          307    .text.USART_LL_Put_RxData_Into_Ringbuffer  bsp_usart_drive.o
+    0x080011d4   0x080011d4   0x0000009a   Code   RO          289    .text.USART_LL_Put_TxData_To_Ringbuffer  bsp_usart_drive.o
     0x0800126e   0x0800126e   0x00000002   PAD
-    0x08001270   0x08001270   0x000000ba   Code   RO          300    .text.USART_LL_RX_Interrupt_Handler  bsp_usart_drive.o
+    0x08001270   0x08001270   0x000000ba   Code   RO          301    .text.USART_LL_RX_Interrupt_Handler  bsp_usart_drive.o
     0x0800132a   0x0800132a   0x00000002   PAD
-    0x0800132c   0x0800132c   0x000000bc   Code   RO          238    .text.USB_HP_CAN1_TX_IRQHandler  mycandrive_reg.o
-    0x080013e8   0x080013e8   0x00000002   Code   RO           65    .text.UsageFault_Handler  stm32f1xx_it.o
+    0x0800132c   0x0800132c   0x000000bc   Code   RO          239    .text.USB_HP_CAN1_TX_IRQHandler  mycandrive_reg.o
+    0x080013e8   0x080013e8   0x00000002   Code   RO           66    .text.UsageFault_Handler  stm32f1xx_it.o
     0x080013ea   0x080013ea   0x00000002   PAD
-    0x080013ec   0x080013ec   0x00000020   Code   RO          333    .text.lwrb_get_free  lwrb.o
-    0x0800140c   0x0800140c   0x00000020   Code   RO          339    .text.lwrb_get_full  lwrb.o
-    0x0800142c   0x0800142c   0x00000024   Code   RO          317    .text.lwrb_init     lwrb.o
-    0x08001450   0x08001450   0x00000086   Code   RO          341    .text.lwrb_peek     lwrb.o
+    0x080013ec   0x080013ec   0x00000020   Code   RO          334    .text.lwrb_get_free  lwrb.o
+    0x0800140c   0x0800140c   0x00000020   Code   RO          340    .text.lwrb_get_full  lwrb.o
+    0x0800142c   0x0800142c   0x00000024   Code   RO          318    .text.lwrb_init     lwrb.o
+    0x08001450   0x08001450   0x00000086   Code   RO          342    .text.lwrb_peek     lwrb.o
     0x080014d6   0x080014d6   0x00000002   PAD
-    0x080014d8   0x080014d8   0x000000aa   Code   RO          335    .text.lwrb_read     lwrb.o
+    0x080014d8   0x080014d8   0x000000aa   Code   RO          336    .text.lwrb_read     lwrb.o
     0x08001582   0x08001582   0x00000002   PAD
-    0x08001584   0x08001584   0x0000002a   Code   RO          343    .text.lwrb_reset    lwrb.o
+    0x08001584   0x08001584   0x0000002a   Code   RO          344    .text.lwrb_reset    lwrb.o
     0x080015ae   0x080015ae   0x00000002   PAD
-    0x080015b0   0x080015b0   0x0000004c   Code   RO          349    .text.lwrb_skip     lwrb.o
-    0x080015fc   0x080015fc   0x000000aa   Code   RO          329    .text.lwrb_write    lwrb.o
+    0x080015b0   0x080015b0   0x0000004c   Code   RO          350    .text.lwrb_skip     lwrb.o
+    0x080015fc   0x080015fc   0x000000aa   Code   RO          330    .text.lwrb_write    lwrb.o
     0x080016a6   0x080016a6   0x00000002   PAD
-    0x080016a8   0x080016a8   0x0000018c   Code   RO           11    .text.main          main.o
-    0x08001834   0x08001834   0x0000000e   Code   RO          396    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x08001842   0x08001842   0x00000002   Code   RO          397    i.__scatterload_null  mc_w.l(handlers.o)
-    0x08001844   0x08001844   0x0000000e   Code   RO          398    i.__scatterload_zeroinit  mc_w.l(handlers.o)
-    0x08001852   0x08001852   0x00000010   Data   RO          210    .rodata.AHBPrescTable  system_stm32f1xx.o
-    0x08001862   0x08001862   0x00000008   Data   RO          211    .rodata.APBPrescTable  system_stm32f1xx.o
-    0x0800186a   0x0800186a   0x00000007   Data   RO          308    .rodata.CHANNEL_OFFSET_TAB  bsp_usart_drive.o
-    0x08001871   0x08001871   0x00000003   PAD
-    0x08001874   0x08001874   0x00000020   Data   RO          395    Region$$Table       anon$$obj.o
+    0x080016a8   0x080016a8   0x00000172   Code   RO           11    .text.main          main.o
+    0x0800181a   0x0800181a   0x0000000e   Code   RO          397    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x08001828   0x08001828   0x00000002   Code   RO          398    i.__scatterload_null  mc_w.l(handlers.o)
+    0x0800182a   0x0800182a   0x0000000e   Code   RO          399    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x08001838   0x08001838   0x00000010   Data   RO          211    .rodata.AHBPrescTable  system_stm32f1xx.o
+    0x08001848   0x08001848   0x00000008   Data   RO          212    .rodata.APBPrescTable  system_stm32f1xx.o
+    0x08001850   0x08001850   0x00000007   Data   RO          309    .rodata.CHANNEL_OFFSET_TAB  bsp_usart_drive.o
+    0x08001857   0x08001857   0x00000001   PAD
+    0x08001858   0x08001858   0x00000020   Data   RO          396    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08001898, Size: 0x00001cd8, Max: 0x00010000, ABSOLUTE)
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08001878, Size: 0x00001cd8, Max: 0x00010000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x08001898   0x00000004   Data   RW          209    .data.SystemCoreClock  system_stm32f1xx.o
-    0x20000004   0x0800189c   0x00000004   PAD
-    0x20000008        -       0x00000050   Zero   RW          246    .bss..L_MergedGlobals  mycandrive_reg.o
+    0x20000000   0x08001878   0x00000004   Data   RW          210    .data.SystemCoreClock  system_stm32f1xx.o
+    0x20000004   0x0800187c   0x00000004   PAD
+    0x20000008        -       0x00000050   Zero   RW          247    .bss..L_MergedGlobals  mycandrive_reg.o
     0x20000058        -       0x00000080   Zero   RW           17    .bss.usart1_driver  main.o
     0x200000d8        -       0x00000400   Zero   RW           18    .bss.usart1_rx_dma_buffer  main.o
     0x200004d8        -       0x00000400   Zero   RW           19    .bss.usart1_rx_rb_buffer  main.o
@@ -880,7 +881,7 @@ Image component sizes
         82          0          0          0          0       3975   dma.o
        146          0          0          0          0       2061   gpio.o
        692          0          0          0          0      12924   lwrb.o
-       678         24          0          0       6272       8712   main.o
+       652          0          0          0       6272       8727   main.o
       1006          0          0          0         80      13931   mycandrive_reg.o
         36          8        304          0       1024        812   startup_stm32f103xe.o
         54          0          0          0          0       3130   stm32f1xx_it.o
@@ -892,9 +893,9 @@ Image component sizes
        368          0          0          0          0       7343   usart.o
 
     ----------------------------------------------------------------------
-      5772         50        370          4       7380      93583   Object Totals
+      5746         26        368          4       7380      93598   Object Totals
          0          0         32          0          0          0   (incl. Generated)
-        52          0          3          0          4          0   (incl. Padding)
+        52          0          1          0          4          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -933,15 +934,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      5922         68        370          4       7380      93699   Grand Totals
-      5922         68        370          4       7380      93699   ELF Image Totals
-      5922         68        370          4          0          0   ROM Totals
+      5896         44        368          4       7380      93714   Grand Totals
+      5896         44        368          4       7380      93714   ELF Image Totals
+      5896         44        368          4          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 6292 (   6.14kB)
+    Total RO  Size (Code + RO Data)                 6264 (   6.12kB)
     Total RW  Size (RW Data + ZI Data)              7384 (   7.21kB)
-    Total ROM Size (Code + RO Data + RW Data)       6296 (   6.15kB)
+    Total ROM Size (Code + RO Data + RW Data)       6268 (   6.12kB)
 
 ==============================================================================
 
