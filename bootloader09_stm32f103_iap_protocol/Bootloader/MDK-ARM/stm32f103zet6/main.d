@@ -37,4 +37,5 @@ stm32f103zet6/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
   ..\Core\Inc\dma.h ..\Core\Inc\usart.h ..\Core\Inc\gpio.h \
   ..\BSP\myCanDrive\myCanDrive_reg.h \
   ..\BSP\bsp_usart_hal\bsp_usart_hal.h ..\IAP\app_jump.h \
-  ..\IAP\soft_crc32.h ..\IAP\op_flash.h ..\IAP\fw_verify.h
+  ..\IAP\soft_crc32.h ..\IAP\op_flash.h ..\IAP\fw_verify.h \
+  ..\IAP\ymodem.h

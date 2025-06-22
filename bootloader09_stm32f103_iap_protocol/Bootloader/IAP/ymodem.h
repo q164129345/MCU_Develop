@@ -2,7 +2,7 @@
  * @file    ymodem.h
  * @brief   YModem协议下位机实现头文件
  * @author  Wallace.zhang
- * @date    2025-01-20
+ * @date    2025-06-20
  * @version 3.0.0
  * 
  * @note    这就像一个"纯粹的包裹处理专家"，完全独立于通信方式，
@@ -35,7 +35,7 @@ extern "C" {
 #define YMODEM_ACK              0x06    /**< 应答，接收正确 */
 #define YMODEM_NAK              0x15    /**< 否定应答，接收错误 */
 #define YMODEM_CAN              0x18    /**< 取消传输 */
-#define YMODEM_C                0x43    /**< ASCII 'C'，表示CRC校验方式 */
+#define YMODEM_C                0x43    /**< ASCII 'C'，下位机告诉上位机，表示开始接收固件数据 */
 
 #define YMODEM_PACKET_SIZE_128  128     /**< 128字节数据包大小 */
 #define YMODEM_PACKET_SIZE_1024 1024    /**< 1024字节数据包大小 */
@@ -92,7 +92,7 @@ typedef struct YModem_Handler {
     
     /* 数据包解析 */
     YModem_Packet_t current_packet;     /**< 当前解析的数据包 */
-    uint8_t expected_packet_num;        /**< 期望的包序号 */
+    uint16_t expected_packet_num;        /**< 期望的包序号 (修复：改为uint16_t支持更大包序号) */
     
     /* 文件信息 */
     char file_name[256];                /**< 文件名 */

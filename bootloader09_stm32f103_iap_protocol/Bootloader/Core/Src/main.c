@@ -170,12 +170,12 @@ int main(void)
                 
                 //! 检查YModem传输结果
                 if (ymodem_result == YMODEM_RESULT_COMPLETE) {
-                    log_printf("YModem: 固件升级完成！准备校验和复制...\r\n");
+                    log_printf("YModem: IAP upgrade completed. Prepare to verify and copy the firmware.\r\n");
                     //! 这里可以触发固件校验和复制流程
                     //! 重置YModem处理器，准备下次传输
                     YModem_Reset(&gYModemHandler);
                 } else if (ymodem_result == YMODEM_RESULT_ERROR) {
-                    log_printf("YModem: 传输出错，重置协议处理器\r\n");
+                    log_printf("YModem: transmission error, reset protocol processor.\r\n"); //! 传输出错，重置协议处理器
                     YModem_Reset(&gYModemHandler);
                 }
             }

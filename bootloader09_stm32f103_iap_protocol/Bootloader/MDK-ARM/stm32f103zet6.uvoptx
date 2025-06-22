@@ -120,7 +120,6 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>4鸠</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -163,22 +162,7 @@
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>test_jump,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>2</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>gTest</ItemText>
-        </Ww>
-        <Ww>
-          <count>3</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>gCalc</ItemText>
-        </Ww>
-        <Ww>
-          <count>4</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>gStored</ItemText>
+          <ItemText>gYModemHandler,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow2>

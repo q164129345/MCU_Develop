@@ -16,9 +16,8 @@
 IAP/
 ├── ymodem.h                    # YModem协议头文件
 ├── ymodem.c                    # YModem协议实现
-├── ymodem_usage_example.c      # 完全解耦版使用示例
-├── ymodem_example.c            # 旧版使用示例（已废弃）
-└── YModem_README.md            # 本说明文件
+├── YModem_README.md            # 本说明文件
+└── (已删除旧版示例文件)
 ```
 
 ## 核心特性
@@ -44,93 +43,133 @@ IAP/
 
 ## 使用方法
 
-### 1. 基本初始化（完全解耦版本）
+### 1. 实际项目中的集成方式
+
+根据当前项目的实际实现，YModem协议已经完全集成到`main.c`中：
 
 ```c
 #include "ymodem.h"
-#include "bsp_usart_hal.h"  // 仅在使用串口时需要
+#include "bsp_usart_hal.h"
 
-// 声明YModem处理器实例
+// 全局变量声明
 YModem_Handler_t gYModemHandler;
+USART_Driver_t gUsart1Drv;
 
-// 在main函数中初始化
 int main(void)
 {
-    // ... 其他初始化代码 ...
+    // 系统初始化
+    HAL_Init();
+    SystemClock_Config();
+    MX_GPIO_Init();
+    MX_DMA_Init();
+    MX_USART1_UART_Init();
     
-    // 初始化USART1（如果使用串口数据源）
-    USART_Config(&gUsart1Drv, ...);
+    // USART1初始化
+    USART_Config(&gUsart1Drv,
+                 gUsart1RXDMABuffer, gUsart1RXRBBuffer, sizeof(gUsart1RXDMABuffer),
+                 gUsart1TXDMABuffer, gUsart1TXRBBuffer, sizeof(gUsart1TXDMABuffer));
     
-    // 初始化YModem协议处理器（完全独立）
+    // YModem协议处理器初始化（完全解耦版本）
     YModem_Init(&gYModemHandler);
     
-    // 主循环
+    log_printf("Bootloader init successfully.\n");
+    
+    uint32_t fre = 0;
     while (1) {
-        // 从数据源逐字节读取数据
-        while (USART_Get_The_Existing_Amount_Of_Data(&gUsart1Drv) > 0) {
-            uint8_t data;
-            if (USART_Take_A_Piece_Of_Data(&gUsart1Drv, &data)) {
-                // 将数据传递给YModem处理器
-                YModem_Result_t result = YModem_Run(&gYModemHandler, data);
-                
-                if (result == YMODEM_RESULT_COMPLETE) {
-                    log_printf("固件接收完成！\r\n");
-                    YModem_Reset(&gYModemHandler);
+        // 2ms周期执行YModem协议处理
+        if (0 == fre % 2) {
+            // YModem协议处理 - 逐字节从ringbuffer里拿出数据来解析
+            while(USART_Get_The_Existing_Amount_Of_Data(&gUsart1Drv)) {
+                uint8_t data;
+                if (USART_Take_A_Piece_Of_Data(&gUsart1Drv, &data)) {
+                    YModem_Result_t ymodem_result = YModem_Run(&gYModemHandler, data);
+                    
+                    // 检查YModem传输结果
+                    if (ymodem_result == YMODEM_RESULT_COMPLETE) {
+                        log_printf("YModem: 固件升级完成！准备校验和复制...\r\n");
+                        // 这里可以触发固件校验和复制流程
+                        // 重置YModem处理器，准备下次传输
+                        YModem_Reset(&gYModemHandler);
+                    } else if (ymodem_result == YMODEM_RESULT_ERROR) {
+                        log_printf("YModem: 传输出错，重置协议处理器\r\n");
+                        YModem_Reset(&gYModemHandler);
+                    }
                 }
             }
-        }
-        
-        // 检查并发送响应数据
-        if (YModem_Has_Response(&gYModemHandler)) {
-            uint8_t response_buffer[16];
-            uint8_t response_length = YModem_Get_Response(&gYModemHandler, 
-                                                         response_buffer, 
-                                                         sizeof(response_buffer));
-            if (response_length > 0) {
-                // 发送响应数据（这里使用串口）
-                USART_Put_TxData_To_Ringbuffer(&gUsart1Drv, response_buffer, response_length);
+            
+            // 检查是否有YModem响应数据需要发送
+            if (YModem_Has_Response(&gYModemHandler)) {
+                uint8_t response_buffer[16];
+                uint8_t response_length = YModem_Get_Response(&gYModemHandler, 
+                                                             response_buffer, 
+                                                             sizeof(response_buffer));
+                if (response_length > 0) {
+                    // 将响应数据发送给上位机
+                    USART_Put_TxData_To_Ringbuffer(&gUsart1Drv, response_buffer, response_length);
+                }
             }
+            
+            USART_Module_Run(&gUsart1Drv); // Usart1模块运行
         }
         
+        fre++;
         HAL_Delay(1);
     }
 }
 ```
 
-### 2. 在现有main.c中集成（完全解耦版本）
+### 2. 关键集成要点
 
-已经在`main.c`中集成了完全解耦的YModem处理：
+1. **初始化顺序**：
+   ```c
+   // 1. 先初始化USART驱动
+   USART_Config(&gUsart1Drv, ...);
+   
+   // 2. 再初始化YModem处理器
+   YModem_Init(&gYModemHandler);
+   ```
+
+2. **数据处理流程**：
+   ```c
+   // 在2ms定时循环中处理
+   while(USART_Get_The_Existing_Amount_Of_Data(&gUsart1Drv)) {
+       uint8_t data;
+       if (USART_Take_A_Piece_Of_Data(&gUsart1Drv, &data)) {
+           YModem_Result_t result = YModem_Run(&gYModemHandler, data);
+           // 处理结果...
+       }
+   }
+   ```
+
+3. **响应数据处理**：
+   ```c
+   if (YModem_Has_Response(&gYModemHandler)) {
+       uint8_t response_buffer[16];
+       uint8_t length = YModem_Get_Response(&gYModemHandler, response_buffer, sizeof(response_buffer));
+       if (length > 0) {
+           USART_Put_TxData_To_Ringbuffer(&gUsart1Drv, response_buffer, length);
+       }
+   }
+   ```
+
+### 3. 传输完成后的处理
+
+当YModem传输完成后，您可以在代码中添加固件校验和复制逻辑：
 
 ```c
-//! 2ms
-if (0 == fre % 2) {
-    //! YModem协议处理 - 逐字节从ringbuffer里拿出数据来解析
-    while(USART_Get_The_Existing_Amount_Of_Data(&gUsart1Drv)) {
-        uint8_t data;
-        if (USART_Take_A_Piece_Of_Data(&gUsart1Drv, &data)) {
-            YModem_Result_t ymodem_result = YModem_Run(&gYModemHandler, data);
-            
-            //! 检查YModem传输结果
-            if (ymodem_result == YMODEM_RESULT_COMPLETE) {
-                log_printf("YModem: 固件升级完成！准备校验和复制...\r\n");
-                YModem_Reset(&gYModemHandler);
-            } else if (ymodem_result == YMODEM_RESULT_ERROR) {
-                log_printf("YModem: 传输出错，重置协议处理器\r\n");
-                YModem_Reset(&gYModemHandler);
-            }
-        }
-    }
+if (ymodem_result == YMODEM_RESULT_COMPLETE) {
+    log_printf("YModem: 固件升级完成！准备校验和复制...\r\n");
     
-    //! 检查是否有YModem响应数据需要发送
-    if (YModem_Has_Response(&gYModemHandler)) {
-        uint8_t response_buffer[16];
-        uint8_t response_length = YModem_Get_Response(&gYModemHandler, response_buffer, sizeof(response_buffer));
-        if (response_length > 0) {
-            USART_Put_TxData_To_Ringbuffer(&gUsart1Drv, response_buffer, response_length);
-        }
-    }
+    // 可选：添加固件校验和复制逻辑
+    // if (HAL_OK == FW_Firmware_Verification(FLASH_DL_START_ADDR, FW_TOTAL_LEN)) {
+    //     if (OP_FLASH_OK == OP_Flash_Copy(FLASH_DL_START_ADDR, FLASH_APP_START_ADDR, FLASH_APP_SIZE)) {
+    //         log_printf("固件复制成功，准备跳转App\r\n");
+    //         Delay_MS_By_NOP(500);
+    //         IAP_Ready_To_Jump_App();
+    //     }
+    // }
     
-    USART_Module_Run(&gUsart1Drv);
+    YModem_Reset(&gYModemHandler);
 }
 ```
 
@@ -287,34 +326,110 @@ YModem: 传输完成！总共接收 12345 字节
 
 ## 完整使用示例
 
-参考`ymodem_usage_example.c`文件中的完整示例代码，包括：
+### 当前项目实现
 
-1. 串口数据源使用方法
-2. 文件数据源使用方法（模拟）
-3. 网口/蓝牙数据源使用方法（预留）
-4. 通用的固件升级流程
-5. 进度显示功能
+当前项目中的YModem协议已经完全集成到bootloader的main.c中，实现了：
 
-### 多种数据源支持
+1. **串口数据源**: 从USART1 ringbuffer逐字节读取YModem数据
+2. **实时处理**: 在2ms定时循环中处理接收到的数据
+3. **自动响应**: 自动处理ACK/NAK响应并发送给上位机
+4. **进度监控**: 通过RTT输出详细的传输进度信息
+5. **错误处理**: 自动重置协议处理器，支持重新传输
+
+### 多种数据源支持（扩展能力）
 
 完全解耦的设计使得YModem协议可以支持任何数据源：
 
-- **串口**: 从USART ringbuffer逐字节读取
-- **网口**: 从以太网接收缓冲区读取
-- **蓝牙**: 从蓝牙接收缓冲区读取
-- **文件**: 从文件系统读取（用于测试）
-- **CAN总线**: 从CAN接收缓冲区读取
-- **USB**: 从USB接收缓冲区读取
+- **串口**: 从USART ringbuffer逐字节读取（当前实现）
+- **网口**: 从以太网接收缓冲区读取（可扩展）
+- **蓝牙**: 从蓝牙接收缓冲区读取（可扩展）
+- **文件**: 从文件系统读取（用于测试，可扩展）
+- **CAN总线**: 从CAN接收缓冲区读取（可扩展）
+- **USB**: 从USB接收缓冲区读取（可扩展）
+
+### 扩展到其他数据源的方法
+
+如果需要支持其他数据源，只需要：
+
+```c
+// 示例：从CAN总线接收YModem数据
+while(CAN_Get_Received_Data_Count() > 0) {
+    uint8_t data;
+    if (CAN_Get_One_Byte(&data)) {
+        YModem_Result_t result = YModem_Run(&gYModemHandler, data);
+        // 处理结果...
+    }
+}
+
+// 示例：从网口接收YModem数据  
+while(Ethernet_Has_Data()) {
+    uint8_t data;
+    if (Ethernet_Read_Byte(&data)) {
+        YModem_Result_t result = YModem_Run(&gYModemHandler, data);
+        // 处理结果...
+    }
+}
+```
 
 ## 技术支持
 
-如果遇到问题，请检查：
+### 常见问题排查
 
-1. 串口配置是否正确
-2. Flash地址映射是否合理
-3. 是否正确初始化了所有依赖模块
-4. RTT日志输出是否正常
+如果遇到问题，请按以下顺序检查：
+
+1. **串口通信**：
+   - 确认USART1配置正确（波特率、数据位、停止位等）
+   - 检查DMA配置是否正常
+   - 验证ringbuffer是否正常工作
+
+2. **YModem协议**：
+   - 检查上位机发送的YModem格式是否正确
+   - 确认CRC16校验算法一致
+   - 验证数据包大小设置（1024字节）
+
+3. **Flash操作**：
+   - 确认Flash地址映射配置正确
+   - 检查Flash擦除和写入权限
+   - 验证地址范围是否在有效区域内
+
+4. **调试信息**：
+   - 确保RTT配置正确，能正常输出日志
+   - 检查log_printf函数是否正常工作
+   - 观察YModem传输过程中的详细日志
+
+### 调试建议
+
+1. **使用RTT查看详细日志**：
+   ```
+   YModem: 协议处理器初始化完成
+   YModem: 文件信息 - 名称: App_crc.bin, 大小: 12345 字节
+   YModem: 进度 10% (1024/12345 字节)
+   YModem: 成功写入 1024 字节到地址 0x08040000
+   YModem: 传输完成！总共接收 12345 字节
+   ```
+
+2. **检查传输状态**：
+   - 观察YModem_Run()的返回值
+   - 监控YMODEM_RESULT_COMPLETE和YMODEM_RESULT_ERROR状态
+   - 确认响应数据是否正确发送给上位机
+
+3. **验证数据完整性**：
+   - 可以添加额外的CRC32校验
+   - 比较接收到的文件大小与预期大小
+   - 检查Flash中写入的数据是否正确
+
+### 性能优化建议
+
+1. **提高传输效率**：
+   - 保持2ms的处理周期，避免数据积压
+   - 确保USART DMA缓冲区足够大
+   - 优化Flash写入策略
+
+2. **错误恢复**：
+   - 利用YModem的自动重试机制
+   - 在传输错误时及时重置协议处理器
+   - 记录错误统计信息用于分析
 
 ---
 
-*本实现基于STM32 HAL库，适用于STM32F103系列微控制器。* 
+*本实现基于STM32 HAL库，专门为STM32F103系列微控制器优化，已在实际项目中验证可用性。* 
