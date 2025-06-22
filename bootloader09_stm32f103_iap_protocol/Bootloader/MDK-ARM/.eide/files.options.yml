@@ -1,0 +1,37 @@
+##########################################################################################
+#                        Append Compiler Options For Source Files
+##########################################################################################
+
+# syntax:
+#   <your pattern>: <compiler options>
+# For get pattern syntax, please refer to: https://www.npmjs.com/package/micromatch
+#
+# examples:
+#   'main.cpp':           --cpp11 -Og ...
+#   'src/*.c':            -gnu -O2 ...
+#   'src/lib/**/*.cpp':   --cpp11 -Os ...
+#   '!Application/*.c':   -O0
+#   '**/*.c':             -O2 -gnu ...
+
+version: "2.0"
+options:
+    stm32f103zet6:
+        files: {}
+        virtualPathFiles:
+            <virtual_root>/Application/User/Core/dma.c: ""
+            <virtual_root>/Application/User/Core/usart.c: ""
+            <virtual_root>/Application/User/Core/stm32f1xx_hal_msp.c: ""
+            <virtual_root>/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_gpio_ex.c: ""
+            <virtual_root>/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_tim.c: ""
+            <virtual_root>/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_tim_ex.c: ""
+            <virtual_root>/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_uart.c: ""
+            <virtual_root>/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal.c: ""
+            <virtual_root>/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rcc.c: ""
+            <virtual_root>/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_rcc_ex.c: ""
+            <virtual_root>/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_gpio.c: ""
+            <virtual_root>/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_dma.c: ""
+            <virtual_root>/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_cortex.c: ""
+            <virtual_root>/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_pwr.c: ""
+            <virtual_root>/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_flash.c: ""
+            <virtual_root>/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_flash_ex.c: ""
+            <virtual_root>/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_exti.c: ""

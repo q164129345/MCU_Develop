@@ -1555,6 +1555,11 @@
               <FileType>1</FileType>
               <FilePath>..\IAP\fw_verify.c</FilePath>
             </File>
+            <File>
+              <FileName>ymodem.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\IAP\ymodem.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
