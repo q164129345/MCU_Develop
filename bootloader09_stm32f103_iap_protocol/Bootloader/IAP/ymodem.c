@@ -1,0 +1,560 @@
+/**
+ * @file    ymodem.c
+ * @brief   YModem协议下位机实现
+ * @author  Wallace.zhang
+ * @date    2025-01-20
+ * @version 3.0.0
+ * 
+ * @note    YModem协议就像一个"纯粹的包裹处理专家"：
+ *          1. 接收逐字节输入的数据（完全解耦数据来源）
+ *          2. 检查包装是否完整（CRC校验）
+ *          3. 按顺序整理内容（状态机管理）
+ *          4. 存放到指定位置（写入Flash）
+ *          5. 产生响应数据（供调用者发送给上位机）
+ *          
+ *          v3.0.0 更新：完全解耦通信接口，支持任意数据源
+ *          - 移除所有通信接口依赖
+ *          - 改为逐字节数据输入方式
+ *          - 响应数据通过缓冲区输出
+ */
+
+#include "ymodem.h"
+#include "retarget_rtt.h"
+#include "stm32f1xx_hal_flash.h"
+#include "stm32f1xx_hal_flash_ex.h"
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+/* 私有函数声明 */
+static YModem_Result_t YModem_Parse_Packet(YModem_Handler_t *handler);
+static uint16_t YModem_Calculate_CRC16(const uint8_t *data, uint16_t length);
+static YModem_Result_t YModem_Handle_FileInfo_Packet(YModem_Handler_t *handler);
+static YModem_Result_t YModem_Handle_Data_Packet(YModem_Handler_t *handler);
+static void YModem_Queue_Response(YModem_Handler_t *handler, uint8_t response);
+static YModem_Result_t YModem_Write_To_Flash(YModem_Handler_t *handler, const uint8_t *data, uint16_t length);
+
+/**
+ * @brief 初始化YModem协议处理器
+ * @param handler: YModem处理器指针
+ * @return YModem_Result_t: 初始化结果
+ * 
+ * @note 就像准备一个纯粹的"包裹处理工作台"，完全独立于数据来源
+ *       不依赖任何通信接口，只专注于协议处理
+ */
+YModem_Result_t YModem_Init(YModem_Handler_t *handler)
+{
+    if (handler == NULL) {
+        return YMODEM_RESULT_ERROR;
+    }
+    
+    // 初始化基本参数
+    handler->state = YMODEM_STATE_IDLE;
+    handler->max_retry = 3;  // 最大重试3次
+    
+    // 重置所有状态
+    YModem_Reset(handler);
+    
+    log_printf("YModem: 协议处理器初始化完成（完全解耦版本）\r\n");
+    return YMODEM_RESULT_OK;
+}
+
+/**
+ * @brief 重置YModem协议处理器
+ * @param handler: YModem处理器指针
+ * 
+ * @note 就像清空收件箱，重新开始接收
+ */
+void YModem_Reset(YModem_Handler_t *handler)
+{
+    if (handler == NULL) return;
+    
+    handler->state = YMODEM_STATE_WAIT_FILE_INFO;
+    handler->rx_index = 0;
+    handler->expected_packet_size = 0;
+    handler->expected_packet_num = 0;
+    handler->file_size = 0;
+    handler->received_size = 0;
+    handler->flash_write_addr = FLASH_DL_START_ADDR;
+    handler->retry_count = 0;
+    
+    // 重置响应缓冲区
+    handler->response_length = 0;
+    handler->response_ready = 0;
+    
+    memset(handler->rx_buffer, 0, sizeof(handler->rx_buffer));
+    memset(handler->file_name, 0, sizeof(handler->file_name));
+    memset(&handler->current_packet, 0, sizeof(handler->current_packet));
+    memset(handler->response_buffer, 0, sizeof(handler->response_buffer));
+    
+    log_printf("YModem: 协议处理器已重置\r\n");
+}
+
+/**
+ * @brief YModem协议数据处理函数
+ * @param handler: YModem处理器指针
+ * @param data: 输入的数据字节
+ * @return YModem_Result_t: 处理结果
+ * 
+ * @note 逐字节处理YModem协议数据，完全解耦数据来源
+ *       数据可以来自串口、网口、蓝牙、文件等任何来源
+ *       就像"包裹处理专家"逐个检查包裹内容
+ */
+YModem_Result_t YModem_Run(YModem_Handler_t *handler, uint8_t data)
+{
+    if (handler == NULL) {
+        return YMODEM_RESULT_ERROR;
+    }
+    
+    // 处理特殊控制字符
+    if (data == YMODEM_EOT) {
+        log_printf("YModem: 收到EOT，传输结束\r\n");
+        YModem_Queue_Response(handler, YMODEM_ACK);
+        handler->state = YMODEM_STATE_WAIT_END;
+        return YMODEM_RESULT_OK;
+    }
+    
+    if (data == YMODEM_CAN) {
+        log_printf("YModem: 收到CAN，传输取消\r\n");
+        handler->state = YMODEM_STATE_ERROR;
+        return YMODEM_RESULT_ERROR;
+    }
+    
+    // 根据当前状态处理数据
+    switch (handler->state) {
+        case YMODEM_STATE_WAIT_FILE_INFO:
+        case YMODEM_STATE_WAIT_DATA:
+            // 检查是否是包头
+            if (handler->rx_index == 0) {
+                if (data == YMODEM_STX) {
+                    handler->expected_packet_size = YMODEM_PACKET_SIZE_1024;
+                    handler->rx_buffer[handler->rx_index++] = data;
+                } else if (data == YMODEM_SOH) {
+                    handler->expected_packet_size = YMODEM_PACKET_SIZE_128;
+                    handler->rx_buffer[handler->rx_index++] = data;
+                } else {
+                    // 不是有效包头，忽略
+                    return YMODEM_RESULT_CONTINUE;
+                }
+            } else {
+                // 继续接收数据
+                handler->rx_buffer[handler->rx_index++] = data;
+                
+                // 检查是否接收完整个包
+                uint16_t total_size = YMODEM_PACKET_HEADER_SIZE + 
+                                    handler->expected_packet_size + 
+                                    YMODEM_PACKET_CRC_SIZE;
+                
+                if (handler->rx_index >= total_size) {
+                    return YModem_Parse_Packet(handler);
+                }
+            }
+            break;
+            
+        case YMODEM_STATE_WAIT_END:
+            // 等待结束包（空文件名包）
+            if (handler->rx_index == 0 && data == YMODEM_STX) {
+                handler->expected_packet_size = YMODEM_PACKET_SIZE_1024;
+                handler->rx_buffer[handler->rx_index++] = data;
+            } else if (handler->rx_index > 0) {
+                handler->rx_buffer[handler->rx_index++] = data;
+                
+                uint16_t total_size = YMODEM_PACKET_HEADER_SIZE + 
+                                    handler->expected_packet_size + 
+                                    YMODEM_PACKET_CRC_SIZE;
+                
+                if (handler->rx_index >= total_size) {
+                    // 解析结束包
+                    YModem_Result_t result = YModem_Parse_Packet(handler);
+                    if (result == YMODEM_RESULT_OK) {
+                        log_printf("YModem: 传输完成！总共接收 %lu 字节\r\n", handler->received_size);
+                        handler->state = YMODEM_STATE_COMPLETE;
+                        YModem_Queue_Response(handler, YMODEM_ACK);
+                        return YMODEM_RESULT_COMPLETE;
+                    }
+                }
+            }
+            break;
+            
+        default:
+            break;
+    }
+    
+    return YMODEM_RESULT_CONTINUE;
+}
+
+
+
+/**
+ * @brief 解析YModem数据包
+ * @param handler: YModem处理器指针
+ * @return YModem_Result_t: 解析结果
+ * 
+ * @note 就像拆开快递包装，检查内容是否完整正确
+ */
+static YModem_Result_t YModem_Parse_Packet(YModem_Handler_t *handler)
+{
+    // 提取包头信息
+    handler->current_packet.header = handler->rx_buffer[0];
+    handler->current_packet.packet_num = handler->rx_buffer[1];
+    handler->current_packet.packet_num_inv = handler->rx_buffer[2];
+    
+    // 检查包序号的完整性
+    if ((handler->current_packet.packet_num + handler->current_packet.packet_num_inv) != 0xFF) {
+        log_printf("YModem: 包序号校验失败\r\n");
+        YModem_Queue_Response(handler, YMODEM_NAK);
+        handler->rx_index = 0;
+        return YMODEM_RESULT_ERROR;
+    }
+    
+    // 提取数据部分
+    memcpy(handler->current_packet.data, 
+           &handler->rx_buffer[YMODEM_PACKET_HEADER_SIZE], 
+           handler->expected_packet_size);
+    
+    // 提取CRC校验值
+    uint16_t crc_offset = YMODEM_PACKET_HEADER_SIZE + handler->expected_packet_size;
+    handler->current_packet.crc = (handler->rx_buffer[crc_offset] << 8) | 
+                                  handler->rx_buffer[crc_offset + 1];
+    
+    // 计算并验证CRC
+    uint16_t calculated_crc = YModem_Calculate_CRC16(handler->current_packet.data, 
+                                                    handler->expected_packet_size);
+    
+    if (calculated_crc != handler->current_packet.crc) {
+        log_printf("YModem: CRC校验失败，计算值=0x%04X，接收值=0x%04X\r\n", 
+                  calculated_crc, handler->current_packet.crc);
+        YModem_Queue_Response(handler, YMODEM_NAK);
+        handler->rx_index = 0;
+        return YMODEM_RESULT_ERROR;
+    }
+    
+    // 重置接收缓冲区
+    handler->rx_index = 0;
+    
+    // 根据包序号处理不同类型的包
+    if (handler->current_packet.packet_num == 0) {
+        // 第0包：文件信息包
+        return YModem_Handle_FileInfo_Packet(handler);
+    } else {
+        // 数据包
+        return YModem_Handle_Data_Packet(handler);
+    }
+}
+
+/**
+ * @brief 计算CRC16校验值
+ * @param data: 数据指针
+ * @param length: 数据长度
+ * @return uint16_t: CRC16校验值
+ * 
+ * @note 使用CRC-16/XMODEM算法，就像给包裹贴上防伪标签
+ */
+static uint16_t YModem_Calculate_CRC16(const uint8_t *data, uint16_t length)
+{
+    uint16_t crc = 0x0000;
+    
+    for (uint16_t i = 0; i < length; i++) {
+        crc ^= (data[i] << 8);
+        for (uint8_t j = 0; j < 8; j++) {
+            if (crc & 0x8000) {
+                crc = ((crc << 1) ^ 0x1021) & 0xFFFF;
+            } else {
+                crc = (crc << 1) & 0xFFFF;
+            }
+        }
+    }
+    
+    return crc;
+}
+
+/**
+ * @brief 处理文件信息包（第0包）
+ * @param handler: YModem处理器指针
+ * @return YModem_Result_t: 处理结果
+ * 
+ * @note 就像查看快递单上的收件信息：文件名、大小等
+ */
+static YModem_Result_t YModem_Handle_FileInfo_Packet(YModem_Handler_t *handler)
+{
+    // 检查是否是结束包（空文件名）
+    if (handler->current_packet.data[0] == 0) {
+        log_printf("YModem: 收到结束包\r\n");
+        handler->state = YMODEM_STATE_COMPLETE;
+        YModem_Queue_Response(handler, YMODEM_ACK);
+        return YMODEM_RESULT_COMPLETE;
+    }
+    
+    // 解析文件名
+    char *filename_ptr = (char *)handler->current_packet.data;
+    strncpy(handler->file_name, filename_ptr, sizeof(handler->file_name) - 1);
+    handler->file_name[sizeof(handler->file_name) - 1] = '\0';
+    
+    // 查找文件大小（在文件名后的第一个NULL之后）
+    char *size_ptr = filename_ptr + strlen(filename_ptr) + 1;
+    handler->file_size = atol(size_ptr);
+    
+    log_printf("YModem: 文件信息 - 名称: %s, 大小: %lu 字节\r\n", 
+              handler->file_name, handler->file_size);
+    
+    // 检查文件大小是否超出Flash缓存区容量
+    if (handler->file_size > FLASH_DL_SIZE) {
+        log_printf("YModem: 错误！文件大小 %lu 超出缓存区容量 %lu\r\n", 
+                  handler->file_size, (uint32_t)FLASH_DL_SIZE);
+        YModem_Queue_Response(handler, YMODEM_CAN);
+        handler->state = YMODEM_STATE_ERROR;
+        return YMODEM_RESULT_ERROR;
+    }
+    
+    // 准备接收数据包
+    handler->expected_packet_num = 1;
+    handler->received_size = 0;
+    handler->flash_write_addr = FLASH_DL_START_ADDR;
+    handler->state = YMODEM_STATE_WAIT_DATA;
+    
+    // 发送ACK和'C'，表示准备接收数据
+    YModem_Queue_Response(handler, YMODEM_ACK);
+    YModem_Queue_Response(handler, YMODEM_C);
+    
+    return YMODEM_RESULT_OK;
+}
+
+/**
+ * @brief 处理数据包
+ * @param handler: YModem处理器指针
+ * @return YModem_Result_t: 处理结果
+ * 
+ * @note 就像把快递内容按顺序整理存放到仓库
+ */
+static YModem_Result_t YModem_Handle_Data_Packet(YModem_Handler_t *handler)
+{
+    // 检查包序号是否正确
+    if (handler->current_packet.packet_num != handler->expected_packet_num) {
+        log_printf("YModem: 包序号错误，期望 %d，收到 %d\r\n", 
+                  handler->expected_packet_num, handler->current_packet.packet_num);
+        YModem_Queue_Response(handler, YMODEM_NAK);
+        return YMODEM_RESULT_ERROR;
+    }
+    
+    // 计算本包实际有效数据长度
+    uint16_t valid_data_length = handler->expected_packet_size;
+    uint32_t remaining_size = handler->file_size - handler->received_size;
+    
+    if (remaining_size < handler->expected_packet_size) {
+        valid_data_length = (uint16_t)remaining_size;
+    }
+    
+    // 写入Flash
+    YModem_Result_t result = YModem_Write_To_Flash(handler, 
+                                                  handler->current_packet.data, 
+                                                  valid_data_length);
+    
+    if (result != YMODEM_RESULT_OK) {
+        log_printf("YModem: Flash写入失败\r\n");
+        YModem_Queue_Response(handler, YMODEM_CAN);
+        handler->state = YMODEM_STATE_ERROR;
+        return YMODEM_RESULT_ERROR;
+    }
+    
+    // 更新状态
+    handler->received_size += valid_data_length;
+    handler->expected_packet_num++;
+    
+    // 打印进度（每收到10个包打印一次）
+    if (handler->expected_packet_num % 10 == 0) {
+        uint8_t progress = YModem_Get_Progress(handler);
+        log_printf("YModem: 进度 %d%% (%lu/%lu 字节)\r\n", 
+                  progress, handler->received_size, handler->file_size);
+    }
+    
+    // 发送ACK确认
+    YModem_Queue_Response(handler, YMODEM_ACK);
+    
+    // 检查是否接收完成
+    if (handler->received_size >= handler->file_size) {
+        log_printf("YModem: 数据接收完成，等待EOT\r\n");
+        handler->state = YMODEM_STATE_WAIT_END;
+    }
+    
+    return YMODEM_RESULT_OK;
+}
+
+/**
+ * @brief 将数据写入Flash
+ * @param handler: YModem处理器指针
+ * @param data: 要写入的数据
+ * @param length: 数据长度
+ * @return YModem_Result_t: 写入结果
+ * 
+ * @note 就像把货物按顺序存放到仓库的指定位置
+ */
+static YModem_Result_t YModem_Write_To_Flash(YModem_Handler_t *handler, 
+                                           const uint8_t *data, 
+                                           uint16_t length)
+{
+    // 检查Flash地址范围
+    if (handler->flash_write_addr + length > FLASH_DL_END_ADDR) {
+        log_printf("YModem: Flash地址超出范围\r\n");
+        return YMODEM_RESULT_ERROR;
+    }
+    
+    // 检查是否需要擦除Flash页面
+    // 当写入地址是页面起始地址时，需要先擦除该页面
+    uint32_t page_start = (handler->flash_write_addr / STM32_FLASH_PAGE_SIZE) * STM32_FLASH_PAGE_SIZE;
+    if (handler->flash_write_addr == page_start) {
+        log_printf("YModem: 擦除Flash页面 0x%08lX\r\n", page_start);
+        
+        // 解锁Flash
+        HAL_FLASH_Unlock();
+        
+        // 擦除页面
+        FLASH_EraseInitTypeDef EraseInitStruct;
+        uint32_t PageError = 0;
+        
+        EraseInitStruct.TypeErase = FLASH_TYPEERASE_PAGES;
+        EraseInitStruct.PageAddress = page_start;
+        EraseInitStruct.NbPages = 1;
+        
+        HAL_StatusTypeDef erase_status = HAL_FLASHEx_Erase(&EraseInitStruct, &PageError);
+        HAL_FLASH_Lock();
+        
+        if (erase_status != HAL_OK) {
+            log_printf("YModem: Flash擦除失败，错误码=%d\r\n", erase_status);
+            return YMODEM_RESULT_ERROR;
+        }
+    }
+    
+    // 将数据写入Flash（按4字节对齐）
+    HAL_FLASH_Unlock();
+    
+    uint32_t write_addr = handler->flash_write_addr;
+    uint16_t remaining = length;
+    uint16_t offset = 0;
+    
+    while (remaining > 0) {
+        uint32_t word_data = 0xFFFFFFFF;  // 初始化为全1
+        uint8_t bytes_to_copy = (remaining >= 4) ? 4 : remaining;
+        
+        // 复制数据到word_data，不足4字节的部分保持0xFF
+        memcpy(&word_data, &data[offset], bytes_to_copy);
+        
+        // 写入一个字（4字节）
+        HAL_StatusTypeDef write_status = HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, 
+                                                          write_addr, 
+                                                          word_data);
+        
+        if (write_status != HAL_OK) {
+            HAL_FLASH_Lock();
+            log_printf("YModem: Flash写入失败，地址=0x%08lX，错误码=%d\r\n", 
+                      write_addr, write_status);
+            return YMODEM_RESULT_ERROR;
+        }
+        
+        write_addr += 4;
+        offset += bytes_to_copy;
+        remaining -= bytes_to_copy;
+    }
+    
+    HAL_FLASH_Lock();
+    
+    log_printf("YModem: 成功写入 %d 字节到地址 0x%08lX\r\n", 
+              length, handler->flash_write_addr);
+    
+    // 更新Flash写入地址
+    handler->flash_write_addr += length;
+    
+    return YMODEM_RESULT_OK;
+}
+
+/**
+ * @brief 将响应数据加入队列
+ * @param handler: YModem处理器指针
+ * @param response: 响应字节
+ * 
+ * @note 就像把要寄出的回执信放进信箱，等待邮递员来取
+ *       完全解耦发送方式，由调用者决定如何发送
+ */
+static void YModem_Queue_Response(YModem_Handler_t *handler, uint8_t response)
+{
+    if (handler == NULL) return;
+    
+    // 检查响应缓冲区是否还有空间
+    if (handler->response_length < sizeof(handler->response_buffer)) {
+        handler->response_buffer[handler->response_length++] = response;
+        handler->response_ready = 1;
+        
+        log_printf("YModem: 响应数据已加入队列: 0x%02X\r\n", response);
+    } else {
+        log_printf("YModem: 警告！响应缓冲区已满，丢弃响应: 0x%02X\r\n", response);
+    }
+}
+
+/**
+ * @brief 获取当前传输进度
+ * @param handler: YModem处理器指针
+ * @return uint8_t: 传输进度百分比(0-100)
+ * 
+ * @note 就像查看快递配送进度
+ */
+uint8_t YModem_Get_Progress(YModem_Handler_t *handler)
+{
+    if (handler == NULL || handler->file_size == 0) {
+        return 0;
+    }
+    
+    return (uint8_t)((handler->received_size * 100) / handler->file_size);
+}
+
+/**
+ * @brief 检查是否有响应数据需要发送
+ * @param handler: YModem处理器指针
+ * @return uint8_t: 1-有响应数据，0-无响应数据
+ * 
+ * @note 检查信箱里是否有待发送的回执信
+ */
+uint8_t YModem_Has_Response(YModem_Handler_t *handler)
+{
+    if (handler == NULL) {
+        return 0;
+    }
+    
+    return handler->response_ready;
+}
+
+/**
+ * @brief 获取响应数据
+ * @param handler: YModem处理器指针
+ * @param buffer: 存储响应数据的缓冲区
+ * @param max_length: 缓冲区最大长度
+ * @return uint8_t: 实际获取的响应数据长度
+ * 
+ * @note 从信箱取出所有待发送的回执信，取出后信箱就空了
+ */
+uint8_t YModem_Get_Response(YModem_Handler_t *handler, uint8_t *buffer, uint8_t max_length)
+{
+    if (handler == NULL || buffer == NULL || max_length == 0) {
+        return 0;
+    }
+    
+    if (!handler->response_ready || handler->response_length == 0) {
+        return 0;
+    }
+    
+    // 计算实际复制的长度
+    uint8_t copy_length = (handler->response_length > max_length) ? 
+                         max_length : handler->response_length;
+    
+    // 复制响应数据
+    memcpy(buffer, handler->response_buffer, copy_length);
+    
+    // 清空响应缓冲区
+    handler->response_length = 0;
+    handler->response_ready = 0;
+    memset(handler->response_buffer, 0, sizeof(handler->response_buffer));
+    
+    log_printf("YModem: 已获取 %d 字节响应数据\r\n", copy_length);
+    
+    return copy_length;
+}
+
+

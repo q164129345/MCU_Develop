@@ -1,6 +1,6 @@
 /**
  * @file    bsp_usart_hal.h
- * @brief   STM32F1ÏµÁĞ USART + DMA + RingBuffer HAL¿âµ×²ãÇı¶¯½Ó¿Ú£¨¶àÊµÀı¡¢¿É±ä»º³åÇø£©
+ * @brief   STM32F1ç³»åˆ— USART + DMA + RingBuffer HALåº“åº•å±‚é©±åŠ¨æ¥å£ï¼ˆå¤šå®ä¾‹ã€å¯å˜ç¼“å†²åŒºï¼‰
  * @author  Wallace.zhang
  * @version 2.0.0
  * @date    2025-05-23
@@ -18,74 +18,74 @@ extern "C" {
 #include "lwrb/lwrb.h"
 
 /**
- * @brief USARTÇı¶¯½á¹¹Ìå£¨DMA + RingBuffer + Í³¼Æ£©
+ * @brief USARTé©±åŠ¨ç»“æ„ä½“ï¼ˆDMA + RingBuffer + ç»Ÿè®¡ï¼‰
  */
 typedef struct
 {
-    volatile uint8_t   txDMABusy;        /**< DMA·¢ËÍÃ¦±êÖ¾£¨1£º·¢ËÍÖĞ£¬0£º¿ÕÏĞ£© */
-    volatile uint64_t  rxMsgCount;       /**< Í³¼Æ½ÓÊÕ×Ö½Ú×ÜÊı */
-    volatile uint64_t  txMsgCount;       /**< Í³¼Æ·¢ËÍ×Ö½Ú×ÜÊı */
-    volatile uint16_t  dmaRxLastPos;     /**< DMA½ÓÊÕ»º³åÇøÉÏ´Î´¦Àíµ½µÄÎ»ÖÃ */
-    volatile uint32_t  errorDMATX;       /**< DMA·¢ËÍ´íÎóÍ³¼Æ */
-    volatile uint32_t  errorDMARX;       /**< DMA½ÓÊÕ´íÎóÍ³¼Æ */
-    volatile uint32_t  errorRX;          /**< ´®¿Ú½ÓÊÕ´íÎóÍ³¼Æ */
+    volatile uint8_t   txDMABusy;        /**< DMAå‘é€å¿™æ ‡å¿—ï¼ˆ1ï¼šå‘é€ä¸­ï¼Œ0ï¼šç©ºé—²ï¼‰ */
+    volatile uint64_t  rxMsgCount;       /**< ç»Ÿè®¡æ¥æ”¶å­—èŠ‚æ€»æ•° */
+    volatile uint64_t  txMsgCount;       /**< ç»Ÿè®¡å‘é€å­—èŠ‚æ€»æ•° */
+    volatile uint16_t  dmaRxLastPos;     /**< DMAæ¥æ”¶ç¼“å†²åŒºä¸Šæ¬¡å¤„ç†åˆ°çš„ä½ç½® */
+    volatile uint32_t  errorDMATX;       /**< DMAå‘é€é”™è¯¯ç»Ÿè®¡ */
+    volatile uint32_t  errorDMARX;       /**< DMAæ¥æ”¶é”™è¯¯ç»Ÿè®¡ */
+    volatile uint32_t  errorRX;          /**< ä¸²å£æ¥æ”¶é”™è¯¯ç»Ÿè®¡ */
 
-    DMA_HandleTypeDef   *hdma_rx;        /**< HAL¿âµÄDMA RX¾ä±ú */
-    DMA_HandleTypeDef   *hdma_tx;        /**< HAL¿âµÄDMA TX¾ä±ú */
-    UART_HandleTypeDef  *huart;          /**< HAL¿âµÄUART¾ä±ú */
+    DMA_HandleTypeDef   *hdma_rx;        /**< HALåº“çš„DMA RXå¥æŸ„ */
+    DMA_HandleTypeDef   *hdma_tx;        /**< HALåº“çš„DMA TXå¥æŸ„ */
+    UART_HandleTypeDef  *huart;          /**< HALåº“çš„UARTå¥æŸ„ */
 
-    /* RX·½Ïò */
-    uint8_t             *rxDMABuffer;    /**< DMA½ÓÊÕ»º³åÇø */
-    uint8_t             *rxRBBuffer;     /**< ½ÓÊÕRingBuffer»º´æÇø */
-    uint16_t            rxBufSize;       /**< DMA½ÓÊÕ/RX Ringbuffer»º³åÇø´óĞ¡ */
-    lwrb_t              rxRB;            /**< ½ÓÊÕRingBuffer¾ä±ú */
+    /* RXæ–¹å‘ */
+    uint8_t             *rxDMABuffer;    /**< DMAæ¥æ”¶ç¼“å†²åŒº */
+    uint8_t             *rxRBBuffer;     /**< æ¥æ”¶RingBufferç¼“å­˜åŒº */
+    uint16_t            rxBufSize;       /**< DMAæ¥æ”¶/RX Ringbufferç¼“å†²åŒºå¤§å° */
+    lwrb_t              rxRB;            /**< æ¥æ”¶RingBufferå¥æŸ„ */
 
-    /* TX·½Ïò */
-    uint8_t             *txDMABuffer;    /**< DMA·¢ËÍ»º³åÇø */
-    uint8_t             *txRBBuffer;     /**< ·¢ËÍRingBuffer»º´æÇø */
-    uint16_t            txBufSize;       /**< DMA·¢ËÍ/TX Ringbuffer»º³åÇø´óĞ¡ */
-    lwrb_t              txRB;            /**< ·¢ËÍRingBuffer¾ä±ú */
+    /* TXæ–¹å‘ */
+    uint8_t             *txDMABuffer;    /**< DMAå‘é€ç¼“å†²åŒº */
+    uint8_t             *txRBBuffer;     /**< å‘é€RingBufferç¼“å­˜åŒº */
+    uint16_t            txBufSize;       /**< DMAå‘é€/TX Ringbufferç¼“å†²åŒºå¤§å° */
+    lwrb_t              txRB;            /**< å‘é€RingBufferå¥æŸ„ */
     
 } USART_Driver_t;
 
 /**
-  * @brief  ×èÈû·½Ê½·¢ËÍÒÔ NUL ½áÎ²µÄ×Ö·û´®
+  * @brief  é˜»å¡æ–¹å¼å‘é€ä»¥ NUL ç»“å°¾çš„å­—ç¬¦ä¸²
   */
 void USART_SendString_Blocking(USART_Driver_t* const usart, const char* str);
 /**
-  * @brief  USART·¢ËÍDMAÖĞ¶Ï´¦Àíº¯Êı
+  * @brief  USARTå‘é€DMAä¸­æ–­å¤„ç†å‡½æ•°
   */
 void USART_DMA_TX_Interrupt_Handler(USART_Driver_t *usart);
 /**
-  * @brief  USART½ÓÊÕDMAÖĞ¶Ï´¦Àíº¯Êı
+  * @brief  USARTæ¥æ”¶DMAä¸­æ–­å¤„ç†å‡½æ•°
   */
 void USART_DMA_RX_Interrupt_Handler(USART_Driver_t *usart);
 /**
- * @brief  USART¿ÕÏĞ½ÓÊÕÖĞ¶Ï´¦Àíº¯Êı£¨Ö§³ÖDMA+RingBuffer£¬ÊÊÓÃÓÚ¶àÊµÀı£©
+ * @brief  USARTç©ºé—²æ¥æ”¶ä¸­æ–­å¤„ç†å‡½æ•°ï¼ˆæ”¯æŒDMA+RingBufferï¼Œé€‚ç”¨äºå¤šå®ä¾‹ï¼‰
  */
 void USART_RX_IDLE_Interrupt_Handler(USART_Driver_t *usart);
 /**
-  * @brief  ½«Êı¾İĞ´ÈëÖ¸¶¨USARTÇı¶¯µÄ·¢ËÍ RingBufferÖĞ
+  * @brief  å°†æ•°æ®å†™å…¥æŒ‡å®šUSARTé©±åŠ¨çš„å‘é€ RingBufferä¸­
   */
 uint8_t USART_Put_TxData_To_Ringbuffer(USART_Driver_t *usart, const void* data, uint16_t len);
 /**
- * @brief  USARTÄ£¿é¶¨Ê±ÈÎÎñ´¦Àíº¯Êı£¬½¨ÒéÖ÷Ñ­»·1msÖÜÆÚ»Øµ÷
+ * @brief  USARTæ¨¡å—å®šæ—¶ä»»åŠ¡å¤„ç†å‡½æ•°ï¼Œå»ºè®®ä¸»å¾ªç¯1mså‘¨æœŸå›è°ƒ
  */
 void USART_Module_Run(USART_Driver_t *usart);
 /**
-  * @brief  »ñÈ¡USART½ÓÊÕRingBufferÖĞµÄ¿É¶Á×Ö½ÚÊı
+  * @brief  è·å–USARTæ¥æ”¶RingBufferä¸­çš„å¯è¯»å­—èŠ‚æ•°
   */
 uint32_t USART_Get_The_Existing_Amount_Of_Data(USART_Driver_t *usart);
 /**
-  * @brief  ´ÓUSART½ÓÊÕRingBufferÖĞ¶ÁÈ¡Ò»¸ö×Ö½ÚÊı¾İ
+  * @brief  ä»USARTæ¥æ”¶RingBufferä¸­è¯»å–ä¸€ä¸ªå­—èŠ‚æ•°æ®
   */
 uint8_t USART_Take_A_Piece_Of_Data(USART_Driver_t *usart, uint8_t* data);
 /**
-  * @brief  DMA´«Êä´íÎóºóµÄ×Ô¶¯»Ö¸´²Ù×÷£¨º¬´íÎóÍ³¼Æ£©
+  * @brief  DMAä¼ è¾“é”™è¯¯åçš„è‡ªåŠ¨æ¢å¤æ“ä½œï¼ˆå«é”™è¯¯ç»Ÿè®¡ï¼‰
   */
 void USART_DMA_Error_Recover(USART_Driver_t *usart, uint8_t dir);
 /**
- * @brief   ³õÊ¼»¯USARTÇı¶¯£¬ÅäÖÃDMA¡¢RingBufferÓëÖĞ¶Ï
+ * @brief   åˆå§‹åŒ–USARTé©±åŠ¨ï¼Œé…ç½®DMAã€RingBufferä¸ä¸­æ–­
  */
 void USART_Config(USART_Driver_t *usart,
                   uint8_t *rxDMABuffer, uint8_t *rxRBBuffer, uint16_t rxBufSize,

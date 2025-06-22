@@ -30,6 +30,7 @@
 #include "soft_crc32.h"
 #include "op_flash.h"
 #include "fw_verify.h"
+#include "ymodem.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -38,18 +39,21 @@
 extern DMA_HandleTypeDef hdma_usart1_rx;
 extern DMA_HandleTypeDef hdma_usart1_tx;
 
-//! USART1»º´æ RX·½Ïò
+//! USART1ç¼“å­˜ RXæ–¹å‘
 uint8_t gUsart1RXDMABuffer[2048];
 uint8_t gUsart1RXRBBuffer[2048];
-//! USART1»º´æ TX·½Ïò
+//! USART1ç¼“å­˜ TXæ–¹å‘
 uint8_t gUsart1TXDMABuffer[2048];
 uint8_t gUsart1TXRBBuffer[2048];
-//! ÊµÀı»¯Usart1
+//! å®ä¾‹åŒ–Usart1
 USART_Driver_t gUsart1Drv = {
     .huart = &huart1,
     .hdma_rx = &hdma_usart1_rx,
     .hdma_tx = &hdma_usart1_tx,
 };
+
+//! YModemåè®®å¤„ç†å™¨å®ä¾‹
+YModem_Handler_t gYModemHandler;
 
 /* USER CODE END PTD */
 
@@ -113,12 +117,15 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
-  //! USART1³õÊ¼»¯
+  //! USART1åˆå§‹åŒ–
   USART_Config(&gUsart1Drv,
                gUsart1RXDMABuffer, gUsart1RXRBBuffer, sizeof(gUsart1RXDMABuffer),
                gUsart1TXDMABuffer, gUsart1TXRBBuffer, sizeof(gUsart1TXDMABuffer));
   
-  log_printf("Bootloader init successfully.\n"); //! bootloader³õÊ¼»¯Íê³É
+  //! YModemåè®®å¤„ç†å™¨åˆå§‹åŒ–ï¼ˆå®Œå…¨è§£è€¦ç‰ˆæœ¬ï¼‰
+  YModem_Init(&gYModemHandler);
+  
+  log_printf("Bootloader init successfully.\n"); //! bootloaderåˆå§‹åŒ–å®Œæˆ
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -130,38 +137,61 @@ int main(void)
     /* USER CODE BEGIN 3 */
     //! 30ms
     if (0 == fre % 30) {
-        HAL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin); //! ĞÄÌøµÆ¿ìÉÁ£¨ÔÚbootlaoder³ÌĞòÀï£¬ĞÄÌøµÆ¿ìÉÁ¡£App³ÌĞò£¬ĞÄÌøµÆÂıÉÁ¡£ÈâÑÛÇø·Öµ±Ç°ÅÜÊ²Ã´³ÌĞò£©
+        HAL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin); //! å¿ƒè·³ç¯å¿«é—ªï¼ˆåœ¨bootlaoderç¨‹åºé‡Œï¼Œå¿ƒè·³ç¯å¿«é—ªã€‚Appç¨‹åºï¼Œå¿ƒè·³ç¯æ…¢é—ªã€‚è‚‰çœ¼åŒºåˆ†å½“å‰è·‘ä»€ä¹ˆç¨‹åºï¼‰
     }
     
-    //! ¿ª»ú1Sºó£¬Ö´ĞĞÒ»´ÎCRC32Ğ£Ñé¡£Ğ£Ñé³É¹¦µÄ»°£¬½«App»º´æÇøµÄ¹Ì¼şCopyµ½AppÇø
+    //! å¼€æœº1Såï¼Œæ‰§è¡Œä¸€æ¬¡CRC32æ ¡éªŒã€‚æ ¡éªŒæˆåŠŸçš„è¯ï¼Œå°†Appç¼“å­˜åŒºçš„å›ºä»¶Copyåˆ°AppåŒº
     if (fre > 1000) {
-        // if (HAL_OK == FW_Firmware_Verification(FLASH_DL_START_ADDR, FW_TOTAL_LEN)) { //!< Ğ£ÑéCRC32
-        //     //! CRC32Ğ£Ñé³É¹¦
-        //     if (OP_FLASH_OK == OP_Flash_Copy(FLASH_DL_START_ADDR, FLASH_APP_START_ADDR, FLASH_APP_SIZE)) { //!< ½«App»º´æÇøµÄËùÓĞ¶ş½øÖÆ¸´ÖÆµ½AppÇø
-        //         log_printf("The firmware copy to the app area was successful.\r\n"); //!< Éı¼¶¹Ì¼ş³É¹¦
-        //         Delay_MS_By_NOP(500); //!< ÑÓ³Ù500ms£¬µÈ´ıRTT´òÓ¡Íê±Ï
-        //         IAP_Ready_To_Jump_App(); //!< ÇåÀíMCU»·¾³£¬×¼±¸Ìø×ªApp
+        // if (HAL_OK == FW_Firmware_Verification(FLASH_DL_START_ADDR, FW_TOTAL_LEN)) { //!< æ ¡éªŒCRC32
+        //     //! CRC32æ ¡éªŒæˆåŠŸ
+        //     if (OP_FLASH_OK == OP_Flash_Copy(FLASH_DL_START_ADDR, FLASH_APP_START_ADDR, FLASH_APP_SIZE)) { //!< å°†Appç¼“å­˜åŒºçš„æ‰€æœ‰äºŒè¿›åˆ¶å¤åˆ¶åˆ°AppåŒº
+        //         log_printf("The firmware copy to the app area was successful.\r\n"); //!< å‡çº§å›ºä»¶æˆåŠŸ
+        //         Delay_MS_By_NOP(500); //!< å»¶è¿Ÿ500msï¼Œç­‰å¾…RTTæ‰“å°å®Œæ¯•
+        //         IAP_Ready_To_Jump_App(); //!< æ¸…ç†MCUç¯å¢ƒï¼Œå‡†å¤‡è·³è½¬App
         //     } else {
-        //         log_printf("The firmware copy to the app area failed\r\n"); //!< Éı¼¶¹Ì¼şÊ§°Ü
-        //         //! °áÔË¹Ì¼şÊ§°Ü£¬ºóĞø´¦Àí.....¼ì²éFlash·¶Î§ÊÇ²»ÊÇºÏÀíµÈ
+        //         log_printf("The firmware copy to the app area failed\r\n"); //!< å‡çº§å›ºä»¶å¤±è´¥
+        //         //! æ¬è¿å›ºä»¶å¤±è´¥ï¼Œåç»­å¤„ç†.....æ£€æŸ¥FlashèŒƒå›´æ˜¯ä¸æ˜¯åˆç†ç­‰
         //     }
         // } else {
-        //     //! CRC32Ğ£ÑéÊ§°Ü
+        //     //! CRC32æ ¡éªŒå¤±è´¥
         //     log_printf("There is a problem with the integrity of the firmware, and IAP Upgrade failure.\r\n");
-        //     //! CRC32Ğ£ÑéÊ§°ÜºóµÄ´¦Àí....±ÈÈç£¬·´À¡OTAÉı¼¶Ê§°ÜµÄ½á¹û¸øÉÏÎ»»úµÈ
+        //     //! CRC32æ ¡éªŒå¤±è´¥åçš„å¤„ç†....æ¯”å¦‚ï¼Œåé¦ˆOTAå‡çº§å¤±è´¥çš„ç»“æœç»™ä¸Šä½æœºç­‰
         // }
     }
     
     //! 2ms
     if (0 == fre % 2) {
-        //! ´¦ÀíÒÑ¾­½ÓÊÕµÄÊı¾İ
-        //! Á¬Ğø´ÓringbufferÀïÄÃ³öÊı¾İÀ´½âÊÍ£¬Ö±µ½Ã»ÓĞÊı¾İ
-//        while(USART_Get_The_Existing_Amount_Of_Data(&gUsart1Drv)) {
-//            uint8_t data;
-//            USART_Take_A_Piece_Of_Data(&gUsart1Drv, &data);
-//            // ½«data¶ª¸ødata_process(data)£¬½âÎöÊı¾İ
-//        }
-        USART_Module_Run(&gUsart1Drv); //! Usart1Ä£¿éÔËĞĞ
+        //! å¤„ç†å·²ç»æ¥æ”¶çš„æ•°æ®
+        //! YModemåè®®å¤„ç† - é€å­—èŠ‚ä»ringbufferé‡Œæ‹¿å‡ºæ•°æ®æ¥è§£æ
+        while(USART_Get_The_Existing_Amount_Of_Data(&gUsart1Drv)) {
+            uint8_t data;
+            if (USART_Take_A_Piece_Of_Data(&gUsart1Drv, &data)) {
+                YModem_Result_t ymodem_result = YModem_Run(&gYModemHandler, data);
+                
+                //! æ£€æŸ¥YModemä¼ è¾“ç»“æœ
+                if (ymodem_result == YMODEM_RESULT_COMPLETE) {
+                    log_printf("YModem: å›ºä»¶å‡çº§å®Œæˆï¼å‡†å¤‡æ ¡éªŒå’Œå¤åˆ¶...\r\n");
+                    //! è¿™é‡Œå¯ä»¥è§¦å‘å›ºä»¶æ ¡éªŒå’Œå¤åˆ¶æµç¨‹
+                    //! é‡ç½®YModemå¤„ç†å™¨ï¼Œå‡†å¤‡ä¸‹æ¬¡ä¼ è¾“
+                    YModem_Reset(&gYModemHandler);
+                } else if (ymodem_result == YMODEM_RESULT_ERROR) {
+                    log_printf("YModem: ä¼ è¾“å‡ºé”™ï¼Œé‡ç½®åè®®å¤„ç†å™¨\r\n");
+                    YModem_Reset(&gYModemHandler);
+                }
+            }
+        }
+        
+        //! æ£€æŸ¥æ˜¯å¦æœ‰YModemå“åº”æ•°æ®éœ€è¦å‘é€
+        if (YModem_Has_Response(&gYModemHandler)) {
+            uint8_t response_buffer[16];
+            uint8_t response_length = YModem_Get_Response(&gYModemHandler, response_buffer, sizeof(response_buffer));
+            if (response_length > 0) {
+                //! å°†å“åº”æ•°æ®å‘é€ç»™ä¸Šä½æœº
+                USART_Put_TxData_To_Ringbuffer(&gUsart1Drv, response_buffer, response_length);
+            }
+        }
+        
+        USART_Module_Run(&gUsart1Drv); //! Usart1æ¨¡å—è¿è¡Œ
     }
     
     fre++;

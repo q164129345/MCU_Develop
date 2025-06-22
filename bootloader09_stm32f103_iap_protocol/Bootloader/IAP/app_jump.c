@@ -1,6 +1,6 @@
 #include "app_jump.h"
-#include "stm32f1xx.h"      /**< ����оƬ�ͺ��޸� */
-#include "flash_map.h"      /**< Flash�����궨�� */
+#include "stm32f1xx.h"      /**< 根据芯片型号修改 */
+#include "flash_map.h"      /**< Flash分区宏定义 */
 #include "usart.h"
 #include "retarget_rtt.h"
 #include "bootloader_define.h"
@@ -19,56 +19,56 @@ volatile uint64_t update_flag __attribute__((at(FIRMWARE_UPDATE_VAR_ADDR), zero_
 #endif
 
 /**
-  * @brief  ��ת��ָ��Ӧ�ó�����ڣ������أ�
-  * @param  app_addr  Ӧ�ó�����������ַ��ͨ��ΪApp������ʼ��ַ��
+  * @brief  跳转到指定应用程序入口（不返回）
+  * @param  app_addr  应用程序向量表地址（通常为App分区起始地址）
   * @note
-  *   - ��תǰ�Զ�ȥ��ʼ�����������������ж�
-  *   - �Զ�����MSP���л���Ȩ��ģʽ
-  *   - �ض�λ�ж�������SCB->VTOR��App��ʼ��ַ
-  *   - ��ת�󱾺��������أ�����תʧ�ܽ���ѭ��
+  *   - 跳转前自动去初始化所有已用外设与中断
+  *   - 自动设置MSP，切换特权级模式
+  *   - 重定位中断向量表SCB->VTOR到App起始地址
+  *   - 跳转后本函数不返回，若跳转失败将死循环
   */
 static void IAP_JumpToApp(uint32_t app_addr)
 {
-    void (*AppEntry)(void);           /**< Ӧ����ں���ָ�� */
-    __IO uint32_t AppAddr = app_addr; /**< ��תĿ���ַ */
+    void (*AppEntry)(void);           /**< 应用入口函数指针 */
+    __IO uint32_t AppAddr = app_addr; /**< 跳转目标地址 */
     
-    /*! �ر�ȫ���ж� */
+    /*! 关闭全局中断 */
     __disable_irq();
     
-    /*! ����Ҫdeinit�����ˣ���ʵ��ʹ��"��deinit�����������ǡ�����λ + ��־������ת��һ����Դȫ�����㣬�����ά������߿ɿ���
-     *  �����ִ�Bootloader��Ƶ��Ƽ�ʵ��
+    /*! 不需要deinit外设了，本实例使用"无deinit方案，核心是“软复位 + 标志再入跳转。一切资源全部归零，极大简化维护，提高可靠性
+     *  这是现代Bootloader设计的推荐实践
      */
-    /*! ��תAppǰ�������踴λ��ΪApp�ṩһ���ɾ��Ļ��� */
+    /*! 跳转App前，将外设复位。为App提供一个干净的环境 */
     //IAP_DeInitHardware();
 
-    /*! ��ȡApp��λ��������ڵ�ַ�� */
+    /*! 获取App复位向量（入口地址） */
     AppEntry = (void (*)(void)) (*((uint32_t *) (AppAddr + 4)));
 
-    /*! ��������ջָ��MSP */
+    /*! 设置主堆栈指针MSP */
     __set_MSP(*(uint32_t *)AppAddr);
 
-    /*! �л�Ϊ��Ȩ��ģʽ��ʹ��MSP����RTOS��������Ϊ��Ҫ */
+    /*! 切换为特权级模式（使用MSP），RTOS场景下尤为重要 */
     __set_CONTROL(0);
 
-    /*! ����CPU��App���ж���������ַ */
+    /*! 告诉CPU，App的中断向量表地址 */
     SCB->VTOR = AppAddr;
     
-    /*! ��ת��Ӧ�ó�����ڣ��������ٷ��� */
+    /*! 跳转至应用程序入口，函数不再返回 */
     AppEntry();
     
     /*!
-      @attention ����תʧ�ܣ����ڴ����Ӵ�������һ�㲻��ִ�е����
+      @attention 若跳转失败，可在此增加错误处理（一般不会执行到这里）
     */
     while (1)
     {
-        /*! ���󱣻� */
+        /*! 错误保护 */
     }
 }
 
 /**
-  * @brief  ��ȡ�̼�������־λ
-  * @note   ��ȡ������ָ��RAM��ַ��������־������ͨ�������ж�bootloader������״̬��
-  * @retval uint64_t �̼�������־�ĵ�ǰֵ
+  * @brief  获取固件升级标志位
+  * @note   读取保存于指定RAM地址的升级标志变量（通常用于判断bootloader的运行状态）
+  * @retval uint64_t 固件升级标志的当前值
   */
 uint64_t IAP_GetUpdateFlag(void)
 {
@@ -76,10 +76,10 @@ uint64_t IAP_GetUpdateFlag(void)
 }
 
 /**
-  * @brief  ���ù̼�������־λ
-  * @param  flag ��Ҫ���õı�־ֵ
-  * @note   �޸�ָ��RAM��ַ��������־����
-  * @retval ��
+  * @brief  设置固件升级标志位
+  * @param  flag 需要设置的标志值
+  * @note   修改指定RAM地址的升级标志变量
+  * @retval 无
   */
 void IAP_SetUpdateFlag(uint64_t flag)
 {
@@ -87,38 +87,38 @@ void IAP_SetUpdateFlag(uint64_t flag)
 }
 
 /**
-  * @brief  ׼����ת��App����
-  * @note   �жϵ�ǰ������־����һ�ε���ʱ�����ñ�־����λMCU���ڶ��ε���ʱ�����־����ת��App
-  * @retval ��
+  * @brief  准备跳转到App程序
+  * @note   判断当前升级标志，第一次调用时先设置标志并复位MCU，第二次调用时清除标志并跳转到App
+  * @retval 无
   * @attention 
-  *          - �˺�������bootloader��Ӧ�ó������ת���̿��ơ�
-  *          - ���뱣֤FLASH_APP_START_ADDRΪ�Ϸ���Ӧ�ó�����ڵ�ַ��
-  *          - ��תǰӦ��ȷ����MCU�������״̬����ֹ�쳣Ӱ��Ӧ�ó���
+  *          - 此函数用于bootloader到应用程序的跳转流程控制。
+  *          - 必须保证FLASH_APP_START_ADDR为合法的应用程序入口地址。
+  *          - 跳转前应正确清理MCU相关外设状态，防止异常影响应用程序。
   */
 void IAP_Ready_To_Jump_App(void)
 {
-    /*! �ڶ��ν��룬��ת��App */
+    /*! 第二次进入，跳转至App */
     if (IAP_GetUpdateFlag() == BOOTLOADER_RESET_MAGIC_WORD) {
         log_printf("The second time enter this function, clean the flag and then Jump to Application.\n");
         
-        /*! ��֤RTT��ӡ��log(�ӳ�Լ1ms) */
+        /*! 保证RTT打印完log(延迟约1ms) */
         Delay_MS_By_NOP(1);
         
-        /*! ����̼����±�־λ */
+        /*! 清除固件更新标志位 */
         IAP_SetUpdateFlag(0);
         
-        /*! ��תApp */
+        /*! 跳转App */
         IAP_JumpToApp(FLASH_APP_START_ADDR);
     } else {
         log_printf("The first time enter this function, clean up the MCU environment.\n");
         
-        /*! ��֤RTT��ӡ��log(�ӳ�Լ1ms) */
+        /*! 保证RTT打印完log(延迟约1ms) */
         Delay_MS_By_NOP(1);
         
-        /*! ���ñ�־λ */
+        /*! 设置标志位 */
         IAP_SetUpdateFlag(BOOTLOADER_RESET_MAGIC_WORD);
         
-        /*! ϵͳ��λ�����½���bootloader */
+        /*! 系统复位，重新进入bootloader */
         HAL_NVIC_SystemReset();
     }
 }

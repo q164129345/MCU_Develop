@@ -2,22 +2,22 @@
 #include "crc.h"
 
 /**
- * @brief  ¼ÆËã¹Ì¼þ»º³åÇøµÄCRC32£¨ÅÅ³ý×îºó4×Ö½Ú£©
- * @param  flash_addr     »º³åÇøÆðÊ¼µØÖ·£¨Í¨³£ÓÃFLASH_DL_START_ADDR£©
- * @param  data_len       ¹Ì¼þ×Ü³¤¶È£¨º¬Ä©Î²CRC32Âë£©
- * @retval CRC32Öµ£¨32Î»ÎÞ·ûºÅÕûÊý£©
+ * @brief  è®¡ç®—å›ºä»¶ç¼“å†²åŒºçš„CRC32ï¼ˆæŽ’é™¤æœ€åŽ4å­—èŠ‚ï¼‰
+ * @param  flash_addr     ç¼“å†²åŒºèµ·å§‹åœ°å€ï¼ˆé€šå¸¸ç”¨FLASH_DL_START_ADDRï¼‰
+ * @param  data_len       å›ºä»¶æ€»é•¿åº¦ï¼ˆå«æœ«å°¾CRC32ç ï¼‰
+ * @retval CRC32å€¼ï¼ˆ32ä½æ— ç¬¦å·æ•´æ•°ï¼‰
  */
 /**
-  * @brief    Ê¹ÓÃ HAL ¿â¼ÆËã¹Ì¼þ CRC32£¨ÅÅ³ýÄ©Î² 4 B£©
-  * @param[in] flash_addr Flash ÆðÊ¼µØÖ·
-  * @param[in] data_len   ÇøÓò×Ü³¤¶È£¨º¬ CRC32£©
-  * @retval   Óë srec_cat -crc32-l-e Ò»ÖÂµÄÐ¡¶Ë CRC32
+  * @brief    ä½¿ç”¨ HAL åº“è®¡ç®—å›ºä»¶ CRC32ï¼ˆæŽ’é™¤æœ«å°¾ 4 Bï¼‰
+  * @param[in] flash_addr Flash èµ·å§‹åœ°å€
+  * @param[in] data_len   åŒºåŸŸæ€»é•¿åº¦ï¼ˆå« CRC32ï¼‰
+  * @retval   ä¸Ž srec_cat -crc32-l-e ä¸€è‡´çš„å°ç«¯ CRC32
   */
 /**
-  * @brief  ¼ÆËã¹Ì¼þ CRC32£¨ÅÅ³ýÎ²²¿ 4 B£¬½á¹ûÓë srec_cat -crc32-l-e Ò»ÖÂ£©
-  * @param  flash_addr  Flash ÆðÊ¼µØÖ·
-  * @param  data_len    ÇøÓò×Ü³¤¶È£¨º¬ 4 B CRC£©
-  * @return Ð¡¶Ë CRC32
+  * @brief  è®¡ç®—å›ºä»¶ CRC32ï¼ˆæŽ’é™¤å°¾éƒ¨ 4 Bï¼Œç»“æžœä¸Ž srec_cat -crc32-l-e ä¸€è‡´ï¼‰
+  * @param  flash_addr  Flash èµ·å§‹åœ°å€
+  * @param  data_len    åŒºåŸŸæ€»é•¿åº¦ï¼ˆå« 4 B CRCï¼‰
+  * @return å°ç«¯ CRC32
   */
 uint32_t Calculate_Firmware_CRC32(uint32_t flash_addr, uint32_t data_len)
 {
@@ -40,7 +40,7 @@ uint32_t Calculate_Firmware_CRC32(uint32_t flash_addr, uint32_t data_len)
         HAL_CRC_Accumulate(&hcrc, &tail, 1);
     }
 
-    uint32_t crc_hw = hcrc.Instance->DR;      /* ¾É°æ HAL ÎÞ GetValue() */
+    uint32_t crc_hw = hcrc.Instance->DR;      /* æ—§ç‰ˆ HAL æ—  GetValue() */
     return __RBIT(crc_hw) ^ 0xFFFFFFFFU;      /* RefOut + Final XOR */
 }
 

@@ -1,6 +1,6 @@
 /**
  * @file    soft_crc32.h
- * @brief   ´¿Èí¼ş CRC-32/ISO-HDLC ¼ÆËã£¨RefIn/RefOut = 1£©
+ * @brief   çº¯è½¯ä»¶ CRC-32/ISO-HDLC è®¡ç®—ï¼ˆRefIn/RefOut = 1ï¼‰
  * @author  Wallace
  * @date    2025-05-29
  * @version 1.0.0
@@ -15,23 +15,23 @@ extern "C" {
 #endif
 
 /**
- * @brief   ³õÊ¼»¯ CRC ÉÏÏÂÎÄ
- * @return  ³õÊ¼Öµ 0xFFFF?FFFF
+ * @brief   åˆå§‹åŒ– CRC ä¸Šä¸‹æ–‡
+ * @return  åˆå§‹å€¼ 0xFFFF?FFFF
  */
 static inline uint32_t CRC32_Init(void) { return 0xFFFFFFFFu; }
 
 /**
- * @brief   ÊäÈëÈô¸É×Ö½Ú²¢¸üĞÂ CRC
+ * @brief   è¾“å…¥è‹¥å¹²å­—èŠ‚å¹¶æ›´æ–° CRC
  */
 uint32_t CRC32_Update(uint32_t crc, const void *buf, uint32_t len);
 
 /**
- * @brief   ¼ÆËãÍê³ÉºóÈ¡·´µÃµ½×îÖÕ CRC
+ * @brief   è®¡ç®—å®Œæˆåå–åå¾—åˆ°æœ€ç»ˆ CRC
  */
 static inline uint32_t CRC32_Final(uint32_t crc) { return crc ^ 0xFFFFFFFFu; }
 
 /**
- * @brief   ±ã½İ½Ó¿Ú£ºÒ»´ÎĞÔ¼ÆËãÕû¸ö»º³åÇø
+ * @brief   ä¾¿æ·æ¥å£ï¼šä¸€æ¬¡æ€§è®¡ç®—æ•´ä¸ªç¼“å†²åŒº
  */
 static inline uint32_t CRC32_Calc(const void *buf, uint32_t len)
 {
@@ -39,7 +39,7 @@ static inline uint32_t CRC32_Calc(const void *buf, uint32_t len)
 }
 
 /**
-  * @brief   ¼ÆËãFlashÖĞ¹Ì¼şÊı¾İµÄCRC32Öµ£¨Èí¼ş·½Ê½£©
+  * @brief   è®¡ç®—Flashä¸­å›ºä»¶æ•°æ®çš„CRC32å€¼ï¼ˆè½¯ä»¶æ–¹å¼ï¼‰
   */
 uint32_t Calculate_Firmware_CRC32_SW(uint32_t flash_addr, uint32_t total_len);
 

@@ -1,11 +1,11 @@
 /**
  * @file    flash_map.h
- * @brief   STM32F103ZET6 Flash·ÖÇøµØÖ·Óë´óĞ¡³£Á¿¶¨Òå
+ * @brief   STM32F103ZET6 Flashåˆ†åŒºåœ°å€ä¸å¤§å°å¸¸é‡å®šä¹‰
  * @author  Wallace.zhang
  * @date    2025-05-25
  * @version 1.0.0
  * @copyright
- * (C) 2025 Wallace.zhang. ±£ÁôËùÓĞÈ¨Àû.
+ * (C) 2025 Wallace.zhang. ä¿ç•™æ‰€æœ‰æƒåˆ©.
  * @license SPDX-License-Identifier: MIT
  */
 
@@ -17,39 +17,39 @@ extern "C" {
 #endif
 
 /** 
- * @brief STM32F103ZET6 Flash »ù´¡²ÎÊı
+ * @brief STM32F103ZET6 Flash åŸºç¡€å‚æ•°
  */
-#define STM32_FLASH_BASE_ADDR      0x08000000U      /**< FlashÆğÊ¼»ùµØÖ· */
-#define STM32_FLASH_SIZE           (512 * 1024U)    /**< Flash×Ü´óĞ¡£¨×Ö½Ú£© */
-#define STM32_FLASH_PAGE_SIZE      (2 * 1024U)      /**< Flashµ¥Ò³´óĞ¡£¨×Ö½Ú£© */
+#define STM32_FLASH_BASE_ADDR      0x08000000U      /**< Flashèµ·å§‹åŸºåœ°å€ */
+#define STM32_FLASH_SIZE           (512 * 1024U)    /**< Flashæ€»å¤§å°ï¼ˆå­—èŠ‚ï¼‰ */
+#define STM32_FLASH_PAGE_SIZE      (2 * 1024U)      /**< Flashå•é¡µå¤§å°ï¼ˆå­—èŠ‚ï¼‰ */
 
 /**
- * @brief BootloaderÇø
+ * @brief BootloaderåŒº
  */
-#define FLASH_BOOT_START_ADDR      0x08000000U      /**< BootloaderÆğÊ¼µØÖ· */
-#define FLASH_BOOT_END_ADDR        0x0800FFFFU      /**< Bootloader½áÊøµØÖ· */
-#define FLASH_BOOT_SIZE            (FLASH_BOOT_END_ADDR - FLASH_BOOT_START_ADDR + 1) /**< BootloaderÇø´óĞ¡ */
+#define FLASH_BOOT_START_ADDR      0x08000000U      /**< Bootloaderèµ·å§‹åœ°å€ */
+#define FLASH_BOOT_END_ADDR        0x0800FFFFU      /**< Bootloaderç»“æŸåœ°å€ */
+#define FLASH_BOOT_SIZE            (FLASH_BOOT_END_ADDR - FLASH_BOOT_START_ADDR + 1) /**< BootloaderåŒºå¤§å° */
 
 /**
- * @brief Ö÷³ÌĞòAppÇø
+ * @brief ä¸»ç¨‹åºAppåŒº
  */
-#define FLASH_APP_START_ADDR       0x08010000U      /**< AppÆğÊ¼µØÖ· */
-#define FLASH_APP_END_ADDR         0x0803FFFFU      /**< App½áÊøµØÖ· */
-#define FLASH_APP_SIZE             (FLASH_APP_END_ADDR - FLASH_APP_START_ADDR + 1)   /**< AppÇø´óĞ¡ */
+#define FLASH_APP_START_ADDR       0x08010000U      /**< Appèµ·å§‹åœ°å€ */
+#define FLASH_APP_END_ADDR         0x0803FFFFU      /**< Appç»“æŸåœ°å€ */
+#define FLASH_APP_SIZE             (FLASH_APP_END_ADDR - FLASH_APP_START_ADDR + 1)   /**< AppåŒºå¤§å° */
 
 /**
- * @brief App»º´æÇø£¨ĞÂ¹Ì¼şÏÂÔØÇø£©
+ * @brief Appç¼“å­˜åŒºï¼ˆæ–°å›ºä»¶ä¸‹è½½åŒºï¼‰
  */
-#define FLASH_DL_START_ADDR        0x08040000U      /**< ÏÂÔØÇøÆğÊ¼µØÖ· */
-#define FLASH_DL_END_ADDR          0x0806FFFFU      /**< ÏÂÔØÇø½áÊøµØÖ· */
-#define FLASH_DL_SIZE              (FLASH_DL_END_ADDR - FLASH_DL_START_ADDR + 1)     /**< ÏÂÔØÇø´óĞ¡ */
+#define FLASH_DL_START_ADDR        0x08040000U      /**< ä¸‹è½½åŒºèµ·å§‹åœ°å€ */
+#define FLASH_DL_END_ADDR          0x0806FFFFU      /**< ä¸‹è½½åŒºç»“æŸåœ°å€ */
+#define FLASH_DL_SIZE              (FLASH_DL_END_ADDR - FLASH_DL_START_ADDR + 1)     /**< ä¸‹è½½åŒºå¤§å° */
 
 /**
- * @brief ²ÎÊıÇø£¨ÓÃ»§²ÎÊı¡¢ÀúÊ·Êı¾İµÈ£©
+ * @brief å‚æ•°åŒºï¼ˆç”¨æˆ·å‚æ•°ã€å†å²æ•°æ®ç­‰ï¼‰
  */
-#define FLASH_PARAM_START_ADDR     0x08070000U      /**< ²ÎÊıÇøÆğÊ¼µØÖ· */
-#define FLASH_PARAM_END_ADDR       0x0807FFFFU      /**< ²ÎÊıÇø½áÊøµØÖ· */
-#define FLASH_PARAM_SIZE           (FLASH_PARAM_END_ADDR - FLASH_PARAM_START_ADDR + 1) /**< ²ÎÊıÇø´óĞ¡ */
+#define FLASH_PARAM_START_ADDR     0x08070000U      /**< å‚æ•°åŒºèµ·å§‹åœ°å€ */
+#define FLASH_PARAM_END_ADDR       0x0807FFFFU      /**< å‚æ•°åŒºç»“æŸåœ°å€ */
+#define FLASH_PARAM_SIZE           (FLASH_PARAM_END_ADDR - FLASH_PARAM_START_ADDR + 1) /**< å‚æ•°åŒºå¤§å° */
 
 #ifdef __cplusplus
 }

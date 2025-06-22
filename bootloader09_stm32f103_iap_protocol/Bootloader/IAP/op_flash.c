@@ -1,164 +1,164 @@
 /**
   ******************************************************************************
   * @file    op_flash.c
-  * @brief   STM32F103 Flash²Ù×÷Ä£¿éÊµÏÖÎÄ¼ş
+  * @brief   STM32F103 Flashæ“ä½œæ¨¡å—å®ç°æ–‡ä»¶
   ******************************************************************************
   */
 
 #include "op_flash.h"
 
 /**
-  * @brief  ÅĞ¶ÏFlashµØÖ·ÊÇ·ñºÏ·¨
-  * @param  addr FlashµØÖ·
-  * @retval 1 ºÏ·¨£¬0 ·Ç·¨
+  * @brief  åˆ¤æ–­Flashåœ°å€æ˜¯å¦åˆæ³•
+  * @param  addr Flashåœ°å€
+  * @retval 1 åˆæ³•ï¼Œ0 éæ³•
   */
 static uint8_t OP_Flash_IsValidAddr(uint32_t addr)
 {
-    return ( (addr >= FLASH_BASE) && (addr < (FLASH_BASE + STM32_FLASH_SIZE)) ); // F103ZET6Îª512K
+    return ( (addr >= FLASH_BASE) && (addr < (FLASH_BASE + STM32_FLASH_SIZE)) ); // F103ZET6ä¸º512K
 }
 
 /**
-  * @brief  FlashÕûÇøÓò²Á³ı£¨°´Ò³Îªµ¥Î»²Á³ıÖ¸¶¨ÇøÓò£©
-  * @param  start_addr ÆğÊ¼µØÖ·£¨±ØĞëÊÇÓĞĞ§µÄFlashµØÖ·£¬²¢ÇÒÎªÒ³Ê×µØÖ·£©
-  * @param  length     ²Á³ı³¤¶È£¨×Ö½Ú£©£¬½¨ÒéÎªÒ³´óĞ¡µÄÕûÊı±¶£¬²»×ãÊ±ÏòÉÏÈ¡Õû
-  * @retval OP_FlashStatus_t ²Ù×÷½á¹û£¬³É¹¦·µ»Ø OP_FLASH_OK£¬Ê§°Ü·µ»Ø´íÎóÂë
+  * @brief  Flashæ•´åŒºåŸŸæ“¦é™¤ï¼ˆæŒ‰é¡µä¸ºå•ä½æ“¦é™¤æŒ‡å®šåŒºåŸŸï¼‰
+  * @param  start_addr èµ·å§‹åœ°å€ï¼ˆå¿…é¡»æ˜¯æœ‰æ•ˆçš„Flashåœ°å€ï¼Œå¹¶ä¸”ä¸ºé¡µé¦–åœ°å€ï¼‰
+  * @param  length     æ“¦é™¤é•¿åº¦ï¼ˆå­—èŠ‚ï¼‰ï¼Œå»ºè®®ä¸ºé¡µå¤§å°çš„æ•´æ•°å€ï¼Œä¸è¶³æ—¶å‘ä¸Šå–æ•´
+  * @retval OP_FlashStatus_t æ“ä½œç»“æœï¼ŒæˆåŠŸè¿”å› OP_FLASH_OKï¼Œå¤±è´¥è¿”å›é”™è¯¯ç 
   *
   * @note
-  *       - STM32F1ÏµÁĞµÄFlash²Á³ıÒÔÒ³£¨Page£©Îª×îĞ¡µ¥Î»£¬F103ZET6Ò»Ò³Îª2K×Ö½Ú
-  *       - ²Á³ıÇ°ĞèÏÈ½âËøFlash£¨HAL_FLASH_Unlock£©£¬²Á³ıÍê³ÉºóÔÙÉÏËø
-  *       - HAL_FLASHEx_Erase() ÄÚ²¿»áµÈ´ı²Á³ıÍê³É£¬²»ĞèÓÃ»§µÈ´ı
-  *       - Èô²Á³ıÇøÓò°üº¬ÖØÒªÊı¾İ£¬ÇëÎñ±ØÌáÇ°×öºÃ±¸·İ
+  *       - STM32F1ç³»åˆ—çš„Flashæ“¦é™¤ä»¥é¡µï¼ˆPageï¼‰ä¸ºæœ€å°å•ä½ï¼ŒF103ZET6ä¸€é¡µä¸º2Kå­—èŠ‚
+  *       - æ“¦é™¤å‰éœ€å…ˆè§£é”Flashï¼ˆHAL_FLASH_Unlockï¼‰ï¼Œæ“¦é™¤å®Œæˆåå†ä¸Šé”
+  *       - HAL_FLASHEx_Erase() å†…éƒ¨ä¼šç­‰å¾…æ“¦é™¤å®Œæˆï¼Œä¸éœ€ç”¨æˆ·ç­‰å¾…
+  *       - è‹¥æ“¦é™¤åŒºåŸŸåŒ…å«é‡è¦æ•°æ®ï¼Œè¯·åŠ¡å¿…æå‰åšå¥½å¤‡ä»½
   */
 static OP_FlashStatus_t OP_Flash_Erase(uint32_t start_addr, uint32_t length)
 {
-    HAL_StatusTypeDef status;              //!< HAL¿â·µ»Ø×´Ì¬
-    uint32_t PageError = 0;                //!< ¼ÇÂ¼²Á³ı³ö´íµÄÒ³ºÅ£¨ÓÉHAL¿âÎ¬»¤£©
-    FLASH_EraseInitTypeDef EraseInitStruct;//!< Flash²Á³ıÅäÖÃ½á¹¹Ìå
+    HAL_StatusTypeDef status;              //!< HALåº“è¿”å›çŠ¶æ€
+    uint32_t PageError = 0;                //!< è®°å½•æ“¦é™¤å‡ºé”™çš„é¡µå·ï¼ˆç”±HALåº“ç»´æŠ¤ï¼‰
+    FLASH_EraseInitTypeDef EraseInitStruct;//!< Flashæ“¦é™¤é…ç½®ç»“æ„ä½“
 
-    //! 1. ÅĞ¶ÏÆğÊ¼µØÖ·ºÍ½áÊøµØÖ·ÊÇ·ñºÏ·¨£¬·ÀÖ¹²Ù×÷·Ç·¨ÇøÓò
+    //! 1. åˆ¤æ–­èµ·å§‹åœ°å€å’Œç»“æŸåœ°å€æ˜¯å¦åˆæ³•ï¼Œé˜²æ­¢æ“ä½œéæ³•åŒºåŸŸ
     if (!OP_Flash_IsValidAddr(start_addr) || !OP_Flash_IsValidAddr(start_addr + length - 1)) {
         return OP_FLASH_ADDR_INVALID;
     }
 
-    uint32_t pageSize = FLASH_PAGE_SIZE; //!< Ã¿Ò³´óĞ¡£¬Í¨³£Îª2K×Ö½Ú
-    //! 2. ¼ÆËã²Á³ıµÄÊ×Ò³Ò³ºÅ
+    uint32_t pageSize = FLASH_PAGE_SIZE; //!< æ¯é¡µå¤§å°ï¼Œé€šå¸¸ä¸º2Kå­—èŠ‚
+    //! 2. è®¡ç®—æ“¦é™¤çš„é¦–é¡µé¡µå·
     uint32_t firstPage = (start_addr - FLASH_BASE) / pageSize;
-    //! 3. ¼ÆËãÒª²Á³ıµÄÒ³Êı£¨²»×ãÒ»Ò³Ê±Ò²ÒªÕûÒ³²Á³ı£©
+    //! 3. è®¡ç®—è¦æ“¦é™¤çš„é¡µæ•°ï¼ˆä¸è¶³ä¸€é¡µæ—¶ä¹Ÿè¦æ•´é¡µæ“¦é™¤ï¼‰
     uint32_t nbPages   = (length + pageSize - 1) / pageSize;
 
-    //! 4. ½âËøFlash£¬ÔÊĞíĞ´ÈëºÍ²Á³ı
+    //! 4. è§£é”Flashï¼Œå…è®¸å†™å…¥å’Œæ“¦é™¤
     HAL_FLASH_Unlock();
 
-    //! 5. ÅäÖÃ²Á³ı²ÎÊı
-    EraseInitStruct.TypeErase   = FLASH_TYPEERASE_PAGES;  //!< Ñ¡ÔñÒ³²Á³ı·½Ê½
-    EraseInitStruct.PageAddress = start_addr;             //!< ²Á³ıÆğÊ¼µØÖ·£¨Ò³Ê×µØÖ·£©
-    EraseInitStruct.NbPages     = nbPages;                //!< ²Á³ıÒ³Êı
+    //! 5. é…ç½®æ“¦é™¤å‚æ•°
+    EraseInitStruct.TypeErase   = FLASH_TYPEERASE_PAGES;  //!< é€‰æ‹©é¡µæ“¦é™¤æ–¹å¼
+    EraseInitStruct.PageAddress = start_addr;             //!< æ“¦é™¤èµ·å§‹åœ°å€ï¼ˆé¡µé¦–åœ°å€ï¼‰
+    EraseInitStruct.NbPages     = nbPages;                //!< æ“¦é™¤é¡µæ•°
 
-    //! 6. µ÷ÓÃHAL¿â½øĞĞÊµ¼Ê²Á³ı²Ù×÷
+    //! 6. è°ƒç”¨HALåº“è¿›è¡Œå®é™…æ“¦é™¤æ“ä½œ
     status = HAL_FLASHEx_Erase(&EraseInitStruct, &PageError);
 
-    //! 7. ²Ù×÷½áÊøºóÁ¢¼´ÉÏËø£¬·ÀÖ¹Îó²Ù×÷
+    //! 7. æ“ä½œç»“æŸåç«‹å³ä¸Šé”ï¼Œé˜²æ­¢è¯¯æ“ä½œ
     HAL_FLASH_Lock();
 
-    //! 8. ·µ»Ø½á¹û£¬HAL_OK¼´Îª³É¹¦£¬·ñÔòÎª´íÎó
+    //! 8. è¿”å›ç»“æœï¼ŒHAL_OKå³ä¸ºæˆåŠŸï¼Œå¦åˆ™ä¸ºé”™è¯¯
     return (status == HAL_OK) ? OP_FLASH_OK : OP_FLASH_ERROR;
 }
 
 /**
-  * @brief  FlashĞ´Èë£¨ÒÔ32Î»Îªµ¥Î»£¬ÒªÇóµØÖ·ºÍÊı¾İ4×Ö½Ú¶ÔÆë£©
-  * @param  addr    Ä¿±êµØÖ·£¬±ØĞëÊÇÓĞĞ§FlashµØÖ·ÇÒ4×Ö½Ú¶ÔÆë
-  * @param  data    Êı¾İÖ¸Õë£¬Ö¸Ïò´ıĞ´ÈëµÄÊı¾İ»º³åÇø
-  * @param  length  Ğ´Èë³¤¶È£¨µ¥Î»£º×Ö½Ú£©£¬±ØĞëÎª4µÄÕûÊı±¶
-  * @retval OP_FlashStatus_t ²Ù×÷½á¹û£¬³É¹¦·µ»ØOP_FLASH_OK£¬Ê§°Ü·µ»Ø´íÎóÂë
+  * @brief  Flashå†™å…¥ï¼ˆä»¥32ä½ä¸ºå•ä½ï¼Œè¦æ±‚åœ°å€å’Œæ•°æ®4å­—èŠ‚å¯¹é½ï¼‰
+  * @param  addr    ç›®æ ‡åœ°å€ï¼Œå¿…é¡»æ˜¯æœ‰æ•ˆFlashåœ°å€ä¸”4å­—èŠ‚å¯¹é½
+  * @param  data    æ•°æ®æŒ‡é’ˆï¼ŒæŒ‡å‘å¾…å†™å…¥çš„æ•°æ®ç¼“å†²åŒº
+  * @param  length  å†™å…¥é•¿åº¦ï¼ˆå•ä½ï¼šå­—èŠ‚ï¼‰ï¼Œå¿…é¡»ä¸º4çš„æ•´æ•°å€
+  * @retval OP_FlashStatus_t æ“ä½œç»“æœï¼ŒæˆåŠŸè¿”å›OP_FLASH_OKï¼Œå¤±è´¥è¿”å›é”™è¯¯ç 
   *
   * @note
-  *       - STM32F1µÄFlashĞ´Èë×îĞ¡µ¥Î»Îª32Î»£¨¼´4×Ö½Ú£¬Ò»¸öword£©
-  *       - Ğ´ÈëÇ°Ğè½âËøFlash£¨HAL_FLASH_Unlock£©£¬Ğ´Èë½áÊøºóĞèÖØĞÂÉÏËø£¨HAL_FLASH_Lock£©
-  *       - µØÖ·»ò³¤¶ÈÎ´4×Ö½Ú¶ÔÆëÊ±£¬Ğ´Èë²Ù×÷»áÖ±½ÓÊ§°Ü
-  *       - FlashĞ´ÈëÖ»ÄÜ½«1±äÎª0£¬²»ÄÜ½«0±äÎª1£¬ÈçĞèĞ´ÈëĞÂÄÚÈİĞèÏÈ²Á³ı
-  *       - ½¨ÒéÒ»´ÎĞÔĞ´Èë²»³¬¹ıÒ»Ò³Êı¾İ£¨2K£©£¬ÈçĞè´óÁ¿Ğ´Èë¿É·Ö¶à´Îµ÷ÓÃ
+  *       - STM32F1çš„Flashå†™å…¥æœ€å°å•ä½ä¸º32ä½ï¼ˆå³4å­—èŠ‚ï¼Œä¸€ä¸ªwordï¼‰
+  *       - å†™å…¥å‰éœ€è§£é”Flashï¼ˆHAL_FLASH_Unlockï¼‰ï¼Œå†™å…¥ç»“æŸåéœ€é‡æ–°ä¸Šé”ï¼ˆHAL_FLASH_Lockï¼‰
+  *       - åœ°å€æˆ–é•¿åº¦æœª4å­—èŠ‚å¯¹é½æ—¶ï¼Œå†™å…¥æ“ä½œä¼šç›´æ¥å¤±è´¥
+  *       - Flashå†™å…¥åªèƒ½å°†1å˜ä¸º0ï¼Œä¸èƒ½å°†0å˜ä¸º1ï¼Œå¦‚éœ€å†™å…¥æ–°å†…å®¹éœ€å…ˆæ“¦é™¤
+  *       - å»ºè®®ä¸€æ¬¡æ€§å†™å…¥ä¸è¶…è¿‡ä¸€é¡µæ•°æ®ï¼ˆ2Kï¼‰ï¼Œå¦‚éœ€å¤§é‡å†™å…¥å¯åˆ†å¤šæ¬¡è°ƒç”¨
   */
 static OP_FlashStatus_t OP_Flash_Write(uint32_t addr, uint8_t *data, uint32_t length)
 {
-    //! 1. ¼ì²éÄ¿±êµØÖ·ÊÇ·ñºÏ·¨£¬·ÀÖ¹Îó²Ù×÷
+    //! 1. æ£€æŸ¥ç›®æ ‡åœ°å€æ˜¯å¦åˆæ³•ï¼Œé˜²æ­¢è¯¯æ“ä½œ
     if (!OP_Flash_IsValidAddr(addr) || !OP_Flash_IsValidAddr(addr + length - 1)) {
         return OP_FLASH_ADDR_INVALID;
     }
-    //! 2. ¼ì²éµØÖ·ºÍ³¤¶ÈÊÇ·ñ4×Ö½Ú¶ÔÆë£¨Ó²¼şÒªÇó£©
+    //! 2. æ£€æŸ¥åœ°å€å’Œé•¿åº¦æ˜¯å¦4å­—èŠ‚å¯¹é½ï¼ˆç¡¬ä»¶è¦æ±‚ï¼‰
     if ((addr % 4) != 0 || (length % 4) != 0) {
-        return OP_FLASH_ERROR; //!< ·Ç4×Ö½Ú¶ÔÆë
+        return OP_FLASH_ERROR; //!< é4å­—èŠ‚å¯¹é½
     }
 
-    HAL_StatusTypeDef status = HAL_OK; //!< HAL¿âº¯Êı·µ»Ø×´Ì¬
+    HAL_StatusTypeDef status = HAL_OK; //!< HALåº“å‡½æ•°è¿”å›çŠ¶æ€
 
-    //! 3. ½âËøFlash£¬ÔÊĞíĞ´²Ù×÷
+    //! 3. è§£é”Flashï¼Œå…è®¸å†™æ“ä½œ
     HAL_FLASH_Unlock();
 
-    //! 4. °´word£¨32Î»£¬4×Ö½Ú£©Îªµ¥Î»Öğ²½Ğ´Èë
+    //! 4. æŒ‰wordï¼ˆ32ä½ï¼Œ4å­—èŠ‚ï¼‰ä¸ºå•ä½é€æ­¥å†™å…¥
     for (uint32_t i = 0; i < length; i += 4) {
         uint32_t word;
-        //! ½«data[i~i+3]¿½±´Îª32Î»word£¬·ÀÖ¹×Ö½ÚĞòÎÊÌâ
+        //! å°†data[i~i+3]æ‹·è´ä¸º32ä½wordï¼Œé˜²æ­¢å­—èŠ‚åºé—®é¢˜
         memcpy(&word, data + i, 4);
-        //! Ö´ĞĞÊµ¼ÊĞ´Èë²Ù×÷£¨Ò»´ÎĞ´Èë4×Ö½Ú£©
+        //! æ‰§è¡Œå®é™…å†™å…¥æ“ä½œï¼ˆä¸€æ¬¡å†™å…¥4å­—èŠ‚ï¼‰
         status = HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, addr + i, word);
         if (status != HAL_OK) {
-            //! Óöµ½Ğ´Èë´íÎó£¬Á¢¼´ÉÏËø²¢·µ»Ø
+            //! é‡åˆ°å†™å…¥é”™è¯¯ï¼Œç«‹å³ä¸Šé”å¹¶è¿”å›
             HAL_FLASH_Lock();
             return OP_FLASH_ERROR;
         }
     }
 
-    //! 5. Ğ´Èë½áÊøºóÉÏËø£¬±ÜÃâFlash±»Îó²Ù×÷
+    //! 5. å†™å…¥ç»“æŸåä¸Šé”ï¼Œé¿å…Flashè¢«è¯¯æ“ä½œ
     HAL_FLASH_Lock();
     return OP_FLASH_OK;
 }
 
 /**
-  * @brief  FlashÇøÓò¿½±´£¨µäĞÍÓ¦ÓÃ£º½«App»º´æÇøµÄ¹Ì¼ş°áÔËµ½AppÇø£©
-  * @param  src_addr    Ô´ÇøÆğÊ¼µØÖ·£¨Èç£º»º´æÇøÆğÊ¼µØÖ· FLASH_APP_CACHE_ADDR£©
-  * @param  dest_addr   Ä¿±êÇøÆğÊ¼µØÖ·£¨Èç£ºAppÇøÆğÊ¼µØÖ· FLASH_APP_ADDR£©
-  * @param  length      ¿½±´³¤¶È£¨µ¥Î»£º×Ö½Ú£¬±ØĞëÎª4×Ö½Ú¶ÔÆë£©
-  * @retval OP_FlashStatus_t  ²Ù×÷½á¹û£¬³É¹¦·µ»ØOP_FLASH_OK£¬Ê§°Ü·µ»Ø´íÎóÂë
+  * @brief  FlashåŒºåŸŸæ‹·è´ï¼ˆå…¸å‹åº”ç”¨ï¼šå°†Appç¼“å­˜åŒºçš„å›ºä»¶æ¬è¿åˆ°AppåŒºï¼‰
+  * @param  src_addr    æºåŒºèµ·å§‹åœ°å€ï¼ˆå¦‚ï¼šç¼“å­˜åŒºèµ·å§‹åœ°å€ FLASH_APP_CACHE_ADDRï¼‰
+  * @param  dest_addr   ç›®æ ‡åŒºèµ·å§‹åœ°å€ï¼ˆå¦‚ï¼šAppåŒºèµ·å§‹åœ°å€ FLASH_APP_ADDRï¼‰
+  * @param  length      æ‹·è´é•¿åº¦ï¼ˆå•ä½ï¼šå­—èŠ‚ï¼Œå¿…é¡»ä¸º4å­—èŠ‚å¯¹é½ï¼‰
+  * @retval OP_FlashStatus_t  æ“ä½œç»“æœï¼ŒæˆåŠŸè¿”å›OP_FLASH_OKï¼Œå¤±è´¥è¿”å›é”™è¯¯ç 
   *
   * @note
-  *       - ¸Ãº¯Êı»á×Ô¶¯²Á³ıÄ¿±êÇøÓò£¬È»ºó·Ö¶Î°áÔËÊı¾İ£¬½ÚÊ¡RAM£¬ÊÊÓÃÓÚ´óÈİÁ¿¹Ì¼şÉı¼¶
-  *       - Ò»°ãÓÃÓÚBootloader´ÓÏÂÔØ»º´æÇøÉı¼¶AppµÄ³¡¾°
-  *       - ÄÚ²¿²ÉÓÃ·Ö¿é¿½±´£¬·ÀÖ¹Ò»´Î·ÖÅä¹ı´ó»º³åÇøµ¼ÖÂÄÚ´æÒç³ö
-  *       - ËùÓĞĞ´Èë²Ù×÷¶¼»ùÓÚ4×Ö½Ú¶ÔÆë£¬STM32F1ÏµÁĞFlash²»Ö§³Ö·Ç¶ÔÆëĞ´Èë
-  *       - ²Ù×÷Ç°ÇëÈ·±£Ô´Êı¾İÒÑÍêÕûĞ´ÈëÇÒĞ£ÑéÍ¨¹ı£¨ÈçCRC32Ğ£Ñé£©
+  *       - è¯¥å‡½æ•°ä¼šè‡ªåŠ¨æ“¦é™¤ç›®æ ‡åŒºåŸŸï¼Œç„¶ååˆ†æ®µæ¬è¿æ•°æ®ï¼ŒèŠ‚çœRAMï¼Œé€‚ç”¨äºå¤§å®¹é‡å›ºä»¶å‡çº§
+  *       - ä¸€èˆ¬ç”¨äºBootloaderä»ä¸‹è½½ç¼“å­˜åŒºå‡çº§Appçš„åœºæ™¯
+  *       - å†…éƒ¨é‡‡ç”¨åˆ†å—æ‹·è´ï¼Œé˜²æ­¢ä¸€æ¬¡åˆ†é…è¿‡å¤§ç¼“å†²åŒºå¯¼è‡´å†…å­˜æº¢å‡º
+  *       - æ‰€æœ‰å†™å…¥æ“ä½œéƒ½åŸºäº4å­—èŠ‚å¯¹é½ï¼ŒSTM32F1ç³»åˆ—Flashä¸æ”¯æŒéå¯¹é½å†™å…¥
+  *       - æ“ä½œå‰è¯·ç¡®ä¿æºæ•°æ®å·²å®Œæ•´å†™å…¥ä¸”æ ¡éªŒé€šè¿‡ï¼ˆå¦‚CRC32æ ¡éªŒï¼‰
   */
 OP_FlashStatus_t OP_Flash_Copy(uint32_t src_addr, uint32_t dest_addr, uint32_t length)
 {
-    //! 1. ¼ì²é²ÎÊıÓĞĞ§ĞÔ£º³¤¶ÈÎª0¡¢Î´¶ÔÆë¾ù·Ç·¨
+    //! 1. æ£€æŸ¥å‚æ•°æœ‰æ•ˆæ€§ï¼šé•¿åº¦ä¸º0ã€æœªå¯¹é½å‡éæ³•
     if ((length == 0) || ((src_addr % 4) != 0) || ((dest_addr % 4) != 0) || (length % 4) != 0) {
-        return OP_FLASH_ERROR; //!< ¶ÔÆë¼ì²é
+        return OP_FLASH_ERROR; //!< å¯¹é½æ£€æŸ¥
     }
-    //! 2. ¼ì²éÔ´ÇøºÍÄ¿±êÇøµÄÆğÊ¼µØÖ·ÊÇ·ñºÏ·¨
+    //! 2. æ£€æŸ¥æºåŒºå’Œç›®æ ‡åŒºçš„èµ·å§‹åœ°å€æ˜¯å¦åˆæ³•
     if (!OP_Flash_IsValidAddr(src_addr) || !OP_Flash_IsValidAddr(dest_addr)) {
         return OP_FLASH_ADDR_INVALID;
     }
 
-    //! 3. ²Á³ıÄ¿±êÇøÓò£¬È·±£Ğ´ÈëÇ°Ä¿±êÇøÈ«²¿Îª0xFF
+    //! 3. æ“¦é™¤ç›®æ ‡åŒºåŸŸï¼Œç¡®ä¿å†™å…¥å‰ç›®æ ‡åŒºå…¨éƒ¨ä¸º0xFF
     if (OP_Flash_Erase(dest_addr, length) != OP_FLASH_OK) {
         return OP_FLASH_ERROR;
     }
 
-    #define FLASH_COPY_BUFSIZE  256  //!< ·Ö¿é°áÔË»º³åÇø´óĞ¡£¬µ¥Î»×Ö½Ú£¬±ØĞëÎª4µÄ±¶Êı
+    #define FLASH_COPY_BUFSIZE  256  //!< åˆ†å—æ¬è¿ç¼“å†²åŒºå¤§å°ï¼Œå•ä½å­—èŠ‚ï¼Œå¿…é¡»ä¸º4çš„å€æ•°
     uint8_t buffer[FLASH_COPY_BUFSIZE];
-    uint32_t copied = 0;  //!< ÒÑÍê³É¿½±´µÄ×Ö½ÚÊı
+    uint32_t copied = 0;  //!< å·²å®Œæˆæ‹·è´çš„å­—èŠ‚æ•°
 
     while (copied < length) {
-        //! 4. ¼ÆËã±¾´Î°áÔËÊı¾İÁ¿£¬×îºóÒ»´Î¿ÉÄÜ²»×ãÒ»Õû¿é
+        //! 4. è®¡ç®—æœ¬æ¬¡æ¬è¿æ•°æ®é‡ï¼Œæœ€åä¸€æ¬¡å¯èƒ½ä¸è¶³ä¸€æ•´å—
         uint32_t chunk = ((length - copied) > FLASH_COPY_BUFSIZE) ? FLASH_COPY_BUFSIZE : (length - copied);
 
-        //! 5. ´ÓÔ´Çø¶ÁÈ¡chunk×Ö½Úµ½ÁÙÊ±buffer
+        //! 5. ä»æºåŒºè¯»å–chunkå­—èŠ‚åˆ°ä¸´æ—¶buffer
         memcpy(buffer, (uint8_t*)(src_addr + copied), chunk);
 
-        //! 6. Ğ´Èëµ½Ä¿±êFlashÇøÓò
+        //! 6. å†™å…¥åˆ°ç›®æ ‡FlashåŒºåŸŸ
         if (OP_Flash_Write(dest_addr + copied, buffer, chunk) != OP_FLASH_OK) {
             return OP_FLASH_ERROR;
         }
-        copied += chunk;  //!< ÀÛ¼Ó°áÔË×Ö½ÚÊı
+        copied += chunk;  //!< ç´¯åŠ æ¬è¿å­—èŠ‚æ•°
     }
 
     return OP_FLASH_OK;

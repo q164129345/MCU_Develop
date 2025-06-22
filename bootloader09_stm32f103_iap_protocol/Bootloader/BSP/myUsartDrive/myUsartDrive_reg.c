@@ -1,29 +1,29 @@
 #include "myUsartDrive/myUsartDrive_reg.h"
 
-volatile uint8_t rx_buffer[RX_BUFFER_SIZE]; // ½ÓÊÕDMA×¨ÓÃ»º³åÇø
-uint64_t g_Usart1_RXCount = 0;              // Í³¼Æ½ÓÊÕµÄ×Ö½ÚÊı
-volatile uint16_t g_DMARxLastPos = 0;       // ¼ÇÂ¼ÉÏÒ»´Î¶ÁÈ¡ÏûÏ¢µÄµØÖ·Î»ÖÃ
+volatile uint8_t rx_buffer[RX_BUFFER_SIZE]; // æ¥æ”¶DMAä¸“ç”¨ç¼“å†²åŒº
+uint64_t g_Usart1_RXCount = 0;              // ç»Ÿè®¡æ¥æ”¶çš„å­—èŠ‚æ•°
+volatile uint16_t g_DMARxLastPos = 0;       // è®°å½•ä¸Šä¸€æ¬¡è¯»å–æ¶ˆæ¯çš„åœ°å€ä½ç½®
 
-volatile uint8_t tx_buffer[TX_BUFFER_SIZE]; // ·¢ËÍDMA×¨ÓÃ»º´æÇø
-volatile uint8_t tx_dma_busy = 0;           // DMA·¢ËÍ±êÖ¾Î»£¨1£ºÕıÔÚ·¢ËÍ£¬0£º¿ÕÏĞ£©
-uint64_t g_Usart1_TXCount = 0;              // Í³¼Æ·¢ËÍµÄ×Ö½ÚÊı
+volatile uint8_t tx_buffer[TX_BUFFER_SIZE]; // å‘é€DMAä¸“ç”¨ç¼“å­˜åŒº
+volatile uint8_t tx_dma_busy = 0;           // DMAå‘é€æ ‡å¿—ä½ï¼ˆ1ï¼šæ­£åœ¨å‘é€ï¼Œ0ï¼šç©ºé—²ï¼‰
+uint64_t g_Usart1_TXCount = 0;              // ç»Ÿè®¡å‘é€çš„å­—èŠ‚æ•°
 
 volatile uint16_t usart1Error = 0;
 volatile uint16_t dma1Channel4Error = 0;
 volatile uint16_t dma1Channel5Error = 0;
 
 /* usart1 ringbuffer */
-volatile lwrb_t g_Usart1RxRBHandler; // ÊµÀı»¯ringbuffer
-volatile uint8_t g_Usart1RxRB[RX_BUFFER_SIZE] = {0,}; // usart1½ÓÊÕringbuffer»º´æÇø
+volatile lwrb_t g_Usart1RxRBHandler; // å®ä¾‹åŒ–ringbuffer
+volatile uint8_t g_Usart1RxRB[RX_BUFFER_SIZE] = {0,}; // usart1æ¥æ”¶ringbufferç¼“å­˜åŒº
 
-volatile lwrb_t g_Usart1TxRBHandler; // ÊµÀı»¯ringbuffer
-volatile uint8_t g_Usart1TxRB[TX_BUFFER_SIZE] = {0,}; // usart1·¢ËÍringbuffer»º´æÇø
+volatile lwrb_t g_Usart1TxRBHandler; // å®ä¾‹åŒ–ringbuffer
+volatile uint8_t g_Usart1TxRB[TX_BUFFER_SIZE] = {0,}; // usart1å‘é€ringbufferç¼“å­˜åŒº
 
 /**
-  * @brief   »ñÈ¡ USART1 TX DMA ´«ÊäÃ¦×´Ì¬
-  * @note    Í¨¹ı¶ÁÈ¡È«¾Ö±êÖ¾ tx_dma_busy ÅĞ¶Ïµ±Ç° USART1 µÄ DMA ·¢ËÍÍ¨µÀÊÇ·ñÕıÔÚ¹¤×÷
-  * @retval  0 ±íÊ¾ DMA ·¢ËÍ¿ÕÏĞ£¬¿É·¢ÆğĞÂµÄ´«Êä
-  * @retval  1 ±íÊ¾ DMA ·¢ËÍÃ¦£¬ÇëµÈ´ıµ±Ç°´«ÊäÍê³É
+  * @brief   è·å– USART1 TX DMA ä¼ è¾“å¿™çŠ¶æ€
+  * @note    é€šè¿‡è¯»å–å…¨å±€æ ‡å¿— tx_dma_busy åˆ¤æ–­å½“å‰ USART1 çš„ DMA å‘é€é€šé“æ˜¯å¦æ­£åœ¨å·¥ä½œ
+  * @retval  0 è¡¨ç¤º DMA å‘é€ç©ºé—²ï¼Œå¯å‘èµ·æ–°çš„ä¼ è¾“
+  * @retval  1 è¡¨ç¤º DMA å‘é€å¿™ï¼Œè¯·ç­‰å¾…å½“å‰ä¼ è¾“å®Œæˆ
   */
 __STATIC_INLINE uint8_t USART1_Get_TX_DMA_Busy(void)
 {
@@ -31,67 +31,67 @@ __STATIC_INLINE uint8_t USART1_Get_TX_DMA_Busy(void)
 }
 
 /**
-  * @brief  ×èÈû·½Ê½·¢ËÍÒÔ NUL ½áÎ²µÄ×Ö·û´®
-  * @param  str Ö¸ÏòÒÔ '\0' ½áÎ²µÄ´ı·¢ËÍ×Ö·û´®»º³åÇø
-  * @note   ±¾º¯ÊıÍ¨¹ıÂÖÑ¯ TXE ±êÖ¾Î»£¨USART_SR.TXE£¬Î»7£©À´ÅĞ¶Ï·¢ËÍÊı¾İ¼Ä´æÆ÷ÊÇ·ñ¿Õ£º
-  *         - µ± TXE = 1 Ê±£¬±íÊ¾ DR ¼Ä´æÆ÷ÒÑ¿Õ£¬¿ÉĞ´ÈëÏÂÒ»¸ö×Ö½Ú  
-  *         - Í¨¹ıÏò DR ¼Ä´æÆ÷Ğ´ÈëÊı¾İ£¨LL_USART_TransmitData8£©´¥·¢·¢ËÍ  
-  *         - ÖØ¸´ÉÏÊö¹ı³Ì£¬Ö±µ½Óöµ½×Ö·û´®½áÊø·û '\0'  
+  * @brief  é˜»å¡æ–¹å¼å‘é€ä»¥ NUL ç»“å°¾çš„å­—ç¬¦ä¸²
+  * @param  str æŒ‡å‘ä»¥ '\0' ç»“å°¾çš„å¾…å‘é€å­—ç¬¦ä¸²ç¼“å†²åŒº
+  * @note   æœ¬å‡½æ•°é€šè¿‡è½®è¯¢ TXE æ ‡å¿—ä½ï¼ˆUSART_SR.TXEï¼Œä½7ï¼‰æ¥åˆ¤æ–­å‘é€æ•°æ®å¯„å­˜å™¨æ˜¯å¦ç©ºï¼š
+  *         - å½“ TXE = 1 æ—¶ï¼Œè¡¨ç¤º DR å¯„å­˜å™¨å·²ç©ºï¼Œå¯å†™å…¥ä¸‹ä¸€ä¸ªå­—èŠ‚  
+  *         - é€šè¿‡å‘ DR å¯„å­˜å™¨å†™å…¥æ•°æ®ï¼ˆLL_USART_TransmitData8ï¼‰è§¦å‘å‘é€  
+  *         - é‡å¤ä¸Šè¿°è¿‡ç¨‹ï¼Œç›´åˆ°é‡åˆ°å­—ç¬¦ä¸²ç»“æŸç¬¦ '\0'  
   * @retval None
   */
 void USART1_SendString_Blocking(const char* str)
 {
-    /* ¼Ä´æÆ÷·½Ê½ */
+    /* å¯„å­˜å™¨æ–¹å¼ */
     while(*str) {
-        while(!(USART1->SR & (0x01UL << 7UL))); // µÈ´ıTXE = 1
+        while(!(USART1->SR & (0x01UL << 7UL))); // ç­‰å¾…TXE = 1
         USART1->DR = *str++;
     }
 }
 
 /**
-  * @brief  ½«Êı¾İĞ´ÈëUSART1½ÓÊÕringbufferÖĞ¡£
+  * @brief  å°†æ•°æ®å†™å…¥USART1æ¥æ”¶ringbufferä¸­ã€‚
 
-  * @param[in] data Ö¸ÏòÒªĞ´ÈëµÄÊı¾İ»º³åÇø
-  * @param[in] len  ÒªĞ´ÈëµÄÊı¾İ³¤¶È£¨µ¥Î»£º×Ö½Ú£©
+  * @param[in] data æŒ‡å‘è¦å†™å…¥çš„æ•°æ®ç¼“å†²åŒº
+  * @param[in] len  è¦å†™å…¥çš„æ•°æ®é•¿åº¦ï¼ˆå•ä½ï¼šå­—èŠ‚ï¼‰
   * 
-  * @retval 0 Êı¾İ³É¹¦Ğ´Èë£¬ÎŞÊı¾İ¶ªÆú
-  * @retval 1 ringbufferÊ£Óà¿Õ¼ä²»×ã£¬¾ÉÊı¾İ±»¶ªÆúÒÔÈİÄÉĞÂÊı¾İ
-  * @retval 2 Êı¾İ³¤¶È³¬¹ıringbuffer×ÜÈİÁ¿£¬È«²¿¾ÉÊı¾İ±»Çå¿Õ£¬ÇÒĞÂÊı¾İÒ²ÓĞ¶ªÊ§
-  * @retval 3 ¿ÕÊı¾İÖ¸Õë
+  * @retval 0 æ•°æ®æˆåŠŸå†™å…¥ï¼Œæ— æ•°æ®ä¸¢å¼ƒ
+  * @retval 1 ringbufferå‰©ä½™ç©ºé—´ä¸è¶³ï¼Œæ—§æ•°æ®è¢«ä¸¢å¼ƒä»¥å®¹çº³æ–°æ•°æ®
+  * @retval 2 æ•°æ®é•¿åº¦è¶…è¿‡ringbufferæ€»å®¹é‡ï¼Œå…¨éƒ¨æ—§æ•°æ®è¢«æ¸…ç©ºï¼Œä¸”æ–°æ•°æ®ä¹Ÿæœ‰ä¸¢å¤±
+  * @retval 3 ç©ºæ•°æ®æŒ‡é’ˆ
   * @note 
-  * - Ê¹ÓÃlwrb¿â²Ù×÷ringbuffer¡£
-  * - µ±len > RX_BUFFER_SIZEÊ±£¬Îª·ÀÖ¹Ğ´ÈëÔ½½ç£¬»áÇ¿ĞĞ½Ø¶ÏÎªRX_BUFFER_SIZE´óĞ¡¡£
-  * - Èôringbuffer¿Õ¼ä²»×ã£¬½«µ÷ÓÃ `lwrb_skip()` Ìø¹ı¾ÉÊı¾İ£¬ÓÅÏÈ±£Áô×îĞÂÊı¾İ¡£
+  * - ä½¿ç”¨lwrbåº“æ“ä½œringbufferã€‚
+  * - å½“len > RX_BUFFER_SIZEæ—¶ï¼Œä¸ºé˜²æ­¢å†™å…¥è¶Šç•Œï¼Œä¼šå¼ºè¡Œæˆªæ–­ä¸ºRX_BUFFER_SIZEå¤§å°ã€‚
+  * - è‹¥ringbufferç©ºé—´ä¸è¶³ï¼Œå°†è°ƒç”¨ `lwrb_skip()` è·³è¿‡æ—§æ•°æ®ï¼Œä¼˜å…ˆä¿ç•™æœ€æ–°æ•°æ®ã€‚
   */
 static uint8_t USART1_Put_Data_Into_Ringbuffer(const void* data, uint16_t len)
 {
     uint8_t ret = 0;
     if (data == NULL) return ret = 3;
     
-    lwrb_sz_t freeSpace = lwrb_get_free((lwrb_t*)&g_Usart1RxRBHandler); // ringbufferÊ£Óà¿Õ¼ä
+    lwrb_sz_t freeSpace = lwrb_get_free((lwrb_t*)&g_Usart1RxRBHandler); // ringbufferå‰©ä½™ç©ºé—´
     
-    if (len < RX_BUFFER_SIZE) { // ĞÂÊı¾İ³¤¶ÈĞ¡ÓÚringbufferµÄ×ÜÈİÁ¿
-        if (len <= freeSpace) { // ×ã¹»µÄÊ£Óà¿Õ¼ä
-            lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, data, len); // ½«Êı¾İ·ÅÈëringbuffer
-        } else { // Ã»ÓĞ×ã¹»µÄ¿Õ¼ä£¬ËùÒÔÒªÌø¹ı²¿·Ö¾ÉÊı¾İ
-            lwrb_sz_t used = lwrb_get_full((lwrb_t*)&g_Usart1RxRBHandler); // Ê¹ÓÃÁË¶àÉÙ¿Õ¼ä
+    if (len < RX_BUFFER_SIZE) { // æ–°æ•°æ®é•¿åº¦å°äºringbufferçš„æ€»å®¹é‡
+        if (len <= freeSpace) { // è¶³å¤Ÿçš„å‰©ä½™ç©ºé—´
+            lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, data, len); // å°†æ•°æ®æ”¾å…¥ringbuffer
+        } else { // æ²¡æœ‰è¶³å¤Ÿçš„ç©ºé—´ï¼Œæ‰€ä»¥è¦è·³è¿‡éƒ¨åˆ†æ—§æ•°æ®
+            lwrb_sz_t used = lwrb_get_full((lwrb_t*)&g_Usart1RxRBHandler); // ä½¿ç”¨äº†å¤šå°‘ç©ºé—´
             lwrb_sz_t skip_len = len - freeSpace;
-            if (skip_len > used) { // ¹Ø¼ü£¡Ìø¹ıµÄÊı¾İ³¤¶È²»ÄÜ³¬¹ıÒÑÓĞÊı¾İ×Ü³¤£¬±ÜÃâÔ½½ç£¨±ÈÈç£¬ÓĞ58bytes£¬²»ÄÜÌø¹ı59bytes£¬×î¶àÖ»ÄÜÌø¹ı58bytes)
+            if (skip_len > used) { // å…³é”®ï¼è·³è¿‡çš„æ•°æ®é•¿åº¦ä¸èƒ½è¶…è¿‡å·²æœ‰æ•°æ®æ€»é•¿ï¼Œé¿å…è¶Šç•Œï¼ˆæ¯”å¦‚ï¼Œæœ‰58bytesï¼Œä¸èƒ½è·³è¿‡59bytesï¼Œæœ€å¤šåªèƒ½è·³è¿‡58bytes)
                 skip_len = used;
             }
-            lwrb_skip((lwrb_t*)&g_Usart1RxRBHandler, skip_len); // ÎªÁË½ÓÊÕĞÂµÄÊı¾İ£¬¶ªÆú²¿·Ö¾ÉµÄÊı¾İ
-            lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, data, len); // ½«Êı¾İ·ÅÈëringbuffer
+            lwrb_skip((lwrb_t*)&g_Usart1RxRBHandler, skip_len); // ä¸ºäº†æ¥æ”¶æ–°çš„æ•°æ®ï¼Œä¸¢å¼ƒéƒ¨åˆ†æ—§çš„æ•°æ®
+            lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, data, len); // å°†æ•°æ®æ”¾å…¥ringbuffer
             ret = 1;
         }
-    } else if (len == RX_BUFFER_SIZE) { // ĞÂÊı¾İ³¤¶ÈµÈÓÚringbufferµÄ×ÜÈİÁ¿
+    } else if (len == RX_BUFFER_SIZE) { // æ–°æ•°æ®é•¿åº¦ç­‰äºringbufferçš„æ€»å®¹é‡
         if (freeSpace < RX_BUFFER_SIZE) {
-            lwrb_reset((lwrb_t*)&g_Usart1RxRBHandler); // ÖØÖÃringbuffer
+            lwrb_reset((lwrb_t*)&g_Usart1RxRBHandler); // é‡ç½®ringbuffer
             ret = 1;
         }
-        lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, data, len); // ½«Êı¾İ·ÅÈëringbuffer
-    } else { // ĞÂÊı¾İ³¤¶È´óÓÚringbufferµÄ×ÜÈİÁ¿¡£Êı¾İÌ«´ó£¬½ö±£Áô×îºóRX_BUFFER_SIZE×Ö½Ú
+        lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, data, len); // å°†æ•°æ®æ”¾å…¥ringbuffer
+    } else { // æ–°æ•°æ®é•¿åº¦å¤§äºringbufferçš„æ€»å®¹é‡ã€‚æ•°æ®å¤ªå¤§ï¼Œä»…ä¿ç•™æœ€åRX_BUFFER_SIZEå­—èŠ‚
         const uint8_t* byte_ptr = (const uint8_t*)data;
-        data = (const void*)(byte_ptr + (len - RX_BUFFER_SIZE)); // Ö¸ÕëÆ«ÒÆ
+        data = (const void*)(byte_ptr + (len - RX_BUFFER_SIZE)); // æŒ‡é’ˆåç§»
         lwrb_reset((lwrb_t*)&g_Usart1RxRBHandler);
         lwrb_write((lwrb_t*)&g_Usart1RxRBHandler, data, RX_BUFFER_SIZE);
         ret = 2;
@@ -101,118 +101,118 @@ static uint8_t USART1_Put_Data_Into_Ringbuffer(const void* data, uint16_t len)
 }
 
 /**
-  * @brief  ÅäÖÃ DMA1 Í¨µÀ5£¬ÓÃÓÚ USART1 RX µÄÑ­»·½ÓÊÕ
-  * @note   ±¾º¯ÊıÍê³ÉÒÔÏÂ²Ù×÷£º
-  *         1. Ê¹ÄÜ DMA1 Ê±ÖÓ£¬²¢ÅäÖÃ DMA1_Channel5 ÖĞ¶ÏÓÅÏÈ¼¶ÓëÊ¹ÄÜÖĞ¶Ï  
-  *         2. ½ûÓÃ DMA Í¨µÀ5£¬²¢µÈ´ıÆäÍêÈ«¹Ø±Õ  
-  *         3. ÉèÖÃÍâÉèµØÖ· (CPAR=USART1->DR)¡¢´æ´¢Æ÷µØÖ· (CMAR=rx_buffer)  
-  *            ÒÔ¼°´«ÊäÊı¾İ³¤¶È (CNDTR=RX_BUFFER_SIZE)  
-  *         4. ÅäÖÃ CCR ¼Ä´æÆ÷¸÷Ïî²ÎÊı£º
-  *            - DIR   = 0 (ÍâÉè ¡ú ´æ´¢Æ÷)
-  *            - CIRC  = 1 (Ñ­»·Ä£Ê½)
-  *            - PINC  = 0 (ÍâÉèµØÖ·²»µİÔö)
-  *            - MINC  = 1 (´æ´¢Æ÷µØÖ·µİÔö)
-  *            - PSIZE = 00 (ÍâÉèÊı¾İ¿í¶È 8 Î»)
-  *            - MSIZE = 00 (´æ´¢Æ÷Êı¾İ¿í¶È 8 Î»)
-  *            - PL    = 11 (ÓÅÏÈ¼¶£º·Ç³£¸ß)
-  *            - MEM2MEM = 0 (·Ç´æ´¢Æ÷µ½´æ´¢Æ÷Ä£Ê½)
-  *            - ´«ÊäÍê³ÉÖĞ¶Ï (TCIE) Óë ¹ı°ë´«ÊäÖĞ¶Ï (HTIE) Ê¹ÄÜ
-  *         5. Ê¹ÄÜ DMA Í¨µÀ5£¬Æô¶¯Ñ­»·½ÓÊÕ
+  * @brief  é…ç½® DMA1 é€šé“5ï¼Œç”¨äº USART1 RX çš„å¾ªç¯æ¥æ”¶
+  * @note   æœ¬å‡½æ•°å®Œæˆä»¥ä¸‹æ“ä½œï¼š
+  *         1. ä½¿èƒ½ DMA1 æ—¶é’Ÿï¼Œå¹¶é…ç½® DMA1_Channel5 ä¸­æ–­ä¼˜å…ˆçº§ä¸ä½¿èƒ½ä¸­æ–­  
+  *         2. ç¦ç”¨ DMA é€šé“5ï¼Œå¹¶ç­‰å¾…å…¶å®Œå…¨å…³é—­  
+  *         3. è®¾ç½®å¤–è®¾åœ°å€ (CPAR=USART1->DR)ã€å­˜å‚¨å™¨åœ°å€ (CMAR=rx_buffer)  
+  *            ä»¥åŠä¼ è¾“æ•°æ®é•¿åº¦ (CNDTR=RX_BUFFER_SIZE)  
+  *         4. é…ç½® CCR å¯„å­˜å™¨å„é¡¹å‚æ•°ï¼š
+  *            - DIR   = 0 (å¤–è®¾ â†’ å­˜å‚¨å™¨)
+  *            - CIRC  = 1 (å¾ªç¯æ¨¡å¼)
+  *            - PINC  = 0 (å¤–è®¾åœ°å€ä¸é€’å¢)
+  *            - MINC  = 1 (å­˜å‚¨å™¨åœ°å€é€’å¢)
+  *            - PSIZE = 00 (å¤–è®¾æ•°æ®å®½åº¦ 8 ä½)
+  *            - MSIZE = 00 (å­˜å‚¨å™¨æ•°æ®å®½åº¦ 8 ä½)
+  *            - PL    = 11 (ä¼˜å…ˆçº§ï¼šéå¸¸é«˜)
+  *            - MEM2MEM = 0 (éå­˜å‚¨å™¨åˆ°å­˜å‚¨å™¨æ¨¡å¼)
+  *            - ä¼ è¾“å®Œæˆä¸­æ–­ (TCIE) ä¸ è¿‡åŠä¼ è¾“ä¸­æ–­ (HTIE) ä½¿èƒ½
+  *         5. ä½¿èƒ½ DMA é€šé“5ï¼Œå¯åŠ¨å¾ªç¯æ¥æ”¶
   * @retval None
   */
 static void DMA1_Channel5_Configure(void)
 {
-    // Ê±ÖÓ
-    RCC->AHBENR |= (1UL << 0UL); // ¿ªÆôDMA1Ê±ÖÓ
-    // ¿ªÆôÈ«¾ÖÖĞ¶Ï
+    // æ—¶é’Ÿ
+    RCC->AHBENR |= (1UL << 0UL); // å¼€å¯DMA1æ—¶é’Ÿ
+    // å¼€å¯å…¨å±€ä¸­æ–­
     NVIC_SetPriority(DMA1_Channel5_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0, 0));
     NVIC_EnableIRQ(DMA1_Channel5_IRQn);
-    /* 1. ½ûÓÃDMAÍ¨µÀ5£¬µÈ´ıÆäÍêÈ«¹Ø±Õ */
-    DMA1_Channel5->CCR &= ~(1UL << 0);  // Çå³ıENÎ»
-    while(DMA1_Channel5->CCR & 1UL);    // µÈ´ıDMAÍ¨µÀ5¹Ø±Õ
+    /* 1. ç¦ç”¨DMAé€šé“5ï¼Œç­‰å¾…å…¶å®Œå…¨å…³é—­ */
+    DMA1_Channel5->CCR &= ~(1UL << 0);  // æ¸…é™¤ENä½
+    while(DMA1_Channel5->CCR & 1UL);    // ç­‰å¾…DMAé€šé“5å…³é—­
 
-    /* 2. ÅäÖÃÍâÉèµØÖ·ºÍ´æ´¢Æ÷µØÖ· */
-    DMA1_Channel5->CPAR = (uint32_t)&USART1->DR;  // ÍâÉèµØÖ·ÎªUSART1Êı¾İ¼Ä´æÆ÷
-    DMA1_Channel5->CMAR = (uint32_t)rx_buffer;    // ´æ´¢Æ÷µØÖ·Îªrx_buffer
-    DMA1_Channel5->CNDTR = RX_BUFFER_SIZE;        // ´«ÊäÊı¾İ³¤¶ÈÎª»º³åÇø´óĞ¡
-    /* 3. ÅäÖÃDMA1Í¨µÀ5 CCR¼Ä´æÆ÷
-         - DIR   = 0£ºÍâÉè¡ú´æ´¢Æ÷
-         - CIRC  = 1£ºÑ­»·Ä£Ê½
-         - PINC  = 0£ºÍâÉèµØÖ·²»×ÔÔö
-         - MINC  = 1£º´æ´¢Æ÷µØÖ·×ÔÔö
-         - PSIZE = 00£ºÍâÉèÊı¾İ¿í¶È8Î»
-         - MSIZE = 00£º´æ´¢Æ÷Êı¾İ¿í¶È8Î»
-         - PL    = 10£ºÓÅÏÈ¼¶ÉèÎª¸ß
-         - MEM2MEM = 0£º·Ç´æ´¢Æ÷µ½´æ´¢Æ÷Ä£Ê½
+    /* 2. é…ç½®å¤–è®¾åœ°å€å’Œå­˜å‚¨å™¨åœ°å€ */
+    DMA1_Channel5->CPAR = (uint32_t)&USART1->DR;  // å¤–è®¾åœ°å€ä¸ºUSART1æ•°æ®å¯„å­˜å™¨
+    DMA1_Channel5->CMAR = (uint32_t)rx_buffer;    // å­˜å‚¨å™¨åœ°å€ä¸ºrx_buffer
+    DMA1_Channel5->CNDTR = RX_BUFFER_SIZE;        // ä¼ è¾“æ•°æ®é•¿åº¦ä¸ºç¼“å†²åŒºå¤§å°
+    /* 3. é…ç½®DMA1é€šé“5 CCRå¯„å­˜å™¨
+         - DIR   = 0ï¼šå¤–è®¾â†’å­˜å‚¨å™¨
+         - CIRC  = 1ï¼šå¾ªç¯æ¨¡å¼
+         - PINC  = 0ï¼šå¤–è®¾åœ°å€ä¸è‡ªå¢
+         - MINC  = 1ï¼šå­˜å‚¨å™¨åœ°å€è‡ªå¢
+         - PSIZE = 00ï¼šå¤–è®¾æ•°æ®å®½åº¦8ä½
+         - MSIZE = 00ï¼šå­˜å‚¨å™¨æ•°æ®å®½åº¦8ä½
+         - PL    = 10ï¼šä¼˜å…ˆçº§è®¾ä¸ºé«˜
+         - MEM2MEM = 0ï¼šéå­˜å‚¨å™¨åˆ°å­˜å‚¨å™¨æ¨¡å¼
     */
-    DMA1_Channel5->CCR = 0;  // Çå³ıÖ®Ç°µÄÅäÖÃ
-    DMA1_Channel5->CCR |= (1UL << 5);       // Ê¹ÄÜÑ­»·Ä£Ê½ (CIRC£¬bit5)
-    DMA1_Channel5->CCR |= (1UL << 7);       // Ê¹ÄÜ´æ´¢Æ÷×ÔÔö (MINC£¬bit7)
-    DMA1_Channel5->CCR |= (3UL << 12);      // ÉèÖÃÓÅÏÈ¼¶Îª·Ç³£¸ß (PLÖÃÎª¡°11¡±£¬bit12-13)
+    DMA1_Channel5->CCR = 0;  // æ¸…é™¤ä¹‹å‰çš„é…ç½®
+    DMA1_Channel5->CCR |= (1UL << 5);       // ä½¿èƒ½å¾ªç¯æ¨¡å¼ (CIRCï¼Œbit5)
+    DMA1_Channel5->CCR |= (1UL << 7);       // ä½¿èƒ½å­˜å‚¨å™¨è‡ªå¢ (MINCï¼Œbit7)
+    DMA1_Channel5->CCR |= (3UL << 12);      // è®¾ç½®ä¼˜å…ˆçº§ä¸ºéå¸¸é«˜ (PLç½®ä¸ºâ€œ11â€ï¼Œbit12-13)
     
-    // Ôö¼Ó´«ÊäÍê³ÉÓë´«Êä¹ı°ëÖĞ¶Ï
-    DMA1_Channel5->CCR |= (1UL << 1);       // ´«ÊäÍê³ÉÖĞ¶Ï (TCIE)
-    DMA1_Channel5->CCR |= (1UL << 2);       // ´«Êä¹ı°ëÖĞ¶Ï (HTIE)
-    /* 4. Ê¹ÄÜDMAÍ¨µÀ5 */
-    DMA1_Channel5->CCR |= 1UL;  // ÖÃENÎ»Æô¶¯Í¨µÀ
+    // å¢åŠ ä¼ è¾“å®Œæˆä¸ä¼ è¾“è¿‡åŠä¸­æ–­
+    DMA1_Channel5->CCR |= (1UL << 1);       // ä¼ è¾“å®Œæˆä¸­æ–­ (TCIE)
+    DMA1_Channel5->CCR |= (1UL << 2);       // ä¼ è¾“è¿‡åŠä¸­æ–­ (HTIE)
+    /* 4. ä½¿èƒ½DMAé€šé“5 */
+    DMA1_Channel5->CCR |= 1UL;  // ç½®ENä½å¯åŠ¨é€šé“
 }
 
 /**
-  * @brief  ÅäÖÃ DMA1 Í¨µÀ4£¬ÓÃÓÚ USART1 TX µÄÄÚ´æµ½ÍâÉè´«Êä
-  * @note   ±¾º¯ÊıÍê³ÉÒÔÏÂ²½Öè£º
-  *         1. Ê¹ÄÜ DMA1 Ê±ÖÓ (RCC->AHBENR.DMA1EN, bit0)  
-  *         2. ÉèÖÃ²¢¿ªÆô DMA1_Channel4 ÖĞ¶Ï£¬ÓÅÏÈ¼¶Îª 2 (NVIC)  
-  *         3. ÅäÖÃ´«Êä·½ÏòÎªÄÚ´æµ½ÍâÉè (CCR.DIR=1, bit4)  
-  *         4. ÉèÖÃÍ¨µÀÓÅÏÈ¼¶Îª¸ß (CCR.PL=10, bits12¨C13)  
-  *         5. ¹Ø±ÕÑ­»·Ä£Ê½ (CCR.CIRC=0, bit5)  
-  *         6. ÅäÖÃµØÖ·µİÔöÄ£Ê½£ºÍâÉèµØÖ·²»µİÔö (CCR.PINC=0, bit6)£¬  
-  *            ´æ´¢Æ÷µØÖ·µİÔö (CCR.MINC=1, bit7)  
-  *         7. ÍâÉèÓë´æ´¢Æ÷Êı¾İ¿í¶È¾ùÎª 8 Î» (CCR.PSIZE=00, bits8¨C9;  
-  *            CCR.MSIZE=00, bits10¨C11)  
-  *         8. Ê¹ÄÜ´«ÊäÍê³ÉÖĞ¶Ï (CCR.TCIE=1, bit1)  
+  * @brief  é…ç½® DMA1 é€šé“4ï¼Œç”¨äº USART1 TX çš„å†…å­˜åˆ°å¤–è®¾ä¼ è¾“
+  * @note   æœ¬å‡½æ•°å®Œæˆä»¥ä¸‹æ­¥éª¤ï¼š
+  *         1. ä½¿èƒ½ DMA1 æ—¶é’Ÿ (RCC->AHBENR.DMA1EN, bit0)  
+  *         2. è®¾ç½®å¹¶å¼€å¯ DMA1_Channel4 ä¸­æ–­ï¼Œä¼˜å…ˆçº§ä¸º 2 (NVIC)  
+  *         3. é…ç½®ä¼ è¾“æ–¹å‘ä¸ºå†…å­˜åˆ°å¤–è®¾ (CCR.DIR=1, bit4)  
+  *         4. è®¾ç½®é€šé“ä¼˜å…ˆçº§ä¸ºé«˜ (CCR.PL=10, bits12â€“13)  
+  *         5. å…³é—­å¾ªç¯æ¨¡å¼ (CCR.CIRC=0, bit5)  
+  *         6. é…ç½®åœ°å€é€’å¢æ¨¡å¼ï¼šå¤–è®¾åœ°å€ä¸é€’å¢ (CCR.PINC=0, bit6)ï¼Œ  
+  *            å­˜å‚¨å™¨åœ°å€é€’å¢ (CCR.MINC=1, bit7)  
+  *         7. å¤–è®¾ä¸å­˜å‚¨å™¨æ•°æ®å®½åº¦å‡ä¸º 8 ä½ (CCR.PSIZE=00, bits8â€“9;  
+  *            CCR.MSIZE=00, bits10â€“11)  
+  *         8. ä½¿èƒ½ä¼ è¾“å®Œæˆä¸­æ–­ (CCR.TCIE=1, bit1)  
   * @retval None
   */
 static void DMA1_Channel4_Configure(void)
 {
-    // ¿ªÆôÊ±ÖÓ
-    RCC->AHBENR |= (1UL << 0UL); // ¿ªÆôDMA1Ê±ÖÓ
-    // ÉèÖÃ²¢¿ªÆôÈ«¾ÖÖĞ¶Ï
+    // å¼€å¯æ—¶é’Ÿ
+    RCC->AHBENR |= (1UL << 0UL); // å¼€å¯DMA1æ—¶é’Ÿ
+    // è®¾ç½®å¹¶å¼€å¯å…¨å±€ä¸­æ–­
     NVIC_SetPriority(DMA1_Channel4_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),2, 0));
     NVIC_EnableIRQ(DMA1_Channel4_IRQn);
-    // Êı¾İ´«Êä·½Ïò
-    DMA1_Channel4->CCR &= ~(1UL << 14UL); // ÍâÉèµ½´æ´¢Æ÷Ä£Ê½
-    DMA1_Channel4->CCR |= (1UL << 4UL); // DIRÎ»ÉèÖÃ1£¨ÄÚ´æµ½ÍâÉè£©
-    // Í¨µÀÓÅÏÈ¼¶
-    DMA1_Channel4->CCR &= ~(3UL << 12UL); // Çå³ıPLÎ»
-    DMA1_Channel4->CCR |= (2UL << 12UL);  // PLÎ»ÉèÖÃ10£¬ÓÅÏÈ¼¶¸ß
-    // Ñ­»·Ä£Ê½
-    DMA1_Channel4->CCR &= ~(1UL << 5UL);  // Çå³ıCIRCÎ»£¬¹Ø±ÕÑ­»·Ä£Ê½
-    // ÔöÁ¿Ä£Ê½
-    DMA1_Channel4->CCR &= ~(1UL << 6UL);  // ÍâÉè´æ´¢µØÖ·²»µİÔö
-    DMA1_Channel4->CCR |= (1UL << 7UL);   // ´æ´¢Æ÷µØÖ·µİÔö
-    // Êı¾İ´óĞ¡
-    DMA1_Channel4->CCR &= ~(3UL << 8UL);  // ÍâÉèÊı¾İ¿í¶È8Î»£¬Çå³ıPSIZEÎ»£¬Ïàµ±ÓÚ00
-    DMA1_Channel4->CCR &= ~(3UL << 10UL); // ´æ´¢Æ÷Êı¾İ¿í¶È8Î»£¬Çå³ıMSIZEÎ»£¬Ïàµ±ÓÚ00
-    // ÖĞ¶Ï
-    DMA1_Channel4->CCR |= (1UL << 1UL);   // ¿ªÆô·¢ËÍÍê³ÉÖĞ¶Ï
+    // æ•°æ®ä¼ è¾“æ–¹å‘
+    DMA1_Channel4->CCR &= ~(1UL << 14UL); // å¤–è®¾åˆ°å­˜å‚¨å™¨æ¨¡å¼
+    DMA1_Channel4->CCR |= (1UL << 4UL); // DIRä½è®¾ç½®1ï¼ˆå†…å­˜åˆ°å¤–è®¾ï¼‰
+    // é€šé“ä¼˜å…ˆçº§
+    DMA1_Channel4->CCR &= ~(3UL << 12UL); // æ¸…é™¤PLä½
+    DMA1_Channel4->CCR |= (2UL << 12UL);  // PLä½è®¾ç½®10ï¼Œä¼˜å…ˆçº§é«˜
+    // å¾ªç¯æ¨¡å¼
+    DMA1_Channel4->CCR &= ~(1UL << 5UL);  // æ¸…é™¤CIRCä½ï¼Œå…³é—­å¾ªç¯æ¨¡å¼
+    // å¢é‡æ¨¡å¼
+    DMA1_Channel4->CCR &= ~(1UL << 6UL);  // å¤–è®¾å­˜å‚¨åœ°å€ä¸é€’å¢
+    DMA1_Channel4->CCR |= (1UL << 7UL);   // å­˜å‚¨å™¨åœ°å€é€’å¢
+    // æ•°æ®å¤§å°
+    DMA1_Channel4->CCR &= ~(3UL << 8UL);  // å¤–è®¾æ•°æ®å®½åº¦8ä½ï¼Œæ¸…é™¤PSIZEä½ï¼Œç›¸å½“äº00
+    DMA1_Channel4->CCR &= ~(3UL << 10UL); // å­˜å‚¨å™¨æ•°æ®å®½åº¦8ä½ï¼Œæ¸…é™¤MSIZEä½ï¼Œç›¸å½“äº00
+    // ä¸­æ–­
+    DMA1_Channel4->CCR |= (1UL << 1UL);   // å¼€å¯å‘é€å®Œæˆä¸­æ–­
 }
 
 /**
-  * @brief  USART1 ´íÎó´¦Àíº¯Êı
-  * @note   ±¾º¯ÊıÒÔ¼Ä´æÆ÷·½Ê½¼ì²é USART1 ×´Ì¬¼Ä´æÆ÷£¨SR£©ÖĞµÄ´íÎó±êÖ¾£º
-  *            - PE  (Î»0)£ºÆæÅ¼Ğ£Ñé´íÎó  
-  *            - FE  (Î»1)£ºÖ¡´íÎó  
-  *            - NE  (Î»2)£ºÔëÉù´íÎó  
-  *            - ORE (Î»3)£º½ÓÊÕ¹ıÔØ´íÎó  
-  *         ÈôÈÎÒ»´íÎó±êÖ¾±»ÖÃÎ»£¬ÔòÍ¨¹ıÒÀ´Î¶ÁÈ¡ SR ºÍ DR Çå³ıËùÓĞ´íÎó±êÖ¾¡£
-  * @retval 0 ÎŞ´íÎó  
-  * @retval 1 ¼ì²âµ½´íÎó²¢ÒÑÇå³ı
+  * @brief  USART1 é”™è¯¯å¤„ç†å‡½æ•°
+  * @note   æœ¬å‡½æ•°ä»¥å¯„å­˜å™¨æ–¹å¼æ£€æŸ¥ USART1 çŠ¶æ€å¯„å­˜å™¨ï¼ˆSRï¼‰ä¸­çš„é”™è¯¯æ ‡å¿—ï¼š
+  *            - PE  (ä½0)ï¼šå¥‡å¶æ ¡éªŒé”™è¯¯  
+  *            - FE  (ä½1)ï¼šå¸§é”™è¯¯  
+  *            - NE  (ä½2)ï¼šå™ªå£°é”™è¯¯  
+  *            - ORE (ä½3)ï¼šæ¥æ”¶è¿‡è½½é”™è¯¯  
+  *         è‹¥ä»»ä¸€é”™è¯¯æ ‡å¿—è¢«ç½®ä½ï¼Œåˆ™é€šè¿‡ä¾æ¬¡è¯»å– SR å’Œ DR æ¸…é™¤æ‰€æœ‰é”™è¯¯æ ‡å¿—ã€‚
+  * @retval 0 æ— é”™è¯¯  
+  * @retval 1 æ£€æµ‹åˆ°é”™è¯¯å¹¶å·²æ¸…é™¤
   */
 __STATIC_INLINE uint8_t USART1_Error_Handler(void)
 {
-    // ¼Ä´æÆ÷·½Ê½£º¼ì²é´íÎó±êÖ¾£¨PE¡¢FE¡¢NE¡¢ORE·Ö±ğÎ»0~3£©
+    // å¯„å­˜å™¨æ–¹å¼ï¼šæ£€æŸ¥é”™è¯¯æ ‡å¿—ï¼ˆPEã€FEã€NEã€OREåˆ†åˆ«ä½0~3ï¼‰
     if (USART1->SR & ((1UL << 0) | (1UL << 1) | (1UL << 2) | (1UL << 3))) {
-        // Çå³ı´íÎó±êÖ¾
+        // æ¸…é™¤é”™è¯¯æ ‡å¿—
         volatile uint32_t tmp = USART1->SR;
         tmp = USART1->DR;
         (void)tmp;
@@ -223,27 +223,27 @@ __STATIC_INLINE uint8_t USART1_Error_Handler(void)
 }
 
 /**
-  * @brief  DMA1 Í¨µÀ4 ´íÎó´¦Àíº¯Êı
-  * @note   ÒÔ¼Ä´æÆ÷·½Ê½¼ì²é DMA1 ISR ¼Ä´æÆ÷ÖĞµÄ´«Êä´íÎó±êÖ¾ TEIF4 (ISR bit15)£¬
-  *         Èô¼ì²âµ½´íÎó£¬ÔòÖ´ĞĞÒÔÏÂ²Ù×÷£º
-  *           - ÔÚ IFCR ¼Ä´æÆ÷ÖĞĞ´ 1 Çå³ı TEIF4 ±êÖ¾ (IFCR bit15)
-  *           - ½ûÓÃ DMA1 Í¨µÀ4£¨CCR.EN = 0£©
-  *           - Çå³ı USART1 CR3 ¼Ä´æÆ÷ÖĞµÄ DMAT Î»£¨bit7£©£¬Í£Ö¹ DMA ·¢ËÍÇëÇó
-  *           - ½«È«¾Ö±êÖ¾ tx_dma_busy ÇåÁã£¬ÔÊĞíÖØĞÂ·¢Æğ DMA ´«Êä
-  * @retval 0 ÎŞ´íÎó
-  * @retval 1 ¼ì²âµ½´«Êä´íÎó²¢ÒÑ´¦Àí
+  * @brief  DMA1 é€šé“4 é”™è¯¯å¤„ç†å‡½æ•°
+  * @note   ä»¥å¯„å­˜å™¨æ–¹å¼æ£€æŸ¥ DMA1 ISR å¯„å­˜å™¨ä¸­çš„ä¼ è¾“é”™è¯¯æ ‡å¿— TEIF4 (ISR bit15)ï¼Œ
+  *         è‹¥æ£€æµ‹åˆ°é”™è¯¯ï¼Œåˆ™æ‰§è¡Œä»¥ä¸‹æ“ä½œï¼š
+  *           - åœ¨ IFCR å¯„å­˜å™¨ä¸­å†™ 1 æ¸…é™¤ TEIF4 æ ‡å¿— (IFCR bit15)
+  *           - ç¦ç”¨ DMA1 é€šé“4ï¼ˆCCR.EN = 0ï¼‰
+  *           - æ¸…é™¤ USART1 CR3 å¯„å­˜å™¨ä¸­çš„ DMAT ä½ï¼ˆbit7ï¼‰ï¼Œåœæ­¢ DMA å‘é€è¯·æ±‚
+  *           - å°†å…¨å±€æ ‡å¿— tx_dma_busy æ¸…é›¶ï¼Œå…è®¸é‡æ–°å‘èµ· DMA ä¼ è¾“
+  * @retval 0 æ— é”™è¯¯
+  * @retval 1 æ£€æµ‹åˆ°ä¼ è¾“é”™è¯¯å¹¶å·²å¤„ç†
   */
 __STATIC_INLINE uint8_t DMA1_Channel4_Error_Handler(void)
 {
-    // ¼ì²é´«Êä´íÎó£¨TE£©±êÖ¾£¬¼ÙÉèTE¶ÔÓ¦Î»(1UL << 15)£¨Çë¸ù¾İ¾ßÌåĞ¾Æ¬²Î¿¼ÊÖ²áÈ·ÈÏ£©
+    // æ£€æŸ¥ä¼ è¾“é”™è¯¯ï¼ˆTEï¼‰æ ‡å¿—ï¼Œå‡è®¾TEå¯¹åº”ä½(1UL << 15)ï¼ˆè¯·æ ¹æ®å…·ä½“èŠ¯ç‰‡å‚è€ƒæ‰‹å†Œç¡®è®¤ï¼‰
     if (DMA1->ISR & (1UL << 15)) {
-        // Çå³ıTE´íÎó±êÖ¾
+        // æ¸…é™¤TEé”™è¯¯æ ‡å¿—
         DMA1->IFCR |= (1UL << 15);
-        // ½ûÓÃDMAÍ¨µÀ4
+        // ç¦ç”¨DMAé€šé“4
         DMA1_Channel4->CCR &= ~(1UL << 0);
-        // Çå³ıUSART1ÖĞDMATÎ»
+        // æ¸…é™¤USART1ä¸­DMATä½
         USART1->CR3 &= ~(1UL << 7);
-        // Çå³ı·¢ËÍ±êÖ¾£¡£¡
+        // æ¸…é™¤å‘é€æ ‡å¿—ï¼ï¼
         tx_dma_busy = 0;
         return 1;
     } else {
@@ -252,27 +252,27 @@ __STATIC_INLINE uint8_t DMA1_Channel4_Error_Handler(void)
 }
 
 /**
-  * @brief  DMA1 Í¨µÀ5 ´íÎó´¦Àíº¯Êı
-  * @note   ÒÔ¼Ä´æÆ÷·½Ê½¼ì²é DMA1 ISR ¼Ä´æÆ÷ÖĞµÄ´«Êä´íÎó±êÖ¾ TEIF5 (¼ÙÉèÎª bit19)£¬
-  *         Èô¼ì²âµ½´íÎó£¬Ôò°´ÒÔÏÂ²½Öè´¦Àí£º
-  *           1. ÔÚ IFCR ¼Ä´æÆ÷ÖĞĞ´ 1 Çå³ı TEIF5 ±êÖ¾ (IFCR bit19)
-  *           2. ½ûÓÃ DMA1 Í¨µÀ5£¨CCR.EN = 0£©
-  *           3. ÖØÖÃ´«Êä¼ÆÊı¼Ä´æÆ÷ CNDTR Îª RX_BUFFER_SIZE
-  *           4. ÖØĞÂÊ¹ÄÜ DMA1 Í¨µÀ5£¨CCR.EN = 1£©
-  * @retval 0 ÎŞ´íÎó
-  * @retval 1 ¼ì²âµ½´«Êä´íÎó²¢ÒÑ´¦Àí
+  * @brief  DMA1 é€šé“5 é”™è¯¯å¤„ç†å‡½æ•°
+  * @note   ä»¥å¯„å­˜å™¨æ–¹å¼æ£€æŸ¥ DMA1 ISR å¯„å­˜å™¨ä¸­çš„ä¼ è¾“é”™è¯¯æ ‡å¿— TEIF5 (å‡è®¾ä¸º bit19)ï¼Œ
+  *         è‹¥æ£€æµ‹åˆ°é”™è¯¯ï¼Œåˆ™æŒ‰ä»¥ä¸‹æ­¥éª¤å¤„ç†ï¼š
+  *           1. åœ¨ IFCR å¯„å­˜å™¨ä¸­å†™ 1 æ¸…é™¤ TEIF5 æ ‡å¿— (IFCR bit19)
+  *           2. ç¦ç”¨ DMA1 é€šé“5ï¼ˆCCR.EN = 0ï¼‰
+  *           3. é‡ç½®ä¼ è¾“è®¡æ•°å¯„å­˜å™¨ CNDTR ä¸º RX_BUFFER_SIZE
+  *           4. é‡æ–°ä½¿èƒ½ DMA1 é€šé“5ï¼ˆCCR.EN = 1ï¼‰
+  * @retval 0 æ— é”™è¯¯
+  * @retval 1 æ£€æµ‹åˆ°ä¼ è¾“é”™è¯¯å¹¶å·²å¤„ç†
   */
 __STATIC_INLINE uint8_t DMA1_Channel5_Error_Hanlder(void)
 {
-    // ¼ì²é´«Êä´íÎó£¨TE£©±êÖ¾£¬¼ÙÉèTE¶ÔÓ¦Î»(1UL << 19)£¨ÇëÈ·ÈÏ¾ßÌåÎ»£©
+    // æ£€æŸ¥ä¼ è¾“é”™è¯¯ï¼ˆTEï¼‰æ ‡å¿—ï¼Œå‡è®¾TEå¯¹åº”ä½(1UL << 19)ï¼ˆè¯·ç¡®è®¤å…·ä½“ä½ï¼‰
     if (DMA1->ISR & (1UL << 19)) {
-        // Çå³ı´íÎó±êÖ¾
+        // æ¸…é™¤é”™è¯¯æ ‡å¿—
         DMA1->IFCR |= (1UL << 19);
-        // ½ûÓÃDMAÍ¨µÀ5
+        // ç¦ç”¨DMAé€šé“5
         DMA1_Channel5->CCR &= ~(1UL << 0);
-        // ÖØÖÃ´«Êä¼ÆÊı
+        // é‡ç½®ä¼ è¾“è®¡æ•°
         DMA1_Channel5->CNDTR = RX_BUFFER_SIZE;
-        // ÖØĞÂÊ¹ÄÜDMAÍ¨µÀ5
+        // é‡æ–°ä½¿èƒ½DMAé€šé“5
         DMA1_Channel5->CCR |= 1UL;
         return 1;
     } else {
@@ -281,159 +281,159 @@ __STATIC_INLINE uint8_t DMA1_Channel5_Error_Hanlder(void)
 }
 
 /**
-  * @brief  USART1 TX DMA1_Channel4 ´«ÊäÍê³É/´íÎóÖĞ¶Ï´¦Àí
-  * @note   - ÏÈµ÷ÓÃ DMA1_Channel4_Error_Handler() ¼ì²é²¢´¦Àí´«Êä´íÎó  
-  *         - ÈôÎŞ´íÎóÇÒ¼ì²âµ½´«ÊäÍê³É (ISR.TCIF4, bit13)£¬Ôò£º  
-  *           1. ÔÚ IFCR ÖĞĞ´1Çå³ı TCIF4 ±êÖ¾ (IFCR bit13)  
-  *           2. ½ûÓÃ DMA Í¨µÀ4£¨CCR.EN = 0£©  
-  *           3. Çå³ı USART1 CR3 ÖĞµÄ DMAT Î» (bit7)£¬Í£Ö¹ DMA ·¢ËÍÇëÇó  
-  *           4. ½« tx_dma_busy ±êÖ¾ÖÃ 0£¬Í¨Öª·¢ËÍÒÑÍê³É  
+  * @brief  USART1 TX DMA1_Channel4 ä¼ è¾“å®Œæˆ/é”™è¯¯ä¸­æ–­å¤„ç†
+  * @note   - å…ˆè°ƒç”¨ DMA1_Channel4_Error_Handler() æ£€æŸ¥å¹¶å¤„ç†ä¼ è¾“é”™è¯¯  
+  *         - è‹¥æ— é”™è¯¯ä¸”æ£€æµ‹åˆ°ä¼ è¾“å®Œæˆ (ISR.TCIF4, bit13)ï¼Œåˆ™ï¼š  
+  *           1. åœ¨ IFCR ä¸­å†™1æ¸…é™¤ TCIF4 æ ‡å¿— (IFCR bit13)  
+  *           2. ç¦ç”¨ DMA é€šé“4ï¼ˆCCR.EN = 0ï¼‰  
+  *           3. æ¸…é™¤ USART1 CR3 ä¸­çš„ DMAT ä½ (bit7)ï¼Œåœæ­¢ DMA å‘é€è¯·æ±‚  
+  *           4. å°† tx_dma_busy æ ‡å¿—ç½® 0ï¼Œé€šçŸ¥å‘é€å·²å®Œæˆ  
   * @retval None
   */
 __STATIC_INLINE void USART1_TX_DMA1_Channel4_Interrupt_Handler(void)
 {
-    if (DMA1_Channel4_Error_Handler()) { // ¼à¿Ø´«Êä´íÎó
+    if (DMA1_Channel4_Error_Handler()) { // ç›‘æ§ä¼ è¾“é”™è¯¯
         dma1Channel4Error++;
     } else if (DMA1->ISR & (1UL << 13)) {
-        // Çå³ıDMA´«ÊäÍê³É±êÖ¾£ºÔÚIFCR¼Ä´æÆ÷ÖĞĞ´1Çå³ı¶ÔÓ¦±êÖ¾
+        // æ¸…é™¤DMAä¼ è¾“å®Œæˆæ ‡å¿—ï¼šåœ¨IFCRå¯„å­˜å™¨ä¸­å†™1æ¸…é™¤å¯¹åº”æ ‡å¿—
         DMA1->IFCR |= (1UL << 13);
-        // ½ûÓÃDMAÍ¨µÀ4£¨Çå³ıCCR¼Ä´æÆ÷µÄENÎ»£¬Î»0£©
+        // ç¦ç”¨DMAé€šé“4ï¼ˆæ¸…é™¤CCRå¯„å­˜å™¨çš„ENä½ï¼Œä½0ï¼‰
         DMA1_Channel4->CCR &= ~(1UL << 0);
-        // Çå³ıUSART1ÖĞDMATÎ»£¬¹Ø±ÕDMA·¢ËÍÇëÇó£¨CR3¼Ä´æÆ÷µÄÎ»7£©
+        // æ¸…é™¤USART1ä¸­DMATä½ï¼Œå…³é—­DMAå‘é€è¯·æ±‚ï¼ˆCR3å¯„å­˜å™¨çš„ä½7ï¼‰
         USART1->CR3 &= ~(1UL << 7);
-        // ±ê¼ÇDMA·¢ËÍÍê³É
+        // æ ‡è®°DMAå‘é€å®Œæˆ
         tx_dma_busy = 0;
     }
 }
 
 /**
-  * @brief  ½«DMA½ÓÊÕµ½µÄĞÂÊı¾İ¿½±´µ½ringbufferÖĞ£¨ÊÊÓÃÓÚÑ­»·»º³åDMA·½Ê½£©
+  * @brief  å°†DMAæ¥æ”¶åˆ°çš„æ–°æ•°æ®æ‹·è´åˆ°ringbufferä¸­ï¼ˆé€‚ç”¨äºå¾ªç¯ç¼“å†²DMAæ–¹å¼ï¼‰
   * 
-  * ±¾º¯ÊıÓÃÓÚDMA½ÓÊÕ»·ĞÎ»º³åÇøµÄÊı¾İÍ¬²½£¬½«DMAĞÂ½ÓÊÕµ½µÄÊı¾İ´Órx_bufferÖĞ¿½±´µ½Èí¼şringbuffer¡£
-  * Ö§³Ö´¦ÀíDMA»º³åÇøÖ¸Õë»·ÈÆµÄÇé¿ö£¬±£Ö¤Êı¾İ²»¶ªÊ§ÇÒË³ĞòÕıÈ·¡£
+  * æœ¬å‡½æ•°ç”¨äºDMAæ¥æ”¶ç¯å½¢ç¼“å†²åŒºçš„æ•°æ®åŒæ­¥ï¼Œå°†DMAæ–°æ¥æ”¶åˆ°çš„æ•°æ®ä»rx_bufferä¸­æ‹·è´åˆ°è½¯ä»¶ringbufferã€‚
+  * æ”¯æŒå¤„ç†DMAç¼“å†²åŒºæŒ‡é’ˆç¯ç»•çš„æƒ…å†µï¼Œä¿è¯æ•°æ®ä¸ä¸¢å¤±ä¸”é¡ºåºæ­£ç¡®ã€‚
   * 
   * @note
-  * - ±ØĞëÖÜÆÚĞÔÔÚDMAÏà¹ØÖĞ¶Ï£¨Èç¿ÕÏĞÖĞ¶Ï/¶¨Ê±µ÷¶È£©ÖĞµ÷ÓÃ±¾º¯Êı£¬·ñÔòÊı¾İ»á±»ĞÂÊı¾İ¸²¸Ç¶ªÊ§¡£
-  * - Í¨¹ı`LL_DMA_GetDataLength()`»ñÈ¡µ±Ç°DMAÊ£Óà´«ÊäÁ¿£¬·´ÍÆ³öµ±Ç°Ó²¼şĞ´Ö¸Õë¡£
-  * - g_DMARxLastPosĞèÈ«¾Ö±£´æÉÏÒ»´ÎÒÑ¶ÁÎ»ÖÃ£¬±ÜÃâÖØ¸´´¦Àí¡£
+  * - å¿…é¡»å‘¨æœŸæ€§åœ¨DMAç›¸å…³ä¸­æ–­ï¼ˆå¦‚ç©ºé—²ä¸­æ–­/å®šæ—¶è°ƒåº¦ï¼‰ä¸­è°ƒç”¨æœ¬å‡½æ•°ï¼Œå¦åˆ™æ•°æ®ä¼šè¢«æ–°æ•°æ®è¦†ç›–ä¸¢å¤±ã€‚
+  * - é€šè¿‡`LL_DMA_GetDataLength()`è·å–å½“å‰DMAå‰©ä½™ä¼ è¾“é‡ï¼Œåæ¨å‡ºå½“å‰ç¡¬ä»¶å†™æŒ‡é’ˆã€‚
+  * - g_DMARxLastPoséœ€å…¨å±€ä¿å­˜ä¸Šä¸€æ¬¡å·²è¯»ä½ç½®ï¼Œé¿å…é‡å¤å¤„ç†ã€‚
   *
-  * @par ×¢ÒâÊÂÏî
-  * - Èô`curr_pos < last_pos`£¬ËµÃ÷DMAĞ´Ö¸ÕëÒÑ»·ÈÆ£¬ĞèÒª·ÖÁ½¶Î·Ö±ğ¿½±´Êı¾İ¡£
-  * - ±¾º¯Êı½ö¸ºÔğÊı¾İÍ¬²½£¬²»Éæ¼°DMAÊ¹ÄÜ/½ûÓÃ¼°ÖĞ¶Ï±êÖ¾´¦Àí¡£
+  * @par æ³¨æ„äº‹é¡¹
+  * - è‹¥`curr_pos < last_pos`ï¼Œè¯´æ˜DMAå†™æŒ‡é’ˆå·²ç¯ç»•ï¼Œéœ€è¦åˆ†ä¸¤æ®µåˆ†åˆ«æ‹·è´æ•°æ®ã€‚
+  * - æœ¬å‡½æ•°ä»…è´Ÿè´£æ•°æ®åŒæ­¥ï¼Œä¸æ¶‰åŠDMAä½¿èƒ½/ç¦ç”¨åŠä¸­æ–­æ ‡å¿—å¤„ç†ã€‚
   */
 __STATIC_INLINE void USART1_DMA_RX_Copy(void)
 {
     uint16_t bufsize = sizeof(rx_buffer);
-    uint16_t curr_pos = bufsize - DMA1_Channel5->CNDTR; // ¼ÆËãµ±Ç°µÄĞ´Ö¸ÕëÎ»ÖÃ
-    uint16_t last_pos = g_DMARxLastPos; // ÉÏÒ»´Î¶ÁÖ¸ÕëÎ»ÖÃ
+    uint16_t curr_pos = bufsize - DMA1_Channel5->CNDTR; // è®¡ç®—å½“å‰çš„å†™æŒ‡é’ˆä½ç½®
+    uint16_t last_pos = g_DMARxLastPos; // ä¸Šä¸€æ¬¡è¯»æŒ‡é’ˆä½ç½®
     
     if (curr_pos != last_pos) {
         if (curr_pos > last_pos) {
-            // ÆÕÍ¨Çé¿ö£¬Î´»·ÈÆ
+            // æ™®é€šæƒ…å†µï¼Œæœªç¯ç»•
             USART1_Put_Data_Into_Ringbuffer((uint8_t*)rx_buffer + last_pos, curr_pos - last_pos);
             g_Usart1_RXCount += (curr_pos - last_pos);
         } else {
-            // »·ÈÆ£¬·ÖÁ½¶Î´¦Àí
+            // ç¯ç»•ï¼Œåˆ†ä¸¤æ®µå¤„ç†
             USART1_Put_Data_Into_Ringbuffer((uint8_t*)rx_buffer + last_pos, bufsize - last_pos);
             USART1_Put_Data_Into_Ringbuffer((uint8_t*)rx_buffer, curr_pos);
             g_Usart1_RXCount += (bufsize - last_pos) + curr_pos;
         }
     }
-    g_DMARxLastPos = curr_pos; // ¸üĞÂ¶ÁÖ¸ÕëÎ»ÖÃ
+    g_DMARxLastPos = curr_pos; // æ›´æ–°è¯»æŒ‡é’ˆä½ç½®
 }
 
 /**
-  * @brief  USART1 RX DMA1_Channel5 °ë´«Êä/´«ÊäÍê³É/´íÎóÖĞ¶Ï´¦Àí
-  * @note   - ÏÈµ÷ÓÃ DMA1_Channel5_Error_Hanlder() ¼ì²é²¢´¦Àí´«Êä´íÎó  
-  *         - Èô¼ì²âµ½°ë´«Êä (ISR.HTIF5, bit18)£º  
-  *           1. ÔÚ IFCR ÖĞĞ´1Çå³ı HTIF5 ±êÖ¾ (IFCR bit18)  
-  *           2. ÀÛ¼Ó RX_BUFFER_SIZE/2 ×Ö½Úµ½ g_Usart1_RXCount  
-  *           3. ½«»º³åÇøÇ°°ëÇøÊı¾İĞ´Èë ringbuffer  
-  *         - Èô¼ì²âµ½´«ÊäÍê³É (ISR.TCIF5, bit17)£º  
-  *           1. ÔÚ IFCR ÖĞĞ´1Çå³ı TCIF5 ±êÖ¾ (IFCR bit17)  
-  *           2. ÀÛ¼Ó RX_BUFFER_SIZE/2 ×Ö½Úµ½ g_Usart1_RXCount  
-  *           3. ½«»º³åÇøºó°ëÇøÊı¾İĞ´Èë ringbuffer  
+  * @brief  USART1 RX DMA1_Channel5 åŠä¼ è¾“/ä¼ è¾“å®Œæˆ/é”™è¯¯ä¸­æ–­å¤„ç†
+  * @note   - å…ˆè°ƒç”¨ DMA1_Channel5_Error_Hanlder() æ£€æŸ¥å¹¶å¤„ç†ä¼ è¾“é”™è¯¯  
+  *         - è‹¥æ£€æµ‹åˆ°åŠä¼ è¾“ (ISR.HTIF5, bit18)ï¼š  
+  *           1. åœ¨ IFCR ä¸­å†™1æ¸…é™¤ HTIF5 æ ‡å¿— (IFCR bit18)  
+  *           2. ç´¯åŠ  RX_BUFFER_SIZE/2 å­—èŠ‚åˆ° g_Usart1_RXCount  
+  *           3. å°†ç¼“å†²åŒºå‰åŠåŒºæ•°æ®å†™å…¥ ringbuffer  
+  *         - è‹¥æ£€æµ‹åˆ°ä¼ è¾“å®Œæˆ (ISR.TCIF5, bit17)ï¼š  
+  *           1. åœ¨ IFCR ä¸­å†™1æ¸…é™¤ TCIF5 æ ‡å¿— (IFCR bit17)  
+  *           2. ç´¯åŠ  RX_BUFFER_SIZE/2 å­—èŠ‚åˆ° g_Usart1_RXCount  
+  *           3. å°†ç¼“å†²åŒºååŠåŒºæ•°æ®å†™å…¥ ringbuffer  
   * @retval None
   */
 __STATIC_INLINE void USART1_RX_DMA1_Channel5_Interrupt_Handler(void)
 {
-    if (DMA1_Channel5_Error_Hanlder()) { // ¼à¿Ø´«Êä´íÎó
+    if (DMA1_Channel5_Error_Hanlder()) { // ç›‘æ§ä¼ è¾“é”™è¯¯
         dma1Channel5Error++;
-    } else if (DMA1->ISR & (1UL << 18)) { // °ë´«ÊäÖĞ¶Ï
-        DMA1->IFCR |= (1UL << 18);        // Çå³ı±êÖ¾
-        USART1_DMA_RX_Copy();             // ½«DMA½ÓÊÕµÄÊı¾İ·ÅÈëringbuffer
-    } else if (DMA1->ISR & (1UL << 17)) { // ´«ÊäÍê³ÉÖĞ¶Ï
-        DMA1->IFCR |= (1UL << 17);        // Çå³ı±êÖ¾
-        USART1_DMA_RX_Copy();             // ½«DMA½ÓÊÕµÄÊı¾İ·ÅÈëringbuffer
+    } else if (DMA1->ISR & (1UL << 18)) { // åŠä¼ è¾“ä¸­æ–­
+        DMA1->IFCR |= (1UL << 18);        // æ¸…é™¤æ ‡å¿—
+        USART1_DMA_RX_Copy();             // å°†DMAæ¥æ”¶çš„æ•°æ®æ”¾å…¥ringbuffer
+    } else if (DMA1->ISR & (1UL << 17)) { // ä¼ è¾“å®Œæˆä¸­æ–­
+        DMA1->IFCR |= (1UL << 17);        // æ¸…é™¤æ ‡å¿—
+        USART1_DMA_RX_Copy();             // å°†DMAæ¥æ”¶çš„æ•°æ®æ”¾å…¥ringbuffer
     }
 }
 
 /**
-  * @brief  USART1 IDLE ÖĞ¶Ï¼°´íÎóÖĞ¶Ï´¦Àí
-  * @note   - µ÷ÓÃ USART1_Error_Handler() ¼ì²â²¢Çå³ı PE/FE/NE/ORE ´íÎó  
-  *         - Èô¼ì²âµ½ IDLE (SR.IDLE, bit4)£º  
-  *           1. ¶Á SR¡¢DR Çå³ı IDLE ±êÖ¾  
-  *           2. ½ûÓÃ DMA1_Channel5£¨CCR.EN = 0£©£¬»ñÈ¡ CNDTR Ê£Óà×Ö½ÚÊı  
-  *           3. ¼ÆËã±¾´Î½ÓÊÕÊı¾İ³¤¶È£¬²¢Ğ´Èë ringbuffer  
-  *           4. ÖØÖÃ CNDTR Îª RX_BUFFER_SIZE ²¢ÖØĞÂÊ¹ÄÜÍ¨µÀ  
+  * @brief  USART1 IDLE ä¸­æ–­åŠé”™è¯¯ä¸­æ–­å¤„ç†
+  * @note   - è°ƒç”¨ USART1_Error_Handler() æ£€æµ‹å¹¶æ¸…é™¤ PE/FE/NE/ORE é”™è¯¯  
+  *         - è‹¥æ£€æµ‹åˆ° IDLE (SR.IDLE, bit4)ï¼š  
+  *           1. è¯» SRã€DR æ¸…é™¤ IDLE æ ‡å¿—  
+  *           2. ç¦ç”¨ DMA1_Channel5ï¼ˆCCR.EN = 0ï¼‰ï¼Œè·å– CNDTR å‰©ä½™å­—èŠ‚æ•°  
+  *           3. è®¡ç®—æœ¬æ¬¡æ¥æ”¶æ•°æ®é•¿åº¦ï¼Œå¹¶å†™å…¥ ringbuffer  
+  *           4. é‡ç½® CNDTR ä¸º RX_BUFFER_SIZE å¹¶é‡æ–°ä½¿èƒ½é€šé“  
   * @retval None
   */
 __STATIC_INLINE void USART1_RX_Interrupt_Handler(void)
 {
-    if (USART1_Error_Handler()) { // ¼à¿Ø´®¿Ú´íÎó
-        usart1Error++; // ÓĞ´íÎó£¬¼ÇÂ¼ÊÂ¼ş
-    } else if (USART1->SR & (1UL << 4)) { // ¼ì²éUSART1 SR¼Ä´æÆ÷µÄIDLE±êÖ¾£¨bit4£©
+    if (USART1_Error_Handler()) { // ç›‘æ§ä¸²å£é”™è¯¯
+        usart1Error++; // æœ‰é”™è¯¯ï¼Œè®°å½•äº‹ä»¶
+    } else if (USART1->SR & (1UL << 4)) { // æ£€æŸ¥USART1 SRå¯„å­˜å™¨çš„IDLEæ ‡å¿—ï¼ˆbit4ï¼‰
         uint32_t tmp;
-        // Çå³ıIDLE±êÖ¾£ºÏÈ¶ÁSRÔÙ¶ÁDR
+        // æ¸…é™¤IDLEæ ‡å¿—ï¼šå…ˆè¯»SRå†è¯»DR
         tmp = USART1->SR;
         tmp = USART1->DR;
         (void)tmp;
-        USART1_DMA_RX_Copy();  // ½«DMA½ÓÊÕµÄÊı¾İ·ÅÈëringbuffer
+        USART1_DMA_RX_Copy();  // å°†DMAæ¥æ”¶çš„æ•°æ®æ”¾å…¥ringbuffer
     }
 }
 
 /**
-  * @brief  Ê¹ÓÃDMA·¢ËÍ×Ö·û´®£¬²ÉÓÃUSART1_TX¶ÔÓ¦µÄDMA1Í¨µÀ4
-  * @param  data: ´ı·¢ËÍÊı¾İÖ¸Õë£¨±ØĞëÖ¸Ïò¶ÀÁ¢·¢ËÍ»º³åÇø£©
-  * @param  len:  ´ı·¢ËÍÊı¾İ³¤¶È
+  * @brief  ä½¿ç”¨DMAå‘é€å­—ç¬¦ä¸²ï¼Œé‡‡ç”¨USART1_TXå¯¹åº”çš„DMA1é€šé“4
+  * @param  data: å¾…å‘é€æ•°æ®æŒ‡é’ˆï¼ˆå¿…é¡»æŒ‡å‘ç‹¬ç«‹å‘é€ç¼“å†²åŒºï¼‰
+  * @param  len:  å¾…å‘é€æ•°æ®é•¿åº¦
   * @retval None
   */
 void USART1_SendString_DMA(const uint8_t *data, uint16_t len)
 {
-    if (len == 0 || len > TX_BUFFER_SIZE) { // ²»ÄÜÈÃDMA·¢ËÍ0¸ö×Ö½Ú£¬»áµ¼ÖÂÃ»°ì·¨½øÈë·¢ËÍÍê³ÉÖĞ¶Ï£¬È»ºó¿¨ËÀÕâ¸öº¯Êı¡£
+    if (len == 0 || len > TX_BUFFER_SIZE) { // ä¸èƒ½è®©DMAå‘é€0ä¸ªå­—èŠ‚ï¼Œä¼šå¯¼è‡´æ²¡åŠæ³•è¿›å…¥å‘é€å®Œæˆä¸­æ–­ï¼Œç„¶åå¡æ­»è¿™ä¸ªå‡½æ•°ã€‚
         return;
     }
-    // µÈ´ıÉÏÒ»´ÎDMA´«ÊäÍê³É£¨Ò²¿ÉÒÔÌí¼Ó³¬Ê±»úÖÆ£©
+    // ç­‰å¾…ä¸Šä¸€æ¬¡DMAä¼ è¾“å®Œæˆï¼ˆä¹Ÿå¯ä»¥æ·»åŠ è¶…æ—¶æœºåˆ¶ï¼‰
     while(tx_dma_busy);
-    tx_dma_busy = 1; // ±ê¼ÇDMAÕıÔÚ·¢ËÍ
+    tx_dma_busy = 1; // æ ‡è®°DMAæ­£åœ¨å‘é€
     
-    // Èç¹ûDMAÍ¨µÀ4ÕıÔÚÊ¹ÄÜ£¬ÔòÏÈ½ûÓÃÒÔ±ãÖØĞÂÅäÖÃ
-    if(DMA1_Channel4->CCR & 1UL) { // ¼ì²éENÎ»£¨bit0£©ÊÇ·ñÖÃÎ»
-        DMA1_Channel4->CCR &= ~1UL;  // ½ûÓÃDMAÍ¨µÀ4£¨Çå³ıENÎ»£©
-        while(DMA1_Channel4->CCR & 1UL); // µÈ´ıDMAÍ¨µÀ4ÍêÈ«¹Ø±Õ
+    // å¦‚æœDMAé€šé“4æ­£åœ¨ä½¿èƒ½ï¼Œåˆ™å…ˆç¦ç”¨ä»¥ä¾¿é‡æ–°é…ç½®
+    if(DMA1_Channel4->CCR & 1UL) { // æ£€æŸ¥ENä½ï¼ˆbit0ï¼‰æ˜¯å¦ç½®ä½
+        DMA1_Channel4->CCR &= ~1UL;  // ç¦ç”¨DMAé€šé“4ï¼ˆæ¸…é™¤ENä½ï¼‰
+        while(DMA1_Channel4->CCR & 1UL); // ç­‰å¾…DMAé€šé“4å®Œå…¨å…³é—­
     }
-    // ÅäÖÃDMAÍ¨µÀ4£ºÄÚ´æµØÖ·¡¢ÍâÉèµØÖ·¼°Êı¾İ´«Êä³¤¶È
-    DMA1_Channel4->CMAR  = (uint32_t)data;         // ÅäÖÃÄÚ´æµØÖ·
-    DMA1_Channel4->CPAR  = (uint32_t)&USART1->DR;  // ÅäÖÃÍâÉèµØÖ·
-    DMA1_Channel4->CNDTR = len;                    // ÅäÖÃ´«ÊäÊı¾İ³¤¶È
-    // ¿ªÆôUSART1µÄDMA·¢ËÍÇëÇó£ºCR3ÖĞDMAT£¨µÚ7Î»£©ÖÃ1
+    // é…ç½®DMAé€šé“4ï¼šå†…å­˜åœ°å€ã€å¤–è®¾åœ°å€åŠæ•°æ®ä¼ è¾“é•¿åº¦
+    DMA1_Channel4->CMAR  = (uint32_t)data;         // é…ç½®å†…å­˜åœ°å€
+    DMA1_Channel4->CPAR  = (uint32_t)&USART1->DR;  // é…ç½®å¤–è®¾åœ°å€
+    DMA1_Channel4->CNDTR = len;                    // é…ç½®ä¼ è¾“æ•°æ®é•¿åº¦
+    // å¼€å¯USART1çš„DMAå‘é€è¯·æ±‚ï¼šCR3ä¸­DMATï¼ˆç¬¬7ä½ï¼‰ç½®1
     USART1->CR3 |= (1UL << 7UL);
-    // Æô¶¯DMAÍ¨µÀ4£ºÉèÖÃENÎ»Æô¶¯DMA´«Êä
+    // å¯åŠ¨DMAé€šé“4ï¼šè®¾ç½®ENä½å¯åŠ¨DMAä¼ è¾“
     DMA1_Channel4->CCR |= 1UL;
 }
 
 /**
-  * @brief   ½«Êı¾İĞ´Èë USART1 ·¢ËÍ ringbuffer ÖĞ
-  * @param[in] data Ö¸ÏòÒªĞ´ÈëµÄ´ı·¢ËÍÊı¾İ»º³åÇø
-  * @param[in] len  ÒªĞ´ÈëµÄÊı¾İ³¤¶È£¨µ¥Î»£º×Ö½Ú£©
-  * @retval  0 Êı¾İ³É¹¦Ğ´Èë£¬ÎŞÊı¾İ¶ªÆú
-  * @retval  1 ringbuffer ¿Õ¼ä²»×ã£¬¶ªÆú²¿·Ö¾ÉÊı¾İÒÔÈİÄÉĞÂÊı¾İ
-  * @retval  2 Êı¾İ³¤¶È³¬¹ı ringbuffer ×ÜÈİÁ¿£¬½ö±£Áô×îºó TX_BUFFER_SIZE ×Ö½Ú
-  * @retval  3 ¿ÕÊı¾İÖ¸Õë
+  * @brief   å°†æ•°æ®å†™å…¥ USART1 å‘é€ ringbuffer ä¸­
+  * @param[in] data æŒ‡å‘è¦å†™å…¥çš„å¾…å‘é€æ•°æ®ç¼“å†²åŒº
+  * @param[in] len  è¦å†™å…¥çš„æ•°æ®é•¿åº¦ï¼ˆå•ä½ï¼šå­—èŠ‚ï¼‰
+  * @retval  0 æ•°æ®æˆåŠŸå†™å…¥ï¼Œæ— æ•°æ®ä¸¢å¼ƒ
+  * @retval  1 ringbuffer ç©ºé—´ä¸è¶³ï¼Œä¸¢å¼ƒéƒ¨åˆ†æ—§æ•°æ®ä»¥å®¹çº³æ–°æ•°æ®
+  * @retval  2 æ•°æ®é•¿åº¦è¶…è¿‡ ringbuffer æ€»å®¹é‡ï¼Œä»…ä¿ç•™æœ€å TX_BUFFER_SIZE å­—èŠ‚
+  * @retval  3 ç©ºæ•°æ®æŒ‡é’ˆ
   * @note
-  *   - Ê¹ÓÃ lwrb ¿â²Ù×÷·¢ËÍ ringbuffer£¨g_Usart1TxRBHandler£©
-  *   - Èô len > TX_BUFFER_SIZE£¬»á½Ø¶ÏÎª×îºó TX_BUFFER_SIZE ×Ö½Ú
-  *   - Èô¿Õ¼ä²»×ã£¬½«µ÷ÓÃ lwrb_skip() ¶ªÆú¾ÉÊı¾İ
+  *   - ä½¿ç”¨ lwrb åº“æ“ä½œå‘é€ ringbufferï¼ˆg_Usart1TxRBHandlerï¼‰
+  *   - è‹¥ len > TX_BUFFER_SIZEï¼Œä¼šæˆªæ–­ä¸ºæœ€å TX_BUFFER_SIZE å­—èŠ‚
+  *   - è‹¥ç©ºé—´ä¸è¶³ï¼Œå°†è°ƒç”¨ lwrb_skip() ä¸¢å¼ƒæ—§æ•°æ®
   */
 uint8_t USART1_Put_TxData_To_Ringbuffer(const void* data, uint16_t len)
 {
@@ -443,14 +443,14 @@ uint8_t USART1_Put_TxData_To_Ringbuffer(const void* data, uint16_t len)
     }
 
     lwrb_sz_t capacity  = TX_BUFFER_SIZE;
-    lwrb_sz_t freeSpace = lwrb_get_free((lwrb_t*)&g_Usart1TxRBHandler); // »ñÈ¡Ê£Óà¿Õ¼ä
+    lwrb_sz_t freeSpace = lwrb_get_free((lwrb_t*)&g_Usart1TxRBHandler); // è·å–å‰©ä½™ç©ºé—´
 
     if (len < capacity) {
         if (len <= freeSpace) {
-            // Ö±½ÓĞ´Èë
+            // ç›´æ¥å†™å…¥
             lwrb_write((lwrb_t*)&g_Usart1TxRBHandler, data, len);
         } else {
-            // ¿Õ¼ä²»×ã£¬¶ªÆú¾ÉÊı¾İ
+            // ç©ºé—´ä¸è¶³ï¼Œä¸¢å¼ƒæ—§æ•°æ®
             lwrb_sz_t used     = lwrb_get_full((lwrb_t*)&g_Usart1TxRBHandler);
             lwrb_sz_t skip_len = len - freeSpace;
             if (skip_len > used) {
@@ -461,14 +461,14 @@ uint8_t USART1_Put_TxData_To_Ringbuffer(const void* data, uint16_t len)
             ret = 1;
         }
     } else if (len == capacity) {
-        // ¸ÕºÃµÈÓÚÈİÁ¿
+        // åˆšå¥½ç­‰äºå®¹é‡
         if (freeSpace < capacity) {
             lwrb_reset((lwrb_t*)&g_Usart1TxRBHandler);
             ret = 1;
         }
         lwrb_write((lwrb_t*)&g_Usart1TxRBHandler, data, len);
     } else {
-        // len > ÈİÁ¿£¬½ö±£Áô×îºó capacity ×Ö½Ú
+        // len > å®¹é‡ï¼Œä»…ä¿ç•™æœ€å capacity å­—èŠ‚
         const uint8_t* ptr = (const uint8_t*)data + (len - capacity);
         lwrb_reset((lwrb_t*)&g_Usart1TxRBHandler);
         lwrb_write((lwrb_t*)&g_Usart1TxRBHandler, ptr, capacity);
@@ -480,124 +480,124 @@ uint8_t USART1_Put_TxData_To_Ringbuffer(const void* data, uint16_t len)
 
 void USART1_Module_Run(void)
 {
-    /* 1. ½ÓÊÕÊı¾İ´¦Àí£¨Ê¾Àı£© */
+    /* 1. æ¥æ”¶æ•°æ®å¤„ç†ï¼ˆç¤ºä¾‹ï¼‰ */
     if (lwrb_get_full((lwrb_t*)&g_Usart1RxRBHandler)) {
-        // TODO: µ÷ÓÃÄãµÄ½ÓÊÕ´¦Àíº¯Êı£¬±ÈÈç£º
+        // TODO: è°ƒç”¨ä½ çš„æ¥æ”¶å¤„ç†å‡½æ•°ï¼Œæ¯”å¦‚ï¼š
         // Process_Usart1_RxData();
     }
     
-    /* 2. ·¢ËÍÊı¾İ£ºÓĞÊı¾İ & DMA ¿ÕÏĞ */
+    /* 2. å‘é€æ•°æ®ï¼šæœ‰æ•°æ® & DMA ç©ºé—² */
     uint16_t available = lwrb_get_full((lwrb_t*)&g_Usart1TxRBHandler);
     if (available && 0x00 == USART1_Get_TX_DMA_Busy()) {
-        uint16_t len = (available > TX_BUFFER_SIZE) ? TX_BUFFER_SIZE : (uint16_t)available; // ¼ÆËã´ı·¢³¤¶È
-        lwrb_read((lwrb_t*)&g_Usart1TxRBHandler, (uint8_t*)tx_buffer, len); // ´Ó»·ĞÎ»º³åÇø¶ÁÈ¡µ½ DMA »º³åÇø
-        g_Usart1_TXCount += len; // Í³¼Æ·¢ËÍ×ÜÊı
-        USART1_SendString_DMA((uint8_t*)tx_buffer, len); // ·¢Æğ DMA ·¢ËÍ
+        uint16_t len = (available > TX_BUFFER_SIZE) ? TX_BUFFER_SIZE : (uint16_t)available; // è®¡ç®—å¾…å‘é•¿åº¦
+        lwrb_read((lwrb_t*)&g_Usart1TxRBHandler, (uint8_t*)tx_buffer, len); // ä»ç¯å½¢ç¼“å†²åŒºè¯»å–åˆ° DMA ç¼“å†²åŒº
+        g_Usart1_TXCount += len; // ç»Ÿè®¡å‘é€æ€»æ•°
+        USART1_SendString_DMA((uint8_t*)tx_buffer, len); // å‘èµ· DMA å‘é€
     }
 }
 
 /**
-  * @brief  ÅäÖÃ USART1 ÍâÉè£¬°üÀ¨Ê±ÖÓ¡¢GPIO¡¢´®¿Ú²ÎÊı¡¢ÖĞ¶ÏÓë DMA
-  * @note   ±¾º¯Êı°´ÒÔÏÂ²½ÖèÍê³É USART1 µÄ³õÊ¼»¯£º
-  *         1. ³õÊ¼»¯ÊÕ·¢»·ĞÎ»º³åÇø£¨lwrb£©  
-  *         2. Ê¹ÄÜ USART1 Óë GPIOA ÍâÉèÊ±ÖÓ  
-  *         3. ÅäÖÃ PA9£¨TX£©Îª 10MHz ¸´ÓÃÍÆÍìÊä³ö£¬PA10£¨RX£©Îª¸¡¿ÕÊäÈë  
-  *         4. ÅäÖÃ USART1 È«¾ÖÖĞ¶Ï£¬ÓÅÏÈ¼¶Îª 0  
-  *         5. ÉèÖÃ²¨ÌØÂÊ£º72MHz PCLK2£¬¹ı²ÉÑù16£¬BRR=39.0625  
-  *         6. ÅäÖÃÊı¾İ¸ñÊ½£º8 Î»Êı¾İ¡¢1 ¸öÍ£Ö¹Î»¡¢ÎŞĞ£Ñé  
-  *         7. Ê¹ÄÜ·¢ËÍ£¨TE£©Óë½ÓÊÕ£¨RE£©¹¦ÄÜ  
-  *         8. ¹Ø±ÕÓ²¼şÁ÷¿Ø¡¢LIN¡¢Ê±ÖÓÊä³ö¡¢ÖÇÄÜ¿¨¡¢IrDA¡¢°ëË«¹¤Ä£Ê½  
-  *         9. Ê¹ÄÜ¿ÕÏĞÖĞ¶Ï£¨IDLEIE£©  
-  *        10. Ê¹ÄÜ DMA ½ÓÊÕÇëÇó£¨DMAR£©£¬²¢µ÷ÓÃ DMA1_Channel5/4 ³õÊ¼»¯º¯Êı  
-  *        11. ×îºóÊ¹ÄÜ USART£¨UE£©  
+  * @brief  é…ç½® USART1 å¤–è®¾ï¼ŒåŒ…æ‹¬æ—¶é’Ÿã€GPIOã€ä¸²å£å‚æ•°ã€ä¸­æ–­ä¸ DMA
+  * @note   æœ¬å‡½æ•°æŒ‰ä»¥ä¸‹æ­¥éª¤å®Œæˆ USART1 çš„åˆå§‹åŒ–ï¼š
+  *         1. åˆå§‹åŒ–æ”¶å‘ç¯å½¢ç¼“å†²åŒºï¼ˆlwrbï¼‰  
+  *         2. ä½¿èƒ½ USART1 ä¸ GPIOA å¤–è®¾æ—¶é’Ÿ  
+  *         3. é…ç½® PA9ï¼ˆTXï¼‰ä¸º 10MHz å¤ç”¨æ¨æŒ½è¾“å‡ºï¼ŒPA10ï¼ˆRXï¼‰ä¸ºæµ®ç©ºè¾“å…¥  
+  *         4. é…ç½® USART1 å…¨å±€ä¸­æ–­ï¼Œä¼˜å…ˆçº§ä¸º 0  
+  *         5. è®¾ç½®æ³¢ç‰¹ç‡ï¼š72MHz PCLK2ï¼Œè¿‡é‡‡æ ·16ï¼ŒBRR=39.0625  
+  *         6. é…ç½®æ•°æ®æ ¼å¼ï¼š8 ä½æ•°æ®ã€1 ä¸ªåœæ­¢ä½ã€æ— æ ¡éªŒ  
+  *         7. ä½¿èƒ½å‘é€ï¼ˆTEï¼‰ä¸æ¥æ”¶ï¼ˆREï¼‰åŠŸèƒ½  
+  *         8. å…³é—­ç¡¬ä»¶æµæ§ã€LINã€æ—¶é’Ÿè¾“å‡ºã€æ™ºèƒ½å¡ã€IrDAã€åŠåŒå·¥æ¨¡å¼  
+  *         9. ä½¿èƒ½ç©ºé—²ä¸­æ–­ï¼ˆIDLEIEï¼‰  
+  *        10. ä½¿èƒ½ DMA æ¥æ”¶è¯·æ±‚ï¼ˆDMARï¼‰ï¼Œå¹¶è°ƒç”¨ DMA1_Channel5/4 åˆå§‹åŒ–å‡½æ•°  
+  *        11. æœ€åä½¿èƒ½ USARTï¼ˆUEï¼‰  
   * @retval None
   */
 void USART1_Configure(void) {
     
     /* ringbuffer */
-    lwrb_init((lwrb_t*)&g_Usart1RxRBHandler, (uint8_t*)g_Usart1RxRB, sizeof(g_Usart1RxRB) + 1); // RX ringbuffer³õÊ¼»¯
-    lwrb_init((lwrb_t*)&g_Usart1TxRBHandler, (uint8_t*)g_Usart1TxRB, sizeof(g_Usart1TxRB) + 1); // TX ringbuffer³õÊ¼»¯
+    lwrb_init((lwrb_t*)&g_Usart1RxRBHandler, (uint8_t*)g_Usart1RxRB, sizeof(g_Usart1RxRB) + 1); // RX ringbufferåˆå§‹åŒ–
+    lwrb_init((lwrb_t*)&g_Usart1TxRBHandler, (uint8_t*)g_Usart1TxRB, sizeof(g_Usart1TxRB) + 1); // TX ringbufferåˆå§‹åŒ–
     
-    /* 1. Ê¹ÄÜÍâÉèÊ±ÖÓ */
-    // RCC->APB2ENR ¼Ä´æÆ÷¿ØÖÆ APB2 ÍâÉèÊ±ÖÓ
-    RCC->APB2ENR |= (1UL << 14UL); // Ê¹ÄÜ USART1 Ê±ÖÓ (Î» 14)
-    RCC->APB2ENR |= (1UL << 2UL);  // Ê¹ÄÜ GPIOA Ê±ÖÓ (Î» 2)
-    /* 2. ÅäÖÃ GPIO (PA9 - TX, PA10 - RX) */
-    // GPIOA->CRH ¼Ä´æÆ÷¿ØÖÆ PA8-PA15 µÄÄ£Ê½ºÍÅäÖÃ
-    // PA9: ¸´ÓÃÍÆÍìÊä³ö (Ä£Ê½: 10, CNF: 10)
-    GPIOA->CRH &= ~(0xF << 4UL);        // ÇåÁã PA9 µÄÅäÖÃÎ» (Î» 4-7)
-    GPIOA->CRH |= (0xA << 4UL);         // PA9: 10MHz ¸´ÓÃÍÆÍìÊä³ö (MODE9 = 10, CNF9 = 10)
-    // PA10: ¸¡¿ÕÊäÈë (Ä£Ê½: 00, CNF: 01)
-    GPIOA->CRH &= ~(0xF << 8UL);        // ÇåÁã PA10 µÄÅäÖÃÎ» (Î» 8-11)
-    GPIOA->CRH |= (0x4 << 8UL);         // PA10: ÊäÈëÄ£Ê½£¬¸¡¿ÕÊäÈë (MODE10 = 00, CNF10 = 01)
-    // ¿ªÆôUSART1È«¾ÖÖĞ¶Ï
-    NVIC_SetPriority(USART1_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0, 0)); // ÓÅÏÈ¼¶1£¨ÓÅÏÈ¼¶Ô½µÍÏàµ±ÓÚÔ½ÓÅÏÈ£©
+    /* 1. ä½¿èƒ½å¤–è®¾æ—¶é’Ÿ */
+    // RCC->APB2ENR å¯„å­˜å™¨æ§åˆ¶ APB2 å¤–è®¾æ—¶é’Ÿ
+    RCC->APB2ENR |= (1UL << 14UL); // ä½¿èƒ½ USART1 æ—¶é’Ÿ (ä½ 14)
+    RCC->APB2ENR |= (1UL << 2UL);  // ä½¿èƒ½ GPIOA æ—¶é’Ÿ (ä½ 2)
+    /* 2. é…ç½® GPIO (PA9 - TX, PA10 - RX) */
+    // GPIOA->CRH å¯„å­˜å™¨æ§åˆ¶ PA8-PA15 çš„æ¨¡å¼å’Œé…ç½®
+    // PA9: å¤ç”¨æ¨æŒ½è¾“å‡º (æ¨¡å¼: 10, CNF: 10)
+    GPIOA->CRH &= ~(0xF << 4UL);        // æ¸…é›¶ PA9 çš„é…ç½®ä½ (ä½ 4-7)
+    GPIOA->CRH |= (0xA << 4UL);         // PA9: 10MHz å¤ç”¨æ¨æŒ½è¾“å‡º (MODE9 = 10, CNF9 = 10)
+    // PA10: æµ®ç©ºè¾“å…¥ (æ¨¡å¼: 00, CNF: 01)
+    GPIOA->CRH &= ~(0xF << 8UL);        // æ¸…é›¶ PA10 çš„é…ç½®ä½ (ä½ 8-11)
+    GPIOA->CRH |= (0x4 << 8UL);         // PA10: è¾“å…¥æ¨¡å¼ï¼Œæµ®ç©ºè¾“å…¥ (MODE10 = 00, CNF10 = 01)
+    // å¼€å¯USART1å…¨å±€ä¸­æ–­
+    NVIC_SetPriority(USART1_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),0, 0)); // ä¼˜å…ˆçº§1ï¼ˆä¼˜å…ˆçº§è¶Šä½ç›¸å½“äºè¶Šä¼˜å…ˆï¼‰
     NVIC_EnableIRQ(USART1_IRQn);
-    /* 3. ÅäÖÃ USART1 ²ÎÊı */
-    // (1) ÉèÖÃ²¨ÌØÂÊ 115200 (ÏµÍ³Ê±ÖÓ 72MHz, ¹ı²ÉÑù 16)
-    // ²¨ÌØÂÊ¼ÆËã: USART_BRR = fPCLK / (16 * BaudRate)
+    /* 3. é…ç½® USART1 å‚æ•° */
+    // (1) è®¾ç½®æ³¢ç‰¹ç‡ 115200 (ç³»ç»Ÿæ—¶é’Ÿ 72MHz, è¿‡é‡‡æ · 16)
+    // æ³¢ç‰¹ç‡è®¡ç®—: USART_BRR = fPCLK / (16 * BaudRate)
     // 72MHz / (16 * 115200) = 39.0625
-    // ÕûÊı²¿·Ö: 39 (0x27), Ğ¡Êı²¿·Ö: 0.0625 * 16 = 1 (0x1)
+    // æ•´æ•°éƒ¨åˆ†: 39 (0x27), å°æ•°éƒ¨åˆ†: 0.0625 * 16 = 1 (0x1)
     USART1->BRR = (39 << 4UL) | 1;      // BRR = 0x271 (39.0625)
-    // (2) ÅäÖÃÊı¾İÖ¡¸ñÊ½ (USART_CR1 ºÍ USART_CR2)
-    USART1->CR1 &= ~(1UL << 12UL);      // M Î» = 0, 8 Î»Êı¾İ
-    USART1->CR2 &= ~(3UL << 12UL);      // STOP Î» = 00, 1 ¸öÍ£Ö¹Î»
-    USART1->CR1 &= ~(1UL << 10UL);      // Ã»ÆæÅ¼Ğ£Ñé
-    // (3) ÅäÖÃ´«Êä·½Ïò (ÊÕ·¢Ë«Ïò)
-    USART1->CR1 |= (1UL << 3UL);        // TE Î» = 1, Ê¹ÄÜ·¢ËÍ
-    USART1->CR1 |= (1UL << 2UL);        // RE Î» = 1, Ê¹ÄÜ½ÓÊÕ
-    // (4) ½ûÓÃÓ²¼şÁ÷¿Ø (USART_CR3)
-    USART1->CR3 &= ~(3UL << 8UL);       // CTSE ºÍ RTSE Î» = 0, ÎŞÁ÷¿Ø
-    // (5) ÅäÖÃÒì²½Ä£Ê½ (Çå³ıÎŞ¹ØÄ£Ê½Î»)
-    USART1->CR2 &= ~(1UL << 14UL);      // LINEN Î» = 0, ½ûÓÃ LIN Ä£Ê½
-    USART1->CR2 &= ~(1UL << 11UL);      // CLKEN Î» = 0, ½ûÓÃÊ±ÖÓÊä³ö
-    USART1->CR3 &= ~(1UL << 5UL);       // SCEN Î» = 0, ½ûÓÃÖÇÄÜ¿¨Ä£Ê½
-    USART1->CR3 &= ~(1UL << 1UL);       // IREN Î» = 0, ½ûÓÃ IrDA Ä£Ê½
-    USART1->CR3 &= ~(1UL << 3UL);       // HDSEL Î» = 0, ½ûÓÃ°ëË«¹¤
-    // (6) ÖĞ¶Ï
-    USART1->CR1 |= (1UL << 4UL);        // Ê¹ÄÜUSART1¿ÕÏĞÖĞ¶Ï (IDLEIE, Î»4)
-    // (7) ¹ØÁªDMAµÄ½ÓÊÕÇëÇó
-    USART1->CR3 |= (1UL << 6UL);        // Ê¹ÄÜUSART1µÄDMA½ÓÊÕÇëÇó£¨DMAR£¬Î»6£© 
-    // (7) ÆôÓÃ USART
-    USART1->CR1 |= (1UL << 13UL);       // UE Î» = 1, ÆôÓÃ USART
+    // (2) é…ç½®æ•°æ®å¸§æ ¼å¼ (USART_CR1 å’Œ USART_CR2)
+    USART1->CR1 &= ~(1UL << 12UL);      // M ä½ = 0, 8 ä½æ•°æ®
+    USART1->CR2 &= ~(3UL << 12UL);      // STOP ä½ = 00, 1 ä¸ªåœæ­¢ä½
+    USART1->CR1 &= ~(1UL << 10UL);      // æ²¡å¥‡å¶æ ¡éªŒ
+    // (3) é…ç½®ä¼ è¾“æ–¹å‘ (æ”¶å‘åŒå‘)
+    USART1->CR1 |= (1UL << 3UL);        // TE ä½ = 1, ä½¿èƒ½å‘é€
+    USART1->CR1 |= (1UL << 2UL);        // RE ä½ = 1, ä½¿èƒ½æ¥æ”¶
+    // (4) ç¦ç”¨ç¡¬ä»¶æµæ§ (USART_CR3)
+    USART1->CR3 &= ~(3UL << 8UL);       // CTSE å’Œ RTSE ä½ = 0, æ— æµæ§
+    // (5) é…ç½®å¼‚æ­¥æ¨¡å¼ (æ¸…é™¤æ— å…³æ¨¡å¼ä½)
+    USART1->CR2 &= ~(1UL << 14UL);      // LINEN ä½ = 0, ç¦ç”¨ LIN æ¨¡å¼
+    USART1->CR2 &= ~(1UL << 11UL);      // CLKEN ä½ = 0, ç¦ç”¨æ—¶é’Ÿè¾“å‡º
+    USART1->CR3 &= ~(1UL << 5UL);       // SCEN ä½ = 0, ç¦ç”¨æ™ºèƒ½å¡æ¨¡å¼
+    USART1->CR3 &= ~(1UL << 1UL);       // IREN ä½ = 0, ç¦ç”¨ IrDA æ¨¡å¼
+    USART1->CR3 &= ~(1UL << 3UL);       // HDSEL ä½ = 0, ç¦ç”¨åŠåŒå·¥
+    // (6) ä¸­æ–­
+    USART1->CR1 |= (1UL << 4UL);        // ä½¿èƒ½USART1ç©ºé—²ä¸­æ–­ (IDLEIE, ä½4)
+    // (7) å…³è”DMAçš„æ¥æ”¶è¯·æ±‚
+    USART1->CR3 |= (1UL << 6UL);        // ä½¿èƒ½USART1çš„DMAæ¥æ”¶è¯·æ±‚ï¼ˆDMARï¼Œä½6ï¼‰ 
+    // (7) å¯ç”¨ USART
+    USART1->CR1 |= (1UL << 13UL);       // UE ä½ = 1, å¯ç”¨ USART
     
-    // DMA³õÊ¼»¯
+    // DMAåˆå§‹åŒ–
     DMA1_Channel5_Configure();
     DMA1_Channel4_Configure();
 }
 
 /**
-  * @brief  µ±¼ì²âµ½USART1Òì³£Ê±£¬ÖØĞÂ³õÊ¼»¯USART1¼°ÆäÏà¹ØDMAÍ¨µÀ¡£
-  * @note   ´Ëº¯ÊıÊ×ÏÈÍ£Ö¹DMA1Í¨µÀ4£¨USART1_TX£©ºÍÍ¨µÀ5£¨USART1_RX£©£¬È·±£DMA´«ÊäÖÕÖ¹£¬
-  *         È»ºó½ûÓÃUSART1¼°ÆäDMA½ÓÊÕÇëÇó£¬²¢Í¨¹ı¶ÁSRºÍDRÇå³ı¹ÒÆğµÄ´íÎó±êÖ¾£¬
-  *         ¾­¹ı¶ÌÔİÑÓÊ±ºóµ÷ÓÃMX_USART1_UART_Init()ÖØĞÂÅäÖÃUSART1¡¢GPIOºÍDMA£¬
-  *         MX_USART1_UART_Init()ÄÚ²¿ÒÑÍê³ÉUSART1ÖĞ¶ÏµÄÅäÖÃ£¬ÎŞĞè¶îÍâÊ¹ÄÜ¡£
+  * @brief  å½“æ£€æµ‹åˆ°USART1å¼‚å¸¸æ—¶ï¼Œé‡æ–°åˆå§‹åŒ–USART1åŠå…¶ç›¸å…³DMAé€šé“ã€‚
+  * @note   æ­¤å‡½æ•°é¦–å…ˆåœæ­¢DMA1é€šé“4ï¼ˆUSART1_TXï¼‰å’Œé€šé“5ï¼ˆUSART1_RXï¼‰ï¼Œç¡®ä¿DMAä¼ è¾“ç»ˆæ­¢ï¼Œ
+  *         ç„¶åç¦ç”¨USART1åŠå…¶DMAæ¥æ”¶è¯·æ±‚ï¼Œå¹¶é€šè¿‡è¯»SRå’ŒDRæ¸…é™¤æŒ‚èµ·çš„é”™è¯¯æ ‡å¿—ï¼Œ
+  *         ç»è¿‡çŸ­æš‚å»¶æ—¶åè°ƒç”¨MX_USART1_UART_Init()é‡æ–°é…ç½®USART1ã€GPIOå’ŒDMAï¼Œ
+  *         MX_USART1_UART_Init()å†…éƒ¨å·²å®ŒæˆUSART1ä¸­æ–­çš„é…ç½®ï¼Œæ— éœ€é¢å¤–ä½¿èƒ½ã€‚
   * @retval None
   */
 void USART1_Reinit(void)
 {
-    /* ½ûÓÃDMA£¬Èç¹ûUSART1ÆôÓÃÁËDMAµÄ»° */
-    DMA1_Channel4->CCR &= ~(1UL << 0); // ½ûÓÃDMA1Í¨µÀ4£ºÇå³ıCCRµÄENÎ»£¨Î»0£©
-    while (DMA1_Channel4->CCR & 1UL) { // µÈ´ıDMA1Í¨µÀ4ÍêÈ«¹Ø±Õ£¨½¨ÒéÔö¼Ó³¬Ê±´¦Àí£©
-        // ¿ÕÑ­»·µÈ´ı
+    /* ç¦ç”¨DMAï¼Œå¦‚æœUSART1å¯ç”¨äº†DMAçš„è¯ */
+    DMA1_Channel4->CCR &= ~(1UL << 0); // ç¦ç”¨DMA1é€šé“4ï¼šæ¸…é™¤CCRçš„ENä½ï¼ˆä½0ï¼‰
+    while (DMA1_Channel4->CCR & 1UL) { // ç­‰å¾…DMA1é€šé“4å®Œå…¨å…³é—­ï¼ˆå»ºè®®å¢åŠ è¶…æ—¶å¤„ç†ï¼‰
+        // ç©ºå¾ªç¯ç­‰å¾…
     }
-    DMA1_Channel5->CCR &= ~(1UL << 0); // ½ûÓÃDMA1Í¨µÀ5£ºÇå³ıCCRµÄENÎ»£¨Î»0£©
-    while (DMA1_Channel5->CCR & 1UL) { // µÈ´ıDMA1Í¨µÀ5ÍêÈ«¹Ø±Õ£¨½¨ÒéÔö¼Ó³¬Ê±´¦Àí£©
-        // ¿ÕÑ­»·µÈ´ı
+    DMA1_Channel5->CCR &= ~(1UL << 0); // ç¦ç”¨DMA1é€šé“5ï¼šæ¸…é™¤CCRçš„ENä½ï¼ˆä½0ï¼‰
+    while (DMA1_Channel5->CCR & 1UL) { // ç­‰å¾…DMA1é€šé“5å®Œå…¨å…³é—­ï¼ˆå»ºè®®å¢åŠ è¶…æ—¶å¤„ç†ï¼‰
+        // ç©ºå¾ªç¯ç­‰å¾…
     }
-    NVIC_DisableIRQ(USART1_IRQn); // ½ûÓÃUSART1È«¾ÖÖĞ¶Ï£¬±ÜÃâÖØÆô¹ı³ÌÖĞ²úÉúĞÂµÄÖĞ¶Ï¸ÉÈÅ
-    USART1->CR3 &= ~(1UL << 6); // ½ûÓÃUSART1µÄDMA½ÓÊÕÇëÇó£ºÇå³ıCR3µÄDMARÎ»£¨Î»6£©
-    USART1->CR1 &= ~(1UL << 13); // ½ûÓÃUSART1£ºÇå³ıCR1µÄUEÎ»£¨Î»13£©
+    NVIC_DisableIRQ(USART1_IRQn); // ç¦ç”¨USART1å…¨å±€ä¸­æ–­ï¼Œé¿å…é‡å¯è¿‡ç¨‹ä¸­äº§ç”Ÿæ–°çš„ä¸­æ–­å¹²æ‰°
+    USART1->CR3 &= ~(1UL << 6); // ç¦ç”¨USART1çš„DMAæ¥æ”¶è¯·æ±‚ï¼šæ¸…é™¤CR3çš„DMARä½ï¼ˆä½6ï¼‰
+    USART1->CR1 &= ~(1UL << 13); // ç¦ç”¨USART1ï¼šæ¸…é™¤CR1çš„UEä½ï¼ˆä½13ï¼‰
     
-    // ¶ÁSRºÍDRÒÔÇå³ı¹ÒÆğµÄ´íÎó±êÖ¾£¨ÀıÈçIDLE¡¢ORE¡¢NE¡¢FE¡¢PE£©
+    // è¯»SRå’ŒDRä»¥æ¸…é™¤æŒ‚èµ·çš„é”™è¯¯æ ‡å¿—ï¼ˆä¾‹å¦‚IDLEã€OREã€NEã€FEã€PEï¼‰
     volatile uint32_t tmp = USART1->SR;
     tmp = USART1->DR;
     (void)tmp;
     
-    for (volatile uint32_t i = 0; i < 1000; i++); // ¿ÉÑ¡£º¶ÌÔİÑÓÊ±£¬È·±£USART1ÍêÈ«¹Ø±Õ
-    tx_dma_busy = 0; // ¸´Î»·¢ËÍ±êÖ¾£¡£¡£¡£¡£¡
+    for (volatile uint32_t i = 0; i < 1000; i++); // å¯é€‰ï¼šçŸ­æš‚å»¶æ—¶ï¼Œç¡®ä¿USART1å®Œå…¨å…³é—­
+    tx_dma_busy = 0; // å¤ä½å‘é€æ ‡å¿—ï¼ï¼ï¼ï¼ï¼
     
-    /* ÖØĞÂ³õÊ¼»¯USART1¡¢DMA1 */
+    /* é‡æ–°åˆå§‹åŒ–USART1ã€DMA1 */
     USART1_Configure();
 }
 
