@@ -20,8 +20,7 @@
 
 #include "ymodem.h"
 #include "retarget_rtt.h"
-#include "stm32f1xx_hal_flash.h"
-#include "stm32f1xx_hal_flash_ex.h"
+#include "op_flash.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -455,13 +454,14 @@ static YModem_Result_t YModem_Handle_Data_Packet(YModem_Handler_t *handler)
 }
 
 /**
- * @brief 将数据写入Flash
+ * @brief 将数据写入Flash（使用op_flash模块重构版本）
  * @param handler: YModem处理器指针
  * @param data: 要写入的数据
  * @param length: 数据长度
  * @return YModem_Result_t: 写入结果
  * 
- * @note 就像把货物按顺序存放到仓库的指定位置
+ * @note 使用op_flash模块进行Flash操作，提高代码复用性和可维护性
+ *       就像使用专业的"仓库管理系统"来存放货物，而不是直接操作货架
  */
 static YModem_Result_t YModem_Write_To_Flash(YModem_Handler_t *handler, 
                                            const uint8_t *data, 
@@ -473,9 +473,10 @@ static YModem_Result_t YModem_Write_To_Flash(YModem_Handler_t *handler,
         return YMODEM_RESULT_ERROR;
     }
     
-    // 修复：确保Flash写入地址4字节对齐
+    // 确保Flash写入地址4字节对齐
     if (handler->flash_write_addr % 4 != 0) {
-        log_printf("YModem: Flash address not aligned to 4 bytes: 0x%08X.\r\n", handler->flash_write_addr);
+        log_printf("YModem: Flash address not aligned to 4 bytes: 0x%08lX.\r\n", 
+                  (unsigned long)handler->flash_write_addr);
         return YMODEM_RESULT_ERROR;
     }
     
@@ -485,64 +486,44 @@ static YModem_Result_t YModem_Write_To_Flash(YModem_Handler_t *handler,
     if (handler->flash_write_addr == page_start) {
         log_printf("YModem: erase Flash page 0x%08X.\r\n", page_start);
         
-        // 解锁Flash
-        HAL_FLASH_Unlock();
-        
-        // 擦除页面
-        FLASH_EraseInitTypeDef EraseInitStruct;
-        uint32_t PageError = 0;
-        
-        EraseInitStruct.TypeErase = FLASH_TYPEERASE_PAGES;
-        EraseInitStruct.PageAddress = page_start;
-        EraseInitStruct.NbPages = 1;
-        
-        HAL_StatusTypeDef erase_status = HAL_FLASHEx_Erase(&EraseInitStruct, &PageError);
-        HAL_FLASH_Lock();
-        
-        if (erase_status != HAL_OK) {
-            log_printf("YModem: Flash erase failed, error code=%d.\r\n", erase_status);
+        // 使用op_flash模块擦除页面
+        OP_FlashStatus_t erase_result = OP_Flash_Erase(page_start, STM32_FLASH_PAGE_SIZE);
+        if (erase_result != OP_FLASH_OK) {
+            log_printf("YModem: Flash erase failed, op_flash error code=%d.\r\n", erase_result);
             return YMODEM_RESULT_ERROR;
         }
     }
     
-    // 将数据写入Flash（按4字节对齐）
-    HAL_FLASH_Unlock();
-    
-    uint32_t write_addr = handler->flash_write_addr;
-    uint16_t remaining = length;
-    uint16_t offset = 0;
-    
-    while (remaining > 0) {
-        uint32_t word_data = 0xFFFFFFFF;  // 初始化为全1
-        uint8_t bytes_to_copy = (remaining >= 4) ? 4 : remaining;
-        
-        // 复制数据到word_data，不足4字节的部分保持0xFF
-        memcpy(&word_data, &data[offset], bytes_to_copy);
-        
-        // 写入一个字（4字节）
-        HAL_StatusTypeDef write_status = HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, 
-                                                          write_addr, 
-                                                          word_data);
-        
-        if (write_status != HAL_OK) {
-            HAL_FLASH_Lock();
-            log_printf("YModem: Flash write failed, address=0x%08X, error code=%d.\r\n", 
-                      write_addr, write_status);
-            return YMODEM_RESULT_ERROR;
-        }
-        
-        write_addr += 4;
-        offset += bytes_to_copy;
-        remaining -= bytes_to_copy;
-    }
-    
-    HAL_FLASH_Lock();
-    
-    log_printf("YModem: successfully written %d bytes to address 0x%08X.\r\n", 
-              length, handler->flash_write_addr);
-    
-    // 修复：更新Flash写入地址，确保4字节对齐
+    // 准备4字节对齐的数据缓冲区（使用固定大小缓冲区避免VLA问题）
     uint16_t aligned_length = (length + 3) & ~3;  // 向上对齐到4字节边界
+    static uint8_t aligned_buffer[YMODEM_PACKET_SIZE_1024 + 4];  // 静态缓冲区，足够大
+    
+    // 检查缓冲区大小
+    if (aligned_length > sizeof(aligned_buffer)) {
+        log_printf("YModem: aligned data too large for buffer.\r\n");
+        return YMODEM_RESULT_ERROR;
+    }
+    
+    // 复制数据到对齐缓冲区，不足部分填充0xFF
+    memcpy(aligned_buffer, data, length);
+    if (aligned_length > length) {
+        memset(aligned_buffer + length, 0xFF, aligned_length - length);
+    }
+    
+    // 使用op_flash模块写入数据
+    OP_FlashStatus_t write_result = OP_Flash_Write(handler->flash_write_addr, 
+                                                  aligned_buffer, 
+                                                  aligned_length);
+    
+    if (write_result != OP_FLASH_OK) {
+        log_printf("YModem: Flash write failed, op_flash error code=%d.\r\n", write_result);
+        return YMODEM_RESULT_ERROR;
+    }
+    
+    log_printf("YModem: successfully written %d bytes to address 0x%04X%04X.\r\n", 
+              length, (uint16_t)(handler->flash_write_addr >> 16), (uint16_t)(handler->flash_write_addr & 0xFFFF));
+    
+    // 更新Flash写入地址
     handler->flash_write_addr += aligned_length;
     
     return YMODEM_RESULT_OK;

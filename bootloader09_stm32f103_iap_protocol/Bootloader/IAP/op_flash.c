@@ -14,7 +14,7 @@
   */
 static uint8_t OP_Flash_IsValidAddr(uint32_t addr)
 {
-    return ( (addr >= FLASH_BASE) && (addr < (FLASH_BASE + STM32_FLASH_SIZE)) ); // F103ZET6为512K
+    return ( (addr >= STM32_FLASH_BASE_ADDR) && (addr < (STM32_FLASH_BASE_ADDR + STM32_FLASH_SIZE)) ); // F103ZET6为512K
 }
 
 /**
@@ -29,7 +29,7 @@ static uint8_t OP_Flash_IsValidAddr(uint32_t addr)
   *       - HAL_FLASHEx_Erase() 内部会等待擦除完成，不需用户等待
   *       - 若擦除区域包含重要数据，请务必提前做好备份
   */
-static OP_FlashStatus_t OP_Flash_Erase(uint32_t start_addr, uint32_t length)
+OP_FlashStatus_t OP_Flash_Erase(uint32_t start_addr, uint32_t length)
 {
     HAL_StatusTypeDef status;              //!< HAL库返回状态
     uint32_t PageError = 0;                //!< 记录擦除出错的页号（由HAL库维护）
@@ -40,9 +40,9 @@ static OP_FlashStatus_t OP_Flash_Erase(uint32_t start_addr, uint32_t length)
         return OP_FLASH_ADDR_INVALID;
     }
 
-    uint32_t pageSize = FLASH_PAGE_SIZE; //!< 每页大小，通常为2K字节
+    uint32_t pageSize = STM32_FLASH_PAGE_SIZE; //!< 每页大小，通常为2K字节
     //! 2. 计算擦除的首页页号
-    uint32_t firstPage = (start_addr - FLASH_BASE) / pageSize;
+    uint32_t firstPage = (start_addr - STM32_FLASH_BASE_ADDR) / pageSize;
     //! 3. 计算要擦除的页数（不足一页时也要整页擦除）
     uint32_t nbPages   = (length + pageSize - 1) / pageSize;
 
@@ -78,7 +78,7 @@ static OP_FlashStatus_t OP_Flash_Erase(uint32_t start_addr, uint32_t length)
   *       - Flash写入只能将1变为0，不能将0变为1，如需写入新内容需先擦除
   *       - 建议一次性写入不超过一页数据（2K），如需大量写入可分多次调用
   */
-static OP_FlashStatus_t OP_Flash_Write(uint32_t addr, uint8_t *data, uint32_t length)
+OP_FlashStatus_t OP_Flash_Write(uint32_t addr, uint8_t *data, uint32_t length)
 {
     //! 1. 检查目标地址是否合法，防止误操作
     if (!OP_Flash_IsValidAddr(addr) || !OP_Flash_IsValidAddr(addr + length - 1)) {

@@ -10,6 +10,10 @@
             "path": ".."
         }
     ],
-    "settings": {},
+    "settings": {
+        "files.associations": {
+            "ymodem.h": "c"
+        }
+    },
     "extensions": {}
 }
