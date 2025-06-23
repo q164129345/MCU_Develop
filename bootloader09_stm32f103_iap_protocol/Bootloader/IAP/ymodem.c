@@ -121,6 +121,8 @@ YModem_Result_t YModem_Run(YModem_Handler_t *handler, uint8_t data)
                     // 在等待数据包时收到EOT，说明传输结束
                     log_printf("YModem: received EOT, transmission end.\r\n");
                     YModem_Queue_Response(handler, YMODEM_ACK);
+                    // 修复：EOT后发送C字符，请求下一个文件（或结束包）
+                    YModem_Queue_Response(handler, YMODEM_C);
                     handler->state = YMODEM_STATE_WAIT_END;
                     return YMODEM_RESULT_OK;
                 } else if (data == YMODEM_CAN) {
@@ -159,6 +161,8 @@ YModem_Result_t YModem_Run(YModem_Handler_t *handler, uint8_t data)
                 if (data == YMODEM_EOT) {
                     log_printf("YModem: received EOT, transmission end.\r\n");
                     YModem_Queue_Response(handler, YMODEM_ACK);
+                    // 修复：EOT后发送C字符，请求下一个文件（或结束包）
+                    YModem_Queue_Response(handler, YMODEM_C);
                     return YMODEM_RESULT_OK;
                 } else if (data == YMODEM_STX) {
                     handler->expected_packet_size = YMODEM_PACKET_SIZE_1024;
