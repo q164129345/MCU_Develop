@@ -433,14 +433,12 @@ static YModem_Result_t YModem_Handle_Data_Packet(YModem_Handler_t *handler)
     // 更新状态
     handler->received_size += valid_data_length;
     handler->expected_packet_num++;
-    
-    // 打印进度（每收到10个包打印一次）
-    if (handler->expected_packet_num % 10 == 0) {
-        uint8_t progress = YModem_Get_Progress(handler);
-        log_printf("YModem: progress %d%% (%u/%u bytes).\r\n", 
-                  progress, handler->received_size, handler->file_size);
-    }
-    
+
+    // 打印进度（每收到1个包打印一次）
+    uint8_t progress = YModem_Get_Progress(handler);
+    log_printf("YModem: progress %d%% (%u/%u bytes).\r\n", 
+              progress, handler->received_size, handler->file_size);
+
     // 发送ACK确认
     YModem_Queue_Response(handler, YMODEM_ACK);
     
