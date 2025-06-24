@@ -248,6 +248,10 @@ def send_ymodem_transmission(serial_mgr, ymodem, bin_file_path, ack_timeout=5, m
             print("第0包未收到完整的ACK+C响应，传输失败")
             return False
         
+        # 给下位机处理时间，延时1秒后再发送数据包
+        print("延时1秒，给下位机处理时间...")
+        time.sleep(1)
+        
         # === 步骤2：循环发送所有数据包 ===
         print(f"\n开始发送数据包（共{total_packets}包）...")
         
@@ -282,6 +286,15 @@ def send_ymodem_transmission(serial_mgr, ymodem, bin_file_path, ack_timeout=5, m
                 # 等待ACK响应
                 if wait_for_ack(serial_mgr, ack_timeout, verbose):
                     packet_sent = True
+                    
+                    # 如果不是最后一包，给下位机处理时间
+                    if packet_num < total_packets:
+                        if verbose:
+                            print("延时1秒，给下位机处理时间...")
+                        else:
+                            print("延时1秒...")
+                        time.sleep(1)
+                    
                     break
                 else:
                     print(f"第{packet_num}包未收到ACK，准备重传...")
