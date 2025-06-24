@@ -3,7 +3,7 @@
 <title>Static Call Graph - [stm32f103zet6\stm32f103zet6.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image stm32f103zet6\stm32f103zet6.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Mon Jun 23 19:39:40 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Tue Jun 24 14:32:38 2025
 <BR><P>
 <H3>Maximum Stack Usage =        224 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -992,14 +992,16 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 <LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr
 </UL>
-<BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<BR>[Called By]<UL><LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Run
+<LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[b1]"></a>YModem_Run</STRONG> (Thumb, 728 bytes, Stack size 16 bytes, ymodem.o(.text.YModem_Run))
+<P><STRONG><a name="[b1]"></a>YModem_Run</STRONG> (Thumb, 868 bytes, Stack size 16 bytes, ymodem.o(.text.YModem_Run))
 <BR><BR>[Stack]<UL><LI>Max Depth = 152<LI>Call Chain = YModem_Run &rArr; YModem_Parse_Packet &rArr; OP_Flash_Erase &rArr; HAL_FLASHEx_Erase &rArr; FLASH_WaitForLastOperation
 </UL>
 <BR>[Calls]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Queue_Response
 <LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Parse_Packet
+<LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Reset
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -1058,16 +1060,16 @@ Global Symbols
 <LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Put_TxData_To_Ringbuffer
 </UL>
 
-<P><STRONG><a name="[46]"></a>main</STRONG> (Thumb, 440 bytes, Stack size 72 bytes, main.o(.text.main))
+<P><STRONG><a name="[46]"></a>main</STRONG> (Thumb, 504 bytes, Stack size 72 bytes, main.o(.text.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 224<LI>Call Chain = main &rArr; YModem_Run &rArr; YModem_Parse_Packet &rArr; OP_Flash_Erase &rArr; HAL_FLASHEx_Erase &rArr; FLASH_WaitForLastOperation
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Put_TxData_To_Ringbuffer
 <LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Get_Response
 <LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Has_Response
+<LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Reset
 <LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Run
 <LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Take_A_Piece_Of_Data
 <LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Get_The_Existing_Amount_Of_Data
-<LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Reset
 <LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_TogglePin
 <LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 <LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Module_Run
@@ -1097,8 +1099,8 @@ Global Symbols
 <LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_SystemStart
 <LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IAP_Ready_To_Jump_App
 <LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Get_Response
-<LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Run
 <LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Reset
+<LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Run
 <LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Init
 <LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -1190,7 +1192,7 @@ Local Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> boot_entry.o(.init_array)
 </UL>
-<P><STRONG><a name="[ac]"></a>YModem_Parse_Packet</STRONG> (Thumb, 2596 bytes, Stack size 48 bytes, ymodem.o(.text.YModem_Parse_Packet))
+<P><STRONG><a name="[ac]"></a>YModem_Parse_Packet</STRONG> (Thumb, 2628 bytes, Stack size 48 bytes, ymodem.o(.text.YModem_Parse_Packet))
 <BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = YModem_Parse_Packet &rArr; OP_Flash_Erase &rArr; HAL_FLASHEx_Erase &rArr; FLASH_WaitForLastOperation
 </UL>
 <BR>[Calls]<UL><LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OP_Flash_Write

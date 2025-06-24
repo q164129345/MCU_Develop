@@ -12,7 +12,8 @@
     ],
     "settings": {
         "files.associations": {
-            "ymodem.h": "c"
+            "ymodem.h": "c",
+            "calculate_crc32.h": "c"
         }
     },
     "extensions": {}
