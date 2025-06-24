@@ -68,6 +68,7 @@ void YModem_Reset(YModem_Handler_t *handler)
 {
     if (handler == NULL) return;
     
+    // 重要：强制重置为等待文件信息状态，确保能接收新传输
     handler->state = YMODEM_STATE_WAIT_FILE_INFO;
     handler->rx_index = 0;
     handler->expected_packet_size = 0;
@@ -81,12 +82,13 @@ void YModem_Reset(YModem_Handler_t *handler)
     handler->response_length = 0;
     handler->response_ready = 0;
     
+    // 清空所有缓冲区
     memset(handler->rx_buffer, 0, sizeof(handler->rx_buffer));
     memset(handler->file_name, 0, sizeof(handler->file_name));
     memset(&handler->current_packet, 0, sizeof(handler->current_packet));
     memset(handler->response_buffer, 0, sizeof(handler->response_buffer));
     
-    log_printf("YModem: reset successfully.\r\n");
+    log_printf("YModem: reset successfully, ready for new transmission.\r\n");
 }
 
 /**
@@ -109,12 +111,23 @@ YModem_Result_t YModem_Run(YModem_Handler_t *handler, uint8_t data)
     switch (handler->state) {
         case YMODEM_STATE_WAIT_FILE_INFO:
         case YMODEM_STATE_WAIT_DATA:
+        case YMODEM_STATE_COMPLETE:  // 完成状态也要能接收新的传输请求
             // 检查是否是包头（只有在等待包头时才处理控制字符）
             if (handler->rx_index == 0) {
                 if (data == YMODEM_STX) {
+                    // 如果是完成状态收到新的传输请求，自动重置并开始新传输
+                    if (handler->state == YMODEM_STATE_COMPLETE) {
+                        log_printf("YModem: new transmission request in complete state, auto reset.\r\n");
+                        YModem_Reset(handler);
+                    }
                     handler->expected_packet_size = YMODEM_PACKET_SIZE_1024;
                     handler->rx_buffer[handler->rx_index++] = data;
                 } else if (data == YMODEM_SOH) {
+                    // 如果是完成状态收到新的传输请求，自动重置并开始新传输
+                    if (handler->state == YMODEM_STATE_COMPLETE) {
+                        log_printf("YModem: new transmission request in complete state, auto reset.\r\n");
+                        YModem_Reset(handler);
+                    }
                     handler->expected_packet_size = YMODEM_PACKET_SIZE_128;
                     handler->rx_buffer[handler->rx_index++] = data;
                 } else if (data == YMODEM_EOT) {
@@ -325,6 +338,7 @@ static YModem_Result_t YModem_Handle_FileInfo_Packet(YModem_Handler_t *handler)
         log_printf("YModem: received end packet.\r\n");
         handler->state = YMODEM_STATE_COMPLETE;
         YModem_Queue_Response(handler, YMODEM_ACK);
+        log_printf("YModem: transmission completed, returning YMODEM_RESULT_COMPLETE.\r\n");
         return YMODEM_RESULT_COMPLETE;
     }
     

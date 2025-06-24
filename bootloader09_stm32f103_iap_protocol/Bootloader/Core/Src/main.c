@@ -140,25 +140,6 @@ int main(void)
         HAL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin); //! 心跳灯快闪（在bootlaoder程序里，心跳灯快闪。App程序，心跳灯慢闪。肉眼区分当前跑什么程序）
     }
     
-    //! 开机1S后，执行一次CRC32校验。校验成功的话，将App缓存区的固件Copy到App区
-    if (fre > 1000) {
-        // if (HAL_OK == FW_Firmware_Verification(FLASH_DL_START_ADDR, FW_TOTAL_LEN)) { //!< 校验CRC32
-        //     //! CRC32校验成功
-        //     if (OP_FLASH_OK == OP_Flash_Copy(FLASH_DL_START_ADDR, FLASH_APP_START_ADDR, FLASH_APP_SIZE)) { //!< 将App缓存区的所有二进制复制到App区
-        //         log_printf("The firmware copy to the app area was successful.\r\n"); //!< 升级固件成功
-        //         Delay_MS_By_NOP(500); //!< 延迟500ms，等待RTT打印完毕
-        //         IAP_Ready_To_Jump_App(); //!< 清理MCU环境，准备跳转App
-        //     } else {
-        //         log_printf("The firmware copy to the app area failed\r\n"); //!< 升级固件失败
-        //         //! 搬运固件失败，后续处理.....检查Flash范围是不是合理等
-        //     }
-        // } else {
-        //     //! CRC32校验失败
-        //     log_printf("There is a problem with the integrity of the firmware, and IAP Upgrade failure.\r\n");
-        //     //! CRC32校验失败后的处理....比如，反馈OTA升级失败的结果给上位机等
-        // }
-    }
-    
     //! 2ms
     if (0 == fre % 2) {
         //! 处理已经接收的数据
@@ -172,11 +153,27 @@ int main(void)
                 if (ymodem_result == YMODEM_RESULT_COMPLETE) {
                     log_printf("YModem: IAP upgrade completed. Prepare to verify and copy the firmware.\r\n");
                     //! 这里可以触发固件校验和复制流程
-                    //! 重置YModem处理器，准备下次传输
+                    
+                    //! 重要：立即重置YModem处理器，准备下次传输
+                    log_printf("YModem: resetting for next transmission...\r\n");
                     YModem_Reset(&gYModemHandler);
+                    
+                    //! 清空串口接收缓冲区，防止残留数据干扰
+                    //! 通过读取所有数据来清空RingBuffer
+                    uint8_t dummy_data;
+                    while(USART_Get_The_Existing_Amount_Of_Data(&gUsart1Drv)) {
+                        USART_Take_A_Piece_Of_Data(&gUsart1Drv, &dummy_data);
+                    }
+                    
                 } else if (ymodem_result == YMODEM_RESULT_ERROR) {
                     log_printf("YModem: transmission error, reset protocol processor.\r\n"); //! 传输出错，重置协议处理器
                     YModem_Reset(&gYModemHandler);
+                    
+                    //! 清空串口接收缓冲区，防止残留数据干扰
+                    uint8_t dummy_data;
+                    while(USART_Get_The_Existing_Amount_Of_Data(&gUsart1Drv)) {
+                        USART_Take_A_Piece_Of_Data(&gUsart1Drv, &dummy_data);
+                    }
                 }
             }
         }
