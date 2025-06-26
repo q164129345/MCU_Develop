@@ -1,9 +1,9 @@
 #include "common.h"
 
 /**
-  * @brief  粗略延迟指定的毫秒数，自动适配主频
-  * @param  ms 延迟的毫秒数
-  * @note   只适合非严格实时需求，易受优化影响
+  * @brief  绮楃暐寤惰繜鎸囧畾鐨勬绉掓暟锛岃嚜鍔ㄩ�傞厤涓婚
+  * @param  ms 寤惰繜鐨勬绉掓暟
+  * @note   鍙�傚悎闈炰弗鏍煎疄鏃堕渶姹傦紝鏄撳彈浼樺寲褰卞搷
   */
 void Delay_MS_By_NOP(uint32_t ms)
 {
