@@ -55,6 +55,10 @@ USART_Driver_t gUsart1Drv = {
 //! YModem协议处理器实例
 YModem_Handler_t gYModemHandler;
 
+//! 添加 IAP 完成延迟计数器，确保最终 ACK 有时间发送
+static uint32_t iap_complete_delay_counter = 0;
+static bool iap_complete_pending = false;
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -91,6 +95,7 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+  Retarget_RTT_Init(); //! RTT重定向printf
   log_printf("Entering the main initialization of the bootloader.\n");
   uint32_t fre = 0;
   /* USER CODE END 1 */
@@ -151,26 +156,42 @@ int main(void)
         }
 
         //! 根据YModem协议的状态，处理IAP流程
-        if (gYModemHandler.state == YMODEM_STATE_COMPLETE) {
-            log_printf("YModem: IAP upgrade completed. Prepare to verify and copy the firmware.\r\n");
-            uint32_t file_size = YMode_Get_File_Size(&gYModemHandler);
-            log_printf("Firmware size: %d bytes.\r\n", file_size);
-            if (HAL_OK == FW_Firmware_Verification(FLASH_DL_START_ADDR, file_size)) {
-                log_printf("CRC32 verification was successful\r\n");
-                if (OP_FLASH_OK == OP_Flash_Copy(FLASH_DL_START_ADDR, FLASH_APP_START_ADDR, FLASH_APP_SIZE)) { //! 将App下载缓存区的固件搬运到App区
-                    log_printf("The firmware copy to the app area successfully.\r\n");
-                    log_printf("Jump to the application.\r\n");
-                    HAL_Delay(500);
-                    IAP_Ready_To_Jump_App(); //! 跳转App
+        if (gYModemHandler.state == YMODEM_STATE_COMPLETE && !iap_complete_pending) {
+            //! 第一次检测到完成状态，启动延迟计数器
+            log_printf("YModem: IAP upgrade completed. Starting delay to ensure final ACK transmission...\r\n");
+            iap_complete_pending = true;
+            iap_complete_delay_counter = 0;
+        } else if (iap_complete_pending) {
+            //! 延迟期间，继续发送任何待发送的响应数据
+            iap_complete_delay_counter++;
+            
+            //! 延迟足够时间确保最终ACK发送完成（大约500ms = 250次2ms周期）
+            if (iap_complete_delay_counter >= 250) {
+                log_printf("YModem: delay completed, starting firmware verification and copy...\r\n");
+                uint32_t file_size = YMode_Get_File_Size(&gYModemHandler);
+                log_printf("Firmware size: %d bytes.\r\n", file_size);
+                if (HAL_OK == FW_Firmware_Verification(FLASH_DL_START_ADDR, file_size)) {
+                    log_printf("CRC32 verification was successful\r\n");
+                    if (OP_FLASH_OK == OP_Flash_Copy(FLASH_DL_START_ADDR, FLASH_APP_START_ADDR, FLASH_APP_SIZE)) { //! 将App下载缓存区的固件搬运到App区
+                        log_printf("The firmware copy to the app area successfully.\r\n");
+                        log_printf("Jump to the application.\r\n");
+                        HAL_Delay(500);
+                        IAP_Ready_To_Jump_App(); //! 跳转App
+                    }
+                } else {
+                    log_printf("CRC32 verification failed\r\n");
+                    //! 重要：重置状态和YModem处理器，准备下次传输
+                    log_printf("YModem: resetting for next transmission...\r\n");
+                    iap_complete_pending = false;
+                    iap_complete_delay_counter = 0;
+                    YModem_Reset(&gYModemHandler);
                 }
-            } else {
-                log_printf("CRC32 verification failed\r\n");
-                //! 重要：立即重置YModem处理器，准备下次传输
-                log_printf("YModem: resetting for next transmission...\r\n");
-                YModem_Reset(&gYModemHandler);
             }
         } else if (gYModemHandler.state == YMODEM_STATE_ERROR) {
             log_printf("YModem: transmission error, reset protocol processor.\r\n"); //! 传输出错，重置协议处理器
+            //! 重置延迟状态
+            iap_complete_pending = false;
+            iap_complete_delay_counter = 0;
             YModem_Reset(&gYModemHandler);
         }
 

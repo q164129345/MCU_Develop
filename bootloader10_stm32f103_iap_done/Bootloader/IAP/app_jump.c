@@ -99,7 +99,7 @@ void IAP_Ready_To_Jump_App(void)
 {
     /*! 第二次进入，跳转至App */
     if (IAP_GetUpdateFlag() == BOOTLOADER_RESET_MAGIC_WORD) {
-        log_printf("The second time enter this function, clean the flag and then Jump to Application.\n");
+        //log_printf("The second time enter this function, clean the flag and then Jump to Application.\n");
         
         /*! 保证RTT打印完log(延迟约1ms) */
         Delay_MS_By_NOP(1);
@@ -110,7 +110,7 @@ void IAP_Ready_To_Jump_App(void)
         /*! 跳转App */
         IAP_JumpToApp(FLASH_APP_START_ADDR);
     } else {
-        log_printf("The first time enter this function, clean up the MCU environment.\n");
+        //log_printf("The first time enter this function, clean up the MCU environment.\n");
         
         /*! 保证RTT打印完log(延迟约1ms) */
         Delay_MS_By_NOP(1);

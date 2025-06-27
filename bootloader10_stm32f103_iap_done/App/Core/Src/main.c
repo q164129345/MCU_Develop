@@ -25,6 +25,7 @@
 #include "myUsartDrive/myUsartDrive_reg.h"
 #include "bsp_systick/bsp_systick.h"
 #include "MultiTimer.h"
+#include "retarget_rtt.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -70,6 +71,8 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+  Retarget_RTT_Init();
+  log_printf("App Start.\r\n");
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -191,11 +194,14 @@ void Timer1_Callback(MultiTimer *timer, void *userData)
 void Timer2_Callback(MultiTimer *timer, void *userData)
 {
     //! 调试代码
-    const char *msg = "0123456789_App_Version:2025.06.26";
+    const char *msg = "0123456789_App_Version:2025.06.27";
     uint16_t status = USART1_Put_TxData_To_Ringbuffer(msg, strlen(msg));
     
     //! 心跳LED
     LL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
+    
+    //! 打印RTT log
+    log_printf("App Running.\r\n");
     
     //! 重新启动定时器(500ms)
     MultiTimerStart(timer, 500, Timer2_Callback, NULL);

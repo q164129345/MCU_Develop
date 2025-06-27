@@ -1,7 +1,7 @@
 #include "retarget_rtt.h"
 
 //! RTT缓存
-static uint8_t RTT_BufferUp0[256] = {0,};
+//static uint8_t RTT_BufferUp0[256] = {0,};
 
 /**
   * @brief  重定向printf输出到RTT通道0
@@ -26,11 +26,11 @@ int fputc(int ch, FILE *f)
 void Retarget_RTT_Init(void)
 {
     //! 配置MCU -> PC缓冲区（上行缓存区）
-    SEGGER_RTT_ConfigUpBuffer(0,                            //! 通道0
-                            "Buffer0Up",                    //! 通道名字
-                            (uint8_t*)&RTT_BufferUp0[0],    //! 缓存地址
-                            sizeof(RTT_BufferUp0),          //! 缓存大小
-                            SEGGER_RTT_MODE_NO_BLOCK_SKIP); //! 阻塞
+    // SEGGER_RTT_ConfigUpBuffer(0,                            //! 通道0
+    //                         "Buffer0Up",                    //! 通道名字
+    //                         (uint8_t*)&RTT_BufferUp0[0],    //! 缓存地址
+    //                         sizeof(RTT_BufferUp0),          //! 缓存大小
+    //                         SEGGER_RTT_MODE_NO_BLOCK_SKIP); //! 阻塞
     SEGGER_RTT_SetTerminal(0); //! 设置终端0
 }
 
