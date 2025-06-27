@@ -1,3 +1,33 @@
+/**
+ * @file    bootloader_define.h
+ * @brief   Bootloader核心定义与配置常量
+ * @author  Wallace.zhang
+ * @date    2025-06-27
+ * @version 1.0.0
+ * 
+ * @details
+ * 本头文件定义了Bootloader系统的核心常量和配置参数，主要包括：
+ * - 编译器兼容性检测宏定义
+ * - 固件更新标志位的内存地址配置
+ * - Bootloader与App程序间通信的魔术字定义
+ * - 系统启动模式控制常量
+ * 
+ * @note
+ * 关键设计要点：
+ * - 固件更新标志变量地址必须与App程序保持严格一致
+ * - 魔术字用于区分不同的启动模式和跳转流程
+ * - 支持ARM Compiler 5和6的变量定位语法差异
+ * 
+ * @attention
+ * - FIRMWARE_UPDATE_VAR_ADDR地址必须位于RAM区域且与App程序协调
+ * - 魔术字定义一旦确定不建议随意修改，需与App程序同步更新
+ * - 编译器检测宏用于处理不同版本ARM编译器的语法差异
+ * 
+ * @copyright
+ * (C) 2025 Wallace.zhang. 保留所有权利.
+ * @license SPDX-License-Identifier: MIT
+ */
+
 #ifndef __BOOTLOADER_DEFINE_H__
 #define __BOOTLOADER_DEFINE_H__
 
