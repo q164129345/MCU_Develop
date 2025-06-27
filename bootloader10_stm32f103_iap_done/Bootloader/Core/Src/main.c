@@ -95,7 +95,9 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+#if LOG_ENABLE
   Retarget_RTT_Init(); //! RTT重定向printf
+#endif
   log_printf("Entering the main initialization of the bootloader.\n");
   uint32_t fre = 0;
   /* USER CODE END 1 */

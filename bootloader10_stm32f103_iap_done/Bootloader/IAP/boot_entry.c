@@ -73,8 +73,8 @@ static void _SystemStart(void)
         //! --- Case 3: 默认启动App ---
         IAP_SetUpdateFlag(0); // 清除可能存在的无效标志
         if (Is_App_Valid_Enhanced()) {
-            //log_printf("App is valid, jump to app.\n");
-            IAP_Ready_To_Jump_App(); // 此函数不会返回
+            log_printf("App is valid, jump to app.\n");
+            //IAP_Ready_To_Jump_App(); // 此函数不会返回
         } else {
             log_printf("App is invalid, enter IAP mode.\r\n");
             //! 不做任何事，直接返回，让程序执行到main(),进入IAP流程
