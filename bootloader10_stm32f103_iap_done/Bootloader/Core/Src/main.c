@@ -142,42 +142,38 @@ int main(void)
     
     //! 2ms
     if (0 == fre % 2) {
-        //! 处理已经接收的数据
         //! YModem协议处理 - 逐字节从ringbuffer里拿出数据来解析
         while(USART_Get_The_Existing_Amount_Of_Data(&gUsart1Drv)) {
             uint8_t data;
             if (USART_Take_A_Piece_Of_Data(&gUsart1Drv, &data)) {
-                YModem_Result_t ymodem_result = YModem_Run(&gYModemHandler, data);
-                
-                //! 检查YModem传输结果
-                if (ymodem_result == YMODEM_RESULT_COMPLETE) {
-                    log_printf("YModem: IAP upgrade completed. Prepare to verify and copy the firmware.\r\n");
-                    //! 这里可以触发固件校验和复制流程
-                    
-                    //! 重要：立即重置YModem处理器，准备下次传输
-                    log_printf("YModem: resetting for next transmission...\r\n");
-                    YModem_Reset(&gYModemHandler);
-                    
-                    //! 清空串口接收缓冲区，防止残留数据干扰
-                    //! 通过读取所有数据来清空RingBuffer
-                    uint8_t dummy_data;
-                    while(USART_Get_The_Existing_Amount_Of_Data(&gUsart1Drv)) {
-                        USART_Take_A_Piece_Of_Data(&gUsart1Drv, &dummy_data);
-                    }
-                    
-                } else if (ymodem_result == YMODEM_RESULT_ERROR) {
-                    log_printf("YModem: transmission error, reset protocol processor.\r\n"); //! 传输出错，重置协议处理器
-                    YModem_Reset(&gYModemHandler);
-                    
-                    //! 清空串口接收缓冲区，防止残留数据干扰
-                    uint8_t dummy_data;
-                    while(USART_Get_The_Existing_Amount_Of_Data(&gUsart1Drv)) {
-                        USART_Take_A_Piece_Of_Data(&gUsart1Drv, &dummy_data);
-                    }
-                }
+                YModem_Run(&gYModemHandler, data);
             }
         }
-        
+
+        //! 根据YModem协议的状态，处理IAP流程
+        if (gYModemHandler.state == YMODEM_STATE_COMPLETE) {
+            log_printf("YModem: IAP upgrade completed. Prepare to verify and copy the firmware.\r\n");
+            uint32_t file_size = YMode_Get_File_Size(&gYModemHandler);
+            log_printf("Firmware size: %d bytes.\r\n", file_size);
+            if (HAL_OK == FW_Firmware_Verification(FLASH_DL_START_ADDR, file_size)) {
+                log_printf("CRC32 verification was successful\r\n");
+                if (OP_FLASH_OK == OP_Flash_Copy(FLASH_DL_START_ADDR, FLASH_APP_START_ADDR, FLASH_APP_SIZE)) { //! 将App下载缓存区的固件搬运到App区
+                    log_printf("The firmware copy to the app area successfully.\r\n");
+                    log_printf("Jump to the application.\r\n");
+                    HAL_Delay(500);
+                    IAP_Ready_To_Jump_App(); //! 跳转App
+                }
+            } else {
+                log_printf("CRC32 verification failed\r\n");
+                //! 重要：立即重置YModem处理器，准备下次传输
+                log_printf("YModem: resetting for next transmission...\r\n");
+                YModem_Reset(&gYModemHandler);
+            }
+        } else if (gYModemHandler.state == YMODEM_STATE_ERROR) {
+            log_printf("YModem: transmission error, reset protocol processor.\r\n"); //! 传输出错，重置协议处理器
+            YModem_Reset(&gYModemHandler);
+        }
+
         //! 检查是否有YModem响应数据需要发送
         if (YModem_Has_Response(&gYModemHandler)) {
             uint8_t response_buffer[16];

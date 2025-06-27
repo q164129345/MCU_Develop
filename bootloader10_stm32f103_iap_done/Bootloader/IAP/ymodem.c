@@ -645,4 +645,21 @@ uint8_t YModem_Get_Response(YModem_Handler_t *handler, uint8_t *buffer, uint8_t 
     return copy_length;
 }
 
+/**
+ * @brief 获取当前文件大小
+ * @param handler: YModem处理器指针
+ * @return uint32_t: 当前正在传输的文件大小（字节）
+ * 
+ * @note 就像查看包裹上的"重量标签"，告诉你这个文件总共有多大
+ *       - 在接收到文件信息包后，这个值才会有效
+ *       - 返回0表示还没有接收到文件信息或文件大小为0
+ *       - 常用于显示传输进度或验证传输完整性
+ */
+uint32_t YMode_Get_File_Size(YModem_Handler_t *handler)
+{
+    return handler->file_size;
+}
+
+
+
 

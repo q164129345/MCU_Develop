@@ -97,19 +97,19 @@ int main(void)
 
   /* USER CODE BEGIN SysInit */
   
-  SCB->VTOR = FLASH_APP_START_ADDR; //! ÉèÖÃÖĞ¶ÏÏòÁ¿±í
-  __enable_irq(); //! ¿ªÆôÈ«¾ÖÖĞ¶Ï
+  SCB->VTOR = FLASH_APP_START_ADDR; //! è®¾ç½®ä¸­æ–­å‘é‡è¡¨
+  __enable_irq(); //! å¼€å¯å…¨å±€ä¸­æ–­
   
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-  SysTick_Init();      //! ³õÊ¼»¯SysTick£¬Ê¹ÄÜ1msÖĞ¶Ï
-  //Retarget_RTT_Init(); //! ³õÊ¼»¯RTTµÄÍ¨µÀ0²¢ÖØ¶¨Ïòprintf
-  USART1_Configure();  //! ³õÊ¼»¯USART1
+  SysTick_Init();      //! åˆå§‹åŒ–SysTickï¼Œä½¿èƒ½1msä¸­æ–­
+  //Retarget_RTT_Init(); //! åˆå§‹åŒ–RTTçš„é€šé“0å¹¶é‡å®šå‘printf
+  USART1_Configure();  //! åˆå§‹åŒ–USART1
  
-  MultiTimerInstall(SysTick_GetTicks); //! ¸øMultiTimerÌá¹©1msµÄÊ±¼ä´Á
+  MultiTimerInstall(SysTick_GetTicks); //! ç»™MultiTimeræä¾›1msçš„æ—¶é—´æˆ³
   MultiTimerStart(&gTimer1, 5, Timer1_Callback, NULL);
   MultiTimerStart(&gTimer2, 500, Timer2_Callback, NULL);
   /* USER CODE END 2 */
@@ -120,7 +120,7 @@ int main(void)
   {
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
-    MultiTimerYield(); //! MultiTimerÄ£¿éÔËĞĞ
+    MultiTimerYield(); //! MultiTimeræ¨¡å—è¿è¡Œ
   }
   /* USER CODE END 3 */
 }
@@ -166,38 +166,38 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 /**
-  * @brief  Timer1¶¨Ê±»Øµ÷º¯Êı
-  * @note   Ö÷ÒªÓÃÓÚÖÜÆÚĞÔÔËĞĞUSART1Ä£¿é´¦Àíº¯Êı£¬²¢ÖØĞÂÆô¶¯¶¨Ê±Æ÷£¬ÊµÏÖÖÜÆÚĞÔµ÷¶È
-  * @param  timer    ¶¨Ê±Æ÷Ö¸Õë£¬ÓÉMultiTimer¿â×Ô¶¯´«µİ
-  * @param  userData ÓÃ»§Êı¾İÖ¸Õë£¨±¾º¯ÊıÎ´Ê¹ÓÃ£¬¿ÉÎªNULL£©
+  * @brief  Timer1å®šæ—¶å›è°ƒå‡½æ•°
+  * @note   ä¸»è¦ç”¨äºå‘¨æœŸæ€§è¿è¡ŒUSART1æ¨¡å—å¤„ç†å‡½æ•°ï¼Œå¹¶é‡æ–°å¯åŠ¨å®šæ—¶å™¨ï¼Œå®ç°å‘¨æœŸæ€§è°ƒåº¦
+  * @param  timer    å®šæ—¶å™¨æŒ‡é’ˆï¼Œç”±MultiTimeråº“è‡ªåŠ¨ä¼ é€’
+  * @param  userData ç”¨æˆ·æ•°æ®æŒ‡é’ˆï¼ˆæœ¬å‡½æ•°æœªä½¿ç”¨ï¼Œå¯ä¸ºNULLï¼‰
   * @retval None
   */
 void Timer1_Callback(MultiTimer *timer, void *userData)
 {
-    //! USART1Ä£¿éÔËĞĞ
+    //! USART1æ¨¡å—è¿è¡Œ
     USART1_Module_Run();
     
-    //! ÖØĞÂÆô¶¯¶¨Ê±Æ÷£¨5ms)
+    //! é‡æ–°å¯åŠ¨å®šæ—¶å™¨ï¼ˆ5ms)
     MultiTimerStart(timer, 5, Timer1_Callback, NULL);
 }
 
 /**
-  * @brief  Timer2¶¨Ê±»Øµ÷º¯Êı
-  * @note   Ö÷ÒªÓÃÓÚ²âÊÔ´®¿Ú·¢ËÍÓëLEDĞÄÌøµÆÇĞ»»£¬²¢ÖØĞÂÆô¶¯¶¨Ê±Æ÷
-  * @param  timer    ¶¨Ê±Æ÷Ö¸Õë£¬ÓÉMultiTimer¿â×Ô¶¯´«µİ
-  * @param  userData ÓÃ»§Êı¾İÖ¸Õë£¨±¾º¯ÊıÎ´Ê¹ÓÃ£¬¿ÉÎªNULL£©
+  * @brief  Timer2å®šæ—¶å›è°ƒå‡½æ•°
+  * @note   ä¸»è¦ç”¨äºæµ‹è¯•ä¸²å£å‘é€ä¸LEDå¿ƒè·³ç¯åˆ‡æ¢ï¼Œå¹¶é‡æ–°å¯åŠ¨å®šæ—¶å™¨
+  * @param  timer    å®šæ—¶å™¨æŒ‡é’ˆï¼Œç”±MultiTimeråº“è‡ªåŠ¨ä¼ é€’
+  * @param  userData ç”¨æˆ·æ•°æ®æŒ‡é’ˆï¼ˆæœ¬å‡½æ•°æœªä½¿ç”¨ï¼Œå¯ä¸ºNULLï¼‰
   * @retval None
   */
 void Timer2_Callback(MultiTimer *timer, void *userData)
 {
-    //! µ÷ÊÔ´úÂë
-    const char *msg = "0123456789_App_Version:0.0.0.2";
+    //! è°ƒè¯•ä»£ç 
+    const char *msg = "0123456789_App_Version:2025.06.26";
     uint16_t status = USART1_Put_TxData_To_Ringbuffer(msg, strlen(msg));
     
-    //! ĞÄÌøLED
+    //! å¿ƒè·³LED
     LL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
     
-    //! ÖØĞÂÆô¶¯¶¨Ê±Æ÷(500ms)
+    //! é‡æ–°å¯åŠ¨å®šæ—¶å™¨(500ms)
     MultiTimerStart(timer, 500, Timer2_Callback, NULL);
 }
 

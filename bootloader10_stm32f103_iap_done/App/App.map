@@ -742,26 +742,26 @@ Image Symbol Table
     [Anonymous Symbol]                       0x08010a84   Section        0  system_stm32f1xx.o(.text.SystemInit)
     [Anonymous Symbol]                       0x08010a88   Section        0  main.o(.text.Timer1_Callback)
     [Anonymous Symbol]                       0x08010ab0   Section        0  main.o(.text.Timer2_Callback)
-    [Anonymous Symbol]                       0x08010b18   Section        0  myusartdrive_reg.o(.text.USART1_Configure)
-    [Anonymous Symbol]                       0x08010d54   Section        0  myusartdrive_reg.o(.text.USART1_IRQHandler)
-    [Anonymous Symbol]                       0x08010df4   Section        0  myusartdrive_reg.o(.text.USART1_Module_Run)
-    USART1_Put_Data_Into_Ringbuffer          0x08010eb9   Thumb Code   130  myusartdrive_reg.o(.text.USART1_Put_Data_Into_Ringbuffer)
-    [Anonymous Symbol]                       0x08010eb8   Section        0  myusartdrive_reg.o(.text.USART1_Put_Data_Into_Ringbuffer)
-    [Anonymous Symbol]                       0x08010f3c   Section        0  myusartdrive_reg.o(.text.USART1_Put_TxData_To_Ringbuffer)
-    [Anonymous Symbol]                       0x08010ff0   Section        0  mycandrive_reg.o(.text.USB_HP_CAN1_TX_IRQHandler)
-    [Anonymous Symbol]                       0x080110ac   Section        0  stm32f1xx_it.o(.text.UsageFault_Handler)
-    [Anonymous Symbol]                       0x080110b0   Section        0  lwrb.o(.text.lwrb_get_free)
-    [Anonymous Symbol]                       0x080110d0   Section        0  lwrb.o(.text.lwrb_get_full)
-    [Anonymous Symbol]                       0x080110f0   Section        0  lwrb.o(.text.lwrb_init)
-    [Anonymous Symbol]                       0x08011114   Section        0  lwrb.o(.text.lwrb_peek)
-    [Anonymous Symbol]                       0x0801119c   Section        0  lwrb.o(.text.lwrb_read)
-    [Anonymous Symbol]                       0x08011248   Section        0  lwrb.o(.text.lwrb_reset)
-    [Anonymous Symbol]                       0x08011274   Section        0  lwrb.o(.text.lwrb_skip)
-    [Anonymous Symbol]                       0x080112c0   Section        0  lwrb.o(.text.lwrb_write)
-    [Anonymous Symbol]                       0x0801136c   Section        0  main.o(.text.main)
-    i.__scatterload_copy                     0x08011456   Section       14  handlers.o(i.__scatterload_copy)
-    i.__scatterload_null                     0x08011464   Section        2  handlers.o(i.__scatterload_null)
-    i.__scatterload_zeroinit                 0x08011466   Section       14  handlers.o(i.__scatterload_zeroinit)
+    [Anonymous Symbol]                       0x08010b1c   Section        0  myusartdrive_reg.o(.text.USART1_Configure)
+    [Anonymous Symbol]                       0x08010d58   Section        0  myusartdrive_reg.o(.text.USART1_IRQHandler)
+    [Anonymous Symbol]                       0x08010df8   Section        0  myusartdrive_reg.o(.text.USART1_Module_Run)
+    USART1_Put_Data_Into_Ringbuffer          0x08010ebd   Thumb Code   130  myusartdrive_reg.o(.text.USART1_Put_Data_Into_Ringbuffer)
+    [Anonymous Symbol]                       0x08010ebc   Section        0  myusartdrive_reg.o(.text.USART1_Put_Data_Into_Ringbuffer)
+    [Anonymous Symbol]                       0x08010f40   Section        0  myusartdrive_reg.o(.text.USART1_Put_TxData_To_Ringbuffer)
+    [Anonymous Symbol]                       0x08010ff4   Section        0  mycandrive_reg.o(.text.USB_HP_CAN1_TX_IRQHandler)
+    [Anonymous Symbol]                       0x080110b0   Section        0  stm32f1xx_it.o(.text.UsageFault_Handler)
+    [Anonymous Symbol]                       0x080110b4   Section        0  lwrb.o(.text.lwrb_get_free)
+    [Anonymous Symbol]                       0x080110d4   Section        0  lwrb.o(.text.lwrb_get_full)
+    [Anonymous Symbol]                       0x080110f4   Section        0  lwrb.o(.text.lwrb_init)
+    [Anonymous Symbol]                       0x08011118   Section        0  lwrb.o(.text.lwrb_peek)
+    [Anonymous Symbol]                       0x080111a0   Section        0  lwrb.o(.text.lwrb_read)
+    [Anonymous Symbol]                       0x0801124c   Section        0  lwrb.o(.text.lwrb_reset)
+    [Anonymous Symbol]                       0x08011278   Section        0  lwrb.o(.text.lwrb_skip)
+    [Anonymous Symbol]                       0x080112c4   Section        0  lwrb.o(.text.lwrb_write)
+    [Anonymous Symbol]                       0x08011370   Section        0  main.o(.text.main)
+    i.__scatterload_copy                     0x0801145a   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x08011468   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x0801146a   Section       14  handlers.o(i.__scatterload_zeroinit)
     .L_MergedGlobals                         0x20000010   Data          48  main.o(.bss..L_MergedGlobals)
     [Anonymous Symbol]                       0x20000010   Section        0  main.o(.bss..L_MergedGlobals)
     .L_MergedGlobals                         0x20000040   Data          80  mycandrive_reg.o(.bss..L_MergedGlobals)
@@ -884,26 +884,26 @@ Image Symbol Table
     SystemInit                               0x08010a85   Thumb Code     2  system_stm32f1xx.o(.text.SystemInit)
     Timer1_Callback                          0x08010a89   Thumb Code    40  main.o(.text.Timer1_Callback)
     Timer2_Callback                          0x08010ab1   Thumb Code    72  main.o(.text.Timer2_Callback)
-    USART1_Configure                         0x08010b19   Thumb Code   572  myusartdrive_reg.o(.text.USART1_Configure)
-    USART1_IRQHandler                        0x08010d55   Thumb Code   158  myusartdrive_reg.o(.text.USART1_IRQHandler)
-    USART1_Module_Run                        0x08010df5   Thumb Code   196  myusartdrive_reg.o(.text.USART1_Module_Run)
-    USART1_Put_TxData_To_Ringbuffer          0x08010f3d   Thumb Code   180  myusartdrive_reg.o(.text.USART1_Put_TxData_To_Ringbuffer)
-    USB_HP_CAN1_TX_IRQHandler                0x08010ff1   Thumb Code   188  mycandrive_reg.o(.text.USB_HP_CAN1_TX_IRQHandler)
-    UsageFault_Handler                       0x080110ad   Thumb Code     2  stm32f1xx_it.o(.text.UsageFault_Handler)
-    lwrb_get_free                            0x080110b1   Thumb Code    32  lwrb.o(.text.lwrb_get_free)
-    lwrb_get_full                            0x080110d1   Thumb Code    32  lwrb.o(.text.lwrb_get_full)
-    lwrb_init                                0x080110f1   Thumb Code    36  lwrb.o(.text.lwrb_init)
-    lwrb_peek                                0x08011115   Thumb Code   134  lwrb.o(.text.lwrb_peek)
-    lwrb_read                                0x0801119d   Thumb Code   170  lwrb.o(.text.lwrb_read)
-    lwrb_reset                               0x08011249   Thumb Code    42  lwrb.o(.text.lwrb_reset)
-    lwrb_skip                                0x08011275   Thumb Code    76  lwrb.o(.text.lwrb_skip)
-    lwrb_write                               0x080112c1   Thumb Code   170  lwrb.o(.text.lwrb_write)
-    main                                     0x0801136d   Thumb Code   234  main.o(.text.main)
-    __scatterload_copy                       0x08011457   Thumb Code    14  handlers.o(i.__scatterload_copy)
-    __scatterload_null                       0x08011465   Thumb Code     2  handlers.o(i.__scatterload_null)
-    __scatterload_zeroinit                   0x08011467   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
-    Region$$Table$$Base                      0x08011474   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x08011494   Number         0  anon$$obj.o(Region$$Table)
+    USART1_Configure                         0x08010b1d   Thumb Code   572  myusartdrive_reg.o(.text.USART1_Configure)
+    USART1_IRQHandler                        0x08010d59   Thumb Code   158  myusartdrive_reg.o(.text.USART1_IRQHandler)
+    USART1_Module_Run                        0x08010df9   Thumb Code   196  myusartdrive_reg.o(.text.USART1_Module_Run)
+    USART1_Put_TxData_To_Ringbuffer          0x08010f41   Thumb Code   180  myusartdrive_reg.o(.text.USART1_Put_TxData_To_Ringbuffer)
+    USB_HP_CAN1_TX_IRQHandler                0x08010ff5   Thumb Code   188  mycandrive_reg.o(.text.USB_HP_CAN1_TX_IRQHandler)
+    UsageFault_Handler                       0x080110b1   Thumb Code     2  stm32f1xx_it.o(.text.UsageFault_Handler)
+    lwrb_get_free                            0x080110b5   Thumb Code    32  lwrb.o(.text.lwrb_get_free)
+    lwrb_get_full                            0x080110d5   Thumb Code    32  lwrb.o(.text.lwrb_get_full)
+    lwrb_init                                0x080110f5   Thumb Code    36  lwrb.o(.text.lwrb_init)
+    lwrb_peek                                0x08011119   Thumb Code   134  lwrb.o(.text.lwrb_peek)
+    lwrb_read                                0x080111a1   Thumb Code   170  lwrb.o(.text.lwrb_read)
+    lwrb_reset                               0x0801124d   Thumb Code    42  lwrb.o(.text.lwrb_reset)
+    lwrb_skip                                0x08011279   Thumb Code    76  lwrb.o(.text.lwrb_skip)
+    lwrb_write                               0x080112c5   Thumb Code   170  lwrb.o(.text.lwrb_write)
+    main                                     0x08011371   Thumb Code   234  main.o(.text.main)
+    __scatterload_copy                       0x0801145b   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x08011469   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x0801146b   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    Region$$Table$$Base                      0x08011478   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x08011498   Number         0  anon$$obj.o(Region$$Table)
     SystemCoreClock                          0x20000008   Data           4  system_stm32f1xx.o(.data.SystemCoreClock)
     gTimer1                                  0x20000010   Data          24  main.o(.bss..L_MergedGlobals)
     gTimer2                                  0x20000028   Data          24  main.o(.bss..L_MergedGlobals)
@@ -941,7 +941,7 @@ Memory Map of the image
 
   Load Region LR_IROM1 (Base: 0x08010000, Size: 0x000014a0, Max: 0x00030000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Exec base: 0x08010000, Load base: 0x08010000, Size: 0x00001494, Max: 0x00030000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08010000, Load base: 0x08010000, Size: 0x00001498, Max: 0x00030000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -998,34 +998,34 @@ Memory Map of the image
     0x08010a84   0x08010a84   0x00000002   Code   RO          150    .text.SystemInit    system_stm32f1xx.o
     0x08010a86   0x08010a86   0x00000002   PAD
     0x08010a88   0x08010a88   0x00000028   Code   RO           15    .text.Timer1_Callback  main.o
-    0x08010ab0   0x08010ab0   0x00000068   Code   RO           17    .text.Timer2_Callback  main.o
-    0x08010b18   0x08010b18   0x0000023c   Code   RO          208    .text.USART1_Configure  myusartdrive_reg.o
-    0x08010d54   0x08010d54   0x0000009e   Code   RO          216    .text.USART1_IRQHandler  myusartdrive_reg.o
-    0x08010df2   0x08010df2   0x00000002   PAD
-    0x08010df4   0x08010df4   0x000000c4   Code   RO          206    .text.USART1_Module_Run  myusartdrive_reg.o
-    0x08010eb8   0x08010eb8   0x00000082   Code   RO          218    .text.USART1_Put_Data_Into_Ringbuffer  myusartdrive_reg.o
-    0x08010f3a   0x08010f3a   0x00000002   PAD
-    0x08010f3c   0x08010f3c   0x000000b4   Code   RO          204    .text.USART1_Put_TxData_To_Ringbuffer  myusartdrive_reg.o
-    0x08010ff0   0x08010ff0   0x000000bc   Code   RO          183    .text.USB_HP_CAN1_TX_IRQHandler  mycandrive_reg.o
-    0x080110ac   0x080110ac   0x00000002   Code   RO           48    .text.UsageFault_Handler  stm32f1xx_it.o
-    0x080110ae   0x080110ae   0x00000002   PAD
-    0x080110b0   0x080110b0   0x00000020   Code   RO          263    .text.lwrb_get_free  lwrb.o
-    0x080110d0   0x080110d0   0x00000020   Code   RO          269    .text.lwrb_get_full  lwrb.o
-    0x080110f0   0x080110f0   0x00000024   Code   RO          247    .text.lwrb_init     lwrb.o
-    0x08011114   0x08011114   0x00000086   Code   RO          271    .text.lwrb_peek     lwrb.o
-    0x0801119a   0x0801119a   0x00000002   PAD
-    0x0801119c   0x0801119c   0x000000aa   Code   RO          265    .text.lwrb_read     lwrb.o
-    0x08011246   0x08011246   0x00000002   PAD
-    0x08011248   0x08011248   0x0000002a   Code   RO          273    .text.lwrb_reset    lwrb.o
-    0x08011272   0x08011272   0x00000002   PAD
-    0x08011274   0x08011274   0x0000004c   Code   RO          279    .text.lwrb_skip     lwrb.o
-    0x080112c0   0x080112c0   0x000000aa   Code   RO          259    .text.lwrb_write    lwrb.o
-    0x0801136a   0x0801136a   0x00000002   PAD
-    0x0801136c   0x0801136c   0x000000ea   Code   RO           11    .text.main          main.o
-    0x08011456   0x08011456   0x0000000e   Code   RO          450    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x08011464   0x08011464   0x00000002   Code   RO          451    i.__scatterload_null  mc_w.l(handlers.o)
-    0x08011466   0x08011466   0x0000000e   Code   RO          452    i.__scatterload_zeroinit  mc_w.l(handlers.o)
-    0x08011474   0x08011474   0x00000020   Data   RO          449    Region$$Table       anon$$obj.o
+    0x08010ab0   0x08010ab0   0x0000006c   Code   RO           17    .text.Timer2_Callback  main.o
+    0x08010b1c   0x08010b1c   0x0000023c   Code   RO          208    .text.USART1_Configure  myusartdrive_reg.o
+    0x08010d58   0x08010d58   0x0000009e   Code   RO          216    .text.USART1_IRQHandler  myusartdrive_reg.o
+    0x08010df6   0x08010df6   0x00000002   PAD
+    0x08010df8   0x08010df8   0x000000c4   Code   RO          206    .text.USART1_Module_Run  myusartdrive_reg.o
+    0x08010ebc   0x08010ebc   0x00000082   Code   RO          218    .text.USART1_Put_Data_Into_Ringbuffer  myusartdrive_reg.o
+    0x08010f3e   0x08010f3e   0x00000002   PAD
+    0x08010f40   0x08010f40   0x000000b4   Code   RO          204    .text.USART1_Put_TxData_To_Ringbuffer  myusartdrive_reg.o
+    0x08010ff4   0x08010ff4   0x000000bc   Code   RO          183    .text.USB_HP_CAN1_TX_IRQHandler  mycandrive_reg.o
+    0x080110b0   0x080110b0   0x00000002   Code   RO           48    .text.UsageFault_Handler  stm32f1xx_it.o
+    0x080110b2   0x080110b2   0x00000002   PAD
+    0x080110b4   0x080110b4   0x00000020   Code   RO          263    .text.lwrb_get_free  lwrb.o
+    0x080110d4   0x080110d4   0x00000020   Code   RO          269    .text.lwrb_get_full  lwrb.o
+    0x080110f4   0x080110f4   0x00000024   Code   RO          247    .text.lwrb_init     lwrb.o
+    0x08011118   0x08011118   0x00000086   Code   RO          271    .text.lwrb_peek     lwrb.o
+    0x0801119e   0x0801119e   0x00000002   PAD
+    0x080111a0   0x080111a0   0x000000aa   Code   RO          265    .text.lwrb_read     lwrb.o
+    0x0801124a   0x0801124a   0x00000002   PAD
+    0x0801124c   0x0801124c   0x0000002a   Code   RO          273    .text.lwrb_reset    lwrb.o
+    0x08011276   0x08011276   0x00000002   PAD
+    0x08011278   0x08011278   0x0000004c   Code   RO          279    .text.lwrb_skip     lwrb.o
+    0x080112c4   0x080112c4   0x000000aa   Code   RO          259    .text.lwrb_write    lwrb.o
+    0x0801136e   0x0801136e   0x00000002   PAD
+    0x08011370   0x08011370   0x000000ea   Code   RO           11    .text.main          main.o
+    0x0801145a   0x0801145a   0x0000000e   Code   RO          450    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x08011468   0x08011468   0x00000002   Code   RO          451    i.__scatterload_null  mc_w.l(handlers.o)
+    0x0801146a   0x0801146a   0x0000000e   Code   RO          452    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x08011478   0x08011478   0x00000020   Data   RO          449    Region$$Table       anon$$obj.o
 
 
     Execution Region RW_IRAM2 (Exec base: 0x20000000, Load base: 0x080114a0, Size: 0x00000000, Max: 0x00000008, ABSOLUTE, UNINIT)
@@ -1061,7 +1061,7 @@ Image component sizes
        106          0          0          0          8       3892   bsp_systick.o
        146          0          0          0          0       2046   gpio.o
        692          0          0          0          0      12909   lwrb.o
-       660         32          0          0         48       7921   main.o
+       664         36          0          0         48       7921   main.o
        292          0          0          0          8       2456   multitimer.o
       1006          0          0          0         80      13916   mycandrive_reg.o
       1554          0          0          0       6224      11379   myusartdrive_reg.o
@@ -1072,7 +1072,7 @@ Image component sizes
          2          0          0          4          0       1602   system_stm32f1xx.o
 
     ----------------------------------------------------------------------
-      4798         40        336          4       7396      69172   Object Totals
+      4802         44        336          4       7396      69172   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         42          0          0          0          4          0   (incl. Padding)
 
@@ -1112,15 +1112,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      4932         58        336          4       7396      69260   Grand Totals
-      4932         58        336          4       7396      69260   ELF Image Totals
-      4932         58        336          4          0          0   ROM Totals
+      4936         62        336          4       7396      69260   Grand Totals
+      4936         62        336          4       7396      69260   ELF Image Totals
+      4936         62        336          4          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 5268 (   5.14kB)
+    Total RO  Size (Code + RO Data)                 5272 (   5.15kB)
     Total RW  Size (RW Data + ZI Data)              7400 (   7.23kB)
-    Total ROM Size (Code + RO Data + RW Data)       5272 (   5.15kB)
+    Total ROM Size (Code + RO Data + RW Data)       5276 (   5.15kB)
 
 ==============================================================================
 
