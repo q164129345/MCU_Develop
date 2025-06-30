@@ -29,7 +29,7 @@ extern "C" {
 /** 
  * @brief USART RX buffer size definition (unit: bytes)
  */
-#define RX_BUFFER_SIZE 1024U
+#define RX_BUFFER_SIZE 2048U
 
 /** 
  * @brief USART TX buffer size definition (unit: bytes)
@@ -37,7 +37,7 @@ extern "C" {
 #define TX_BUFFER_SIZE 2048U
 
 /**
-  * @brief  ×èÈû·½Ê½·¢ËÍÒÔ NUL ½áÎ²µÄ×Ö·û´®
+  * @brief  é˜»å¡æ–¹å¼å‘é€ä»¥ NUL ç»“å°¾çš„å­—ç¬¦ä¸²
   */
 void USART1_SendString_Blocking(const char* str);
 
@@ -49,7 +49,7 @@ void USART1_SendString_Blocking(const char* str);
 void USART1_SendString_DMA(const uint8_t *data, uint16_t len);
 
 /**
-  * @brief   ½«Êı¾İĞ´Èë USART1 ·¢ËÍ ringbuffer ÖĞ
+  * @brief   å°†æ•°æ®å†™å…¥ USART1 å‘é€ ringbuffer ä¸­
   */
 uint8_t USART1_Put_TxData_To_Ringbuffer(const void* data, uint16_t len);
 

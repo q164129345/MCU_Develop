@@ -160,8 +160,8 @@ Section Cross References
     myusartdrive_reg.o(.ARM.exidx.text.USART1_Put_TxData_To_Ringbuffer) refers to myusartdrive_reg.o(.text.USART1_Put_TxData_To_Ringbuffer) for [Anonymous Symbol]
     myusartdrive_reg.o(.text.USART1_Module_Run) refers to myusartdrive_reg.o(.bss..L_MergedGlobals) for .L_MergedGlobals
     myusartdrive_reg.o(.text.USART1_Module_Run) refers to lwrb.o(.text.lwrb_get_full) for lwrb_get_full
-    myusartdrive_reg.o(.text.USART1_Module_Run) refers to myusartdrive_reg.o(.bss.tx_buffer) for tx_buffer
     myusartdrive_reg.o(.text.USART1_Module_Run) refers to lwrb.o(.text.lwrb_read) for lwrb_read
+    myusartdrive_reg.o(.text.USART1_Module_Run) refers to myusartdrive_reg.o(.bss.tx_buffer) for tx_buffer
     myusartdrive_reg.o(.ARM.exidx.text.USART1_Module_Run) refers to myusartdrive_reg.o(.text.USART1_Module_Run) for [Anonymous Symbol]
     myusartdrive_reg.o(.text.USART1_Configure) refers to myusartdrive_reg.o(.bss..L_MergedGlobals) for .L_MergedGlobals
     myusartdrive_reg.o(.text.USART1_Configure) refers to myusartdrive_reg.o(.bss.g_Usart1RxRB) for g_Usart1RxRB
@@ -1028,33 +1028,33 @@ Image Symbol Table
     [Anonymous Symbol]                       0x08010e94   Section        0  myusartdrive_reg.o(.text.USART1_Configure)
     [Anonymous Symbol]                       0x080110d0   Section        0  myusartdrive_reg.o(.text.USART1_IRQHandler)
     [Anonymous Symbol]                       0x08011170   Section        0  myusartdrive_reg.o(.text.USART1_Module_Run)
-    USART1_Put_Data_Into_Ringbuffer          0x08011235   Thumb Code   130  myusartdrive_reg.o(.text.USART1_Put_Data_Into_Ringbuffer)
-    [Anonymous Symbol]                       0x08011234   Section        0  myusartdrive_reg.o(.text.USART1_Put_Data_Into_Ringbuffer)
-    [Anonymous Symbol]                       0x080112b8   Section        0  myusartdrive_reg.o(.text.USART1_Put_TxData_To_Ringbuffer)
-    [Anonymous Symbol]                       0x0801136c   Section        0  mycandrive_reg.o(.text.USB_HP_CAN1_TX_IRQHandler)
-    [Anonymous Symbol]                       0x08011428   Section        0  stm32f1xx_it.o(.text.UsageFault_Handler)
-    [Anonymous Symbol]                       0x0801142c   Section        0  retarget_rtt.o(.text.fputc)
-    [Anonymous Symbol]                       0x0801143c   Section        0  lwrb.o(.text.lwrb_get_free)
-    [Anonymous Symbol]                       0x0801145c   Section        0  lwrb.o(.text.lwrb_get_full)
-    [Anonymous Symbol]                       0x0801147c   Section        0  lwrb.o(.text.lwrb_init)
-    [Anonymous Symbol]                       0x080114a0   Section        0  lwrb.o(.text.lwrb_peek)
-    [Anonymous Symbol]                       0x08011528   Section        0  lwrb.o(.text.lwrb_read)
-    [Anonymous Symbol]                       0x080115d4   Section        0  lwrb.o(.text.lwrb_reset)
-    [Anonymous Symbol]                       0x08011600   Section        0  lwrb.o(.text.lwrb_skip)
-    [Anonymous Symbol]                       0x0801164c   Section        0  lwrb.o(.text.lwrb_write)
-    [Anonymous Symbol]                       0x080116f8   Section        0  main.o(.text.main)
-    i.__0printf$3                            0x0801181c   Section        0  printf3.o(i.__0printf$3)
-    i.__scatterload_copy                     0x0801183c   Section       14  handlers.o(i.__scatterload_copy)
-    i.__scatterload_null                     0x0801184a   Section        2  handlers.o(i.__scatterload_null)
-    i.__scatterload_zeroinit                 0x0801184c   Section       14  handlers.o(i.__scatterload_zeroinit)
-    _printf_core                             0x0801185d   Thumb Code   436  printf3.o(i._printf_core)
-    i._printf_core                           0x0801185c   Section        0  printf3.o(i._printf_core)
-    _aTerminalId                             0x08011a14   Data          16  segger_rtt.o(.rodata.cst16)
-    [Anonymous Symbol]                       0x08011a14   Section        0  segger_rtt.o(.rodata.cst16)
-    .L.str.1                                 0x08011a24   Data          19  main.o(.rodata.str1.1)
-    [Anonymous Symbol]                       0x08011a24   Section        0  main.o(.rodata.str1.1)
-    .L.str                                   0x08011a37   Data           9  segger_rtt.o(.rodata.str1.1)
-    [Anonymous Symbol]                       0x08011a37   Section        0  segger_rtt.o(.rodata.str1.1)
+    USART1_Put_Data_Into_Ringbuffer          0x08011249   Thumb Code   130  myusartdrive_reg.o(.text.USART1_Put_Data_Into_Ringbuffer)
+    [Anonymous Symbol]                       0x08011248   Section        0  myusartdrive_reg.o(.text.USART1_Put_Data_Into_Ringbuffer)
+    [Anonymous Symbol]                       0x080112cc   Section        0  myusartdrive_reg.o(.text.USART1_Put_TxData_To_Ringbuffer)
+    [Anonymous Symbol]                       0x08011380   Section        0  mycandrive_reg.o(.text.USB_HP_CAN1_TX_IRQHandler)
+    [Anonymous Symbol]                       0x0801143c   Section        0  stm32f1xx_it.o(.text.UsageFault_Handler)
+    [Anonymous Symbol]                       0x08011440   Section        0  retarget_rtt.o(.text.fputc)
+    [Anonymous Symbol]                       0x08011450   Section        0  lwrb.o(.text.lwrb_get_free)
+    [Anonymous Symbol]                       0x08011470   Section        0  lwrb.o(.text.lwrb_get_full)
+    [Anonymous Symbol]                       0x08011490   Section        0  lwrb.o(.text.lwrb_init)
+    [Anonymous Symbol]                       0x080114b4   Section        0  lwrb.o(.text.lwrb_peek)
+    [Anonymous Symbol]                       0x0801153c   Section        0  lwrb.o(.text.lwrb_read)
+    [Anonymous Symbol]                       0x080115e8   Section        0  lwrb.o(.text.lwrb_reset)
+    [Anonymous Symbol]                       0x08011614   Section        0  lwrb.o(.text.lwrb_skip)
+    [Anonymous Symbol]                       0x08011660   Section        0  lwrb.o(.text.lwrb_write)
+    [Anonymous Symbol]                       0x0801170c   Section        0  main.o(.text.main)
+    i.__0printf$3                            0x08011830   Section        0  printf3.o(i.__0printf$3)
+    i.__scatterload_copy                     0x08011850   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x0801185e   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x08011860   Section       14  handlers.o(i.__scatterload_zeroinit)
+    _printf_core                             0x08011871   Thumb Code   436  printf3.o(i._printf_core)
+    i._printf_core                           0x08011870   Section        0  printf3.o(i._printf_core)
+    _aTerminalId                             0x08011a28   Data          16  segger_rtt.o(.rodata.cst16)
+    [Anonymous Symbol]                       0x08011a28   Section        0  segger_rtt.o(.rodata.cst16)
+    .L.str.1                                 0x08011a38   Data          19  main.o(.rodata.str1.1)
+    [Anonymous Symbol]                       0x08011a38   Section        0  main.o(.rodata.str1.1)
+    .L.str                                   0x08011a4b   Data           9  segger_rtt.o(.rodata.str1.1)
+    [Anonymous Symbol]                       0x08011a4b   Section        0  segger_rtt.o(.rodata.str1.1)
     .data                                    0x20000008   Section        4  stdout.o(.data)
     .L_MergedGlobals                         0x20000010   Data          48  main.o(.bss..L_MergedGlobals)
     [Anonymous Symbol]                       0x20000010   Section        0  main.o(.bss..L_MergedGlobals)
@@ -1072,7 +1072,7 @@ Image Symbol Table
     timerList                                0x200000f8   Data           4  multitimer.o(.bss..L_MergedGlobals)
     _acUpBuffer                              0x200001a4   Data        1024  segger_rtt.o(.bss._acUpBuffer)
     [Anonymous Symbol]                       0x200001a4   Section        0  segger_rtt.o(.bss._acUpBuffer)
-    STACK                                    0x20001db0   Section     1024  startup_stm32f103xe.o(STACK)
+    STACK                                    0x200025b0   Section     1024  startup_stm32f103xe.o(STACK)
 
     Global Symbols
 
@@ -1239,28 +1239,28 @@ Image Symbol Table
     Timer2_Callback                          0x08010ded   Thumb Code    88  main.o(.text.Timer2_Callback)
     USART1_Configure                         0x08010e95   Thumb Code   572  myusartdrive_reg.o(.text.USART1_Configure)
     USART1_IRQHandler                        0x080110d1   Thumb Code   158  myusartdrive_reg.o(.text.USART1_IRQHandler)
-    USART1_Module_Run                        0x08011171   Thumb Code   196  myusartdrive_reg.o(.text.USART1_Module_Run)
-    USART1_Put_TxData_To_Ringbuffer          0x080112b9   Thumb Code   180  myusartdrive_reg.o(.text.USART1_Put_TxData_To_Ringbuffer)
-    USB_HP_CAN1_TX_IRQHandler                0x0801136d   Thumb Code   188  mycandrive_reg.o(.text.USB_HP_CAN1_TX_IRQHandler)
-    UsageFault_Handler                       0x08011429   Thumb Code     2  stm32f1xx_it.o(.text.UsageFault_Handler)
-    fputc                                    0x0801142d   Thumb Code    16  retarget_rtt.o(.text.fputc)
-    lwrb_get_free                            0x0801143d   Thumb Code    32  lwrb.o(.text.lwrb_get_free)
-    lwrb_get_full                            0x0801145d   Thumb Code    32  lwrb.o(.text.lwrb_get_full)
-    lwrb_init                                0x0801147d   Thumb Code    36  lwrb.o(.text.lwrb_init)
-    lwrb_peek                                0x080114a1   Thumb Code   134  lwrb.o(.text.lwrb_peek)
-    lwrb_read                                0x08011529   Thumb Code   170  lwrb.o(.text.lwrb_read)
-    lwrb_reset                               0x080115d5   Thumb Code    42  lwrb.o(.text.lwrb_reset)
-    lwrb_skip                                0x08011601   Thumb Code    76  lwrb.o(.text.lwrb_skip)
-    lwrb_write                               0x0801164d   Thumb Code   170  lwrb.o(.text.lwrb_write)
-    main                                     0x080116f9   Thumb Code   260  main.o(.text.main)
-    __0printf$3                              0x0801181d   Thumb Code    22  printf3.o(i.__0printf$3)
-    __1printf$3                              0x0801181d   Thumb Code     0  printf3.o(i.__0printf$3)
-    __2printf                                0x0801181d   Thumb Code     0  printf3.o(i.__0printf$3)
-    __scatterload_copy                       0x0801183d   Thumb Code    14  handlers.o(i.__scatterload_copy)
-    __scatterload_null                       0x0801184b   Thumb Code     2  handlers.o(i.__scatterload_null)
-    __scatterload_zeroinit                   0x0801184d   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
-    Region$$Table$$Base                      0x08011a40   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x08011a60   Number         0  anon$$obj.o(Region$$Table)
+    USART1_Module_Run                        0x08011171   Thumb Code   216  myusartdrive_reg.o(.text.USART1_Module_Run)
+    USART1_Put_TxData_To_Ringbuffer          0x080112cd   Thumb Code   180  myusartdrive_reg.o(.text.USART1_Put_TxData_To_Ringbuffer)
+    USB_HP_CAN1_TX_IRQHandler                0x08011381   Thumb Code   188  mycandrive_reg.o(.text.USB_HP_CAN1_TX_IRQHandler)
+    UsageFault_Handler                       0x0801143d   Thumb Code     2  stm32f1xx_it.o(.text.UsageFault_Handler)
+    fputc                                    0x08011441   Thumb Code    16  retarget_rtt.o(.text.fputc)
+    lwrb_get_free                            0x08011451   Thumb Code    32  lwrb.o(.text.lwrb_get_free)
+    lwrb_get_full                            0x08011471   Thumb Code    32  lwrb.o(.text.lwrb_get_full)
+    lwrb_init                                0x08011491   Thumb Code    36  lwrb.o(.text.lwrb_init)
+    lwrb_peek                                0x080114b5   Thumb Code   134  lwrb.o(.text.lwrb_peek)
+    lwrb_read                                0x0801153d   Thumb Code   170  lwrb.o(.text.lwrb_read)
+    lwrb_reset                               0x080115e9   Thumb Code    42  lwrb.o(.text.lwrb_reset)
+    lwrb_skip                                0x08011615   Thumb Code    76  lwrb.o(.text.lwrb_skip)
+    lwrb_write                               0x08011661   Thumb Code   170  lwrb.o(.text.lwrb_write)
+    main                                     0x0801170d   Thumb Code   260  main.o(.text.main)
+    __0printf$3                              0x08011831   Thumb Code    22  printf3.o(i.__0printf$3)
+    __1printf$3                              0x08011831   Thumb Code     0  printf3.o(i.__0printf$3)
+    __2printf                                0x08011831   Thumb Code     0  printf3.o(i.__0printf$3)
+    __scatterload_copy                       0x08011851   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x0801185f   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x08011861   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    Region$$Table$$Base                      0x08011a54   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x08011a74   Number         0  anon$$obj.o(Region$$Table)
     __stdout                                 0x20000008   Data           4  stdout.o(.data)
     SystemCoreClock                          0x2000000c   Data           4  system_stm32f1xx.o(.data.SystemCoreClock)
     gTimer1                                  0x20000010   Data          24  main.o(.bss..L_MergedGlobals)
@@ -1283,12 +1283,12 @@ Image Symbol Table
     g_Usart1TxRBHandler                      0x200000b0   Data          24  myusartdrive_reg.o(.bss..L_MergedGlobals)
     g_Usart1RxRBHandler                      0x200000c8   Data          24  myusartdrive_reg.o(.bss..L_MergedGlobals)
     _SEGGER_RTT                              0x200000fc   Data         168  segger_rtt.o(.bss._SEGGER_RTT)
-    g_Usart1RxRB                             0x200005a4   Data        1024  myusartdrive_reg.o(.bss.g_Usart1RxRB)
-    g_Usart1TxRB                             0x200009a4   Data        2048  myusartdrive_reg.o(.bss.g_Usart1TxRB)
-    rx_buffer                                0x200011a4   Data        1024  myusartdrive_reg.o(.bss.rx_buffer)
-    tx_buffer                                0x200015a4   Data        2048  myusartdrive_reg.o(.bss.tx_buffer)
-    uwTick                                   0x20001da8   Data           8  bsp_systick.o(.bss.uwTick)
-    __initial_sp                             0x200021b0   Data           0  startup_stm32f103xe.o(STACK)
+    g_Usart1RxRB                             0x200005a4   Data        2048  myusartdrive_reg.o(.bss.g_Usart1RxRB)
+    g_Usart1TxRB                             0x20000da4   Data        2048  myusartdrive_reg.o(.bss.g_Usart1TxRB)
+    rx_buffer                                0x200015a4   Data        2048  myusartdrive_reg.o(.bss.rx_buffer)
+    tx_buffer                                0x20001da4   Data        2048  myusartdrive_reg.o(.bss.tx_buffer)
+    uwTick                                   0x200025a8   Data           8  bsp_systick.o(.bss.uwTick)
+    __initial_sp                             0x200029b0   Data           0  startup_stm32f103xe.o(STACK)
 
 
 
@@ -1298,9 +1298,9 @@ Memory Map of the image
 
   Image Entry point : 0x08010131
 
-  Load Region LR_IROM1 (Base: 0x08010000, Size: 0x00001a68, Max: 0x00030000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x08010000, Size: 0x00001a80, Max: 0x00030000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Exec base: 0x08010000, Load base: 0x08010000, Size: 0x00001a60, Max: 0x00030000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08010000, Load base: 0x08010000, Size: 0x00001a74, Max: 0x00030000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -1368,65 +1368,65 @@ Memory Map of the image
     0x08010e94   0x08010e94   0x0000023c   Code   RO          209    .text.USART1_Configure  myusartdrive_reg.o
     0x080110d0   0x080110d0   0x0000009e   Code   RO          217    .text.USART1_IRQHandler  myusartdrive_reg.o
     0x0801116e   0x0801116e   0x00000002   PAD
-    0x08011170   0x08011170   0x000000c4   Code   RO          207    .text.USART1_Module_Run  myusartdrive_reg.o
-    0x08011234   0x08011234   0x00000082   Code   RO          219    .text.USART1_Put_Data_Into_Ringbuffer  myusartdrive_reg.o
-    0x080112b6   0x080112b6   0x00000002   PAD
-    0x080112b8   0x080112b8   0x000000b4   Code   RO          205    .text.USART1_Put_TxData_To_Ringbuffer  myusartdrive_reg.o
-    0x0801136c   0x0801136c   0x000000bc   Code   RO          184    .text.USB_HP_CAN1_TX_IRQHandler  mycandrive_reg.o
-    0x08011428   0x08011428   0x00000002   Code   RO           49    .text.UsageFault_Handler  stm32f1xx_it.o
-    0x0801142a   0x0801142a   0x00000002   PAD
-    0x0801142c   0x0801142c   0x00000010   Code   RO          393    .text.fputc         retarget_rtt.o
-    0x0801143c   0x0801143c   0x00000020   Code   RO          264    .text.lwrb_get_free  lwrb.o
-    0x0801145c   0x0801145c   0x00000020   Code   RO          270    .text.lwrb_get_full  lwrb.o
-    0x0801147c   0x0801147c   0x00000024   Code   RO          248    .text.lwrb_init     lwrb.o
-    0x080114a0   0x080114a0   0x00000086   Code   RO          272    .text.lwrb_peek     lwrb.o
-    0x08011526   0x08011526   0x00000002   PAD
-    0x08011528   0x08011528   0x000000aa   Code   RO          266    .text.lwrb_read     lwrb.o
-    0x080115d2   0x080115d2   0x00000002   PAD
-    0x080115d4   0x080115d4   0x0000002a   Code   RO          274    .text.lwrb_reset    lwrb.o
-    0x080115fe   0x080115fe   0x00000002   PAD
-    0x08011600   0x08011600   0x0000004c   Code   RO          280    .text.lwrb_skip     lwrb.o
-    0x0801164c   0x0801164c   0x000000aa   Code   RO          260    .text.lwrb_write    lwrb.o
-    0x080116f6   0x080116f6   0x00000002   PAD
-    0x080116f8   0x080116f8   0x00000124   Code   RO           11    .text.main          main.o
-    0x0801181c   0x0801181c   0x00000020   Code   RO          521    i.__0printf$3       mc_w.l(printf3.o)
-    0x0801183c   0x0801183c   0x0000000e   Code   RO          744    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x0801184a   0x0801184a   0x00000002   Code   RO          745    i.__scatterload_null  mc_w.l(handlers.o)
-    0x0801184c   0x0801184c   0x0000000e   Code   RO          746    i.__scatterload_zeroinit  mc_w.l(handlers.o)
-    0x0801185a   0x0801185a   0x00000002   PAD
-    0x0801185c   0x0801185c   0x000001b8   Code   RO          528    i._printf_core      mc_w.l(printf3.o)
-    0x08011a14   0x08011a14   0x00000010   Data   RO          362    .rodata.cst16       segger_rtt.o
-    0x08011a24   0x08011a24   0x00000013   Data   RO           21    .rodata.str1.1      main.o
-    0x08011a37   0x08011a37   0x00000009   Data   RO          363    .rodata.str1.1      segger_rtt.o
-    0x08011a40   0x08011a40   0x00000020   Data   RO          743    Region$$Table       anon$$obj.o
+    0x08011170   0x08011170   0x000000d8   Code   RO          207    .text.USART1_Module_Run  myusartdrive_reg.o
+    0x08011248   0x08011248   0x00000082   Code   RO          219    .text.USART1_Put_Data_Into_Ringbuffer  myusartdrive_reg.o
+    0x080112ca   0x080112ca   0x00000002   PAD
+    0x080112cc   0x080112cc   0x000000b4   Code   RO          205    .text.USART1_Put_TxData_To_Ringbuffer  myusartdrive_reg.o
+    0x08011380   0x08011380   0x000000bc   Code   RO          184    .text.USB_HP_CAN1_TX_IRQHandler  mycandrive_reg.o
+    0x0801143c   0x0801143c   0x00000002   Code   RO           49    .text.UsageFault_Handler  stm32f1xx_it.o
+    0x0801143e   0x0801143e   0x00000002   PAD
+    0x08011440   0x08011440   0x00000010   Code   RO          393    .text.fputc         retarget_rtt.o
+    0x08011450   0x08011450   0x00000020   Code   RO          264    .text.lwrb_get_free  lwrb.o
+    0x08011470   0x08011470   0x00000020   Code   RO          270    .text.lwrb_get_full  lwrb.o
+    0x08011490   0x08011490   0x00000024   Code   RO          248    .text.lwrb_init     lwrb.o
+    0x080114b4   0x080114b4   0x00000086   Code   RO          272    .text.lwrb_peek     lwrb.o
+    0x0801153a   0x0801153a   0x00000002   PAD
+    0x0801153c   0x0801153c   0x000000aa   Code   RO          266    .text.lwrb_read     lwrb.o
+    0x080115e6   0x080115e6   0x00000002   PAD
+    0x080115e8   0x080115e8   0x0000002a   Code   RO          274    .text.lwrb_reset    lwrb.o
+    0x08011612   0x08011612   0x00000002   PAD
+    0x08011614   0x08011614   0x0000004c   Code   RO          280    .text.lwrb_skip     lwrb.o
+    0x08011660   0x08011660   0x000000aa   Code   RO          260    .text.lwrb_write    lwrb.o
+    0x0801170a   0x0801170a   0x00000002   PAD
+    0x0801170c   0x0801170c   0x00000124   Code   RO           11    .text.main          main.o
+    0x08011830   0x08011830   0x00000020   Code   RO          521    i.__0printf$3       mc_w.l(printf3.o)
+    0x08011850   0x08011850   0x0000000e   Code   RO          744    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x0801185e   0x0801185e   0x00000002   Code   RO          745    i.__scatterload_null  mc_w.l(handlers.o)
+    0x08011860   0x08011860   0x0000000e   Code   RO          746    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x0801186e   0x0801186e   0x00000002   PAD
+    0x08011870   0x08011870   0x000001b8   Code   RO          528    i._printf_core      mc_w.l(printf3.o)
+    0x08011a28   0x08011a28   0x00000010   Data   RO          362    .rodata.cst16       segger_rtt.o
+    0x08011a38   0x08011a38   0x00000013   Data   RO           21    .rodata.str1.1      main.o
+    0x08011a4b   0x08011a4b   0x00000009   Data   RO          363    .rodata.str1.1      segger_rtt.o
+    0x08011a54   0x08011a54   0x00000020   Data   RO          743    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM2 (Exec base: 0x20000000, Load base: 0x08011a68, Size: 0x00000000, Max: 0x00000008, ABSOLUTE, UNINIT)
+    Execution Region RW_IRAM2 (Exec base: 0x20000000, Load base: 0x08011a80, Size: 0x00000000, Max: 0x00000008, ABSOLUTE, UNINIT)
 
     **** No section assigned to this execution region ****
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000008, Load base: 0x08011a60, Size: 0x000021a8, Max: 0x0000fff8, ABSOLUTE)
+    Execution Region RW_IRAM1 (Exec base: 0x20000008, Load base: 0x08011a78, Size: 0x000029a8, Max: 0x0000fff8, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000008   0x08011a60   0x00000004   Data   RW          707    .data               mc_w.l(stdout.o)
-    0x2000000c   0x08011a64   0x00000004   Data   RW          155    .data.SystemCoreClock  system_stm32f1xx.o
+    0x20000008   0x08011a78   0x00000004   Data   RW          707    .data               mc_w.l(stdout.o)
+    0x2000000c   0x08011a7c   0x00000004   Data   RW          155    .data.SystemCoreClock  system_stm32f1xx.o
     0x20000010        -       0x00000030   Zero   RW           23    .bss..L_MergedGlobals  main.o
     0x20000040        -       0x00000050   Zero   RW          192    .bss..L_MergedGlobals  mycandrive_reg.o
     0x20000090        -       0x00000050   Zero   RW          225    .bss..L_MergedGlobals  myusartdrive_reg.o
     0x200000e0        -       0x00000011   Zero   RW          365    .bss..L_MergedGlobals  segger_rtt.o
-    0x200000f1   0x08011a68   0x00000003   PAD
+    0x200000f1   0x08011a80   0x00000003   PAD
     0x200000f4        -       0x00000008   Zero   RW          413    .bss..L_MergedGlobals  multitimer.o
     0x200000fc        -       0x000000a8   Zero   RW          361    .bss._SEGGER_RTT    segger_rtt.o
     0x200001a4        -       0x00000400   Zero   RW          364    .bss._acUpBuffer    segger_rtt.o
-    0x200005a4        -       0x00000400   Zero   RW          221    .bss.g_Usart1RxRB   myusartdrive_reg.o
-    0x200009a4        -       0x00000800   Zero   RW          222    .bss.g_Usart1TxRB   myusartdrive_reg.o
-    0x200011a4        -       0x00000400   Zero   RW          224    .bss.rx_buffer      myusartdrive_reg.o
-    0x200015a4        -       0x00000800   Zero   RW          223    .bss.tx_buffer      myusartdrive_reg.o
-    0x20001da4   0x08011a68   0x00000004   PAD
-    0x20001da8        -       0x00000008   Zero   RW          240    .bss.uwTick         bsp_systick.o
-    0x20001db0        -       0x00000400   Zero   RW            1    STACK               startup_stm32f103xe.o
+    0x200005a4        -       0x00000800   Zero   RW          221    .bss.g_Usart1RxRB   myusartdrive_reg.o
+    0x20000da4        -       0x00000800   Zero   RW          222    .bss.g_Usart1TxRB   myusartdrive_reg.o
+    0x200015a4        -       0x00000800   Zero   RW          224    .bss.rx_buffer      myusartdrive_reg.o
+    0x20001da4        -       0x00000800   Zero   RW          223    .bss.tx_buffer      myusartdrive_reg.o
+    0x200025a4   0x08011a80   0x00000004   PAD
+    0x200025a8        -       0x00000008   Zero   RW          240    .bss.uwTick         bsp_systick.o
+    0x200025b0        -       0x00000400   Zero   RW            1    STACK               startup_stm32f103xe.o
 
 
 ==============================================================================
@@ -1442,7 +1442,7 @@ Image component sizes
        782        112         19          0         48       8098   main.o
        292          0          0          0          8       2456   multitimer.o
       1006          0          0          0         80      13916   mycandrive_reg.o
-      1554          0          0          0       6224      11379   myusartdrive_reg.o
+      1574          0          0          0       8272      11420   myusartdrive_reg.o
         22          0          0          0          0       1144   retarget_rtt.o
        738          0         25          0       1209      30750   segger_rtt.o
         36          8        304          0       1024        804   startup_stm32f103xe.o
@@ -1452,7 +1452,7 @@ Image component sizes
          2          0          0          4          0       1602   system_stm32f1xx.o
 
     ----------------------------------------------------------------------
-      5684        120        380          4       8608     101243   Object Totals
+      5704        120        380          4      10656     101284   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         46          0          0          0          7          0   (incl. Padding)
 
@@ -1496,15 +1496,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      6372        152        380          8       8608     101507   Grand Totals
-      6372        152        380          8       8608     101507   ELF Image Totals
-      6372        152        380          8          0          0   ROM Totals
+      6392        152        380          8      10656     101548   Grand Totals
+      6392        152        380          8      10656     101548   ELF Image Totals
+      6392        152        380          8          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 6752 (   6.59kB)
-    Total RW  Size (RW Data + ZI Data)              8616 (   8.41kB)
-    Total ROM Size (Code + RO Data + RW Data)       6760 (   6.60kB)
+    Total RO  Size (Code + RO Data)                 6772 (   6.61kB)
+    Total RW  Size (RW Data + ZI Data)             10664 (  10.41kB)
+    Total ROM Size (Code + RO Data + RW Data)       6780 (   6.62kB)
 
 ==============================================================================
 
