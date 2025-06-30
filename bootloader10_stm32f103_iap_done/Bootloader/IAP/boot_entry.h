@@ -30,6 +30,10 @@ extern "C" {
 
 #include "main.h"
 
+/**
+ * @brief   增强版App有效性检查函数
+ */
+bool Is_App_Valid_Enhanced(uint32_t app_start_addr);
 
 #ifdef __cplusplus
 }

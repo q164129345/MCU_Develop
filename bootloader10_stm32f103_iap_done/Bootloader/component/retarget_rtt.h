@@ -10,7 +10,7 @@ extern "C" {
 
 /* 日志控制宏 - 设置为1启用日志，设置为0禁用日志 */
 #ifndef LOG_ENABLE
-#define LOG_ENABLE 0  /* 默认启用日志输出 */
+#define LOG_ENABLE 1  /* 默认启用日志输出 */
 #endif
 
 #if LOG_ENABLE

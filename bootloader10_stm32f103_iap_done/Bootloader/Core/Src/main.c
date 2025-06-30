@@ -31,6 +31,7 @@
 #include "op_flash.h"
 #include "fw_verify.h"
 #include "ymodem.h"
+#include "boot_entry.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -59,6 +60,15 @@ YModem_Handler_t gYModemHandler;
 static uint32_t iap_complete_delay_counter = 0;
 static bool iap_complete_pending = false;
 
+//! 添加 IAP 超时机制 - 根据App有效性决定是否启用
+#define IAP_TIMEOUT_SECONDS     10
+#define IAP_TIMEOUT_MS          (IAP_TIMEOUT_SECONDS * 1000)
+static uint32_t iap_timeout_counter = 0;
+static bool iap_timeout_enabled = false;  // 默认禁用，根据启动原因决定
+static bool iap_communication_detected = false;
+
+//! 保存启动原因的快照，用于后续超时决策
+volatile uint64_t gUpdateFlag = 0;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -85,6 +95,23 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+static void Timeout_Handler_MS(void);
+
+/**
+ * @brief   重置IAP超时计数器（喂狗操作）
+ * @note    每次收到IAP相关数据时应调用此函数，重置超时计数器
+ *          这样可以保持通信活跃状态，防止正常通信过程中误触发超时
+ */
+static void Reset_IAP_Timeout(void)
+{
+    if (iap_timeout_enabled) {
+        iap_timeout_counter = 0; // 重置计数器
+        if (!iap_communication_detected) {
+            iap_communication_detected = true;
+            log_printf("IAP communication established, timeout counter reset.\n");
+        }
+    }
+}
 
 /* USER CODE END 0 */
 
@@ -132,7 +159,39 @@ int main(void)
   //! YModem协议处理器初始化（完全解耦版本）
   YModem_Init(&gYModemHandler);
   
-  log_printf("Bootloader init successfully.\n"); //! bootloader初始化完成
+  //! 在main()中进行完整的启动原因分析和处理
+  gUpdateFlag = IAP_GetUpdateFlag();
+  bool app_valid = Is_App_Valid_Enhanced(FLASH_APP_START_ADDR);
+  log_printf("=== Bootloader Boot Analysis ===\n");
+  log_printf("Boot flag: 0x%08X%08X\n", (uint32_t)(gUpdateFlag >> 32), (uint32_t)gUpdateFlag);
+  log_printf("App valid: %s\n", app_valid ? "YES" : "NO");
+  
+  if (gUpdateFlag == FIRMWARE_UPDATE_MAGIC_WORD) {
+      //! App请求进入IAP模式
+      IAP_SetUpdateFlag(0); // 清除RAM中的标志，避免重复触发
+      log_printf("=== IAP Mode: App Request ===\n");
+      log_printf("Timeout: ENABLED (%d seconds)\n", IAP_TIMEOUT_SECONDS);
+      log_printf("Will return to App if no communication detected.\n");
+      iap_timeout_enabled = true;
+  } else {
+      //! 正常启动
+      IAP_SetUpdateFlag(0); // 清除可能存在的无效标志
+      if (app_valid) {
+          //! 正常启动，启用超时
+          log_printf("=== IAP Mode: Normal Entry (App Valid) ===\n");
+          log_printf("Timeout: ENABLED (%d seconds)\n", IAP_TIMEOUT_SECONDS);
+          log_printf("Will return to App if no communication detected.\n");
+          iap_timeout_enabled = true;
+      } else {
+          //! App无效，必须等待固件
+          log_printf("=== IAP Mode: App Invalid ===\n");
+          log_printf("Timeout: DISABLED\n");
+          log_printf("Will wait indefinitely for firmware download.\n");
+          iap_timeout_enabled = false;
+      }
+  }
+  
+  log_printf("Bootloader init successfully.\n");
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -142,6 +201,9 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+    Timeout_Handler_MS(); //! 超时处理
+
     //! 30ms
     if (0 == fre % 30) {
         HAL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin); //! 心跳灯快闪（在bootlaoder程序里，心跳灯快闪。App程序，心跳灯慢闪。肉眼区分当前跑什么程序）
@@ -153,7 +215,8 @@ int main(void)
         while(USART_Get_The_Existing_Amount_Of_Data(&gUsart1Drv)) {
             uint8_t data;
             if (USART_Take_A_Piece_Of_Data(&gUsart1Drv, &data)) {
-                YModem_Run(&gYModemHandler, data);
+                YModem_Run(&gYModemHandler, data); //! 运行YModem协议
+                Reset_IAP_Timeout(); // 重置超时计数器，保持通信活跃
             }
         }
 
@@ -194,6 +257,8 @@ int main(void)
             //! 重置延迟状态
             iap_complete_pending = false;
             iap_complete_delay_counter = 0;
+            iap_communication_detected = false; //! 重置通信标志
+            iap_timeout_counter = 0; //! 重置超时计数器
             YModem_Reset(&gYModemHandler);
         }
 
@@ -256,7 +321,71 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+/**
+ * @brief   超时处理函数 - 管理IAP模式下的超时机制
+ * @note    
+ *   - 此函数每1ms被调用一次，用于实现IAP模式的倒计时和超时处理
+ *   - 持续监控通信活跃状态，即使已建立通信也会继续计时
+ *   - 超时时间由IAP_TIMEOUT_MS宏定义（默认10秒）
+ *   - 每秒会打印一次剩余倒计时，帮助用户了解超时状态
+ *
+ * @details
+ *   改进的超时机制工作流程：
+ *   1. 检查是否启用超时（iap_timeout_enabled）
+ *   2. 持续递增计数器，不管是否检测到通信
+ *   3. 每1000ms（1秒）打印一次剩余时间提示
+ *   4. 达到超时时间后，根据App有效性智能处理：
+ *      - App有效：跳转到App程序
+ *      - App无效：重置YModem协议，重新等待升级
+ *
+ * @attention
+ *   - 每次收到IAP数据时，应调用Reset_IAP_Timeout()重置计数器
+ *   - 超时处理会根据当前App状态做出最佳决策
+ */
+static void Timeout_Handler_MS(void)
+{
+    //! === IAP 超时检查逻辑（每1ms执行） ===
+    if (iap_timeout_enabled) {
+        iap_timeout_counter++; // 每1ms累加1
+        
+        // 每秒打印一次倒计时
+        if (iap_timeout_counter % 1000 == 0) {
+            uint32_t remaining_seconds = (IAP_TIMEOUT_MS - iap_timeout_counter) / 1000;
+            const char* status = iap_communication_detected ? "Active" : "Waiting";
+            log_printf("IAP timeout (%s): %d seconds remaining...\n", status, remaining_seconds);
+        }
+        
+        // 超时检查
+        if (iap_timeout_counter >= IAP_TIMEOUT_MS) {
+            log_printf("IAP timeout reached! Handling based on boot reason...\n");
+            log_printf("Original boot flag: 0x%08X%08X\n", 
+                      (uint32_t)(gUpdateFlag >> 32), (uint32_t)gUpdateFlag);
+            
+            // 智能超时处理
+            if (gUpdateFlag == FIRMWARE_UPDATE_MAGIC_WORD) {
+                //! App请求进入IAP模式，App肯定有效
+                log_printf("Boot reason: App request -> Jumping back to App...\n");
+                HAL_Delay(100);
+                IAP_Ready_To_Jump_App();
+            } else {
+                bool app_valid = Is_App_Valid_Enhanced(FLASH_APP_START_ADDR);
+                if (app_valid) {
+                    log_printf("Boot reason: Other, App valid -> Jumping to App...\n");
+                    HAL_Delay(100);
+                    IAP_Ready_To_Jump_App();
+                } else {
+                    log_printf("Boot reason: Other, App invalid -> Resetting YModem for retry...\n");
+                    iap_complete_pending = false;
+                    iap_complete_delay_counter = 0;
+                    iap_communication_detected = false;
+                    iap_timeout_counter = 0;
+                    YModem_Reset(&gYModemHandler);
+                    log_printf("YModem reset completed, waiting for new firmware...\n");
+                }
+            }
+        }
+    }
+}
 /* USER CODE END 4 */
 
 /**

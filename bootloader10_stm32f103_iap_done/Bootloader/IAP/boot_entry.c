@@ -6,10 +6,10 @@
 /**
  * @brief   更完善的App有效性检查
  */
-static bool Is_App_Valid_Enhanced(void)
+ bool Is_App_Valid_Enhanced(uint32_t app_start_addr)
 {
-    uint32_t app_stack_ptr = *(volatile uint32_t*)FLASH_APP_START_ADDR; //! 获取栈指针
-    uint32_t app_reset_vec = *(volatile uint32_t*)(FLASH_APP_START_ADDR + 4); //! 获取复位向量
+    uint32_t app_stack_ptr = *(volatile uint32_t*)app_start_addr; //! 获取栈指针
+    uint32_t app_reset_vec = *(volatile uint32_t*)(app_start_addr + 4); //! 获取复位向量
     //! 检查1：栈指针必须在RAM范围内
     if ((app_stack_ptr < 0x20000000) || (app_stack_ptr > 0x20020000)) {
         return false; //! 栈指针不在RAM范围内
@@ -19,8 +19,8 @@ static bool Is_App_Valid_Enhanced(void)
         return false; //! 复位向量不是Thumb指令
     }
     //! 检查3：复位向量必须在Flash范围内
-    if ((app_reset_vec < FLASH_APP_START_ADDR) || 
-        (app_reset_vec > (FLASH_APP_START_ADDR + FLASH_APP_SIZE))) {
+    if ((app_reset_vec < app_start_addr) || 
+        (app_reset_vec > (app_start_addr + FLASH_APP_SIZE))) {
         return false; //! 复位向量不在Flash范围内
     }
     //! 检查4：不能是空Flash的特征值
@@ -54,32 +54,16 @@ static void _SystemStart(void)
     //! 只要在bootloader或者App的main()中调用Retarget_RTT_Init()。这个函数里的log_printf()会正常打印出来。
     uint64_t flag = IAP_GetUpdateFlag();
 
-    log_printf("flag = 0x%08X%08X\n", (uint32_t)(flag >> 32), (uint32_t)flag);
-    //! 决策逻辑:
-    //! 1. App请求IAP?
-    //! 2. Bootloader内部跳转?
-    //! 3. 默认启动App?
-    //! 4. 否则, 进入IAP模式
-    if (flag == FIRMWARE_UPDATE_MAGIC_WORD) {
-        log_printf("Upgrade mode.\r\n");
-        IAP_SetUpdateFlag(0); //! 清除固件更新标志
-        //! 不做任何事情，直接返回，让程序执行到main(),运行bootlaoder程序，进入IAP流程
-        return;
-    } else if (flag == BOOTLOADER_RESET_MAGIC_WORD) {
-        //! --- Case 2: Bootloader 内部跳转流程 ---
-        //! 这是 IAP_Ready_To_Jump_App 的第二步，会直接跳转
+    if (flag == BOOTLOADER_RESET_MAGIC_WORD) {
+        //! --- Case: Bootloader 内部跳转流程 ---
+        //! 这是 IAP_Ready_To_Jump_App 的第二步，需要立即跳转，不进入main()
+        log_printf("Bootloader internal jump detected, jumping to app immediately. flag=0x%08X%08X\n", \
+        (uint32_t)(flag >> 32), (uint32_t)flag);
         IAP_Ready_To_Jump_App(); // 此函数不会返回
-    } else {
-        //! --- Case 3: 默认启动App ---
-        IAP_SetUpdateFlag(0); // 清除可能存在的无效标志
-        if (Is_App_Valid_Enhanced()) {
-            log_printf("App is valid, jump to app.\n");
-            IAP_Ready_To_Jump_App(); // 此函数不会返回
-        } else {
-            log_printf("App is invalid, enter IAP mode.\r\n");
-            //! 不做任何事，直接返回，让程序执行到main(),进入IAP流程
-            return;
-        }
-    }
+    } 
+    
+    //! 所有其他情况（包括App请求IAP、正常启动、App无效等）都交给main()处理
+    //! 不清除标志，让main()能够正确判断启动原因
+    log_printf("Proceeding to main() for detailed boot analysis.\n");
 }
 
