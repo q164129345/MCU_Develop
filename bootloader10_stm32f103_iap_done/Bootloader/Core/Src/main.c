@@ -68,7 +68,7 @@ static bool iap_timeout_enabled = false;  // 默认禁用，根据启动原因�
 static bool iap_communication_detected = false;
 
 //! 保存启动原因的快照，用于后续超时决策
-volatile uint64_t gUpdateFlag = 0;
+volatile static uint64_t gUpdateFlag = 0;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -96,22 +96,8 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 static void Timeout_Handler_MS(void);
-
-/**
- * @brief   重置IAP超时计数器（喂狗操作）
- * @note    每次收到IAP相关数据时应调用此函数，重置超时计数器
- *          这样可以保持通信活跃状态，防止正常通信过程中误触发超时
- */
-static void Reset_IAP_Timeout(void)
-{
-    if (iap_timeout_enabled) {
-        iap_timeout_counter = 0; // 重置计数器
-        if (!iap_communication_detected) {
-            iap_communication_detected = true;
-            log_printf("IAP communication established, timeout counter reset.\n");
-        }
-    }
-}
+static void Timeout_Counter_Reset(void);
+static void Timeout_Counter_Enable(void); 
 
 /* USER CODE END 0 */
 
@@ -159,38 +145,9 @@ int main(void)
   //! YModem协议处理器初始化（完全解耦版本）
   YModem_Init(&gYModemHandler);
   
-  //! 在main()中进行完整的启动原因分析和处理
-  gUpdateFlag = IAP_GetUpdateFlag();
-  bool app_valid = Is_App_Valid_Enhanced(FLASH_APP_START_ADDR);
-  log_printf("=== Bootloader Boot Analysis ===\n");
-  log_printf("Boot flag: 0x%08X%08X\n", (uint32_t)(gUpdateFlag >> 32), (uint32_t)gUpdateFlag);
-  log_printf("App valid: %s\n", app_valid ? "YES" : "NO");
-  
-  if (gUpdateFlag == FIRMWARE_UPDATE_MAGIC_WORD) {
-      //! App请求进入IAP模式
-      IAP_SetUpdateFlag(0); // 清除RAM中的标志，避免重复触发
-      log_printf("=== IAP Mode: App Request ===\n");
-      log_printf("Timeout: ENABLED (%d seconds)\n", IAP_TIMEOUT_SECONDS);
-      log_printf("Will return to App if no communication detected.\n");
-      iap_timeout_enabled = true;
-  } else {
-      //! 正常启动
-      IAP_SetUpdateFlag(0); // 清除可能存在的无效标志
-      if (app_valid) {
-          //! 正常启动，启用超时
-          log_printf("=== IAP Mode: Normal Entry (App Valid) ===\n");
-          log_printf("Timeout: ENABLED (%d seconds)\n", IAP_TIMEOUT_SECONDS);
-          log_printf("Will return to App if no communication detected.\n");
-          iap_timeout_enabled = true;
-      } else {
-          //! App无效，必须等待固件
-          log_printf("=== IAP Mode: App Invalid ===\n");
-          log_printf("Timeout: DISABLED\n");
-          log_printf("Will wait indefinitely for firmware download.\n");
-          iap_timeout_enabled = false;
-      }
-  }
-  
+  //! 启动原因分析和处理(超时机制)
+  Timeout_Counter_Enable();
+
   log_printf("Bootloader init successfully.\n");
   /* USER CODE END 2 */
 
@@ -216,7 +173,7 @@ int main(void)
             uint8_t data;
             if (USART_Take_A_Piece_Of_Data(&gUsart1Drv, &data)) {
                 YModem_Run(&gYModemHandler, data); //! 运行YModem协议
-                Reset_IAP_Timeout(); // 重置超时计数器，保持通信活跃
+                Timeout_Counter_Reset(); // 重置超时计数器，保持通信活跃
             }
         }
 
@@ -321,6 +278,51 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+static void Timeout_Counter_Reset(void)
+{
+    if (iap_timeout_enabled) {
+        iap_timeout_counter = 0; // 重置计数器
+        if (!iap_communication_detected) {
+            iap_communication_detected = true;
+            log_printf("IAP communication established, timeout counter reset.\n");
+        }
+    }
+}
+
+static void Timeout_Counter_Enable(void)
+{
+    gUpdateFlag = IAP_GetUpdateFlag();
+    bool app_valid = Is_App_Valid_Enhanced(FLASH_APP_START_ADDR);
+    log_printf("=== Bootloader Boot Analysis ===\n");
+    log_printf("Boot flag: 0x%08X%08X\n", (uint32_t)(gUpdateFlag >> 32), (uint32_t)gUpdateFlag);
+    log_printf("App valid: %s\n", app_valid ? "YES" : "NO");
+    
+    if (gUpdateFlag == FIRMWARE_UPDATE_MAGIC_WORD) {
+        //! App请求进入IAP模式
+        IAP_SetUpdateFlag(0); // 清除RAM中的标志，避免重复触发
+        log_printf("=== IAP Mode: App Request ===\n");
+        log_printf("Timeout: ENABLED (%d seconds)\n", IAP_TIMEOUT_SECONDS);
+        log_printf("Will return to App if no communication detected.\n");
+        iap_timeout_enabled = true;
+    } else {
+        //! 正常启动
+        IAP_SetUpdateFlag(0); // 清除可能存在的无效标志
+        if (app_valid) {
+            //! 正常启动，启用超时
+            log_printf("=== IAP Mode: Normal Entry (App Valid) ===\n");
+            log_printf("Timeout: ENABLED (%d seconds)\n", IAP_TIMEOUT_SECONDS);
+            log_printf("Will return to App if no communication detected.\n");
+            iap_timeout_enabled = true;
+        } else {
+            //! App无效，必须等待固件
+            log_printf("=== IAP Mode: App Invalid ===\n");
+            log_printf("Timeout: DISABLED\n");
+            log_printf("Will wait indefinitely for firmware download.\n");
+            iap_timeout_enabled = false;
+        }
+    }
+}
+
 /**
  * @brief   超时处理函数 - 管理IAP模式下的超时机制
  * @note    
