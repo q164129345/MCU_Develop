@@ -6,7 +6,7 @@
 /**
  * @brief   更完善的App有效性检查
  */
- bool Is_App_Valid_Enhanced(uint32_t app_start_addr)
+bool Is_App_Valid_Enhanced(uint32_t app_start_addr)
 {
     uint32_t app_stack_ptr = *(volatile uint32_t*)app_start_addr; //! 获取栈指针
     uint32_t app_reset_vec = *(volatile uint32_t*)(app_start_addr + 4); //! 获取复位向量

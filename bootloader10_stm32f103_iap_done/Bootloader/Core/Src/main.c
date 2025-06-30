@@ -278,6 +278,16 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+/**
+ * @brief   IAP超时处理函数
+ * @note    每1ms调用一次，管理IAP模式下的超时倒计时
+ * @details 
+ *   - 持续监控通信状态，每秒显示剩余时间
+ *   - 超时后根据启动原因智能处理：
+ *     * App请求模式：返回App
+ *     * 正常启动且App有效：跳转App
+ *     * App无效：重置YModem等待新固件
+ */
 static void Timeout_Counter_Reset(void)
 {
     if (iap_timeout_enabled) {
@@ -289,6 +299,14 @@ static void Timeout_Counter_Reset(void)
     }
 }
 
+/**
+ * @brief   检测通信活跃性并重置超时计数器
+ * @note    当检测到IAP通信时调用，重置超时机制确保持续通信
+ * @details 
+ *   - 仅在超时机制启用时生效
+ *   - 首次检测到通信会标记通信状态并记录日志
+ *   - 每次调用都会重置超时计数器到0
+ */
 static void Timeout_Counter_Enable(void)
 {
     gUpdateFlag = IAP_GetUpdateFlag();
@@ -339,10 +357,6 @@ static void Timeout_Counter_Enable(void)
  *   4. 达到超时时间后，根据App有效性智能处理：
  *      - App有效：跳转到App程序
  *      - App无效：重置YModem协议，重新等待升级
- *
- * @attention
- *   - 每次收到IAP数据时，应调用Reset_IAP_Timeout()重置计数器
- *   - 超时处理会根据当前App状态做出最佳决策
  */
 static void Timeout_Handler_MS(void)
 {
