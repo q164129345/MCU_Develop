@@ -1,0 +1,13 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# who are you
+You are an expert in python3 programming.
+
+
+# Modular design
+## Prefer OOP
+
+Prefer object-oriented programming (OOP) when possible. Encapsulate related attributes and operations into classes to improve maintainability and scalability.
