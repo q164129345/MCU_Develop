@@ -18,7 +18,27 @@ class SerialManager:
                 baudrate - 波特率
                 timeout - 读取超时时间（秒），默认1秒
         """
-        self.ser = serial.Serial(port, baudrate, timeout=timeout)
+        # 明确设置串口参数，确保与串口助手一致
+        self.ser = serial.Serial(
+            port=port,
+            baudrate=baudrate,
+            bytesize=serial.EIGHTBITS,    # 8数据位
+            parity=serial.PARITY_NONE,    # 无校验
+            stopbits=serial.STOPBITS_ONE, # 1停止位
+            timeout=timeout,
+            xonxoff=False,                # 禁用软件流控
+            rtscts=False,                 # 禁用硬件流控
+            dsrdtr=False                  # 禁用DTR/DSR
+        )
+        
+        # 关键修复：避免DTR/RTS信号干扰MCU
+        # 很多MCU的复位线连接到DTR，设置为False避免意外复位
+        self.ser.dtr = False  # 避免触发MCU复位
+        self.ser.rts = False  # 避免干扰MCU
+        
+        # 清空缓冲区
+        self.ser.reset_input_buffer()
+        self.ser.reset_output_buffer()
 
     def Send_String(self, data):
         """
@@ -26,7 +46,9 @@ class SerialManager:
         Params: data - 要发送的字符串
         Return: 实际发送的字节数
         """
-        return self.ser.write(data.encode('utf-8'))
+        bytes_sent = self.ser.write(data.encode('utf-8'))
+        self.ser.flush()  # 强制刷新发送缓冲区，确保数据立即发送
+        return bytes_sent
     
     def Send_Bytes(self, data):
         """
@@ -34,7 +56,9 @@ class SerialManager:
         Params: data - 要发送的bytes对象
         Return: 实际发送的字节数
         """
-        return self.ser.write(data)
+        bytes_sent = self.ser.write(data)
+        self.ser.flush()  # 强制刷新发送缓冲区，确保数据立即发送
+        return bytes_sent
 
     def Receive_Byte(self, timeout=None):
         """

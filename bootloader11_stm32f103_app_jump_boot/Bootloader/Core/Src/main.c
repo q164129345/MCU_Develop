@@ -67,6 +67,11 @@ static uint32_t iap_timeout_counter = 0;
 static bool iap_timeout_enabled = false;  // 默认禁用，根据启动原因决定
 static bool iap_communication_detected = false;
 
+//! 添加定期发送'C'字符的功能，告知上位机bootloader已就绪
+#define IAP_HEARTBEAT_INTERVAL_MS   2000    // 每2秒发送一次'C'字符
+static uint32_t iap_heartbeat_counter = 0;
+static bool iap_heartbeat_enabled = true;  // 默认启用心跳
+
 //! 保存启动原因的快照，用于后续超时决策
 volatile static uint64_t gUpdateFlag = 0;
 /* USER CODE END PTD */
@@ -149,6 +154,13 @@ int main(void)
   Timeout_Counter_Enable();
 
   log_printf("Bootloader init successfully.\n");
+  
+  //! 初始化完成后立即发送第一次'C'字符心跳
+  if (iap_heartbeat_enabled && gYModemHandler.state == YMODEM_STATE_WAIT_FILE_INFO) {
+      uint8_t heartbeat_char = 0x43; // 'C'字符
+      USART_Put_TxData_To_Ringbuffer(&gUsart1Drv, &heartbeat_char, 1);
+      log_printf("IAP heartbeat: immediate first 'C' sent after bootloader init.\r\n");
+  }
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -174,6 +186,12 @@ int main(void)
             if (USART_Take_A_Piece_Of_Data(&gUsart1Drv, &data)) {
                 YModem_Run(&gYModemHandler, data); //! 运行YModem协议
                 Timeout_Counter_Reset(); // 重置超时计数器，保持通信活跃
+                
+                //! 一旦开始接收YModem数据，关闭心跳发送
+                if (iap_heartbeat_enabled && gYModemHandler.state != YMODEM_STATE_WAIT_FILE_INFO) {
+                    iap_heartbeat_enabled = false;
+                    log_printf("IAP heartbeat disabled - YModem transmission started.\r\n");
+                }
             }
         }
 
@@ -206,7 +224,20 @@ int main(void)
                     log_printf("YModem: resetting for next transmission...\r\n");
                     iap_complete_pending = false;
                     iap_complete_delay_counter = 0;
+                    
+                    //! 重置心跳功能，重新开始发送'C'字符
+                    iap_heartbeat_enabled = true;
+                    iap_heartbeat_counter = 0;
+                    log_printf("IAP heartbeat re-enabled after CRC verification failed.\r\n");
+                    
                     YModem_Reset(&gYModemHandler);
+                    
+                    //! 立即发送'C'字符，告知上位机可以重新开始传输
+                    if (gYModemHandler.state == YMODEM_STATE_WAIT_FILE_INFO) {
+                        uint8_t heartbeat_char = 0x43; // 'C'字符
+                        USART_Put_TxData_To_Ringbuffer(&gUsart1Drv, &heartbeat_char, 1);
+                        log_printf("IAP heartbeat: immediate 'C' sent after reset.\r\n");
+                    }
                 }
             }
         } else if (gYModemHandler.state == YMODEM_STATE_ERROR) {
@@ -216,7 +247,20 @@ int main(void)
             iap_complete_delay_counter = 0;
             iap_communication_detected = false; //! 重置通信标志
             iap_timeout_counter = 0; //! 重置超时计数器
+            
+            //! 重置心跳功能，重新开始发送'C'字符
+            iap_heartbeat_enabled = true;
+            iap_heartbeat_counter = 0;
+            log_printf("IAP heartbeat re-enabled after error.\r\n");
+            
             YModem_Reset(&gYModemHandler);
+            
+            //! 立即发送'C'字符，告知上位机可以重新开始传输
+            if (gYModemHandler.state == YMODEM_STATE_WAIT_FILE_INFO) {
+                uint8_t heartbeat_char = 0x43; // 'C'字符
+                USART_Put_TxData_To_Ringbuffer(&gUsart1Drv, &heartbeat_char, 1);
+                log_printf("IAP heartbeat: immediate 'C' sent after error recovery.\r\n");
+            }
         }
 
         //! 检查是否有YModem响应数据需要发送
@@ -230,6 +274,22 @@ int main(void)
         }
         
         USART_Module_Run(&gUsart1Drv); //! Usart1模块运行
+    }
+    
+    //! IAP心跳处理 - 每1ms执行
+    if (iap_heartbeat_enabled) {
+        iap_heartbeat_counter++;
+        
+        //! 每2秒发送一次'C'字符，告知上位机bootloader已就绪
+        if (iap_heartbeat_counter >= IAP_HEARTBEAT_INTERVAL_MS) {
+            //! 只在等待文件信息状态时发送心跳
+            if (gYModemHandler.state == YMODEM_STATE_WAIT_FILE_INFO) {
+                uint8_t heartbeat_char = 0x43; // 'C'字符
+                USART_Put_TxData_To_Ringbuffer(&gUsart1Drv, &heartbeat_char, 1);
+                log_printf("IAP heartbeat: sent 'C' to notify host - bootloader ready.\r\n");
+            }
+            iap_heartbeat_counter = 0; // 重置心跳计数器
+        }
     }
     
     fre++;
@@ -395,7 +455,20 @@ static void Timeout_Handler_MS(void)
                     iap_complete_delay_counter = 0;
                     iap_communication_detected = false;
                     iap_timeout_counter = 0;
+                    
+                    //! 重置心跳功能，重新开始发送'C'字符
+                    iap_heartbeat_enabled = true;
+                    iap_heartbeat_counter = 0;
+                    
                     YModem_Reset(&gYModemHandler);
+                    
+                    //! 立即发送'C'字符，告知上位机可以重新开始传输
+                    if (gYModemHandler.state == YMODEM_STATE_WAIT_FILE_INFO) {
+                        uint8_t heartbeat_char = 0x43; // 'C'字符
+                        USART_Put_TxData_To_Ringbuffer(&gUsart1Drv, &heartbeat_char, 1);
+                        log_printf("IAP heartbeat: immediate 'C' sent after timeout reset.\r\n");
+                    }
+                    
                     log_printf("YModem reset completed, waiting for new firmware...\n");
                 }
             }

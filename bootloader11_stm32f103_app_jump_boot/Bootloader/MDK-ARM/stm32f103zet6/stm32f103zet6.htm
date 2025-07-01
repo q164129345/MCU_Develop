@@ -3,9 +3,9 @@
 <title>Static Call Graph - [stm32f103zet6\stm32f103zet6.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image stm32f103zet6\stm32f103zet6.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Fri Jun 27 16:41:38 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Tue Jul  1 14:45:47 2025
 <BR><P>
-<H3>Maximum Stack Usage =        424 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        432 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 main &rArr; OP_Flash_Copy &rArr; HAL_FLASH_Program &rArr; FLASH_WaitForLastOperation
 <P>
@@ -318,12 +318,12 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
 <P><STRONG><a name="[93]"></a>__aeabi_memcpy</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, memcpya.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Parse_Packet
-<LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_SetTerminal
-<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_read
+<BR><BR>[Called By]<UL><LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_SetTerminal
+<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_read
 <LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_write
-<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Get_Response
+<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Get_Response
 <LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OP_Flash_Copy
+<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Parse_Packet
 </UL>
 
 <P><STRONG><a name="[c4]"></a>__aeabi_memcpy4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memcpya.o(.text), UNUSED)
@@ -331,9 +331,9 @@ Global Symbols
 <P><STRONG><a name="[c5]"></a>__aeabi_memcpy8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memcpya.o(.text), UNUSED)
 
 <P><STRONG><a name="[56]"></a>__aeabi_memset</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, memseta.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Parse_Packet
-<LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_memset$wrapper
+<BR><BR>[Called By]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_memset$wrapper
 <LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr
+<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Parse_Packet
 </UL>
 
 <P><STRONG><a name="[c6]"></a>__aeabi_memset4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
@@ -343,14 +343,13 @@ Global Symbols
 <P><STRONG><a name="[55]"></a>__aeabi_memclr</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, memseta.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memset
 </UL>
-<BR>[Called By]<UL><LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Reset
-<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Init
+<BR>[Called By]<UL><LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Reset
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Init
 </UL>
 
 <P><STRONG><a name="[9f]"></a>__aeabi_memclr4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_SetTerminal
-<LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_ConfigUpBuffer
-<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_PutChar
+<BR><BR>[Called By]<UL><LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_SetTerminal
+<LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_PutChar
 </UL>
 
 <P><STRONG><a name="[c8]"></a>__aeabi_memclr8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memseta.o(.text), UNUSED)
@@ -359,14 +358,14 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memset
 </UL>
 
-<P><STRONG><a name="[b0]"></a>strncpy</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, strncpy.o(.text))
+<P><STRONG><a name="[af]"></a>strncpy</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, strncpy.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = strncpy
 </UL>
-<BR>[Called By]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Parse_Packet
+<BR>[Called By]<UL><LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Parse_Packet
 </UL>
 
-<P><STRONG><a name="[b1]"></a>strlen</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, strlen.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Parse_Packet
+<P><STRONG><a name="[b0]"></a>strlen</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, strlen.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Parse_Packet
 </UL>
 
 <P><STRONG><a name="[58]"></a>atol</STRONG> (Thumb, 26 bytes, Stack size 16 bytes, atol.o(.text))
@@ -375,7 +374,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[5a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strtol
 <LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_errno_addr
 </UL>
-<BR>[Called By]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Parse_Packet
+<BR>[Called By]<UL><LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Parse_Packet
 </UL>
 
 <P><STRONG><a name="[51]"></a>__cpp_initialize__aeabi_</STRONG> (Thumb, 32 bytes, Stack size 24 bytes, cpp_init.o(.text))
@@ -503,7 +502,7 @@ Global Symbols
 <P><STRONG><a name="[79]"></a>HAL_DMA_Abort</STRONG> (Thumb, 70 bytes, Stack size 0 bytes, stm32f1xx_hal_dma.o(.text.HAL_DMA_Abort))
 <BR><BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_IRQHandler
 <LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_DMA_Error_Recover
-<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Config
+<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Config
 </UL>
 
 <P><STRONG><a name="[7c]"></a>HAL_DMA_Abort_IT</STRONG> (Thumb, 304 bytes, Stack size 8 bytes, stm32f1xx_hal_dma.o(.text.HAL_DMA_Abort_IT))
@@ -592,7 +591,7 @@ Global Symbols
 <LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_OscConfig
 </UL>
 
-<P><STRONG><a name="[a1]"></a>HAL_IncTick</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, stm32f1xx_hal.o(.text.HAL_IncTick))
+<P><STRONG><a name="[a0]"></a>HAL_IncTick</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, stm32f1xx_hal.o(.text.HAL_IncTick))
 <BR><BR>[Called By]<UL><LI><a href="#[9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
 </UL>
 
@@ -728,15 +727,15 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DMA_Start_IT
 </UL>
 <BR>[Called By]<UL><LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_DMA_Error_Recover
-<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Config
+<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Config
 </UL>
 
-<P><STRONG><a name="[a2]"></a>HAL_UART_RxCpltCallback</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f1xx_hal_uart.o(.text.HAL_UART_RxCpltCallback))
+<P><STRONG><a name="[a1]"></a>HAL_UART_RxCpltCallback</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f1xx_hal_uart.o(.text.HAL_UART_RxCpltCallback))
 <BR><BR>[Called By]<UL><LI><a href="#[78]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_Receive_IT
 <LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_DMAReceiveCplt
 </UL>
 
-<P><STRONG><a name="[a3]"></a>HAL_UART_RxHalfCpltCallback</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f1xx_hal_uart.o(.text.HAL_UART_RxHalfCpltCallback))
+<P><STRONG><a name="[a2]"></a>HAL_UART_RxHalfCpltCallback</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f1xx_hal_uart.o(.text.HAL_UART_RxHalfCpltCallback))
 <BR><BR>[Called By]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_DMARxHalfCplt
 </UL>
 
@@ -745,7 +744,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DMA_Start_IT
 </UL>
-<BR>[Called By]<UL><LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Module_Run
+<BR>[Called By]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Module_Run
 </UL>
 
 <P><STRONG><a name="[7b]"></a>HAL_UART_TxCpltCallback</STRONG> (Thumb, 28 bytes, Stack size 0 bytes, stm32f1xx_it.o(.text.HAL_UART_TxCpltCallback))
@@ -755,7 +754,7 @@ Global Symbols
 <LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_IRQHandler
 </UL>
 
-<P><STRONG><a name="[a4]"></a>HAL_UART_TxHalfCpltCallback</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f1xx_hal_uart.o(.text.HAL_UART_TxHalfCpltCallback))
+<P><STRONG><a name="[a3]"></a>HAL_UART_TxHalfCpltCallback</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f1xx_hal_uart.o(.text.HAL_UART_TxHalfCpltCallback))
 <BR><BR>[Called By]<UL><LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART_DMATxHalfCplt
 </UL>
 
@@ -766,8 +765,9 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
-<P><STRONG><a name="[b5]"></a>IAP_GetUpdateFlag</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, app_jump.o(.text.IAP_GetUpdateFlag))
+<P><STRONG><a name="[b4]"></a>IAP_GetUpdateFlag</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, app_jump.o(.text.IAP_GetUpdateFlag))
 <BR><BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_SystemStart
+<LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
 <P><STRONG><a name="[8a]"></a>IAP_Ready_To_Jump_App</STRONG> (Thumb, 106 bytes, Stack size 24 bytes, app_jump.o(.text.IAP_Ready_To_Jump_App))
@@ -781,7 +781,11 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[b6]"></a>IAP_SetUpdateFlag</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, app_jump.o(.text.IAP_SetUpdateFlag))
-<BR><BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_SystemStart
+<BR><BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[b5]"></a>Is_App_Valid_Enhanced</STRONG> (Thumb, 68 bytes, Stack size 0 bytes, boot_entry.o(.text.Is_App_Valid_Enhanced))
+<BR><BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
 <P><STRONG><a name="[8c]"></a>MX_DMA_Init</STRONG> (Thumb, 68 bytes, Stack size 16 bytes, dma.o(.text.MX_DMA_Init))
@@ -844,7 +848,7 @@ Global Symbols
 <LI><a href="#[92]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_FLASH_Lock
 <LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_FLASH_Unlock
 </UL>
-<BR>[Called By]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Parse_Packet
+<BR>[Called By]<UL><LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Parse_Packet
 </UL>
 
 <P><STRONG><a name="[95]"></a>OP_Flash_Write</STRONG> (Thumb, 116 bytes, Stack size 24 bytes, op_flash.o(.text.OP_Flash_Write))
@@ -854,30 +858,21 @@ Global Symbols
 <LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_FLASH_Unlock
 <LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_FLASH_Program
 </UL>
-<BR>[Called By]<UL><LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Parse_Packet
+<BR>[Called By]<UL><LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Parse_Packet
 </UL>
 
 <P><STRONG><a name="[8]"></a>PendSV_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32f1xx_it.o(.text.PendSV_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
-<P><STRONG><a name="[9c]"></a>Retarget_RTT_Init</STRONG> (Thumb, 44 bytes, Stack size 16 bytes, retarget_rtt.o(.text.Retarget_RTT_Init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = Retarget_RTT_Init &rArr; SEGGER_RTT_SetTerminal
+<P><STRONG><a name="[9c]"></a>Retarget_RTT_Init</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, retarget_rtt.o(.text.Retarget_RTT_Init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = Retarget_RTT_Init &rArr; SEGGER_RTT_SetTerminal
 </UL>
-<BR>[Calls]<UL><LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_SetTerminal
-<LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_ConfigUpBuffer
+<BR>[Calls]<UL><LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_SetTerminal
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[9d]"></a>SEGGER_RTT_ConfigUpBuffer</STRONG> (Thumb, 214 bytes, Stack size 24 bytes, segger_rtt.o(.text.SEGGER_RTT_ConfigUpBuffer))
-<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = SEGGER_RTT_ConfigUpBuffer
-</UL>
-<BR>[Calls]<UL><LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
-</UL>
-<BR>[Called By]<UL><LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Retarget_RTT_Init
-</UL>
-
-<P><STRONG><a name="[a0]"></a>SEGGER_RTT_PutChar</STRONG> (Thumb, 244 bytes, Stack size 24 bytes, segger_rtt.o(.text.SEGGER_RTT_PutChar))
+<P><STRONG><a name="[9e]"></a>SEGGER_RTT_PutChar</STRONG> (Thumb, 244 bytes, Stack size 24 bytes, segger_rtt.o(.text.SEGGER_RTT_PutChar))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = SEGGER_RTT_PutChar
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
@@ -885,7 +880,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fputc
 </UL>
 
-<P><STRONG><a name="[9e]"></a>SEGGER_RTT_SetTerminal</STRONG> (Thumb, 494 bytes, Stack size 40 bytes, segger_rtt.o(.text.SEGGER_RTT_SetTerminal))
+<P><STRONG><a name="[9d]"></a>SEGGER_RTT_SetTerminal</STRONG> (Thumb, 494 bytes, Stack size 40 bytes, segger_rtt.o(.text.SEGGER_RTT_SetTerminal))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = SEGGER_RTT_SetTerminal
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
@@ -898,7 +893,7 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
 <P><STRONG><a name="[9]"></a>SysTick_Handler</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f1xx_it.o(.text.SysTick_Handler))
-<BR><BR>[Calls]<UL><LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_IncTick
+<BR><BR>[Calls]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_IncTick
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
@@ -908,17 +903,17 @@ Global Symbols
 <P><STRONG><a name="[2f]"></a>USART1_IRQHandler</STRONG> (Thumb, 30 bytes, Stack size 8 bytes, stm32f1xx_it.o(.text.USART1_IRQHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = USART1_IRQHandler &rArr; USART_RX_IDLE_Interrupt_Handler &rArr; Put_Data_Into_Ringbuffer &rArr; lwrb_write
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_RX_IDLE_Interrupt_Handler
+<BR>[Calls]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_RX_IDLE_Interrupt_Handler
 <LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_IRQHandler
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
-<P><STRONG><a name="[a6]"></a>USART_Config</STRONG> (Thumb, 112 bytes, Stack size 24 bytes, bsp_usart_hal.o(.text.USART_Config))
+<P><STRONG><a name="[a5]"></a>USART_Config</STRONG> (Thumb, 112 bytes, Stack size 24 bytes, bsp_usart_hal.o(.text.USART_Config))
 <BR><BR>[Stack]<UL><LI>Max Depth = 68<LI>Call Chain = USART_Config &rArr; HAL_UART_Receive_DMA &rArr; HAL_DMA_Start_IT
 </UL>
 <BR>[Calls]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Receive_DMA
 <LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DMA_Abort
-<LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_init
+<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -945,23 +940,23 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_TxCpltCallback
 </UL>
 
-<P><STRONG><a name="[a8]"></a>USART_Get_The_Existing_Amount_Of_Data</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, bsp_usart_hal.o(.text.USART_Get_The_Existing_Amount_Of_Data))
+<P><STRONG><a name="[a7]"></a>USART_Get_The_Existing_Amount_Of_Data</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, bsp_usart_hal.o(.text.USART_Get_The_Existing_Amount_Of_Data))
 <BR><BR>[Calls]<UL><LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_full
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[a9]"></a>USART_Module_Run</STRONG> (Thumb, 118 bytes, Stack size 16 bytes, bsp_usart_hal.o(.text.USART_Module_Run))
+<P><STRONG><a name="[a8]"></a>USART_Module_Run</STRONG> (Thumb, 118 bytes, Stack size 16 bytes, bsp_usart_hal.o(.text.USART_Module_Run))
 <BR><BR>[Stack]<UL><LI>Max Depth = 52<LI>Call Chain = USART_Module_Run &rArr; HAL_UART_Transmit_DMA &rArr; HAL_DMA_Start_IT
 </UL>
 <BR>[Calls]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_Transmit_DMA
-<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_read
+<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_read
 <LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_full
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[ab]"></a>USART_Put_TxData_To_Ringbuffer</STRONG> (Thumb, 154 bytes, Stack size 24 bytes, bsp_usart_hal.o(.text.USART_Put_TxData_To_Ringbuffer))
+<P><STRONG><a name="[aa]"></a>USART_Put_TxData_To_Ringbuffer</STRONG> (Thumb, 154 bytes, Stack size 24 bytes, bsp_usart_hal.o(.text.USART_Put_TxData_To_Ringbuffer))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = USART_Put_TxData_To_Ringbuffer &rArr; lwrb_write
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_reset
@@ -973,7 +968,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[a5]"></a>USART_RX_IDLE_Interrupt_Handler</STRONG> (Thumb, 122 bytes, Stack size 24 bytes, bsp_usart_hal.o(.text.USART_RX_IDLE_Interrupt_Handler))
+<P><STRONG><a name="[a4]"></a>USART_RX_IDLE_Interrupt_Handler</STRONG> (Thumb, 122 bytes, Stack size 24 bytes, bsp_usart_hal.o(.text.USART_RX_IDLE_Interrupt_Handler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = USART_RX_IDLE_Interrupt_Handler &rArr; Put_Data_Into_Ringbuffer &rArr; lwrb_write
 </UL>
 <BR>[Calls]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Put_Data_Into_Ringbuffer
@@ -981,10 +976,10 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[2f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_IRQHandler
 </UL>
 
-<P><STRONG><a name="[ac]"></a>USART_Take_A_Piece_Of_Data</STRONG> (Thumb, 40 bytes, Stack size 8 bytes, bsp_usart_hal.o(.text.USART_Take_A_Piece_Of_Data))
+<P><STRONG><a name="[ab]"></a>USART_Take_A_Piece_Of_Data</STRONG> (Thumb, 40 bytes, Stack size 8 bytes, bsp_usart_hal.o(.text.USART_Take_A_Piece_Of_Data))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = USART_Take_A_Piece_Of_Data &rArr; lwrb_read
 </UL>
-<BR>[Calls]<UL><LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_read
+<BR>[Calls]<UL><LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_read
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -1000,7 +995,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[ad]"></a>YModem_Get_Response</STRONG> (Thumb, 124 bytes, Stack size 24 bytes, ymodem.o(.text.YModem_Get_Response))
+<P><STRONG><a name="[ac]"></a>YModem_Get_Response</STRONG> (Thumb, 124 bytes, Stack size 24 bytes, ymodem.o(.text.YModem_Get_Response))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = YModem_Get_Response &rArr; __2printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
@@ -1013,7 +1008,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[ae]"></a>YModem_Init</STRONG> (Thumb, 156 bytes, Stack size 16 bytes, ymodem.o(.text.YModem_Init))
+<P><STRONG><a name="[ad]"></a>YModem_Init</STRONG> (Thumb, 156 bytes, Stack size 16 bytes, ymodem.o(.text.YModem_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = YModem_Init &rArr; __2printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
@@ -1022,23 +1017,23 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[b3]"></a>YModem_Reset</STRONG> (Thumb, 134 bytes, Stack size 16 bytes, ymodem.o(.text.YModem_Reset))
+<P><STRONG><a name="[b2]"></a>YModem_Reset</STRONG> (Thumb, 134 bytes, Stack size 16 bytes, ymodem.o(.text.YModem_Reset))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = YModem_Reset &rArr; __2printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 <LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr
 </UL>
-<BR>[Called By]<UL><LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Run
+<BR>[Called By]<UL><LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Run
 <LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[b4]"></a>YModem_Run</STRONG> (Thumb, 868 bytes, Stack size 16 bytes, ymodem.o(.text.YModem_Run))
+<P><STRONG><a name="[b3]"></a>YModem_Run</STRONG> (Thumb, 868 bytes, Stack size 16 bytes, ymodem.o(.text.YModem_Run))
 <BR><BR>[Stack]<UL><LI>Max Depth = 152<LI>Call Chain = YModem_Run &rArr; YModem_Parse_Packet &rArr; OP_Flash_Erase &rArr; HAL_FLASHEx_Erase &rArr; FLASH_WaitForLastOperation
 </UL>
-<BR>[Calls]<UL><LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Queue_Response
-<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Parse_Packet
-<LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Reset
+<BR>[Calls]<UL><LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Reset
 <LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Queue_Response
+<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Parse_Packet
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -1046,45 +1041,45 @@ Global Symbols
 <P><STRONG><a name="[4f]"></a>fputc</STRONG> (Thumb, 16 bytes, Stack size 8 bytes, retarget_rtt.o(.text.fputc))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = fputc &rArr; SEGGER_RTT_PutChar
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_PutChar
+<BR>[Calls]<UL><LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_PutChar
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> printf8.o(i.__0printf$8)
 </UL>
 <P><STRONG><a name="[97]"></a>lwrb_get_free</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_get_free))
 <BR><BR>[Called By]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Put_Data_Into_Ringbuffer
-<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Put_TxData_To_Ringbuffer
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Put_TxData_To_Ringbuffer
 </UL>
 
 <P><STRONG><a name="[98]"></a>lwrb_get_full</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_get_full))
 <BR><BR>[Called By]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Put_Data_Into_Ringbuffer
-<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Put_TxData_To_Ringbuffer
-<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Get_The_Existing_Amount_Of_Data
-<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Module_Run
+<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Module_Run
+<LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Get_The_Existing_Amount_Of_Data
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Put_TxData_To_Ringbuffer
 </UL>
 
-<P><STRONG><a name="[a7]"></a>lwrb_init</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_init))
-<BR><BR>[Called By]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Config
+<P><STRONG><a name="[a6]"></a>lwrb_init</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_init))
+<BR><BR>[Called By]<UL><LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Config
 </UL>
 
-<P><STRONG><a name="[aa]"></a>lwrb_read</STRONG> (Thumb, 170 bytes, Stack size 32 bytes, lwrb.o(.text.lwrb_read))
+<P><STRONG><a name="[a9]"></a>lwrb_read</STRONG> (Thumb, 170 bytes, Stack size 32 bytes, lwrb.o(.text.lwrb_read))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = lwrb_read
 </UL>
 <BR>[Calls]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Take_A_Piece_Of_Data
-<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Module_Run
+<BR>[Called By]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Module_Run
+<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Take_A_Piece_Of_Data
 </UL>
 
 <P><STRONG><a name="[9a]"></a>lwrb_reset</STRONG> (Thumb, 42 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_reset))
 <BR><BR>[Called By]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Put_Data_Into_Ringbuffer
-<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Put_TxData_To_Ringbuffer
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Put_TxData_To_Ringbuffer
 </UL>
 
 <P><STRONG><a name="[99]"></a>lwrb_skip</STRONG> (Thumb, 76 bytes, Stack size 8 bytes, lwrb.o(.text.lwrb_skip))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = lwrb_skip
 </UL>
 <BR>[Called By]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Put_Data_Into_Ringbuffer
-<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Put_TxData_To_Ringbuffer
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Put_TxData_To_Ringbuffer
 </UL>
 
 <P><STRONG><a name="[9b]"></a>lwrb_write</STRONG> (Thumb, 170 bytes, Stack size 32 bytes, lwrb.o(.text.lwrb_write))
@@ -1093,28 +1088,31 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy
 </UL>
 <BR>[Called By]<UL><LI><a href="#[96]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Put_Data_Into_Ringbuffer
-<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Put_TxData_To_Ringbuffer
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Put_TxData_To_Ringbuffer
 </UL>
 
-<P><STRONG><a name="[46]"></a>main</STRONG> (Thumb, 788 bytes, Stack size 72 bytes, main.o(.text.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 424<LI>Call Chain = main &rArr; OP_Flash_Copy &rArr; HAL_FLASH_Program &rArr; FLASH_WaitForLastOperation
+<P><STRONG><a name="[46]"></a>main</STRONG> (Thumb, 2104 bytes, Stack size 80 bytes, main.o(.text.main))
+<BR><BR>[Stack]<UL><LI>Max Depth = 432<LI>Call Chain = main &rArr; OP_Flash_Copy &rArr; HAL_FLASH_Program &rArr; FLASH_WaitForLastOperation
 </UL>
-<BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IAP_Ready_To_Jump_App
-<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Put_TxData_To_Ringbuffer
-<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Get_Response
+<BR>[Calls]<UL><LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Module_Run
+<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Get_Response
 <LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OP_Flash_Copy
-<LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Reset
 <LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FW_Firmware_Verification
 <LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YMode_Get_File_Size
 <LI><a href="#[b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Has_Response
-<LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Run
-<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Take_A_Piece_Of_Data
-<LI><a href="#[a8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Get_The_Existing_Amount_Of_Data
+<LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Run
+<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Take_A_Piece_Of_Data
+<LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Get_The_Existing_Amount_Of_Data
 <LI><a href="#[b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_TogglePin
+<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Reset
+<LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IAP_Ready_To_Jump_App
 <LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Module_Run
-<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Init
-<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Config
+<LI><a href="#[aa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Put_TxData_To_Ringbuffer
+<LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IAP_SetUpdateFlag
+<LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Is_App_Valid_Enhanced
+<LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IAP_GetUpdateFlag
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Init
+<LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_Config
 <LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_USART1_UART_Init
 <LI><a href="#[8c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_DMA_Init
 <LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
@@ -1135,15 +1133,15 @@ Global Symbols
 <P><STRONG><a name="[69]"></a>__2printf</STRONG> (Thumb, 0 bytes, Stack size 24 bytes, printf8.o(i.__0printf$8))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = __2printf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Queue_Response
-<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Parse_Packet
-<LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_SystemStart
-<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Get_Response
-<LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Reset
+<BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_SystemStart
+<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Get_Response
 <LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;FW_Firmware_Verification
-<LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Run
-<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Init
+<LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Run
+<LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Reset
+<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Init
 <LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Queue_Response
+<LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Parse_Packet
 </UL>
 
 <P><STRONG><a name="[59]"></a>__aeabi_errno_addr</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, errno.o(i.__aeabi_errno_addr))
@@ -1172,7 +1170,7 @@ Local Symbols
 <LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_full
 <LI><a href="#[97]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_free
 </UL>
-<BR>[Called By]<UL><LI><a href="#[a5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_RX_IDLE_Interrupt_Handler
+<BR>[Called By]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_RX_IDLE_Interrupt_Handler
 <LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_DMA_RX_Interrupt_Handler
 </UL>
 
@@ -1182,7 +1180,7 @@ Local Symbols
 <BR>[Address Reference Count : 1]<UL><LI> stm32f1xx_hal_uart.o(.text.HAL_UART_Transmit_DMA)
 </UL>
 <P><STRONG><a name="[4e]"></a>UART_DMATxHalfCplt</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, stm32f1xx_hal_uart.o(.text.UART_DMATxHalfCplt))
-<BR><BR>[Calls]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_TxHalfCpltCallback
+<BR><BR>[Calls]<UL><LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_TxHalfCpltCallback
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> stm32f1xx_hal_uart.o(.text.HAL_UART_Transmit_DMA)
 </UL>
@@ -1193,13 +1191,13 @@ Local Symbols
 <LI> stm32f1xx_hal_uart.o(.text.HAL_UART_Receive_DMA)
 </UL>
 <P><STRONG><a name="[4a]"></a>UART_DMAReceiveCplt</STRONG> (Thumb, 350 bytes, Stack size 0 bytes, stm32f1xx_hal_uart.o(.text.UART_DMAReceiveCplt))
-<BR><BR>[Calls]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_RxCpltCallback
+<BR><BR>[Calls]<UL><LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_RxCpltCallback
 <LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UARTEx_RxEventCallback
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> stm32f1xx_hal_uart.o(.text.HAL_UART_Receive_DMA)
 </UL>
 <P><STRONG><a name="[4b]"></a>UART_DMARxHalfCplt</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, stm32f1xx_hal_uart.o(.text.UART_DMARxHalfCplt))
-<BR><BR>[Calls]<UL><LI><a href="#[a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_RxHalfCpltCallback
+<BR><BR>[Calls]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_RxHalfCpltCallback
 <LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UARTEx_RxEventCallback
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> stm32f1xx_hal_uart.o(.text.HAL_UART_Receive_DMA)
@@ -1207,7 +1205,7 @@ Local Symbols
 <P><STRONG><a name="[78]"></a>UART_Receive_IT</STRONG> (Thumb, 254 bytes, Stack size 4 bytes, stm32f1xx_hal_uart.o(.text.UART_Receive_IT))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = UART_Receive_IT
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_RxCpltCallback
+<BR>[Calls]<UL><LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_RxCpltCallback
 <LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UARTEx_RxEventCallback
 </UL>
 <BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_IRQHandler
@@ -1222,37 +1220,36 @@ Local Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[73]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SystemReset
 </UL>
 
-<P><STRONG><a name="[50]"></a>_SystemStart</STRONG> (Thumb, 152 bytes, Stack size 8 bytes, boot_entry.o(.text._SystemStart))
-<BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = _SystemStart &rArr; IAP_Ready_To_Jump_App &rArr; Delay_MS_By_NOP
+<P><STRONG><a name="[50]"></a>_SystemStart</STRONG> (Thumb, 92 bytes, Stack size 16 bytes, boot_entry.o(.text._SystemStart))
+<BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = _SystemStart &rArr; IAP_Ready_To_Jump_App &rArr; Delay_MS_By_NOP
 </UL>
-<BR>[Calls]<UL><LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IAP_SetUpdateFlag
-<LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IAP_GetUpdateFlag
-<LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IAP_Ready_To_Jump_App
+<BR>[Calls]<UL><LI><a href="#[8a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IAP_Ready_To_Jump_App
+<LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;IAP_GetUpdateFlag
 <LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> boot_entry.o(.init_array)
 </UL>
-<P><STRONG><a name="[af]"></a>YModem_Parse_Packet</STRONG> (Thumb, 2628 bytes, Stack size 48 bytes, ymodem.o(.text.YModem_Parse_Packet))
+<P><STRONG><a name="[ae]"></a>YModem_Parse_Packet</STRONG> (Thumb, 2628 bytes, Stack size 48 bytes, ymodem.o(.text.YModem_Parse_Packet))
 <BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = YModem_Parse_Packet &rArr; OP_Flash_Erase &rArr; HAL_FLASHEx_Erase &rArr; FLASH_WaitForLastOperation
 </UL>
 <BR>[Calls]<UL><LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OP_Flash_Write
 <LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OP_Flash_Erase
 <LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;atol
 <LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
-<LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
-<LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strncpy
+<LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
+<LI><a href="#[af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strncpy
 <LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memset
 <LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy
 </UL>
-<BR>[Called By]<UL><LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Run
+<BR>[Called By]<UL><LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Run
 </UL>
 
-<P><STRONG><a name="[b2]"></a>YModem_Queue_Response</STRONG> (Thumb, 112 bytes, Stack size 16 bytes, ymodem.o(.text.YModem_Queue_Response))
+<P><STRONG><a name="[b1]"></a>YModem_Queue_Response</STRONG> (Thumb, 112 bytes, Stack size 16 bytes, ymodem.o(.text.YModem_Queue_Response))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = YModem_Queue_Response &rArr; __2printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Run
+<BR>[Called By]<UL><LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;YModem_Run
 </UL>
 
 <P><STRONG><a name="[bb]"></a>_printf_core</STRONG> (Thumb, 996 bytes, Stack size 104 bytes, printf8.o(i._printf_core), UNUSED)

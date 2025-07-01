@@ -46,14 +46,7 @@ static void IAP_SetUpdateFlag(uint64_t flag)
   */
 static void IAP_JumpToBootloader(void)
 {
-    //! 设置固件升级标志位
-    IAP_SetUpdateFlag(FIRMWARE_UPDATE_MAGIC_WORD);
-
-    //! 等待50ms，确保标志位设置成功
-    LL_mDelay(50);
-
-    //! 复位MCU
-    NVIC_SystemReset();
+    NVIC_SystemReset(); //! 复位MCU
 }
 
 /**
@@ -83,6 +76,10 @@ void IAP_Parse_Command(uint8_t data)
         if (match_index >= sizeof(target_sequence)) {
             // 完整匹配成功，跳转到Bootloader
             match_index = 0;  // 重置状态，为下次做准备
+            //! 设置固件升级标志位
+            IAP_SetUpdateFlag(FIRMWARE_UPDATE_MAGIC_WORD);
+            //! 等待10ms，确保标志位设置成功
+            LL_mDelay(10);
             IAP_JumpToBootloader();  // 此函数不会返回，MCU将复位
         }
     } else {

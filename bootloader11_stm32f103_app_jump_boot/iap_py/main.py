@@ -17,6 +17,7 @@ def parse_args():
     parser.add_argument('--timeout', type=int, default=5, help='等待ACK的超时时间（秒），默认5秒')
     parser.add_argument('--retries', type=int, default=3, help='每个数据包的最大重试次数，默认3次')
     parser.add_argument('--verbose', '-v', action='store_true', help='显示详细的传输信息')
+    parser.add_argument('--auto-jump', action='store_true', help='自动发送跳转命令到bootloader')
     return parser.parse_args()
 
 def wait_for_ack_and_c(serial_mgr, timeout=5, verbose=False):
@@ -206,7 +207,89 @@ def send_ymodem_packet(serial_mgr, ymodem, packet_num, data, packet_name="数据
         print(f"发送{packet_name}时出错：{str(e)}")
         return False
 
-def send_ymodem_transmission(serial_mgr, ymodem, bin_file_path, ack_timeout=5, max_retries=3, verbose=False):
+def send_jump_command(serial_mgr, timeout=10, verbose=False):
+    """
+    Brief: 发送跳转到bootloader的命令并等待'C'字符心跳
+    Params: 
+        serial_mgr - 串口管理器实例
+        timeout - 等待bootloader心跳的超时时间（秒）
+        verbose - 是否显示详细信息
+    Return: 
+        bool - 是否成功收到bootloader的'C'字符心跳
+    """
+    jump_command = "A5A5A5A5"
+    
+    if verbose:
+        print(f"\n=== 发送跳转命令 ===")
+        print(f"命令内容：'{jump_command}'")
+        print(f"ASCII码：{' '.join([f'0x{ord(c):02X}' for c in jump_command])}")
+    else:
+        print("发送跳转命令...", end=" ")
+    
+    try:
+        # 清空接收缓冲区
+        serial_mgr.Clear_Buffer()
+        
+        # 等待MCU稳定（很重要！）
+        time.sleep(0.1)
+        
+        # 发送跳转命令
+        bytes_sent = serial_mgr.Send_String(jump_command)
+        
+        if verbose:
+            print(f"成功发送 {bytes_sent} 字节")
+            print("等待bootloader发送'C'字符心跳...")
+            print(f"bootloader每2秒发送一次'C'字符，超时时间：{timeout}秒")
+        else:
+            print(f"完成({bytes_sent}字节)")
+            print("等待'C'心跳...", end=" ")
+        
+        # 等待bootloader发送'C'字符心跳
+        start_time = time.time()
+        received_responses = []
+        
+        while time.time() - start_time < timeout:
+            response = serial_mgr.Receive_Byte(timeout=0.1)
+            if response is not None:
+                received_responses.append(f"0x{response:02X}")
+                if verbose:
+                    print(f"收到：0x{response:02X}")
+                
+                if response == YModem.C:  # 0x43 ('C')
+                    if verbose:
+                        print("✅ 收到'C'字符心跳！bootloader已准备就绪")
+                        if len(received_responses) > 1:
+                            print(f"本次等待期间收到的所有数据：{' '.join(received_responses)}")
+                    else:
+                        print("成功")
+                    return True
+                elif response == YModem.NAK:  # 0x15
+                    if verbose:
+                        print("收到NAK（可能是之前的残留数据）")
+                elif response == YModem.ACK:  # 0x06
+                    if verbose:
+                        print("收到ACK（可能是之前的残留数据）")
+                else:
+                    if verbose:
+                        print(f"收到其他字符：0x{response:02X}")
+        
+        if verbose:
+            print("⚠️ 等待'C'字符心跳超时")
+            if received_responses:
+                print(f"超时期间收到的数据：{' '.join(received_responses)}")
+            print("可能原因：")
+            print("1. MCU还未完成跳转（需要更长等待时间）")
+            print("2. bootloader心跳功能未启用")
+            print("3. 串口连接问题")
+        else:
+            print("超时")
+        return False
+        
+    except Exception as e:
+        print(f"发送跳转命令时出错：{str(e)}")
+        return False
+
+def send_ymodem_transmission(serial_mgr, ymodem, bin_file_path, ack_timeout=5, max_retries=3, verbose=False, auto_jump=False):
     """
     Brief: 执行完整的YModem传输流程
     Params: 
@@ -216,10 +299,21 @@ def send_ymodem_transmission(serial_mgr, ymodem, bin_file_path, ack_timeout=5, m
         ack_timeout - 等待ACK的超时时间
         max_retries - 每个数据包的最大重试次数
         verbose - 是否显示详细信息
+        auto_jump - 是否自动发送跳转命令
     Return: 
         bool - 传输是否成功
     """
     try:
+        # === 步骤0：如果启用自动跳转，先发送跳转命令 ===
+        if auto_jump:
+            print("=== 自动跳转到bootloader ===")
+            if not send_jump_command(serial_mgr, timeout=6, verbose=verbose):
+                print("跳转到bootloader失败，请手动重启到bootloader模式")
+                return False
+            
+            # 收到bootloader心跳后，可以立即开始传输
+            print("收到bootloader心跳，开始YModem传输...")
+        
         # 加载二进制文件
         if not ymodem.bin_reader.load_file(bin_file_path):
             print(f"错误：无法加载文件 {bin_file_path}")
@@ -235,8 +329,9 @@ def send_ymodem_transmission(serial_mgr, ymodem, bin_file_path, ack_timeout=5, m
         total_packets = (file_size + ymodem.PACKET_SIZE_1024 - 1) // ymodem.PACKET_SIZE_1024
         print(f"将分为 {total_packets} 个数据包传输")
         
-        # 清空接收缓冲区
-        serial_mgr.Clear_Buffer()
+        # 如果没有自动跳转，清空接收缓冲区
+        if not auto_jump:
+            serial_mgr.Clear_Buffer()
         
         # === 步骤1：发送第0包（文件信息包） ===
         file_info = f"{file_name}\0{file_size}\0".encode('utf-8')
@@ -395,7 +490,7 @@ def main():
         ymodem = YModem()
         
         # 执行YModem传输
-        success = send_ymodem_transmission(serial_mgr, ymodem, args.file, args.timeout, args.retries, args.verbose)
+        success = send_ymodem_transmission(serial_mgr, ymodem, args.file, args.timeout, args.retries, args.verbose, args.auto_jump)
         
         if success:
             print("\n✅ 传输任务完成！")
