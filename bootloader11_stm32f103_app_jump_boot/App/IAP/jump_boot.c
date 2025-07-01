@@ -37,19 +37,6 @@ static void IAP_SetUpdateFlag(uint64_t flag)
 }
 
 /**
-  * @brief  App跳转到Bootloader
-  * @note   通过设置升级标志位并复位MCU的方式跳转到Bootloader
-  *         - 设置固件升级魔术字到指定RAM地址
-  *         - 延时等待标志位写入完成  
-  *         - 软件复位MCU，由Bootloader检测标志位决定启动模式
-  * @retval 无（函数不会返回，MCU将复位）
-  */
-static void IAP_JumpToBootloader(void)
-{
-    NVIC_SystemReset(); //! 复位MCU
-}
-
-/**
   * @brief  解析串口接收到的数据
   * @note   根据接收到的数据，判断是否需要跳转到Bootloader
   *         目标字符串: "A5A5A5A5" (8字节)
@@ -80,7 +67,8 @@ void IAP_Parse_Command(uint8_t data)
             IAP_SetUpdateFlag(FIRMWARE_UPDATE_MAGIC_WORD);
             //! 等待10ms，确保标志位设置成功
             LL_mDelay(10);
-            IAP_JumpToBootloader();  // 此函数不会返回，MCU将复位
+            //！此函数不会返回，MCU将复位
+            NVIC_SystemReset();
         }
     } else {
         // 不匹配，重置状态机
