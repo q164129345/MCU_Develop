@@ -583,6 +583,31 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>IAP</GroupName>
+          <Files>
+            <File>
+              <FileName>jump_boot.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\IAP\jump_boot.c</FilePath>
+            </File>
+            <File>
+              <FileName>jump_boot.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\IAP\jump_boot.h</FilePath>
+            </File>
+            <File>
+              <FileName>bootloader_define.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\IAP\bootloader_define.h</FilePath>
+            </File>
+            <File>
+              <FileName>flash_map.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\IAP\flash_map.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>

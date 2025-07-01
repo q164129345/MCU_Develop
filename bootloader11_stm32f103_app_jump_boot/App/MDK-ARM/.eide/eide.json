@@ -140,6 +140,24 @@
         "folders": []
       },
       {
+        "name": "IAP",
+        "files": [
+          {
+            "path": "../IAP/jump_boot.c"
+          },
+          {
+            "path": "../IAP/jump_boot.h"
+          },
+          {
+            "path": "../IAP/bootloader_define.h"
+          },
+          {
+            "path": "../IAP/flash_map.h"
+          }
+        ],
+        "folders": []
+      },
+      {
         "name": "::CMSIS",
         "files": [],
         "folders": []
@@ -274,8 +292,8 @@
         "bin": "",
         "baseAddr": "",
         "cpuInfo": {
-          "vendor": "null",
-          "cpuName": "null"
+          "vendor": "ST",
+          "cpuName": "STM32F103ZE"
         },
         "proType": 1,
         "speed": 8000,
@@ -294,7 +312,6 @@
           "../SEGGER_RTT",
           "../component",
           "../IAP",
-          ".cmsis/include",
           "RTE/_stm32f103zet6"
         ],
         "libList": [],

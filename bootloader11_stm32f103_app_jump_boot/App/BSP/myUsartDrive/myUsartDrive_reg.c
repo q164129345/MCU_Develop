@@ -1,4 +1,5 @@
 #include "myUsartDrive/myUsartDrive_reg.h"
+#include "jump_boot.h"
 
 volatile uint8_t rx_buffer[RX_BUFFER_SIZE]; // 接收DMA专用缓冲区
 uint64_t g_Usart1_RXCount = 0;              // 统计接收的字节数
@@ -490,9 +491,10 @@ void USART1_Module_Run(void)
             // - 打印到调试终端
             // - 解析协议帧
             // - 存储到应用层缓冲区等
-            
+            IAP_Parse_Command(rx_byte); //! 处理IAP报文
             // 示例：简单回显接收到的字节（可根据需要修改）
             // printf("收到字节: 0x%02X ('%c')\n", rx_byte, (rx_byte >= 32 && rx_byte <= 126) ? rx_byte : '.');
+
         }
     }
     
