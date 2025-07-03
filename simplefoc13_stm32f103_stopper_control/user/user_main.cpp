@@ -4,7 +4,7 @@
 #include "BLDCMotor.h"
 #include "InlineCurrentSense.h"
 
-// J-LINK ScopeÏûÏ¢½á¹¹
+// J-LINK Scopeæ¶ˆæ¯ç»“æ„
 typedef struct {
     uint32_t timestamp;
     float a;
@@ -12,31 +12,31 @@ typedef struct {
     float c;
 }J_LINK_Scope_Message;
 
-// Íâ²¿±äÁ¿
+// å¤–éƒ¨å˜é‡
 extern struct AS5600_I2CConfig_s AS5600_I2C_Config;
 extern I2C_HandleTypeDef hi2c1;
 
-// È«¾Ö±äÁ¿
-float g_Velocity; // ±ãÓÚÊ¹ÓÃJ-LINK Scope¹Û²ìÇúÏß
+// å…¨å±€å˜é‡
+float g_Velocity; // ä¾¿äºä½¿ç”¨J-LINK Scopeè§‚å¯Ÿæ›²çº¿
 volatile uint8_t JS_RTT_BufferUp1[2048] = {0,};
 const uint8_t JS_RTT_Channel = 1;
 J_LINK_Scope_Message JS_Message;
 
-AS5600_I2C AS5600_1(AS5600_I2C_Config); // ´´½¨AS5600_I2C¶ÔÏó
+AS5600_I2C AS5600_1(AS5600_I2C_Config); // åˆ›å»ºAS5600_I2Cå¯¹è±¡
 BLDCDriver3PWM motorDriver(GPIO_PIN_0,GPIO_PIN_1,GPIO_PIN_2); // PA0,PA1,PA2
-BLDCMotor motor(7); // ´´½¨BLDCMotor¶ÔÏó,µç»úÊÇ7¶Ô¼«
-InlineCurrentSense currentSense(0.001f,50.0f,ADC_CHANNEL_3,ADC_CHANNEL_4,NOT_SET); // ´´½¨µçÁ÷´«¸ĞÆ÷¶ÔÏó
+BLDCMotor motor(7); // åˆ›å»ºBLDCMotorå¯¹è±¡,ç”µæœºæ˜¯7å¯¹æ
+InlineCurrentSense currentSense(0.001f,50.0f,ADC_CHANNEL_3,ADC_CHANNEL_4,NOT_SET); // åˆ›å»ºç”µæµä¼ æ„Ÿå™¨å¯¹è±¡
 
-float targetAngle = 0; // Ä¿±ê½Ç¶È
+float targetAngle = 0; // ç›®æ ‡è§’åº¦
 
 void Stopper_Control(void)
 {
-    const float StopPos1 = -1.100f; // ±ß½ç1
-    const float StopPos2 = 2.200f;  // ±ß½ç2
+    const float StopPos1 = -1.100f; // è¾¹ç•Œ1
+    const float StopPos2 = 2.200f;  // è¾¹ç•Œ2
     
-    // Èç¹û°Ú±Û½øÈë½ûÇø£¬µç»úÊ¹ÄÜ£¬ÀûÓÃÎ»ÖÃ±Õ»·»Øµ½±ß½ç
+    // å¦‚æœæ‘†è‡‚è¿›å…¥ç¦åŒºï¼Œç”µæœºä½¿èƒ½ï¼Œåˆ©ç”¨ä½ç½®é—­ç¯å›åˆ°è¾¹ç•Œ
     if (motor.shaft_angle <= StopPos1) {
-        if (motor.enabled != 1) motor.enable(); // ±ÜÃâÖØ¸´Ê¹ÄÜ
+        if (motor.enabled != 1) motor.enable(); // é¿å…é‡å¤ä½¿èƒ½
         targetAngle = StopPos1;
     } else if (motor.shaft_angle >= StopPos2) {
         if (motor.enabled != 1) motor.enable();
@@ -47,86 +47,86 @@ void Stopper_Control(void)
 }
 
 /**
- * @brief C++»·¾³Èë¿Úº¯Êı
+ * @brief C++ç¯å¢ƒå…¥å£å‡½æ•°
  * 
  */
 void main_Cpp(void)
 {
-    SEGGER_RTT_ConfigUpBuffer(JS_RTT_Channel,               // Í¨µÀºÅ
-                            // Í¨µÀÃû×Ö£¨ÃüÃûÓĞÒâÒåµÄ£¬Ò»¶¨Òª°´ÕÕ¹Ù·½ÎÄµµ¡°RTT channel naming convention¡±µÄ¹æ·¶À´£©
-                            "JScope_t4f4f4f4",              // Êı¾İ°üº¬1¸ö32Î»µÄÊ±¼ä´ÁÓë1¸öuint32_t±äÁ¿¡¢1¸öuint32_t±äÁ¿
-                            (uint8_t*)&JS_RTT_BufferUp1[0], // »º´æµØÖ·
-                            sizeof(JS_RTT_BufferUp1),       // »º´æ´óĞ¡
-                            SEGGER_RTT_MODE_NO_BLOCK_SKIP); // ·Ç×èÈû
-    AS5600_1.init(&hi2c1); // ³õÊ¼»¯AS5600
-    motorDriver.voltage_power_supply = DEF_POWER_SUPPLY; // ÉèÖÃµçÑ¹
-    motorDriver.init();   // ³õÊ¼»¯µç»úÇı¶¯
+    SEGGER_RTT_ConfigUpBuffer(JS_RTT_Channel,               // é€šé“å·
+                            // é€šé“åå­—ï¼ˆå‘½åæœ‰æ„ä¹‰çš„ï¼Œä¸€å®šè¦æŒ‰ç…§å®˜æ–¹æ–‡æ¡£â€œRTT channel naming conventionâ€çš„è§„èŒƒæ¥ï¼‰
+                            "JScope_t4f4f4f4",              // æ•°æ®åŒ…å«1ä¸ª32ä½çš„æ—¶é—´æˆ³ä¸1ä¸ªuint32_tå˜é‡ã€1ä¸ªuint32_tå˜é‡
+                            (uint8_t*)&JS_RTT_BufferUp1[0], // ç¼“å­˜åœ°å€
+                            sizeof(JS_RTT_BufferUp1),       // ç¼“å­˜å¤§å°
+                            SEGGER_RTT_MODE_NO_BLOCK_SKIP); // éé˜»å¡
+    AS5600_1.init(&hi2c1); // åˆå§‹åŒ–AS5600
+    motorDriver.voltage_power_supply = DEF_POWER_SUPPLY; // è®¾ç½®ç”µå‹
+    motorDriver.init();   // åˆå§‹åŒ–ç”µæœºé©±åŠ¨
 
-    currentSense.skip_align = true; // Ìø¹ı¼ì²âµç»úÈıÏà½ÓÏß
-    currentSense.init();   // ³õÊ¼»¯µçÁ÷´«¸ĞÆ÷
-    currentSense.linkDriver(&motorDriver); // µçÁ÷´«¸ĞÆ÷Á¬½ÓÇı¶¯Æ÷
+    currentSense.skip_align = true; // è·³è¿‡æ£€æµ‹ç”µæœºä¸‰ç›¸æ¥çº¿
+    currentSense.init();   // åˆå§‹åŒ–ç”µæµä¼ æ„Ÿå™¨
+    currentSense.linkDriver(&motorDriver); // ç”µæµä¼ æ„Ÿå™¨è¿æ¥é©±åŠ¨å™¨
                             
-    motor.linkSensor(&AS5600_1); // Á¬½Ó±àÂëÆ÷
-    motor.linkDriver(&motorDriver); // Á¬½ÓÇı¶¯Æ÷
-    motor.linkCurrentSense(&currentSense); // Á¬½ÓµçÁ÷´«¸ĞÆ÷
-    motor.voltage_sensor_align = 6; // Ğ£×¼Æ«ÒÆoffsetÊ±£¬ËùÓÃµ½µÄµçÑ¹Öµ£¨Ïàµ±ÓÚÕ¼¿Õ±È4V / 12V = 1/3£©
-    motor.controller = MotionControlType::angle; // ÉèÖÃ¿ØÖÆÆ÷Ä£Ê½(Î»ÖÃ±Õ»·Ä£Ê½)
+    motor.linkSensor(&AS5600_1); // è¿æ¥ç¼–ç å™¨
+    motor.linkDriver(&motorDriver); // è¿æ¥é©±åŠ¨å™¨
+    motor.linkCurrentSense(&currentSense); // è¿æ¥ç”µæµä¼ æ„Ÿå™¨
+    motor.voltage_sensor_align = 6; // æ ¡å‡†åç§»offsetæ—¶ï¼Œæ‰€ç”¨åˆ°çš„ç”µå‹å€¼ï¼ˆç›¸å½“äºå ç©ºæ¯”4V / 12V = 1/3ï¼‰
+    motor.controller = MotionControlType::angle; // è®¾ç½®æ§åˆ¶å™¨æ¨¡å¼(ä½ç½®é—­ç¯æ¨¡å¼)
 
-    motor.PID_velocity.P = 0.30f; // ÉèÖÃËÙ¶ÈP
-    motor.PID_velocity.I = 20.0f; // ÉèÖÃËÙ¶ÈI
-    motor.PID_velocity.D = 0; // ÉèÖÃËÙ¶ÈD
-    motor.PID_velocity.output_ramp = 0; // 0£º²»ÉèÖÃĞ±ÆÂ
-    motor.LPF_velocity.Tf = 0.01f; // ÉèÖÃËÙ¶ÈµÍÍ¨ÂË²¨Æ÷
+    motor.PID_velocity.P = 0.30f; // è®¾ç½®é€Ÿåº¦P
+    motor.PID_velocity.I = 20.0f; // è®¾ç½®é€Ÿåº¦I
+    motor.PID_velocity.D = 0; // è®¾ç½®é€Ÿåº¦D
+    motor.PID_velocity.output_ramp = 0; // 0ï¼šä¸è®¾ç½®æ–œå¡
+    motor.LPF_velocity.Tf = 0.01f; // è®¾ç½®é€Ÿåº¦ä½é€šæ»¤æ³¢å™¨
 
-    motor.P_angle.P = 50.0f; // Î»ÖÃ»·P
-    motor.P_angle.I = 500.0f; // Î»ÖÃ»·I
-    motor.P_angle.D = 0.0f;  // Î»ÖÃ»·D
-    motor.P_angle.output_ramp = 0; // ²»ÉèÖÃ
+    motor.P_angle.P = 50.0f; // ä½ç½®ç¯P
+    motor.P_angle.I = 500.0f; // ä½ç½®ç¯I
+    motor.P_angle.D = 0.0f;  // ä½ç½®ç¯D
+    motor.P_angle.output_ramp = 0; // ä¸è®¾ç½®
     
     motor.PID_current_q.P = 0.3f;
     motor.PID_current_q.I = 0.8f;
     motor.PID_current_q.D = 0;
-    motor.PID_current_q.output_ramp = 0; // ²»ÉèÖÃ
-    motor.LPF_current_q.Tf = 0.01f;      // µÍÍ¨ÂË²¨Æ÷
+    motor.PID_current_q.output_ramp = 0; // ä¸è®¾ç½®
+    motor.LPF_current_q.Tf = 0.01f;      // ä½é€šæ»¤æ³¢å™¨
     
     motor.PID_current_d.P = 0.3f;
     motor.PID_current_d.I = 1.0f;
     motor.PID_current_d.D = 0;
-    motor.PID_current_d.output_ramp = 0; // 0£º²»ÉèÖÃĞ±ÆÂ
+    motor.PID_current_d.output_ramp = 0; // 0ï¼šä¸è®¾ç½®æ–œå¡
     motor.LPF_current_d.Tf = 0.01f;
     
-    motor.current_limit = DEF_POWER_SUPPLY; // µçÁ÷ÏŞÖÆ
-    motor.voltage_limit = DEF_POWER_SUPPLY * 2.0f; // µçÑ¹ÏŞÖÆ
-    motor.velocity_limit = DEF_POWER_SUPPLY; // Î»ÖÃ±Õ»·Ä£Ê½Ê±£¬±ä³ÉÎ»ÖÃ»·PIDµÄlimit
-    motor.torque_controller = TorqueControlType::dc_current; // Iq±Õ»·£¬Id = 0
+    motor.current_limit = DEF_POWER_SUPPLY; // ç”µæµé™åˆ¶
+    motor.voltage_limit = DEF_POWER_SUPPLY * 2.0f; // ç”µå‹é™åˆ¶
+    motor.velocity_limit = DEF_POWER_SUPPLY; // ä½ç½®é—­ç¯æ¨¡å¼æ—¶ï¼Œå˜æˆä½ç½®ç¯PIDçš„limit
+    motor.torque_controller = TorqueControlType::dc_current; // Iqé—­ç¯ï¼ŒId = 0
     
-    motor.init(); // ³õÊ¼»¯µç»ú
+    motor.init(); // åˆå§‹åŒ–ç”µæœº
 
     motor.PID_current_q.limit = DEF_POWER_SUPPLY - 8.5f;
     motor.PID_current_d.limit = DEF_POWER_SUPPLY - 8.5f;
     motor.PID_velocity.limit = DEF_POWER_SUPPLY * 2.0f;
     
-    motor.foc_modulation = FOCModulationType::SpaceVectorPWM; // ÕıÏÒ²¨¸ÄÎªÂí°°²¨
-    motor.sensor_direction = Direction::CCW; // Ö®Ç°Ğ£×¼´«¸ĞÆ÷µÄÊ±ºò£¬ÖªµÀ´«¸ĞÆ÷µÄ·½ÏòÊÇCCW£¨·­¿ªĞ£×¼´«¸ĞÆ÷µÄÕÂ½Ú¾ÍÖªµÀ£©
-    motor.initFOC(); // ³õÊ¼»¯FOC
+    motor.foc_modulation = FOCModulationType::SpaceVectorPWM; // æ­£å¼¦æ³¢æ”¹ä¸ºé©¬éæ³¢
+    motor.sensor_direction = Direction::CCW; // ä¹‹å‰æ ¡å‡†ä¼ æ„Ÿå™¨çš„æ—¶å€™ï¼ŒçŸ¥é“ä¼ æ„Ÿå™¨çš„æ–¹å‘æ˜¯CCWï¼ˆç¿»å¼€æ ¡å‡†ä¼ æ„Ÿå™¨çš„ç« èŠ‚å°±çŸ¥é“ï¼‰
+    motor.initFOC(); // åˆå§‹åŒ–FOC
 
     SEGGER_RTT_printf(0,"motor.zero_electric_angle:");
-    SEGGER_Printf_Float(motor.zero_electric_angle); // ´òÓ¡µç»úÁãµç½Ç¶È
+    SEGGER_Printf_Float(motor.zero_electric_angle); // æ‰“å°ç”µæœºé›¶ç”µè§’åº¦
     SEGGER_RTT_printf(0,"Sensor:");
-    SEGGER_Printf_Float(AS5600_1.getMechanicalAngle()); // ´òÓ¡´«¸ĞÆ÷½Ç¶È
-    HAL_Delay(1000); // ÑÓÊ±1s
-    HAL_TIM_Base_Start_IT(&htim4); // Æô¶¯TIM4¶¨Ê±Æ÷
+    SEGGER_Printf_Float(AS5600_1.getMechanicalAngle()); // æ‰“å°ä¼ æ„Ÿå™¨è§’åº¦
+    HAL_Delay(1000); // å»¶æ—¶1s
+    HAL_TIM_Base_Start_IT(&htim4); // å¯åŠ¨TIM4å®šæ—¶å™¨
     HAL_Delay(1000);
     while(1) {
-        HAL_GPIO_TogglePin(run_led_GPIO_Port,run_led_Pin); // ĞÄÌøµÆÅÜÆğÀ´
+        HAL_GPIO_TogglePin(run_led_GPIO_Port,run_led_Pin); // å¿ƒè·³ç¯è·‘èµ·æ¥
         Stopper_Control();
-        delayMicroseconds(100000U); // ÑÓÊ±100ms
+        delayMicroseconds(100000U); // å»¶æ—¶100ms
     }
 }
 /**
- * @brief ¶¨Ê±Æ÷ÖĞ¶Ï»Øµ÷º¯Êı
+ * @brief å®šæ—¶å™¨ä¸­æ–­å›è°ƒå‡½æ•°
  * 
- * @param htim ¶¨Ê±Æ÷¾ä±ú
+ * @param htim å®šæ—¶å™¨å¥æŸ„
  */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
@@ -134,17 +134,17 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     {
     } else if(htim->Instance == TIM4) {
         
-        HAL_GPIO_WritePin(measure_GPIO_Port,measure_Pin,GPIO_PIN_SET); // À­¸ßµçÆ½
-        motor.loopFOC(); // Ö´ĞĞFOC
-        motor.move(targetAngle); // ¿ØÖÆÄ¿±ê½Ç¶È
-        HAL_GPIO_WritePin(measure_GPIO_Port,measure_Pin,GPIO_PIN_RESET); // À­µÍµçÆ½
+        HAL_GPIO_WritePin(measure_GPIO_Port,measure_Pin,GPIO_PIN_SET); // æ‹‰é«˜ç”µå¹³
+        motor.loopFOC(); // æ‰§è¡ŒFOC
+        motor.move(targetAngle); // æ§åˆ¶ç›®æ ‡è§’åº¦
+        HAL_GPIO_WritePin(measure_GPIO_Port,measure_Pin,GPIO_PIN_RESET); // æ‹‰ä½ç”µå¹³
         
-        JS_Message.timestamp = _micros(); // »ñÈ¡Ê±¼ä´Á
-        // ½«Õ¼¿Õ±È·Å´ó10±¶£¬±ãÓÚ¹Û²ì
-        JS_Message.a = motor.driver->dc_a * 10; // AÏàÕ¼¿Õ±È
-        JS_Message.b = motor.driver->dc_b * 10; // BÏàÕ¼¿Õ±È
-        JS_Message.c = motor.driver->dc_c * 10; // CÏàÕ¼¿Õ±È
-        SEGGER_RTT_Write(JS_RTT_Channel, (uint8_t*)&JS_Message, sizeof(JS_Message)); // Ğ´ÈëJ-LINK Scope
+        JS_Message.timestamp = _micros(); // è·å–æ—¶é—´æˆ³
+        // å°†å ç©ºæ¯”æ”¾å¤§10å€ï¼Œä¾¿äºè§‚å¯Ÿ
+        JS_Message.a = motor.driver->dc_a * 10; // Aç›¸å ç©ºæ¯”
+        JS_Message.b = motor.driver->dc_b * 10; // Bç›¸å ç©ºæ¯”
+        JS_Message.c = motor.driver->dc_c * 10; // Cç›¸å ç©ºæ¯”
+        SEGGER_RTT_Write(JS_RTT_Channel, (uint8_t*)&JS_Message, sizeof(JS_Message)); // å†™å…¥J-LINK Scope
     }
 }
 

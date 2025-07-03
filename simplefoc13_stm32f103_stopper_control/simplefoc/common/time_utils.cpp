@@ -12,7 +12,7 @@ void _delay(unsigned long ms){
 //#else
 //  // regular micros
 //  delay(ms);
-  HAL_Delay(ms); // HAL¿âµÄ´®ĞĞÑÓÊ±º¯Êı
+  HAL_Delay(ms); // HALåº“çš„ä¸²è¡Œå»¶æ—¶å‡½æ•°
 //#endif
 }
 
@@ -27,6 +27,6 @@ unsigned long _micros(){
 //    else return (micros());
 //#else
 //  // regular micros
-  return DWT_Get_Microsecond(); // ´ÓDWT¶¨Ê±Æ÷»ñÈ¡us¼¶µÄÊ±¼ä´Á
+  return DWT_Get_Microsecond(); // ä»DWTå®šæ—¶å™¨è·å–usçº§çš„æ—¶é—´æˆ³
 //#endif
 }

@@ -57,14 +57,14 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 /**
- * @brief RTTÍ¨µÀ0´òÓ¡¸¡µãÊı
+ * @brief RTTé€šé“0æ‰“å°æµ®ç‚¹æ•°
  * 
  * @param value 
  */
 void SEGGER_Printf_Float(float value){
     char buffer[50] = {0,};
-    sprintf(buffer, "%.4f\n", value); // ¸ñÊ½»¯Îª×Ö·û´®
-    SEGGER_RTT_printf(0, "%s", buffer); // ´òÓ¡×Ö·û´®
+    sprintf(buffer, "%.4f\n", value); // æ ¼å¼åŒ–ä¸ºå­—ç¬¦ä¸²
+    SEGGER_RTT_printf(0, "%s", buffer); // æ‰“å°å­—ç¬¦ä¸²
 }
 /* USER CODE END 0 */
 
@@ -102,8 +102,8 @@ int main(void)
   MX_TIM4_Init();
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
-  DWT_Timer_Init(); // ³õÊ¼»¯DWT¶¨Ê±Æ÷
-  main_Cpp();       // Ìø×ªC++»·¾³
+  DWT_Timer_Init(); // åˆå§‹åŒ–DWTå®šæ—¶å™¨
+  main_Cpp();       // è·³è½¬C++ç¯å¢ƒ
   /* USER CODE END 2 */
 
   /* Infinite loop */

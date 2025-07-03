@@ -1,7 +1,7 @@
 #include "InlineCurrentSense.h"
 //#include "communication/SimpleFOCDebug.h"
 
-// ¶¨ÒåÒ»¸öºê£¬½«SIMPLEFOC_DEBUGÌæ»»ÎªSEGGER_RTT_printf
+// å®šä¹‰ä¸€ä¸ªå®ï¼Œå°†SIMPLEFOC_DEBUGæ›¿æ¢ä¸ºSEGGER_RTT_printf
 #define SIMPLEFOC_DEBUG(fmt, ...) SEGGER_RTT_printf(0, fmt "\n", ##__VA_ARGS__)
 
 // InlineCurrentSensor constructor
@@ -20,7 +20,7 @@ InlineCurrentSense::InlineCurrentSense(float _shunt_resistor, float _gain, int _
     volts_to_amps_ratio = 1.0f /_shunt_resistor / _gain; // volts to amps
     // gains for each phase
     gain_a = volts_to_amps_ratio;
-    gain_b = -volts_to_amps_ratio; // ÕâÀï´ÓsimpleFOCÔ´Âë¸ÄÎª-µÄÔ­ÒòÊÇµçÂ·°åµÄ²ÉÑùµç×èÉÏADC²ÉÑù¶Ë¿Ú£¨IN+ÓëIN-£©ÊÇ·´µÄ¡£
+    gain_b = -volts_to_amps_ratio; // è¿™é‡Œä»simpleFOCæºç æ”¹ä¸º-çš„åŸå› æ˜¯ç”µè·¯æ¿çš„é‡‡æ ·ç”µé˜»ä¸ŠADCé‡‡æ ·ç«¯å£ï¼ˆIN+ä¸IN-ï¼‰æ˜¯åçš„ã€‚
     gain_c = volts_to_amps_ratio;
 };
 
@@ -65,7 +65,7 @@ void InlineCurrentSense::calibrateOffsets(){
     offset_ic = 0;
     // read the adc voltage 1000 times ( arbitrary number )
     for (int i = 0; i < calibration_rounds; i++) {
-        ADC_StartReadVoltageFromChannels(); // Ã¿Ò»´Î¶¼ÒªÆô¶¯Ò»´ÎADC²ÉÑùÁ÷³Ì
+        ADC_StartReadVoltageFromChannels(); // æ¯ä¸€æ¬¡éƒ½è¦å¯åŠ¨ä¸€æ¬¡ADCé‡‡æ ·æµç¨‹
         if(_isset(pinA)) offset_ia += _readADCVoltageInline(pinA);
         if(_isset(pinB)) offset_ib += _readADCVoltageInline(pinB);
         if(_isset(pinC)) offset_ic += _readADCVoltageInline(pinC);
@@ -80,7 +80,7 @@ void InlineCurrentSense::calibrateOffsets(){
 // read all three phase currents (if possible 2 or 3)
 PhaseCurrent_s InlineCurrentSense::getPhaseCurrents(){
     PhaseCurrent_s current;
-    ADC_StartReadVoltageFromChannels(); // Ã¿Ò»´Î¶¼ÒªÆô¶¯Ò»´ÎADC²ÉÑùÁ÷³Ì
+    ADC_StartReadVoltageFromChannels(); // æ¯ä¸€æ¬¡éƒ½è¦å¯åŠ¨ä¸€æ¬¡ADCé‡‡æ ·æµç¨‹
     current.a = (_readADCVoltageInline(pinA) - offset_ia) * gain_a;// amps
     current.b = (_readADCVoltageInline(pinB) - offset_ib) * gain_b;// amps
     current.c = (!_isset(pinC)) ? 0 : (_readADCVoltageInline(pinC) - offset_ic)*gain_c; // amps
