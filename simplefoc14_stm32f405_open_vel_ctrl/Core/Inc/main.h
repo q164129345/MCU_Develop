@@ -31,12 +31,18 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "SEGGER_RTT.h"
+#include "dwt_timer.h"
+#include "math.h"
+#include "stdlib.h"
+#include "stdio.h"
+#include "string.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-
+#define delayMicroseconds DWT_Delay_us // 替代Arduino的us级延时接口
+#define delay _delay
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
@@ -53,7 +59,7 @@ extern "C" {
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-
+void SEGGER_Printf_Float(float value);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

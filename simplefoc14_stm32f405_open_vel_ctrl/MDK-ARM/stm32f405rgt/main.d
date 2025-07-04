@@ -28,4 +28,11 @@ stm32f405rgt/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr_ex.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h \
-  ..\Core\Inc\tim.h ..\Core\Inc\gpio.h
+  ..\SEGGER_RTT\SEGGER_RTT.h ..\SEGGER_RTT\SEGGER_RTT_Conf.h \
+  C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h \
+  C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h ..\components\DWT\dwt_timer.h \
+  C:\Keil_v5\ARM\ARMCLANG\include\math.h \
+  C:\Keil_v5\ARM\ARMCLANG\include\stdio.h \
+  C:\Keil_v5\ARM\ARMCLANG\include\string.h ..\Core\Inc\tim.h \
+  ..\Core\Inc\gpio.h ..\user\user_main.h \
+  ..\simplefoc\common\time_utils.h ..\simplefoc\common\foc_utils.h

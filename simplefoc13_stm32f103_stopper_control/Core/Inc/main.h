@@ -41,7 +41,7 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-#define delayMicroseconds DWT_Delay_us // Ìæ´úArduinoµÄus¼¶ÑÓÊ±½Ó¿Ú
+#define delayMicroseconds DWT_Delay_us // æ›¿ä»£Arduinoçš„usçº§å»¶æ—¶æ¥å£
 #define delay _delay
 /* USER CODE END ET */
 

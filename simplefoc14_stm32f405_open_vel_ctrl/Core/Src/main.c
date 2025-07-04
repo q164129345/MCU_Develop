@@ -23,7 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "user_main.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -55,7 +55,16 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+/**
+ * @brief RTT通道0打印浮点数
+ * 
+ * @param value 
+ */
+void SEGGER_Printf_Float(float value){
+    char buffer[50] = {0,};
+    sprintf(buffer, "%.4f\n", value); // 格式化为字符串
+    SEGGER_RTT_printf(0, "%s", buffer); // 打印字符串
+}
 /* USER CODE END 0 */
 
 /**
@@ -88,8 +97,10 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_TIM1_Init();
+  MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
-
+  DWT_Timer_Init(); // 初始化DWT定时器
+  main_Cpp();       // 跳转C++环境
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -99,8 +110,6 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    HAL_GPIO_TogglePin(RUN_LED_GPIO_Port,RUN_LED_Pin);
-    HAL_Delay(100);
   }
   /* USER CODE END 3 */
 }
