@@ -47,14 +47,15 @@ void main_Cpp(void)
 //    motor.linkSensor(&AS5600_1); // 连接编码器
 //    motor.linkDriver(&motorDriver); // 连接驱动器
 //    motor.linkCurrentSense(&currentSense); // 连接电流传感器
+                            
     motor.voltage_sensor_align = 6; // 校准偏移offset时，所用到的电压值（相当于占空比4V / 12V = 1/3）
-    motor.controller = MotionControlType::angle; // 设置控制器模式(位置闭环模式)
+    motor.controller = MotionControlType::velocity_openloop; // 设置控制器模式，开环速度控制模式
 
-    motor.PID_velocity.P = 0.30f; // 设置速度P
-    motor.PID_velocity.I = 20.0f; // 设置速度I
-    motor.PID_velocity.D = 0; // 设置速度D
-    motor.PID_velocity.output_ramp = 0; // 0：不设置斜坡
-    motor.LPF_velocity.Tf = 0.01f; // 设置速度低通滤波器
+//    motor.PID_velocity.P = 0.30f; // 设置速度P
+//    motor.PID_velocity.I = 20.0f; // 设置速度I
+//    motor.PID_velocity.D = 0; // 设置速度D
+//    motor.PID_velocity.output_ramp = 0; // 0：不设置斜坡
+//    motor.LPF_velocity.Tf = 0.01f; // 设置速度低通滤波器
 
 //    motor.P_angle.P = 50.0f; // 位置环P
 //    motor.P_angle.I = 500.0f; // 位置环I
@@ -86,18 +87,20 @@ void main_Cpp(void)
     
     motor.foc_modulation = FOCModulationType::SpaceVectorPWM; // 正弦波改为马鞍波
 //    motor.sensor_direction = Direction::CCW; // 之前校准传感器的时候，知道传感器的方向是CCW（翻开校准传感器的章节就知道）
-    motor.initFOC(); // 初始化FOC
 
-    SEGGER_RTT_printf(0,"motor.zero_electric_angle:");
-    SEGGER_Printf_Float(motor.zero_electric_angle); // 打印电机零电角度
-    SEGGER_RTT_printf(0,"Sensor:");
+//    motor.initFOC(); // 初始化FOC
+
+//    SEGGER_RTT_printf(0,"motor.zero_electric_angle:");
+//    SEGGER_Printf_Float(motor.zero_electric_angle); // 打印电机零电角度
+//    SEGGER_RTT_printf(0,"Sensor:");
 //    SEGGER_Printf_Float(AS5600_1.getMechanicalAngle()); // 打印传感器角度
-    HAL_Delay(1000); // 延时1s
-    HAL_TIM_Base_Start_IT(&htim4); // 启动TIM4定时器
-    HAL_Delay(1000);
+//    HAL_Delay(1000); // 延时1s
+//    HAL_TIM_Base_Start_IT(&htim4); // 启动TIM4定时器
+//    HAL_Delay(1000);
     while(1) {
         HAL_GPIO_TogglePin(RUN_LED_GPIO_Port,RUN_LED_Pin); // 心跳灯跑起来
-        delayMicroseconds(100000U); // 延时100ms
+        SEGGER_RTT_printf(0, "System Tick: %lu ms\n", HAL_GetTick()); // 获取系统滴答数（毫秒），打印出来
+        delayMicroseconds(200000U); // 延时200ms
     }
 }
 /**
