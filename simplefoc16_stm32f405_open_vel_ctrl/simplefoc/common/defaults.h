@@ -1,7 +1,7 @@
 // default configuration values
 // change this file to optimal values for your application
 
-#define DEF_POWER_SUPPLY 12.0f //!< default power supply voltage
+#define DEF_POWER_SUPPLY 24.0f //!< default power supply voltage
 // velocity PI controller params
 #define DEF_PID_VEL_P 0.3f //!< default PID controller P value
 #define DEF_PID_VEL_I 10.0f //!<  default PID controller I value
