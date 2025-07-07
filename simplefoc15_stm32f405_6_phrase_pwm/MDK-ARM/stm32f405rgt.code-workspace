@@ -1,0 +1,14 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "files.associations": {
+            "bsp_pwm.h": "c",
+            "main.h": "c"
+        }
+    },
+    "extensions": {}
+}
