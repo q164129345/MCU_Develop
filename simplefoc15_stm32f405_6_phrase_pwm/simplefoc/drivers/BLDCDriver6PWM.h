@@ -8,15 +8,13 @@
 #include "main.h"
 #include "bsp_pwm.h"
 
-
-
 /**
  6 pwm bldc driver class
 */
 class BLDCDriver6PWM: public BLDCDriver
 {
   public:
-    BLDCDriver6PWM();
+    BLDCDriver6PWM(TIM_HandleTypeDef *htim);
     
     /**  Motor hardware init function */
   	int init() override;
@@ -26,6 +24,7 @@ class BLDCDriver6PWM: public BLDCDriver
     void enable() override;
 
     // hardware variables
+    TIM_HandleTypeDef *PWM_TIM;
   	//int pwmA_h,pwmA_l; //!< phase A pwm pin number
   	//int pwmB_h,pwmB_l; //!< phase B pwm pin number
   	//int pwmC_h,pwmC_l; //!< phase C pwm pin number
