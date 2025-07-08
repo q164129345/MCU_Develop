@@ -22,6 +22,7 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "user_main.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -209,7 +210,7 @@ void EXTI4_IRQHandler(void)
   /* USER CODE END EXTI4_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(M0_ENC_A_Pin);
   /* USER CODE BEGIN EXTI4_IRQn 1 */
-
+  HAL_GPIO_EXTI_Callback(M0_ENC_A_Pin);
   /* USER CODE END EXTI4_IRQn 1 */
 }
 
@@ -224,7 +225,8 @@ void EXTI9_5_IRQHandler(void)
   HAL_GPIO_EXTI_IRQHandler(M0_ENC_B_Pin);
   HAL_GPIO_EXTI_IRQHandler(M0_ENC_C_Pin);
   /* USER CODE BEGIN EXTI9_5_IRQn 1 */
-
+  HAL_GPIO_EXTI_Callback(M0_ENC_B_Pin);
+  HAL_GPIO_EXTI_Callback(M0_ENC_C_Pin);
   /* USER CODE END EXTI9_5_IRQn 1 */
 }
 

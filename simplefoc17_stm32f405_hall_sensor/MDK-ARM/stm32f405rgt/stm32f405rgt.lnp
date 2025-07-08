@@ -28,6 +28,7 @@
 "stm32f405rgt\currentsense.o"
 "stm32f405rgt\focmotor.o"
 "stm32f405rgt\sensor.o"
+"stm32f405rgt\hallsensor.o"
 "stm32f405rgt\bldcdriver6pwm.o"
 "stm32f405rgt\bldcmotor.o"
 "stm32f405rgt\segger_rtt.o"

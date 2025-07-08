@@ -25,6 +25,8 @@ HallSensor sensor(21); // 创建HallSensor对象，电机的极对数是21
 //InlineCurrentSense currentSense(0.001f,50.0f,ADC_CHANNEL_3,ADC_CHANNEL_4,NOT_SET); // 创建电流传感器对象
 
 float targetVel = 4.0f; //! 目标速度
+float sensorAngle = 0.0f; //! 传感器角度
+float motorVel = 0.0f; //! 电机速度
 
 /**
  * @brief C++环境入口函数
@@ -33,7 +35,7 @@ float targetVel = 4.0f; //! 目标速度
 void main_Cpp(void)
 {
     SEGGER_RTT_ConfigUpBuffer(JS_RTT_Channel,               // 通道号
-                            // 通道名字（命名有意义的，一定要按照官方文档“RTT channel naming convention”的规范来）
+                            // 通道名字（命名有意义的，一定要按照官方文档"RTT channel naming convention"的规范来）
                             "JScope_t4f4f4f4",              // 数据包含1个32位的时间戳与1个uint32_t变量、1个uint32_t变量
                             (uint8_t*)&JS_RTT_BufferUp1[0], // 缓存地址
                             sizeof(JS_RTT_BufferUp1),       // 缓存大小
@@ -66,15 +68,20 @@ void main_Cpp(void)
 
 //    SEGGER_RTT_printf(0,"motor.zero_electric_angle:");
 //    SEGGER_Printf_Float(motor.zero_electric_angle); // 打印电机零电角度
-//    SEGGER_RTT_printf(0,"Sensor:");
-//    SEGGER_Printf_Float(AS5600_1.getMechanicalAngle()); // 打印传感器角度
+    SEGGER_RTT_printf(0,"Sensor:");
+    SEGGER_Printf_Float(sensor.getMechanicalAngle()); // 打印传感器角度
     HAL_Delay(1000); // 延时1s
     HAL_TIM_Base_Start_IT(&htim4); // 启动TIM4定时器
     HAL_Delay(1000);
     while(1) {
         HAL_GPIO_TogglePin(RUN_LED_GPIO_Port,RUN_LED_Pin); // 心跳灯跑起来
-        //SEGGER_RTT_printf(0, "System Tick: %lu ms\n", HAL_GetTick()); // 获取系统滴答数（毫秒），打印出来
-        delayMicroseconds(200000U); // 延时200ms
+        sensor.update();
+        SEGGER_RTT_printf(0,"Dwt_time_us:%u\n",_micros()); //! 打印DWT时间戳
+        sensorAngle = sensor.getAngle();
+        SEGGER_Printf_Float(sensorAngle); //! 打印机电机角度
+        motorVel = sensor.getVelocity();
+        SEGGER_Printf_Float(motorVel); //! 打印电机速度
+        delayMicroseconds(100000U); // 延时200ms
     }
 }
 /**
@@ -100,3 +107,21 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     }
 }
 
+/**
+ * @brief 外部中断回调函数
+ * @note 霍尔传感器信号变化时触发，用于捕获电机位置
+ * 
+ * @param GPIO_Pin 触发中断的GPIO引脚
+ */
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+    if (GPIO_Pin == M0_ENC_A_Pin) {
+        sensor.handleA();
+    }
+    else if (GPIO_Pin == M0_ENC_B_Pin) {
+        sensor.handleB();
+    }
+    else if (GPIO_Pin == M0_ENC_C_Pin) {
+        sensor.handleC();
+    }
+}

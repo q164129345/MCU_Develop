@@ -1,5 +1,6 @@
-stm32f405rgt/user_main.o: ..\user\user_main.cpp ..\user\user_main.h \
-  ..\Core\Inc\main.h ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h \
+stm32f405rgt/hallsensor.o: ..\simplefoc\sensors\HallSensor.cpp \
+  ..\simplefoc\sensors\HallSensor.h ..\Core\Inc\main.h \
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h \
   ..\Core\Inc\stm32f4xx_hal_conf.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_def.h \
@@ -197,15 +198,7 @@ stm32f405rgt/user_main.o: ..\user\user_main.cpp ..\user\user_main.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdio.h \
   C:\Keil_v5\ARM\ARMCLANG\include\libcxx\string.h \
   C:\Keil_v5\ARM\ARMCLANG\include\string.h \
-  ..\simplefoc\common\time_utils.h ..\simplefoc\common\foc_utils.h \
-  ..\Core\Inc\tim.h ..\simplefoc\drivers\BLDCDriver6PWM.h \
-  ..\simplefoc\common\base_classes\BLDCDriver.h \
-  ..\simplefoc\common\defaults.h ..\components\bsp_pwm\bsp_pwm.h \
-  ..\simplefoc\BLDCMotor.h ..\simplefoc\common\base_classes\FOCMotor.h \
   ..\simplefoc\common\base_classes\Sensor.h \
   C:\Keil_v5\ARM\ARMCLANG\include\libcxx\inttypes.h \
   C:\Keil_v5\ARM\ARMCLANG\include\inttypes.h \
-  ..\simplefoc\common\base_classes\CurrentSense.h \
-  ..\simplefoc\common\base_classes\..\foc_utils.h \
-  ..\simplefoc\common\pid.h ..\simplefoc\common\lowpass_filter.h \
-  ..\simplefoc\sensors\HallSensor.h
+  ..\simplefoc\common\foc_utils.h ..\simplefoc\common\time_utils.h

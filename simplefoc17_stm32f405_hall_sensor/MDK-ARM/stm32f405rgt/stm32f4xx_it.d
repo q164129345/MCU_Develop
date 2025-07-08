@@ -33,4 +33,6 @@ stm32f405rgt/stm32f4xx_it.o: ..\Core\Src\stm32f4xx_it.c \
   C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h ..\components\DWT\dwt_timer.h \
   C:\Keil_v5\ARM\ARMCLANG\include\math.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdio.h \
-  C:\Keil_v5\ARM\ARMCLANG\include\string.h ..\Core\Inc\stm32f4xx_it.h
+  C:\Keil_v5\ARM\ARMCLANG\include\string.h ..\Core\Inc\stm32f4xx_it.h \
+  ..\user\user_main.h ..\simplefoc\common\time_utils.h \
+  ..\simplefoc\common\foc_utils.h
