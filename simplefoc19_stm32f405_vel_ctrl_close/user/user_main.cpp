@@ -42,19 +42,18 @@ void main_Cpp(void)
                             SEGGER_RTT_MODE_NO_BLOCK_SKIP); // 非阻塞
 
     motorDriver.voltage_power_supply = DEF_POWER_SUPPLY; // 设置电压
-    motorDriver.voltage_limit = DEF_POWER_SUPPLY; //! 设置电压限制
     motorDriver.init();   // 初始化电机驱动
 
     sensor.init(); //! 初始化霍尔传感器
     motor.linkSensor(&sensor); // 将霍尔传感器跟电机连接起来
                             
-    motor.PID_velocity.P = 0.10f; // 设置速度P
-    motor.PID_velocity.I = 10.0f; // 设置速度I
+    motor.PID_velocity.P = 0.02f; // 设置速度P
+    motor.PID_velocity.I = 1.0f; // 设置速度I
     motor.PID_velocity.D = 0; // 设置速度D
     motor.PID_velocity.output_ramp = 0; // 0：不设置斜坡
-    motor.LPF_velocity.Tf = 0.01f; // 设置速度低通滤波器
+    motor.LPF_velocity.Tf = 0.05f; // 设置速度低通滤波器
+    motor.velocity_limit = DEF_POWER_SUPPLY;
                             
-    motor.voltage_limit = DEF_POWER_SUPPLY; // 电压限制
     motor.linkDriver(&motorDriver); // 将电机驱动器与电机对象关联
     motor.voltage_limit = DEF_POWER_SUPPLY; //! 设置电压限制
     motor.torque_controller = TorqueControlType::voltage; // Iq闭环，Id = 0
@@ -76,7 +75,7 @@ void main_Cpp(void)
     HAL_Delay(1000);
     while(1) {
         HAL_GPIO_TogglePin(RUN_LED_GPIO_Port,RUN_LED_Pin); // 心跳灯跑起来
-        sensor.update();
+//        sensor.update();
 //        SEGGER_RTT_printf(0,"Dwt_time_us:%u\n",_micros()); //! 打印DWT时间戳
 //        sensorAngle = sensor.getAngle();
 //        SEGGER_Printf_Float(sensorAngle); //! 打印机电机角度
