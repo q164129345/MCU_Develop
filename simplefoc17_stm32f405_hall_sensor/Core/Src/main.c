@@ -56,14 +56,14 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 /**
- * @brief RTT通道0打印浮点数
+ * @brief RTT通道0打印浮点�?
  * 
  * @param value 
  */
 void SEGGER_Printf_Float(float value){
     char buffer[50] = {0,};
-    sprintf(buffer, "%.4f\n", value);   // 格式化为字符串
-    SEGGER_RTT_printf(0, "%s", buffer); // 打印字符串
+    sprintf(buffer, "%.4f\n", value);   // 格式化为字符�?
+    SEGGER_RTT_printf(0, "%s", buffer); // 打印字符�?
 }
 /* USER CODE END 0 */
 

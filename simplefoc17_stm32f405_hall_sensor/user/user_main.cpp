@@ -2,6 +2,7 @@
 #include "tim.h"
 #include "BLDCDriver6PWM.h"
 #include "BLDCMotor.h"
+#include "HallSensor.h"
 //#include "InlineCurrentSense.h"
 
 // J-LINK Scope消息结构
@@ -19,8 +20,8 @@ const uint8_t JS_RTT_Channel = 1;
 J_LINK_Scope_Message JS_Message;
 
 BLDCDriver6PWM motorDriver(&htim1); //! 初始化驱动器(htim1是TIM1定时器)
-//BLDCDriver3PWM motorDriver(GPIO_PIN_0,GPIO_PIN_1,GPIO_PIN_2); // PA0,PA1,PA2
-BLDCMotor motor(21); // 创建BLDCMotor对象,电机是21对极
+BLDCMotor motor(21); // 创建BLDCMotor对象，电机的极对数是21
+HallSensor sensor(21); // 创建HallSensor对象，电机的极对数是21
 //InlineCurrentSense currentSense(0.001f,50.0f,ADC_CHANNEL_3,ADC_CHANNEL_4,NOT_SET); // 创建电流传感器对象
 
 float targetVel = 4.0f; //! 目标速度
@@ -37,19 +38,20 @@ void main_Cpp(void)
                             (uint8_t*)&JS_RTT_BufferUp1[0], // 缓存地址
                             sizeof(JS_RTT_BufferUp1),       // 缓存大小
                             SEGGER_RTT_MODE_NO_BLOCK_SKIP); // 非阻塞
-                            
+
     motorDriver.voltage_power_supply = DEF_POWER_SUPPLY; // 设置电压
     motorDriver.voltage_limit = 1.5f; //! 设置电压限制
     motorDriver.init();   // 初始化电机驱动
-//    motor.voltage_sensor_align = 6; // 校准偏移offset时，所用到的电压值（相当于占空比4V / 12V = 1/3）
 
+    sensor.init(); //! 初始化霍尔传感器
+    
 //    motor.PID_velocity.P = 0.30f; // 设置速度P
 //    motor.PID_velocity.I = 20.0f; // 设置速度I
 //    motor.PID_velocity.D = 0; // 设置速度D
 //    motor.PID_velocity.output_ramp = 0; // 0：不设置斜坡
 //    motor.LPF_velocity.Tf = 0.01f; // 设置速度低通滤波器
-
-//    motor.voltage_limit = DEF_POWER_SUPPLY * 2.0f; // 电压限制
+    motor.voltage_sensor_align = 4.0f; // 校准偏移offset时，所用到的电压值（相当于占空比4V / 12V = 1/3）
+    motor.voltage_limit = DEF_POWER_SUPPLY; // 电压限制
     motor.linkDriver(&motorDriver); // 将电机驱动器与电机对象关联
     motor.voltage_limit = 1.5f; //! 设置电压限制
     motor.torque_controller = TorqueControlType::voltage; // Iq闭环，Id = 0

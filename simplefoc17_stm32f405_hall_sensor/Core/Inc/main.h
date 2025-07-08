@@ -43,6 +43,9 @@ extern "C" {
 /* USER CODE BEGIN ET */
 #define delayMicroseconds DWT_Delay_us // 替代Arduino的us级延时
 #define delay _delay
+
+// 定义一个宏，将SIMPLEFOC_DEBUG替换为SEGGER_RTT_printf
+#define SIMPLEFOC_DEBUG(fmt, ...) SEGGER_RTT_printf(0, "[%s] " fmt "\n", __FUNCTION__, ##__VA_ARGS__)
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
@@ -63,8 +66,17 @@ void SEGGER_Printf_Float(float value);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define M0_ENC_C_Pin GPIO_PIN_9
+#define M0_ENC_C_GPIO_Port GPIOC
+#define M0_ENC_C_EXTI_IRQn EXTI9_5_IRQn
 #define RUN_LED_Pin GPIO_PIN_2
 #define RUN_LED_GPIO_Port GPIOD
+#define M0_ENC_A_Pin GPIO_PIN_4
+#define M0_ENC_A_GPIO_Port GPIOB
+#define M0_ENC_A_EXTI_IRQn EXTI4_IRQn
+#define M0_ENC_B_Pin GPIO_PIN_5
+#define M0_ENC_B_GPIO_Port GPIOB
+#define M0_ENC_B_EXTI_IRQn EXTI9_5_IRQn
 
 /* USER CODE BEGIN Private defines */
 

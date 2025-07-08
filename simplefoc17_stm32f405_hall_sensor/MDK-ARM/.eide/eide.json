@@ -164,7 +164,11 @@
           },
           {
             "name": "sensors",
-            "files": [],
+            "files": [
+              {
+                "path": "../simplefoc/sensors/HallSensor.cpp"
+              }
+            ],
             "folders": []
           },
           {

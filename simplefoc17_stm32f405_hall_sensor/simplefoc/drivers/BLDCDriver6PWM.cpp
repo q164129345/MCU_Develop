@@ -63,8 +63,8 @@ int BLDCDriver6PWM::init() {
     dc_a = dc_b = dc_c = 0;
 
     //! 初始化成功
-    SEGGER_RTT_printf(0, "BLDCDriver6PWM init success, frequency: %d, voltage_limit: ", pwm_frequency);
-    SEGGER_Printf_Float(voltage_limit);
+    SIMPLEFOC_DEBUG("BLDCDriver6PWM init success, frequency: %d ", pwm_frequency);
+
     initialized = 1;
     return 1;
 }
