@@ -99,6 +99,7 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
+  SEGGER_RTT_SetTerminal(0); //! 设置终端0
   DWT_Timer_Init(); // 初始化DWT定时
   main_Cpp();       // 跳转C++环境
   /* USER CODE END 2 */

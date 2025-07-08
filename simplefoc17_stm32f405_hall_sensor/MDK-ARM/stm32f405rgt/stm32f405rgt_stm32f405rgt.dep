@@ -1,7 +1,7 @@
 Dependencies for Project 'stm32f405rgt', Target 'stm32f405rgt': (DO NOT MODIFY !)
 CompilerVersion: 6210000::V6.21::ARMCLANG
-F (startup_stm32f405xx.s)(0x68679A61)(--target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -masm=auto  -Wa,armasm,--diag_suppress=A1950W -c-gdwarf-4-I./RTE/_stm32f405rgt-IC:/Users/wallace.zhang/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/wallace.zhang/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.16.0/Drivers/CMSIS/Device/ST/STM32F4xx/Include-Wa,armasm,--pd,"__UVISION_VERSION SETA 539" -Wa,armasm,--pd,"_RTE_ SETA 1" -Wa,armasm,--pd,"STM32F405xx SETA 1" -Wa,armasm,--pd,"_RTE_ SETA 1"-o stm32f405rgt/startup_stm32f405xx.o)
-F (../Core/Src/main.c)(0x686B2403)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../SEGGER_RTT -I ../simplefoc/common -I ../simplefoc/common/base_classes -I ../components/DWT -I ../components/bsp_pwm -I ../user -I ../simplefoc/sensors -I ../simplefoc/drivers -I ../simplefoc -I ../simplefoc/current_sense-I./RTE/_stm32f405rgt-IC:/Users/wallace.zhang/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/wallace.zhang/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.16.0/Drivers/CMSIS/Device/ST/STM32F4xx/Include-D__UVISION_VERSION="539" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o stm32f405rgt/main.o -MD)
+F (startup_stm32f405xx.s)(0x686BBF92)(--target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -masm=auto  -Wa,armasm,--diag_suppress=A1950W -c-gdwarf-4-I./RTE/_stm32f405rgt-IC:/Users/wallace.zhang/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/wallace.zhang/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.16.0/Drivers/CMSIS/Device/ST/STM32F4xx/Include-Wa,armasm,--pd,"__UVISION_VERSION SETA 539" -Wa,armasm,--pd,"_RTE_ SETA 1" -Wa,armasm,--pd,"STM32F405xx SETA 1" -Wa,armasm,--pd,"_RTE_ SETA 1"-o stm32f405rgt/startup_stm32f405xx.o)
+F (../Core/Src/main.c)(0x686C8F1B)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../SEGGER_RTT -I ../simplefoc/common -I ../simplefoc/common/base_classes -I ../components/DWT -I ../components/bsp_pwm -I ../user -I ../simplefoc/sensors -I ../simplefoc/drivers -I ../simplefoc -I ../simplefoc/current_sense-I./RTE/_stm32f405rgt-IC:/Users/wallace.zhang/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/wallace.zhang/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.16.0/Drivers/CMSIS/Device/ST/STM32F4xx/Include-D__UVISION_VERSION="539" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o stm32f405rgt/main.o -MD)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h)(0x68664ADD)
 I (..\Core\Inc\stm32f4xx_hal_conf.h)(0x6866519A)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc.h)(0x68664ADD)
@@ -10,10 +10,10 @@ I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x6569B012)
@@ -48,10 +48,10 @@ I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x6569B012)
@@ -75,7 +75,7 @@ I (C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h)(0x6569B012)
 I (C:\Keil_v5\ARM\ARMCLANG\include\math.h)(0x6569B012)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdio.h)(0x6569B012)
 I (C:\Keil_v5\ARM\ARMCLANG\include\string.h)(0x6569B012)
-F (../Core/Src/tim.c)(0x686B84CE)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../SEGGER_RTT -I ../simplefoc/common -I ../simplefoc/common/base_classes -I ../components/DWT -I ../components/bsp_pwm -I ../user -I ../simplefoc/sensors -I ../simplefoc/drivers -I ../simplefoc -I ../simplefoc/current_sense-I./RTE/_stm32f405rgt-IC:/Users/wallace.zhang/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/wallace.zhang/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.16.0/Drivers/CMSIS/Device/ST/STM32F4xx/Include-D__UVISION_VERSION="539" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o stm32f405rgt/tim.o -MD)
+F (../Core/Src/tim.c)(0x686BBEA2)(-xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../SEGGER_RTT -I ../simplefoc/common -I ../simplefoc/common/base_classes -I ../components/DWT -I ../components/bsp_pwm -I ../user -I ../simplefoc/sensors -I ../simplefoc/drivers -I ../simplefoc -I ../simplefoc/current_sense-I./RTE/_stm32f405rgt-IC:/Users/wallace.zhang/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/wallace.zhang/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.16.0/Drivers/CMSIS/Device/ST/STM32F4xx/Include-D__UVISION_VERSION="539" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o stm32f405rgt/tim.o -MD)
 I (..\Core\Inc\main.h..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h)(0x00000000)
 I (..\Core\Inc\stm32f4xx_hal_conf.h)(0x6866519A)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc.h)(0x68664ADD)
@@ -84,10 +84,10 @@ I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x6569B012)
@@ -120,10 +120,10 @@ I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x6569B012)
@@ -156,10 +156,10 @@ I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x6569B012)
@@ -192,10 +192,10 @@ I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x6569B012)
@@ -222,10 +222,10 @@ I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x6569B012)
@@ -252,10 +252,10 @@ I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x6569B012)
@@ -282,10 +282,10 @@ I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x6569B012)
@@ -312,10 +312,10 @@ I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x6569B012)
@@ -342,10 +342,10 @@ I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x6569B012)
@@ -372,10 +372,10 @@ I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x6569B012)
@@ -402,10 +402,10 @@ I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x6569B012)
@@ -432,10 +432,10 @@ I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x6569B012)
@@ -462,10 +462,10 @@ I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x6569B012)
@@ -492,10 +492,10 @@ I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x6569B012)
@@ -522,10 +522,10 @@ I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x6569B012)
@@ -552,10 +552,10 @@ I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x6569B012)
@@ -582,10 +582,10 @@ I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x6569B012)
@@ -612,10 +612,10 @@ I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x6569B012)
@@ -638,10 +638,10 @@ I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h)(0x68664ADD)
 I (..\Core\Inc\stm32f4xx_hal_conf.h)(0x6866519A)
@@ -663,7 +663,7 @@ I (..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr.h)(0x68664ADD)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr_ex.h)(0x68664ADD)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim.h)(0x68664ADD)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h)(0x68664ADD)
-F (..\simplefoc\common\defaults.h)(0x686B783B)()
+F (..\simplefoc\common\defaults.h)(0x686BB8C1)()
 F (..\simplefoc\common\foc_utils.cpp)(0x67A4670C)(-xc++ -std=c++11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-exceptions-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../SEGGER_RTT -I ../simplefoc/common -I ../simplefoc/common/base_classes -I ../components/DWT -I ../components/bsp_pwm -I ../user -I ../simplefoc/sensors -I ../simplefoc/drivers -I ../simplefoc -I ../simplefoc/current_sense-I./RTE/_stm32f405rgt-IC:/Users/wallace.zhang/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/wallace.zhang/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.16.0/Drivers/CMSIS/Device/ST/STM32F4xx/Include-D__UVISION_VERSION="539" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o stm32f405rgt/foc_utils.o -MD)
 I (..\simplefoc\common\foc_utils.hp.\Core\Inc\main.h)(0x00000000)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h)(0x68664ADD)
@@ -676,10 +676,10 @@ I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\stdint.h)(0x64F9642C)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\__config)(0x6569B00C)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\stddef.h)(0x64F9642C)
@@ -877,10 +877,10 @@ I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\stdint.h)(0x64F9642C)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\__config)(0x6569B00C)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\stddef.h)(0x64F9642C)
@@ -1077,10 +1077,10 @@ I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\stdint.h)(0x64F9642C)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\__config)(0x6569B00C)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\stddef.h)(0x64F9642C)
@@ -1277,10 +1277,10 @@ I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\stdint.h)(0x64F9642C)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\__config)(0x6569B00C)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\stddef.h)(0x64F9642C)
@@ -1479,10 +1479,10 @@ I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\stdint.h)(0x64F9642C)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\__config)(0x6569B00C)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\stddef.h)(0x64F9642C)
@@ -1680,10 +1680,10 @@ I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\stdint.h)(0x64F9642C)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\__config)(0x6569B00C)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\stddef.h)(0x64F9642C)
@@ -1891,10 +1891,10 @@ I (..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_def.h)(0x68664ADD)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\stddef.h)(0x64F9642C)
@@ -2082,7 +2082,7 @@ I (C:\Keil_v5\ARM\ARMCLANG\include\string.h)(0x6569B012)
 I (..\simplefoc\common\foc_utils.h\.\simplefoc\common\time_utils.h)(0x00000000)
 F (..\simplefoc\drivers\BLDCDriver6PWM.cpp)(0x686B8A93)(-xc++ -std=c++11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-exceptions-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../SEGGER_RTT -I ../simplefoc/common -I ../simplefoc/common/base_classes -I ../components/DWT -I ../components/bsp_pwm -I ../user -I ../simplefoc/sensors -I ../simplefoc/drivers -I ../simplefoc -I ../simplefoc/current_sense-I./RTE/_stm32f405rgt-IC:/Users/wallace.zhang/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/wallace.zhang/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.16.0/Drivers/CMSIS/Device/ST/STM32F4xx/Include-D__UVISION_VERSION="539" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o stm32f405rgt/bldcdriver6pwm.o -MD)
 I (..\simplefoc\drivers\BLDCDriver6PWM.h)(0x686B8C25)
-I (..\simplefoc\common\base_classes\BLDCDriver.h)(0x676BA22E)
+I (..\simplefoc\common\base_classes\BLDCDriver.ho.\Core\Inc\main.h)(0x00000000)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h)(0x68664ADD)
 I (..\Core\Inc\stm32f4xx_hal_conf.h)(0x6866519A)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc.h)(0x68664ADD)
@@ -2093,10 +2093,10 @@ I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\stdint.h)(0x64F9642C)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\__config)(0x6569B00C)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\stddef.h)(0x64F9642C)
@@ -2296,10 +2296,10 @@ I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\stdint.h)(0x64F9642C)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\__config)(0x6569B00C)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\stddef.h)(0x64F9642C)
@@ -2514,10 +2514,10 @@ I (..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_def.h)(0x68664ADD)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x6569B012)
@@ -2551,10 +2551,10 @@ I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h)(0x68664AD7)
 I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x6569B012)
@@ -2578,7 +2578,7 @@ I (C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h)(0x6569B012)
 I (C:\Keil_v5\ARM\ARMCLANG\include\math.h)(0x6569B012)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdio.h)(0x6569B012)
 I (C:\Keil_v5\ARM\ARMCLANG\include\string.h)(0x6569B012)
-F (..\user\user_main.cpp)(0x686B8EDC)(-xc++ -std=c++11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-exceptions-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../SEGGER_RTT -I ../simplefoc/common -I ../simplefoc/common/base_classes -I ../components/DWT -I ../components/bsp_pwm -I ../user -I ../simplefoc/sensors -I ../simplefoc/drivers -I ../simplefoc -I ../simplefoc/current_sense-I./RTE/_stm32f405rgt-IC:/Users/wallace.zhang/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/wallace.zhang/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.16.0/Drivers/CMSIS/Device/ST/STM32F4xx/Include-D__UVISION_VERSION="539" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o stm32f405rgt/user_main.o -MD)
+F (..\user\user_main.cpp)(0x686C7CD4)(-xc++ -std=c++11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-exceptions-gdwarf-4 -O3 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../SEGGER_RTT -I ../simplefoc/common -I ../simplefoc/common/base_classes -I ../components/DWT -I ../components/bsp_pwm -I ../user -I ../simplefoc/sensors -I ../simplefoc/drivers -I ../simplefoc -I ../simplefoc/current_sense-I./RTE/_stm32f405rgt-IC:/Users/wallace.zhang/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include-IC:/Users/wallace.zhang/AppData/Local/Arm/Packs/Keil/STM32F4xx_DFP/2.16.0/Drivers/CMSIS/Device/ST/STM32F4xx/Include-D__UVISION_VERSION="539" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o stm32f405rgt/user_main.o -MD)
 I (..\Core\Inc\main.hc.\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h)(0x00000000)
 I (..\Core\Inc\stm32f4xx_hal_conf.h)(0x6866519A)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc.h)(0x68664ADD)
@@ -2589,10 +2589,10 @@ I (..\Drivers\CMSIS\Include\core_cm4.h)(0x68664AD6)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\stdint.h)(0x64F9642C)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\__config)(0x6569B00C)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
-I (D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_version.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_compiler.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\cmsis_armclang.h)(0x68664AD6)
+I (D:\Coding\MCU_Develop\simplefoc17_stm32f405_hall_sensor\Drivers\CMSIS\Include\mpu_armv7.h)(0x68664AD6)
 I (..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h)(0x68664AD7)
 I (..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h)(0x68664ADD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\libcxx\stddef.h)(0x64F9642C)

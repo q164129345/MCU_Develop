@@ -8,10 +8,10 @@ stm32f405rgt/stm32f4xx_hal.o: \
   ..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\stm32f405xx.h \
   ..\Drivers\CMSIS\Include\core_cm4.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdint.h \
-  D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h \
-  D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h \
-  D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h \
-  D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h \
+  D:\Coding\MCU_Develop\simplefoc16_stm32f405_open_vel_ctrl\Drivers\CMSIS\Include\cmsis_version.h \
+  D:\Coding\MCU_Develop\simplefoc16_stm32f405_open_vel_ctrl\Drivers\CMSIS\Include\cmsis_compiler.h \
+  D:\Coding\MCU_Develop\simplefoc16_stm32f405_open_vel_ctrl\Drivers\CMSIS\Include\cmsis_armclang.h \
+  D:\Coding\MCU_Develop\simplefoc16_stm32f405_open_vel_ctrl\Drivers\CMSIS\Include\mpu_armv7.h \
   ..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stddef.h \

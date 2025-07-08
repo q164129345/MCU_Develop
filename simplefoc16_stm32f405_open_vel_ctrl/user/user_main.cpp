@@ -57,7 +57,7 @@ void main_Cpp(void)
     motor.init(); // 初始化电机
     // motor.PID_velocity.limit = DEF_POWER_SUPPLY * 2.0f;
     
-//    motor.foc_modulation = FOCModulationType::SpaceVectorPWM; // 正弦波改为马鞍波
+    motor.foc_modulation = FOCModulationType::SpaceVectorPWM; // 正弦波改为马鞍波
 //    motor.sensor_direction = Direction::CCW; // 之前校准传感器的时候，知道传感器的方向是CCW（翻开校准传感器的章节就知道）
 
 //    motor.initFOC(); // 初始化FOC

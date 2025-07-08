@@ -11,10 +11,10 @@ stm32f405rgt/lowpass_filter.o: ..\simplefoc\common\lowpass_filter.cpp \
   C:\Keil_v5\ARM\ARMCLANG\include\libcxx\stdint.h \
   C:\Keil_v5\ARM\ARMCLANG\include\libcxx\__config \
   C:\Keil_v5\ARM\ARMCLANG\include\stdint.h \
-  D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_version.h \
-  D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_compiler.h \
-  D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\cmsis_armclang.h \
-  D:\Coding\MCU_Develop\simplefoc15_stm32f405_6_phrase_pwm\Drivers\CMSIS\Include\mpu_armv7.h \
+  D:\Coding\MCU_Develop\simplefoc16_stm32f405_open_vel_ctrl\Drivers\CMSIS\Include\cmsis_version.h \
+  D:\Coding\MCU_Develop\simplefoc16_stm32f405_open_vel_ctrl\Drivers\CMSIS\Include\cmsis_compiler.h \
+  D:\Coding\MCU_Develop\simplefoc16_stm32f405_open_vel_ctrl\Drivers\CMSIS\Include\cmsis_armclang.h \
+  D:\Coding\MCU_Develop\simplefoc16_stm32f405_open_vel_ctrl\Drivers\CMSIS\Include\mpu_armv7.h \
   ..\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy\stm32_hal_legacy.h \
   C:\Keil_v5\ARM\ARMCLANG\include\libcxx\stddef.h \
