@@ -212,10 +212,10 @@ void DMA1_Channel4_IRQHandler(void)
   HAL_DMA_IRQHandler(&hdma_usart1_tx);
   /* USER CODE BEGIN DMA1_Channel4_IRQn 1 */
   //! 检查并统计DMA发送错误 
-  if (__HAL_DMA_GET_FLAG(&hdma_usart1_tx, DMA_FLAG_TE4)) {
-      __HAL_DMA_CLEAR_FLAG(&hdma_usart1_tx, DMA_FLAG_TE4);
-      USART_DMA_Error_Recover(&gUsart1Drv, 1); //! DMA错误处理，TX方向
-  }
+  // if (__HAL_DMA_GET_FLAG(&hdma_usart1_tx, DMA_FLAG_TE4)) {
+  //     __HAL_DMA_CLEAR_FLAG(&hdma_usart1_tx, DMA_FLAG_TE4);
+  //     USART_DMA_Error_Recover(&gUsart1Drv, 1); //! DMA错误处理，TX方向
+  // }
   //! 发送完成中断处理在另一个函数HAL_UART_TxCpltCallback()里处理，官方推荐做法
   /* USER CODE END DMA1_Channel4_IRQn 1 */
 }
@@ -231,12 +231,12 @@ void DMA1_Channel5_IRQHandler(void)
   HAL_DMA_IRQHandler(&hdma_usart1_rx);
   /* USER CODE BEGIN DMA1_Channel5_IRQn 1 */
   /* 检查并统计DMA接收错误 */
-  if (__HAL_DMA_GET_FLAG(&hdma_usart1_rx, DMA_FLAG_TE5)) {
-      __HAL_DMA_CLEAR_FLAG(&hdma_usart1_rx, DMA_FLAG_TE5);
-      USART_DMA_Error_Recover(&gUsart1Drv, 0); //! DMA错误处理，RX方向
-  } else {
-      USART_DMA_RX_Interrupt_Handler(&gUsart1Drv); //! DMA接收中断处理
-  }
+  // if (__HAL_DMA_GET_FLAG(&hdma_usart1_rx, DMA_FLAG_TE5)) {
+  //     __HAL_DMA_CLEAR_FLAG(&hdma_usart1_rx, DMA_FLAG_TE5);
+  //     USART_DMA_Error_Recover(&gUsart1Drv, 0); //! DMA错误处理，RX方向
+  // } else {
+  //     USART_DMA_RX_Interrupt_Handler(&gUsart1Drv); //! DMA接收中断处理
+  // }
   /* USER CODE END DMA1_Channel5_IRQn 1 */
 }
 
@@ -291,6 +291,44 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
     }
     //! 若有多路串口，可继续 else if (huart == xx)
 }
+
+/**
+  * @brief  串口接收过半中断（HAL库自动调用）
+  * @param  huart UART句柄指针
+  * @note   HAL库官方推荐的写法
+  */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+    if (huart == gUsart1Drv.huart) {
+        USART_DMA_RX_Interrupt_Handler(&gUsart1Drv); //! DMA接收中断处理
+    }
+}
+/**
+  * @brief  串口接收完成中断（HAL库自动调用）
+  * @param  huart UART句柄指针
+  * @note   HAL库官方推荐的写法
+  */
+void HAL_UART_RxHalfCpltCallback(UART_HandleTypeDef *huart)
+{
+    if (huart == gUsart1Drv.huart) {
+        USART_DMA_RX_Interrupt_Handler(&gUsart1Drv); //! DMA接收中断处理
+    }
+}
+/**
+  * @brief  DMA错误中断（HAL库自动调用）
+  * @param  hdma dma句柄指针
+  * @note   HAL库官方推荐的写法
+  */
+void HAL_DMA_ErrorCallback(DMA_HandleTypeDef *hdma)
+{
+    if (hdma == gUsart1Drv.hdma_rx) {
+        USART_DMA_Error_Recover(&gUsart1Drv, 0); //! DMA错误处理，RX方向
+    } else if (hdma == gUsart1Drv.hdma_tx) {
+        USART_DMA_Error_Recover(&gUsart1Drv, 1); //! DMA错误处理，TX方向
+    }
+}
+
+
 
 
 /* USER CODE END 1 */

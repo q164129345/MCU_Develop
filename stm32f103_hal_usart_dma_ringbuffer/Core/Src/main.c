@@ -34,11 +34,11 @@ extern DMA_HandleTypeDef hdma_usart1_rx;
 extern DMA_HandleTypeDef hdma_usart1_tx;
 
 //! USART1缓存 RX方向
-uint8_t gUsart1RXDMABuffer[2048];
-uint8_t gUsart1RXRBBuffer[2048];
+uint8_t gUsart1RXDMABuffer[256];
+uint8_t gUsart1RXRBBuffer[256];
 //! USART1缓存 TX方向
-uint8_t gUsart1TXDMABuffer[2048];
-uint8_t gUsart1TXRBBuffer[2048];
+uint8_t gUsart1TXDMABuffer[256];
+uint8_t gUsart1TXRBBuffer[256];
 //! 实例化Usart1
 USART_Driver_t gUsart1Drv = {
     .huart = &huart1,
@@ -125,16 +125,16 @@ int main(void)
     //! 2ms
     if (0 == fre % 2) {
         //! 测试发送
-//        const char *msg = "0123456789";
-//        USART_Put_TxData_To_Ringbuffer(&gUsart1Drv, msg, strlen(msg));
+        const char *msg = "0123456789";
+        USART_Put_TxData_To_Ringbuffer(&gUsart1Drv, msg, strlen(msg));
         
         //! 处理已经接收的数据
         //! 连续从ringbuffer里拿出数据来解释，直到没有数据
-//        while(USART_Get_The_Existing_Amount_Of_Data(&gUsart1Drv)) {
-//            uint8_t data;
-//            USART_Take_A_Piece_Of_Data(&gUsart1Drv, &data);
-//            // 将data丢给data_process(data)，解析数据
-//        }
+        while(USART_Get_The_Existing_Amount_Of_Data(&gUsart1Drv)) {
+            uint8_t data;
+            USART_Take_A_Piece_Of_Data(&gUsart1Drv, &data);
+            // 将data丢给data_process(data)，解析数据
+        }
         
         USART_Module_Run(&gUsart1Drv); //! Usart1模块运行
     }
