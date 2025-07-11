@@ -1,6 +1,6 @@
 /**
  * @file    bsp_usart_hal.c
- * @brief   STM32F1ÏµÁĞ USART + DMA + RingBuffer HAL¿âµ×²ãÇı¶¯ÊµÏÖ£¨¶àÊµÀı¡¢¿É±ä»º³åÇø£©
+ * @brief   STM32F1ç³»åˆ— USART + DMA + RingBuffer HALåº“åº•å±‚é©±åŠ¨å®ç°ï¼ˆå¤šå®ä¾‹ã€å¯å˜ç¼“å†²åŒºï¼‰
  * @author  Wallace.zhang
  * @version 2.0.0
  * @date    2025-05-23
@@ -9,11 +9,11 @@
 #include "bsp_usart_hal.h"
 
 /**
-  * @brief   ×èÈû·½Ê½·¢ËÍÒÔNUL½áÎ²×Ö·û´®£¨µ÷ÊÔÓÃ£¬·ÇDMA£©
-  * @param   usart  Ö¸ÏòUSARTÇı¶¯½á¹¹ÌåµÄÖ¸Õë
-  * @param   str    Ö¸ÏòÒÔ'\0'½áÎ²µÄ×Ö·û´®
-  * @note    Í¨¹ıHAL¿âAPIÖğ×Ö½Ú·¢ËÍ£¬µ×²ã»áÂÖÑ¯TXEÎ»£¨USART_SR.TXE£©¡£
-  * @retval  ÎŞ
+  * @brief   é˜»å¡æ–¹å¼å‘é€ä»¥NULç»“å°¾å­—ç¬¦ä¸²ï¼ˆè°ƒè¯•ç”¨ï¼ŒéDMAï¼‰
+  * @param   usart  æŒ‡å‘USARTé©±åŠ¨ç»“æ„ä½“çš„æŒ‡é’ˆ
+  * @param   str    æŒ‡å‘ä»¥'\0'ç»“å°¾çš„å­—ç¬¦ä¸²
+  * @note    é€šè¿‡HALåº“APIé€å­—èŠ‚å‘é€ï¼Œåº•å±‚ä¼šè½®è¯¢TXEä½ï¼ˆUSART_SR.TXEï¼‰ã€‚
+  * @retval  æ— 
   */
 void USART_SendString_Blocking(USART_Driver_t* usart, const char* str)
 {
@@ -22,88 +22,88 @@ void USART_SendString_Blocking(USART_Driver_t* usart, const char* str)
 }
 
 /**
-  * @brief  ÅäÖÃ²¢Æô¶¯USARTµÄDMA½ÓÊÕ£¨»·ĞÎÄ£Ê½£©
-  * @param  usart Ö¸ÏòUSARTÇı¶¯½á¹¹ÌåµÄÖ¸Õë
-  * @note   ±ØĞë±£Ö¤huart¡¢hdma_rxÒÑÍ¨¹ıCubeMXÕıÈ·³õÊ¼»¯
-  *         - µ÷ÓÃ±¾º¯Êı»áÍ£Ö¹Ô­ÓĞDMA£¬È»ºóÖØĞÂÅäÖÃDMA²¢Æô¶¯»·ĞÎ½ÓÊÕ
-  *         - Ê¹ÄÜUSARTµÄIDLEÖĞ¶Ï£¬ÊµÏÖÍ»·¢/²»¶¨³¤Ö¡¸ßĞ§´¦Àí
-  * @retval ÎŞ
+  * @brief  é…ç½®å¹¶å¯åŠ¨USARTçš„DMAæ¥æ”¶ï¼ˆç¯å½¢æ¨¡å¼ï¼‰
+  * @param  usart æŒ‡å‘USARTé©±åŠ¨ç»“æ„ä½“çš„æŒ‡é’ˆ
+  * @note   å¿…é¡»ä¿è¯huartã€hdma_rxå·²é€šè¿‡CubeMXæ­£ç¡®åˆå§‹åŒ–
+  *         - è°ƒç”¨æœ¬å‡½æ•°ä¼šåœæ­¢åŸæœ‰DMAï¼Œç„¶åé‡æ–°é…ç½®DMAå¹¶å¯åŠ¨ç¯å½¢æ¥æ”¶
+  *         - ä½¿èƒ½USARTçš„IDLEä¸­æ–­ï¼Œå®ç°çªå‘/ä¸å®šé•¿å¸§é«˜æ•ˆå¤„ç†
+  * @retval æ— 
   */
 static void USART_Received_DMA_Configure(USART_Driver_t *usart)
 {
     if (!usart) return;
-    HAL_DMA_Abort(usart->hdma_rx); //! ÏÈ¹Ø±Õ
-    HAL_UART_Receive_DMA(usart->huart, usart->rxDMABuffer, usart->rxBufSize); //! Æô¶¯»·ĞÎDMA
-    __HAL_UART_ENABLE_IT(usart->huart, UART_IT_IDLE); //! Ê¹ÄÜIDLEÖĞ¶Ï
+    HAL_DMA_Abort(usart->hdma_rx); //! å…ˆå…³é—­
+    HAL_UART_Receive_DMA(usart->huart, usart->rxDMABuffer, usart->rxBufSize); //! å¯åŠ¨ç¯å½¢DMA
+    __HAL_UART_ENABLE_IT(usart->huart, UART_IT_IDLE); //! ä½¿èƒ½IDLEä¸­æ–­
     usart->dmaRxLastPos = 0;
 }
 
 /**
-  * @brief  Æô¶¯DMA·½Ê½´®¿Ú·¢ËÍ
-  * @param  usart Ö¸ÏòUSARTÇı¶¯½á¹¹ÌåµÄÖ¸Õë
-  * @param  data  Ö¸Ïò´ı·¢ËÍµÄÊı¾İ»º³åÇø
-  * @param  len   ´ı·¢ËÍµÄÊı¾İ×Ö½ÚÊı
-  * @note   ·¢ËÍÇ°ĞèÈ·±£txDMABusyÎª0£¬·ñÔòÓ¦µÈ´ıÇ°Ò»Ö¡·¢ËÍÍê³É
-  *         Æô¶¯ºóDMA×Ô¶¯Ìî³äUSART_DR¼Ä´æÆ÷£¬ÊµÏÖ¸ßĞ§Òì²½·¢ËÍ
-  * @retval ÎŞ
+  * @brief  å¯åŠ¨DMAæ–¹å¼ä¸²å£å‘é€
+  * @param  usart æŒ‡å‘USARTé©±åŠ¨ç»“æ„ä½“çš„æŒ‡é’ˆ
+  * @param  data  æŒ‡å‘å¾…å‘é€çš„æ•°æ®ç¼“å†²åŒº
+  * @param  len   å¾…å‘é€çš„æ•°æ®å­—èŠ‚æ•°
+  * @note   å‘é€å‰éœ€ç¡®ä¿txDMABusyä¸º0ï¼Œå¦åˆ™åº”ç­‰å¾…å‰ä¸€å¸§å‘é€å®Œæˆ
+  *         å¯åŠ¨åDMAè‡ªåŠ¨å¡«å……USART_DRå¯„å­˜å™¨ï¼Œå®ç°é«˜æ•ˆå¼‚æ­¥å‘é€
+  * @retval æ— 
   */
 static void USART_SendString_DMA(USART_Driver_t *usart, uint8_t *data, uint16_t len)
 {
     if (!usart || !data || len == 0 || len > usart->txBufSize) return;
-    while (usart->txDMABusy); // µÈ´ıDMA¿ÕÏĞ
+    while (usart->txDMABusy); // ç­‰å¾…DMAç©ºé—²
     usart->txDMABusy = 1;
     HAL_UART_Transmit_DMA(usart->huart, data, len);
 }
 
 /**
- * @brief  Ğ´ÈëÊı¾İµ½½ÓÊÕRingBuffer
- * @param  usart Ö¸ÏòUSARTÇı¶¯½á¹¹ÌåµÄÖ¸Õë
- * @param  data  Ö¸ÏòÒªĞ´ÈëµÄÊı¾İ»º³åÇø
- * @param  len   ÒªĞ´ÈëµÄÊı¾İ³¤¶È£¨µ¥Î»£º×Ö½Ú£©
- * @retval 0  Êı¾İ³É¹¦Ğ´Èë£¬ÎŞÊı¾İ¶ªÆú
- * @retval 1  ringbufferÊ£Óà¿Õ¼ä²»×ã£¬¶ªÆú²¿·Ö¾ÉÊı¾İÒÔÈİÄÉĞÂÊı¾İ
- * @retval 2  Êı¾İ³¤¶È³¬¹ıringbuffer×ÜÈİÁ¿£¬½ö±£ÁôĞÂÊı¾İÎ²²¿£¨È«²¿¾ÉÊı¾İ±»Çå¿Õ£©
- * @retval 3  ÊäÈëÊı¾İÖ¸ÕëÎª¿Õ
+ * @brief  å†™å…¥æ•°æ®åˆ°æ¥æ”¶RingBuffer
+ * @param  usart æŒ‡å‘USARTé©±åŠ¨ç»“æ„ä½“çš„æŒ‡é’ˆ
+ * @param  data  æŒ‡å‘è¦å†™å…¥çš„æ•°æ®ç¼“å†²åŒº
+ * @param  len   è¦å†™å…¥çš„æ•°æ®é•¿åº¦ï¼ˆå•ä½ï¼šå­—èŠ‚ï¼‰
+ * @retval 0  æ•°æ®æˆåŠŸå†™å…¥ï¼Œæ— æ•°æ®ä¸¢å¼ƒ
+ * @retval 1  ringbufferå‰©ä½™ç©ºé—´ä¸è¶³ï¼Œä¸¢å¼ƒéƒ¨åˆ†æ—§æ•°æ®ä»¥å®¹çº³æ–°æ•°æ®
+ * @retval 2  æ•°æ®é•¿åº¦è¶…è¿‡ringbufferæ€»å®¹é‡ï¼Œä»…ä¿ç•™æ–°æ•°æ®å°¾éƒ¨ï¼ˆå…¨éƒ¨æ—§æ•°æ®è¢«æ¸…ç©ºï¼‰
+ * @retval 3  è¾“å…¥æ•°æ®æŒ‡é’ˆä¸ºç©º
  * @note
- * - ±¾º¯ÊıÍ¨¹ılwrb¿â²Ù×÷ringbuffer¡£
- * - µ±len > ringbufferÈİÁ¿Ê±£¬Ç¿ĞĞ½Ø¶Ï£¬½ö±£Áô×îĞÂusart->rxRBBuffer×Ö½Ú¡£
- * - Èô¿Õ¼ä²»×ã£¬×Ô¶¯µ÷ÓÃlwrb_skip()¶ªÆú²¿·Ö¾ÉÊı¾İ¡£
+ * - æœ¬å‡½æ•°é€šè¿‡lwrbåº“æ“ä½œringbufferã€‚
+ * - å½“len > ringbufferå®¹é‡æ—¶ï¼Œå¼ºè¡Œæˆªæ–­ï¼Œä»…ä¿ç•™æœ€æ–°usart->rxRBBufferå­—èŠ‚ã€‚
+ * - è‹¥ç©ºé—´ä¸è¶³ï¼Œè‡ªåŠ¨è°ƒç”¨lwrb_skip()ä¸¢å¼ƒéƒ¨åˆ†æ—§æ•°æ®ã€‚
  */
 static uint8_t Put_Data_Into_Ringbuffer(USART_Driver_t *usart, const void *data, uint16_t len)
 {
-    //! ¼ì²éÊäÈëÖ¸ÕëÊÇ·ñºÏ·¨
+    //! æ£€æŸ¥è¾“å…¥æŒ‡é’ˆæ˜¯å¦åˆæ³•
     if (!usart || !data) return 3;
     
     lwrb_t *rb = &usart->rxRB;
     uint16_t rb_size = usart->rxBufSize;
-    //! »ñÈ¡µ±Ç°RingBufferÊ£Óà¿Õ¼ä
+    //! è·å–å½“å‰RingBufferå‰©ä½™ç©ºé—´
     lwrb_sz_t free_space = lwrb_get_free(rb);
     
-    //! ·ÖÈıÖÖÇé¿ö´¦Àí£º³¤¶ÈĞ¡ÓÚ¡¢µÈÓÚ¡¢´óÓÚRingBufferÈİÁ¿
+    //! åˆ†ä¸‰ç§æƒ…å†µå¤„ç†ï¼šé•¿åº¦å°äºã€ç­‰äºã€å¤§äºRingBufferå®¹é‡
     uint8_t ret = 0;
     if (len < rb_size) {
-        //! Êı¾İĞ¡ÓÚRingBufferÈİÁ¿
+        //! æ•°æ®å°äºRingBufferå®¹é‡
         if (len <= free_space) {
-            //! ¿Õ¼ä³ä×ã£¬Ö±½ÓĞ´Èë
+            //! ç©ºé—´å……è¶³ï¼Œç›´æ¥å†™å…¥
             lwrb_write(rb, data, len);
         } else {
-            //! ¿Õ¼ä²»×ã£¬Ğè¶ªÆú²¿·Ö¾ÉÊı¾İ
+            //! ç©ºé—´ä¸è¶³ï¼Œéœ€ä¸¢å¼ƒéƒ¨åˆ†æ—§æ•°æ®
             lwrb_sz_t used = lwrb_get_full(rb);
             lwrb_sz_t skip_len = len - free_space;
             if (skip_len > used) {
                 skip_len = used;
             }
-            lwrb_skip(rb, skip_len); //! Ìø¹ı£¨¶ªÆú£©¾ÉÊı¾İ
+            lwrb_skip(rb, skip_len); //! è·³è¿‡ï¼ˆä¸¢å¼ƒï¼‰æ—§æ•°æ®
             lwrb_write(rb, data, len);
             ret = 1;
         }
-    } else if (len == rb_size) { //! Êı¾İ¸ÕºÃµÈÓÚRingBufferÈİÁ¿
+    } else if (len == rb_size) { //! æ•°æ®åˆšå¥½ç­‰äºRingBufferå®¹é‡
         if (free_space < rb_size) {
-            lwrb_reset(rb); //! ¿Õ¼ä²»×ã£¬ÖØÖÃRingBuffer
+            lwrb_reset(rb); //! ç©ºé—´ä¸è¶³ï¼Œé‡ç½®RingBuffer
             ret = 1;
         }
         lwrb_write(rb, data, len);
-    } else { //! Êı¾İ³¬¹ıRingBufferÈİÁ¿£¬½ö±£Áô×îºórb_size×Ö½Ú
+    } else { //! æ•°æ®è¶…è¿‡RingBufferå®¹é‡ï¼Œä»…ä¿ç•™æœ€årb_sizeå­—èŠ‚
         const uint8_t *byte_ptr = (const uint8_t *)data;
         data = (const void *)(byte_ptr + (len - rb_size));
         lwrb_reset(rb);
@@ -114,12 +114,12 @@ static uint8_t Put_Data_Into_Ringbuffer(USART_Driver_t *usart, const void *data,
 }
 
 /**
- * @brief  ´ÓDMA»·ĞÎ»º³åÇø°áÔËĞÂÊÕµ½µÄÊı¾İµ½RingBuffer£¨Ö§³Ö»·ÈÆ£©
- * @param  usart Ö¸ÏòUSARTÇı¶¯½á¹¹ÌåµÄÖ¸Õë
- * @note   Ö§³ÖIDLE¡¢DMA HT/TCµÈ¶àÖĞ¶Ï¹²Í¬µ÷ÓÃ
- *         - ±¾º¯Êı¼ÆËãDMA»·ĞÎ»º³åÇøµÄĞÂÊı¾İ£¬²¢°áÔËµ½RingBuffer
- *         - Ö§³ÖÒ»´ÎĞÔ»ò·Ö¶Î°áÔË£¨»º³åÇø»·ÈÆÊ±×Ô¶¯·ÖÁ½¶Î´¦Àí£©
- * @retval ÎŞ
+ * @brief  ä»DMAç¯å½¢ç¼“å†²åŒºæ¬è¿æ–°æ”¶åˆ°çš„æ•°æ®åˆ°RingBufferï¼ˆæ”¯æŒç¯ç»•ï¼‰
+ * @param  usart æŒ‡å‘USARTé©±åŠ¨ç»“æ„ä½“çš„æŒ‡é’ˆ
+ * @note   æ”¯æŒIDLEã€DMA HT/TCç­‰å¤šä¸­æ–­å…±åŒè°ƒç”¨
+ *         - æœ¬å‡½æ•°è®¡ç®—DMAç¯å½¢ç¼“å†²åŒºçš„æ–°æ•°æ®ï¼Œå¹¶æ¬è¿åˆ°RingBuffer
+ *         - æ”¯æŒä¸€æ¬¡æ€§æˆ–åˆ†æ®µæ¬è¿ï¼ˆç¼“å†²åŒºç¯ç»•æ—¶è‡ªåŠ¨åˆ†ä¸¤æ®µå¤„ç†ï¼‰
+ * @retval æ— 
  */
 static void USART_DMA_RX_Copy(USART_Driver_t *usart)
 {
@@ -129,11 +129,11 @@ static void USART_DMA_RX_Copy(USART_Driver_t *usart)
 
     if (curr_pos != last_pos) {
         if (curr_pos > last_pos) {
-        //! ÆÕÍ¨Çé¿ö£¬Î´»·ÈÆ
+        //! æ™®é€šæƒ…å†µï¼Œæœªç¯ç»•
             Put_Data_Into_Ringbuffer(usart, usart->rxDMABuffer + last_pos, curr_pos - last_pos);
             usart->rxMsgCount += (curr_pos - last_pos);
         } else {
-        //! »·ÈÆ£¬·ÖÁ½¶Î´¦Àí
+        //! ç¯ç»•ï¼Œåˆ†ä¸¤æ®µå¤„ç†
             Put_Data_Into_Ringbuffer(usart, usart->rxDMABuffer + last_pos, bufsize - last_pos);
             Put_Data_Into_Ringbuffer(usart, usart->rxDMABuffer, curr_pos);
             usart->rxMsgCount += (bufsize - last_pos) + curr_pos;
@@ -143,9 +143,9 @@ static void USART_DMA_RX_Copy(USART_Driver_t *usart)
 }
 
 /**
-  * @brief  DMA½ÓÊÕ°áÔË»·ĞÎBuffer£¨ÍÆ¼öÔÚIDLE¡¢DMAÖĞ¶ÏµÈµ÷ÓÃ£©
-  * @param  usart Ö¸ÏòUSARTÇı¶¯½á¹¹ÌåµÄÖ¸Õë
-  * @retval ÎŞ
+  * @brief  DMAæ¥æ”¶æ¬è¿ç¯å½¢Bufferï¼ˆæ¨èåœ¨IDLEã€DMAä¸­æ–­ç­‰è°ƒç”¨ï¼‰
+  * @param  usart æŒ‡å‘USARTé©±åŠ¨ç»“æ„ä½“çš„æŒ‡é’ˆ
+  * @retval æ— 
   */
 void USART_DMA_RX_Interrupt_Handler(USART_Driver_t *usart)
 {
@@ -154,10 +154,10 @@ void USART_DMA_RX_Interrupt_Handler(USART_Driver_t *usart)
 }
 
 /**
-  * @brief  ´®¿ÚIDLEÖĞ¶Ï´¦Àí£¨ĞèÔÚUSARTx_IRQHandlerÖĞµ÷ÓÃ£©
-  * @param  usart Ö¸ÏòUSARTÇı¶¯½á¹¹ÌåµÄÖ¸Õë
-  * @note   ¼ì²é²¢Çå³ıIDLE±êÖ¾£¬¼°Ê±´¥·¢DMA°áÔË
-  * @retval ÎŞ
+  * @brief  ä¸²å£IDLEä¸­æ–­å¤„ç†ï¼ˆéœ€åœ¨USARTx_IRQHandlerä¸­è°ƒç”¨ï¼‰
+  * @param  usart æŒ‡å‘USARTé©±åŠ¨ç»“æ„ä½“çš„æŒ‡é’ˆ
+  * @note   æ£€æŸ¥å¹¶æ¸…é™¤IDLEæ ‡å¿—ï¼ŒåŠæ—¶è§¦å‘DMAæ¬è¿
+  * @retval æ— 
   */
 void USART_RX_IDLE_Interrupt_Handler(USART_Driver_t *usart)
 {
@@ -169,10 +169,10 @@ void USART_RX_IDLE_Interrupt_Handler(USART_Driver_t *usart)
 }
 
 /**
-  * @brief  DMA·¢ËÍÍê³É»Øµ÷£¨ÓÉÓÃ»§ÔÚHAL¿âTxCpltCallbackÖĞµ÷ÓÃ£©
-  * @param  usart Ö¸ÏòUSARTÇı¶¯½á¹¹ÌåµÄÖ¸Õë
-  * @note   Ò»¶¨Òªµ÷ÓÃ£¬·ñÔòÎŞ·¨ÔÙ´ÎDMA·¢ËÍ
-  * @retval ÎŞ
+  * @brief  DMAå‘é€å®Œæˆå›è°ƒï¼ˆç”±ç”¨æˆ·åœ¨HALåº“TxCpltCallbackä¸­è°ƒç”¨ï¼‰
+  * @param  usart æŒ‡å‘USARTé©±åŠ¨ç»“æ„ä½“çš„æŒ‡é’ˆ
+  * @note   ä¸€å®šè¦è°ƒç”¨ï¼Œå¦åˆ™æ— æ³•å†æ¬¡DMAå‘é€
+  * @retval æ— 
   */
 void USART_DMA_TX_Interrupt_Handler(USART_Driver_t *usart)
 {
@@ -181,34 +181,34 @@ void USART_DMA_TX_Interrupt_Handler(USART_Driver_t *usart)
 }
 
 /**
-  * @brief  ½«Êı¾İĞ´ÈëÖ¸¶¨USARTÇı¶¯µÄ·¢ËÍ RingBuffer ÖĞ
-  * @param  usart  Ö¸ÏòUSARTÇı¶¯½á¹¹ÌåµÄÖ¸Õë
-  * @param  data   Ö¸ÏòÒªĞ´ÈëµÄÊı¾İ»º³åÇø
-  * @param  len    ÒªĞ´ÈëµÄÊı¾İ³¤¶È£¨×Ö½Ú£©
-  * @retval  0  Êı¾İ³É¹¦Ğ´Èë£¬ÎŞÊı¾İ¶ªÆú
-  * @retval  1  ringbuffer ¿Õ¼ä²»×ã£¬¶ªÆú²¿·Ö¾ÉÊı¾İÒÔÈİÄÉĞÂÊı¾İ
-  * @retval  2  Êı¾İ³¤¶È³¬¹ı ringbuffer ×ÜÈİÁ¿£¬½ö±£Áô×îĞÂ TX_BUFFER_SIZE ×Ö½Ú
-  * @retval  3  ÊäÈëÊı¾İÖ¸ÕëÎª¿Õ
+  * @brief  å°†æ•°æ®å†™å…¥æŒ‡å®šUSARTé©±åŠ¨çš„å‘é€ RingBuffer ä¸­
+  * @param  usart  æŒ‡å‘USARTé©±åŠ¨ç»“æ„ä½“çš„æŒ‡é’ˆ
+  * @param  data   æŒ‡å‘è¦å†™å…¥çš„æ•°æ®ç¼“å†²åŒº
+  * @param  len    è¦å†™å…¥çš„æ•°æ®é•¿åº¦ï¼ˆå­—èŠ‚ï¼‰
+  * @retval  0  æ•°æ®æˆåŠŸå†™å…¥ï¼Œæ— æ•°æ®ä¸¢å¼ƒ
+  * @retval  1  ringbuffer ç©ºé—´ä¸è¶³ï¼Œä¸¢å¼ƒéƒ¨åˆ†æ—§æ•°æ®ä»¥å®¹çº³æ–°æ•°æ®
+  * @retval  2  æ•°æ®é•¿åº¦è¶…è¿‡ ringbuffer æ€»å®¹é‡ï¼Œä»…ä¿ç•™æœ€æ–° TX_BUFFER_SIZE å­—èŠ‚
+  * @retval  3  è¾“å…¥æ•°æ®æŒ‡é’ˆä¸ºç©º
   * @note
-  * - Ê¹ÓÃ lwrb ¿â²Ù×÷·¢ËÍ RingBuffer£¨usart->txRB£©¡£
-  * - Èô len > ringbuffer ÈİÁ¿£¬»á×Ô¶¯½Ø¶Ï£¬½ö±£Áô×îĞÂµÄÊı¾İ¡£
-  * - Èô¿Õ¼ä²»×ã£¬½«µ÷ÓÃ lwrb_skip() ¶ªÆú²¿·Ö¾ÉÊı¾İ¡£
+  * - ä½¿ç”¨ lwrb åº“æ“ä½œå‘é€ RingBufferï¼ˆusart->txRBï¼‰ã€‚
+  * - è‹¥ len > ringbuffer å®¹é‡ï¼Œä¼šè‡ªåŠ¨æˆªæ–­ï¼Œä»…ä¿ç•™æœ€æ–°çš„æ•°æ®ã€‚
+  * - è‹¥ç©ºé—´ä¸è¶³ï¼Œå°†è°ƒç”¨ lwrb_skip() ä¸¢å¼ƒéƒ¨åˆ†æ—§æ•°æ®ã€‚
   */
 uint8_t USART_Put_TxData_To_Ringbuffer(USART_Driver_t *usart, const void* data, uint16_t len)
 {
-    if (!usart || !data) return 3; //! ¼ì²éÊäÈëÊı¾İÖ¸ÕëÓĞĞ§ĞÔ
+    if (!usart || !data) return 3; //! æ£€æŸ¥è¾“å…¥æ•°æ®æŒ‡é’ˆæœ‰æ•ˆæ€§
     
     lwrb_t *rb = &usart->txRB;
     uint16_t capacity = usart->txBufSize;
     lwrb_sz_t freeSpace = lwrb_get_free(rb);
     uint8_t ret = 0;
     
-    //! Çé¿ö1£ºÊı¾İ³¤¶ÈĞ¡ÓÚringbufferÈİÁ¿
+    //! æƒ…å†µ1ï¼šæ•°æ®é•¿åº¦å°äºringbufferå®¹é‡
     if (len < capacity) {
         if (len <= freeSpace) {
-            lwrb_write(rb, data, len); //! Ê£Óà¿Õ¼ä³ä×ã£¬Ö±½ÓĞ´Èë
+            lwrb_write(rb, data, len); //! å‰©ä½™ç©ºé—´å……è¶³ï¼Œç›´æ¥å†™å…¥
         } else {
-            //! ¿Õ¼ä²»×ã£¬Ğè¶ªÆú²¿·Ö¾ÉÊı¾İ
+            //! ç©ºé—´ä¸è¶³ï¼Œéœ€ä¸¢å¼ƒéƒ¨åˆ†æ—§æ•°æ®
             lwrb_sz_t used = lwrb_get_full(rb);
             lwrb_sz_t skip_len = len - freeSpace;
             if (skip_len > used) skip_len = used;
@@ -216,13 +216,13 @@ uint8_t USART_Put_TxData_To_Ringbuffer(USART_Driver_t *usart, const void* data, 
             lwrb_write(rb, data, len);
             ret = 1;
         }
-    } else if (len == capacity) { //! Çé¿ö2£ºÊı¾İ³¤¶ÈµÈÓÚringbufferÈİÁ¿
-        if (freeSpace < capacity) { //! Èç¹ûringbufferÒÑÓĞÊı¾İ
+    } else if (len == capacity) { //! æƒ…å†µ2ï¼šæ•°æ®é•¿åº¦ç­‰äºringbufferå®¹é‡
+        if (freeSpace < capacity) { //! å¦‚æœringbufferå·²æœ‰æ•°æ®
             lwrb_reset(rb);
             ret = 1;
         }
         lwrb_write(rb, data, len);
-    } else { //! Çé¿ö3£ºÊı¾İ³¤¶È´óÓÚringbufferÈİÁ¿£¬½ö±£Áô×îºó capacity ×Ö½Ú
+    } else { //! æƒ…å†µ3ï¼šæ•°æ®é•¿åº¦å¤§äºringbufferå®¹é‡ï¼Œä»…ä¿ç•™æœ€å capacity å­—èŠ‚
         const uint8_t *ptr = (const uint8_t*)data + (len - capacity);
         lwrb_reset(rb);
         lwrb_write(rb, ptr, capacity);
@@ -232,16 +232,16 @@ uint8_t USART_Put_TxData_To_Ringbuffer(USART_Driver_t *usart, const void* data, 
 }
 
 /**
- * @brief   ³õÊ¼»¯USARTÇı¶¯£¬ÅäÖÃDMA¡¢RingBufferÓëÖĞ¶Ï
- * @param   usart         Ö¸ÏòUSARTÇı¶¯½á¹¹ÌåµÄÖ¸Õë
- * @param   rxDMABuffer   DMA½ÓÊÕ»º³åÇøÖ¸Õë
- * @param   rxRBBuffer    ½ÓÊÕRingBuffer»º³åÇøÖ¸Õë
- * @param   rxBufSize     ½ÓÊÕ»º³åÇø´óĞ¡
- * @param   txDMABuffer   DMA·¢ËÍ»º³åÇøÖ¸Õë
- * @param   txRBBuffer    ·¢ËÍRingBuffer»º³åÇøÖ¸Õë
- * @param   txBufSize     ·¢ËÍ»º³åÇø´óĞ¡
- * @retval  ÎŞ
- * @note    ĞèÏÈÍ¨¹ıCubeMXÍê³É´®¿Ú¡¢DMAÏà¹ØÓ²¼şÅäÖÃºÍ¾ä±ú¸³Öµ
+ * @brief   åˆå§‹åŒ–USARTé©±åŠ¨ï¼Œé…ç½®DMAã€RingBufferä¸ä¸­æ–­
+ * @param   usart         æŒ‡å‘USARTé©±åŠ¨ç»“æ„ä½“çš„æŒ‡é’ˆ
+ * @param   rxDMABuffer   DMAæ¥æ”¶ç¼“å†²åŒºæŒ‡é’ˆ
+ * @param   rxRBBuffer    æ¥æ”¶RingBufferç¼“å†²åŒºæŒ‡é’ˆ
+ * @param   rxBufSize     æ¥æ”¶ç¼“å†²åŒºå¤§å°
+ * @param   txDMABuffer   DMAå‘é€ç¼“å†²åŒºæŒ‡é’ˆ
+ * @param   txRBBuffer    å‘é€RingBufferç¼“å†²åŒºæŒ‡é’ˆ
+ * @param   txBufSize     å‘é€ç¼“å†²åŒºå¤§å°
+ * @retval  æ— 
+ * @note    éœ€å…ˆé€šè¿‡CubeMXå®Œæˆä¸²å£ã€DMAç›¸å…³ç¡¬ä»¶é…ç½®å’Œå¥æŸ„èµ‹å€¼
  */
 void USART_Config(USART_Driver_t *usart,
                   uint8_t *rxDMABuffer, uint8_t *rxRBBuffer, uint16_t rxBufSize,
@@ -258,7 +258,7 @@ void USART_Config(USART_Driver_t *usart,
     usart->txBufSize   = txBufSize;
     lwrb_init(&usart->txRB, usart->txRBBuffer, usart->txBufSize);
 
-    USART_Received_DMA_Configure(usart); // ³õÊ¼»¯DMA RX
+    USART_Received_DMA_Configure(usart); // åˆå§‹åŒ–DMA RX
 
     usart->txDMABusy = 0;
     usart->dmaRxLastPos = 0;
@@ -270,13 +270,13 @@ void USART_Config(USART_Driver_t *usart,
 }
 
 /**
-  * @brief  USARTÄ£¿éÖ÷Ñ­»·µ÷¶Èº¯Êı£¨DMA + RingBuffer¸ßĞ§ÊÕ·¢£©
-  * @param  usart Ö¸ÏòUSARTÇı¶¯½á¹¹ÌåµÄÖ¸Õë
-  * @note   ½¨ÒéÖ÷Ñ­»·¶¨Ê±£¨Èç1ms£©µ÷ÓÃ
-  *         - ¼ì²é·¢ËÍRingBufferÊÇ·ñÓĞ´ı·¢ËÍÊı¾İ£¬ÇÒDMAµ±Ç°¿ÕÏĞ
-  *         - ÈôÌõ¼şÂú×ã£¬´Ó·¢ËÍRingBuffer¶ÁÈ¡Ò»¶ÎÊı¾İµ½DMA·¢ËÍ»º³åÇø£¬²¢Í¨¹ıDMAÆô¶¯Òì²½·¢ËÍ
-  *         - ×Ô¶¯Î¬»¤ÒÑ·¢ËÍÊı¾İÍ³¼Æ
-  * @retval ÎŞ
+  * @brief  USARTæ¨¡å—ä¸»å¾ªç¯è°ƒåº¦å‡½æ•°ï¼ˆDMA + RingBufferé«˜æ•ˆæ”¶å‘ï¼‰
+  * @param  usart æŒ‡å‘USARTé©±åŠ¨ç»“æ„ä½“çš„æŒ‡é’ˆ
+  * @note   å»ºè®®ä¸»å¾ªç¯å®šæ—¶ï¼ˆå¦‚1msï¼‰è°ƒç”¨
+  *         - æ£€æŸ¥å‘é€RingBufferæ˜¯å¦æœ‰å¾…å‘é€æ•°æ®ï¼Œä¸”DMAå½“å‰ç©ºé—²
+  *         - è‹¥æ¡ä»¶æ»¡è¶³ï¼Œä»å‘é€RingBufferè¯»å–ä¸€æ®µæ•°æ®åˆ°DMAå‘é€ç¼“å†²åŒºï¼Œå¹¶é€šè¿‡DMAå¯åŠ¨å¼‚æ­¥å‘é€
+  *         - è‡ªåŠ¨ç»´æŠ¤å·²å‘é€æ•°æ®ç»Ÿè®¡
+  * @retval æ— 
   */
 void USART_Module_Run(USART_Driver_t *usart)
 {
@@ -291,10 +291,10 @@ void USART_Module_Run(USART_Driver_t *usart)
 }
 
 /**
-  * @brief  »ñÈ¡USART½ÓÊÕRingBufferÖĞµÄ¿É¶Á×Ö½ÚÊı
-  * @param  usart Ö¸ÏòUSARTÇı¶¯½á¹¹ÌåµÄÖ¸Õë
-  * @retval uint32_t ¿É¶ÁÈ¡µÄÊı¾İ×Ö½ÚÊı
-  * @note   Í¨³£ÔÚÖ÷Ñ­»·»òÊı¾İ½âÎöÇ°µ÷ÓÃ£¬ÓÃÓÚÅĞ¶ÏÊÇ·ñĞèÒª¶ÁÈ¡Êı¾İ¡£
+  * @brief  è·å–USARTæ¥æ”¶RingBufferä¸­çš„å¯è¯»å­—èŠ‚æ•°
+  * @param  usart æŒ‡å‘USARTé©±åŠ¨ç»“æ„ä½“çš„æŒ‡é’ˆ
+  * @retval uint32_t å¯è¯»å–çš„æ•°æ®å­—èŠ‚æ•°
+  * @note   é€šå¸¸åœ¨ä¸»å¾ªç¯æˆ–æ•°æ®è§£æå‰è°ƒç”¨ï¼Œç”¨äºåˆ¤æ–­æ˜¯å¦éœ€è¦è¯»å–æ•°æ®ã€‚
   */
 uint32_t USART_Get_The_Existing_Amount_Of_Data(USART_Driver_t *usart)
 {
@@ -303,12 +303,12 @@ uint32_t USART_Get_The_Existing_Amount_Of_Data(USART_Driver_t *usart)
 }
 
 /**
-  * @brief  ´ÓUSART½ÓÊÕRingBufferÖĞ¶ÁÈ¡Ò»¸ö×Ö½ÚÊı¾İ
-  * @param  usart Ö¸ÏòUSARTÇı¶¯½á¹¹ÌåµÄÖ¸Õë
-  * @param  data  Ö¸Ïò´æ·Å¶ÁÈ¡½á¹ûµÄ»º³åÇøÖ¸Õë
-  * @retval 1  ¶ÁÈ¡³É¹¦£¬ÓĞĞÂÊı¾İ´æÈë *data
-  * @retval 0  ¶ÁÈ¡Ê§°Ü£¨ÎŞÊı¾İ»òdataÎªNULL£©
-  * @note   ±¾º¯Êı²»»á×èÈû£¬ÎŞÊı¾İÊ±Ö±½Ó·µ»Ø0¡£
+  * @brief  ä»USARTæ¥æ”¶RingBufferä¸­è¯»å–ä¸€ä¸ªå­—èŠ‚æ•°æ®
+  * @param  usart æŒ‡å‘USARTé©±åŠ¨ç»“æ„ä½“çš„æŒ‡é’ˆ
+  * @param  data  æŒ‡å‘å­˜æ”¾è¯»å–ç»“æœçš„ç¼“å†²åŒºæŒ‡é’ˆ
+  * @retval 1  è¯»å–æˆåŠŸï¼Œæœ‰æ–°æ•°æ®å­˜å…¥ *data
+  * @retval 0  è¯»å–å¤±è´¥ï¼ˆæ— æ•°æ®æˆ–dataä¸ºNULLï¼‰
+  * @note   æœ¬å‡½æ•°ä¸ä¼šé˜»å¡ï¼Œæ— æ•°æ®æ—¶ç›´æ¥è¿”å›0ã€‚
   */
 uint8_t USART_Take_A_Piece_Of_Data(USART_Driver_t *usart, uint8_t* data)
 {
@@ -317,28 +317,28 @@ uint8_t USART_Take_A_Piece_Of_Data(USART_Driver_t *usart, uint8_t* data)
 }
 
 /**
-  * @brief  DMA´«Êä´íÎóºóµÄ×Ô¶¯»Ö¸´²Ù×÷£¨º¬´íÎóÍ³¼Æ£©
-  * @param  usart Ö¸ÏòUSARTÇı¶¯½á¹¹Ìå
-  * @param  dir   ·½Ïò£º0=RX, 1=TX
-  * @note   ¼ì²âµ½DMA´«Êä´íÎó£¨TE£©Ê±µ÷ÓÃ£¬×Ô¶¯½øĞĞÍ³¼Æ²¢»Ö¸´
-  *         RX·½Ïò»á×Ô¶¯ÖØÆôDMA£¬TX·½Ïò½¨ÒéµÈ´ıÖ÷Ñ­»·µ÷¶ÈĞÂ·¢ËÍ
-  * @retval ÎŞ
+  * @brief  DMAä¼ è¾“é”™è¯¯åçš„è‡ªåŠ¨æ¢å¤æ“ä½œï¼ˆå«é”™è¯¯ç»Ÿè®¡ï¼‰
+  * @param  usart æŒ‡å‘USARTé©±åŠ¨ç»“æ„ä½“
+  * @param  dir   æ–¹å‘ï¼š0=RX, 1=TX
+  * @note   æ£€æµ‹åˆ°DMAä¼ è¾“é”™è¯¯ï¼ˆTEï¼‰æ—¶è°ƒç”¨ï¼Œè‡ªåŠ¨è¿›è¡Œç»Ÿè®¡å¹¶æ¢å¤
+  *         RXæ–¹å‘ä¼šè‡ªåŠ¨é‡å¯DMAï¼ŒTXæ–¹å‘å»ºè®®ç­‰å¾…ä¸»å¾ªç¯è°ƒåº¦æ–°å‘é€
+  * @retval æ— 
   */
 void USART_DMA_Error_Recover(USART_Driver_t *usart, uint8_t dir)
 {
     if (!usart) return;
 
-    if (dir == 0) { //! RX·½Ïò
-        usart->errorDMARX++; //! DMA½ÓÊÕ´íÎó¼ÆÊı */
+    if (dir == 0) { //! RXæ–¹å‘
+        usart->errorDMARX++; //! DMAæ¥æ”¶é”™è¯¯è®¡æ•° */
         HAL_DMA_Abort(usart->hdma_rx);
         HAL_UART_Receive_DMA(usart->huart, usart->rxDMABuffer, usart->rxBufSize);
-        //! ¿ÉÒÔ¼ÓÈë¼«¶ËÇé¿öÏÂµÄUSART¸´Î»µÈ
-    } else { //! TX·½Ïò
-        usart->errorDMATX++; //! DMA·¢ËÍ´íÎó¼ÆÊı */
+        //! å¯ä»¥åŠ å…¥æç«¯æƒ…å†µä¸‹çš„USARTå¤ä½ç­‰
+    } else { //! TXæ–¹å‘
+        usart->errorDMATX++; //! DMAå‘é€é”™è¯¯è®¡æ•° */
         HAL_DMA_Abort(usart->hdma_tx);
-        //! Ò»°ãµÈ´ıÖ÷Ñ­»·´¥·¢ĞÂµÄDMA·¢ËÍ
+        //! ä¸€èˆ¬ç­‰å¾…ä¸»å¾ªç¯è§¦å‘æ–°çš„DMAå‘é€
     }
-    //! ¿É²åÈë±¨¾¯¡¢ÈÕÖ¾
+    //! å¯æ’å…¥æŠ¥è­¦ã€æ—¥å¿—
 }
 
 

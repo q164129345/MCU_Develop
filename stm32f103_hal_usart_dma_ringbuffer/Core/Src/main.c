@@ -33,13 +33,13 @@
 extern DMA_HandleTypeDef hdma_usart1_rx;
 extern DMA_HandleTypeDef hdma_usart1_tx;
 
-//! USART1»º´æ RX·½Ïò
+//! USART1ç¼“å­˜ RXæ–¹å‘
 uint8_t gUsart1RXDMABuffer[2048];
 uint8_t gUsart1RXRBBuffer[2048];
-//! USART1»º´æ TX·½Ïò
+//! USART1ç¼“å­˜ TXæ–¹å‘
 uint8_t gUsart1TXDMABuffer[2048];
 uint8_t gUsart1TXRBBuffer[2048];
-//! ÊµÀı»¯Usart1
+//! å®ä¾‹åŒ–Usart1
 USART_Driver_t gUsart1Drv = {
     .huart = &huart1,
     .hdma_rx = &hdma_usart1_rx,
@@ -104,7 +104,7 @@ int main(void)
   MX_DMA_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  //! USART1³õÊ¼»¯
+  //! USART1åˆå§‹åŒ–
   USART_Config(&gUsart1Drv,
                gUsart1RXDMABuffer, gUsart1RXRBBuffer, sizeof(gUsart1RXDMABuffer),
                gUsart1TXDMABuffer, gUsart1TXRBBuffer, sizeof(gUsart1TXDMABuffer));
@@ -124,19 +124,19 @@ int main(void)
     
     //! 2ms
     if (0 == fre % 2) {
-        //! ²âÊÔ·¢ËÍ
+        //! æµ‹è¯•å‘é€
 //        const char *msg = "0123456789";
 //        USART_Put_TxData_To_Ringbuffer(&gUsart1Drv, msg, strlen(msg));
         
-        //! ´¦ÀíÒÑ¾­½ÓÊÕµÄÊı¾İ
-        //! Á¬Ğø´ÓringbufferÀïÄÃ³öÊı¾İÀ´½âÊÍ£¬Ö±µ½Ã»ÓĞÊı¾İ
+        //! å¤„ç†å·²ç»æ¥æ”¶çš„æ•°æ®
+        //! è¿ç»­ä»ringbufferé‡Œæ‹¿å‡ºæ•°æ®æ¥è§£é‡Šï¼Œç›´åˆ°æ²¡æœ‰æ•°æ®
 //        while(USART_Get_The_Existing_Amount_Of_Data(&gUsart1Drv)) {
 //            uint8_t data;
 //            USART_Take_A_Piece_Of_Data(&gUsart1Drv, &data);
-//            // ½«data¶ª¸ødata_process(data)£¬½âÎöÊı¾İ
+//            // å°†dataä¸¢ç»™data_process(data)ï¼Œè§£ææ•°æ®
 //        }
         
-        USART_Module_Run(&gUsart1Drv); //! Usart1Ä£¿éÔËĞĞ
+        USART_Module_Run(&gUsart1Drv); //! Usart1æ¨¡å—è¿è¡Œ
     }
     
     fre++;
