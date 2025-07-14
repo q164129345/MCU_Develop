@@ -38,7 +38,7 @@ uint8_t test = 0;
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-// Ò»´ÎĞÔ·¢ËÍ50Ìõ±¨ÎÄ
+// ä¸€æ¬¡æ€§å‘é€50æ¡æŠ¥æ–‡
 void CAN_Test_Send50Frames_Use_Ringbuffer(void)
 {
     uint8_t payload[8] = { 0x01, 0x02, 0x03, 0x04,
@@ -46,7 +46,7 @@ void CAN_Test_Send50Frames_Use_Ringbuffer(void)
     uint8_t sent = 0;
 
     for (uint32_t id = 0x200; id < 0x200 + 50; ++id) {
-        CAN_Send_CAN_STD_Message(id, payload, sizeof(payload)); // ÍùTx ringbufferÒ»¿ÚÆø¶ª50¸öCAN±¨ÎÄ
+        CAN_Send_CAN_STD_Message(id, payload, sizeof(payload)); // å¾€Tx ringbufferä¸€å£æ°”ä¸¢50ä¸ªCANæŠ¥æ–‡
     }
 }
 
@@ -57,7 +57,7 @@ void CAN_Test_Send50Frames(void)
     uint8_t sent = 0;
 
     for (uint32_t id = 0x200; id < 0x200 + 50; ++id) {
-        CAN_Send_STD_DATA_Msg_No_Serial(id, payload, sizeof(payload)); // Ã»ÓĞ¾­¹ıTx ringbuffer£¬Ò»¿ÚÆøÍù·¢ËÍÓÊÏä·¢ËÍ50¸öCAN±¨ÎÄ
+        CAN_Send_STD_DATA_Msg_No_Serial(id, payload, sizeof(payload)); // æ²¡æœ‰ç»è¿‡Tx ringbufferï¼Œä¸€å£æ°”å¾€å‘é€é‚®ç®±å‘é€50ä¸ªCANæŠ¥æ–‡
     }
 }
 /* USER CODE END PM */
@@ -109,7 +109,7 @@ int main(void)
   MX_GPIO_Init();
   MX_CAN_Init();
   /* USER CODE BEGIN 2 */
-  CAN_Config(); // ³õÊ¼»¯ÍâÉèCAN
+  CAN_Config(); // åˆå§‹åŒ–å¤–è®¾CAN
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -123,7 +123,7 @@ int main(void)
         LL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
     }
     
-    /* ²âÊÔ´úÂë */
+    /* æµ‹è¯•ä»£ç  */
     if (testRB == 1) {
         testRB = 0;
         CAN_Test_Send50Frames_Use_Ringbuffer();
@@ -133,7 +133,7 @@ int main(void)
         test = 0;
         CAN_Test_Send50Frames();
     }
-    CAN_Get_CANMsg_From_RB_To_TXMailBox(); // Ö÷Ñ­»·ÖÜÆÚµ÷ÓÃµÄÅúÁ¿²¹·¢º¯Êı
+    CAN_Get_CANMsg_From_RB_To_TXMailBox(); // ä¸»å¾ªç¯å‘¨æœŸè°ƒç”¨çš„æ‰¹é‡è¡¥å‘å‡½æ•°
     fre++;
     LL_mDelay(1);
   }
