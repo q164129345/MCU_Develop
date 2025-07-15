@@ -216,19 +216,6 @@ static bool CAN_TxOnceFromRB(void)
 }
 
 /**
- * @brief     在 CAN TX 完成中断中调用的快速续发函数
- *
- * 连续调用 @ref CAN_TxOnceFromRB 直到无法再写入邮箱（邮箱满或
- * RingBuffer 没数据）。因处于 ISR，不执行任何关中断操作。
- *
- * @note 仅应在 @p USB_HP_CAN1_TX_IRQHandler 等发送完成 IRQ 回调里调用。
- */
-void CAN_Get_CANMsg_From_RB_To_TXMailBox_IT(void)
-{
-    while (CAN_TxOnceFromRB()) { }
-}
-
-/**
  * @brief     主循环周期调用的批量补发函数
  *
  * 为避免与 ISR 并发访问同一 TX RingBuffer：  
@@ -358,8 +345,8 @@ void CAN_TxCompleteCommonCallback(CAN_HandleTypeDef *hcan)
     txmail_free = ((hcan->Instance->TSR & CAN_TSR_TME0) ? 1 : 0) +
                  ((hcan->Instance->TSR & CAN_TSR_TME1) ? 1 : 0) +
                  ((hcan->Instance->TSR & CAN_TSR_TME2) ? 1 : 0);
-    /* 将TX ringbuffer的CAN报文搬到CAN TX邮箱 */
-    CAN_Get_CANMsg_From_RB_To_TXMailBox_IT();
+    /* 将TX ringbuffer的一条CAN报文搬到CAN TX邮箱 */
+    CAN_TxOnceFromRB();
 }
 
 /* ---------- 把 3 个弱回调全部映射到同一个实现 ---------- */
