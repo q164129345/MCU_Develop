@@ -1,5 +1,7 @@
 #include "myCanDrive.h"
 
+extern CAN_HandleTypeDef hcan;
+
 volatile uint8_t txmail_free = 0;             // 空闲邮箱的数量
 volatile uint32_t canSendError = 0;           // 统计发送失败次数
 volatile uint64_t g_RxCount = 0;              // 统计接收的CAN报文总数
@@ -228,6 +230,11 @@ static bool CAN_TxOnceFromRB(void)
  */
 void CAN_Get_CANMsg_From_RB_To_TXMailBox(void)
 {
+    // 在主循环也要更新发送邮箱的数量
+    txmail_free = ((hcan.Instance->TSR & CAN_TSR_TME0) ? 1 : 0) +
+             ((hcan.Instance->TSR & CAN_TSR_TME1) ? 1 : 0) +
+             ((hcan.Instance->TSR & CAN_TSR_TME2) ? 1 : 0);
+    
     /* ----------- 早退出：无数据 或 无空闲邮箱 ----------- */
     if (txmail_free == 0) {
         return; // 邮箱全满
@@ -235,6 +242,9 @@ void CAN_Get_CANMsg_From_RB_To_TXMailBox(void)
     if (lwrb_get_full((lwrb_t*)&g_CanTxRBHandler) < sizeof(CANTXMsg_t)) {
         return; // 缓冲区没数据
     }
+    
+    
+    
     /* 关 TX-Mailbox-Empty 中断，防止并发 */
     __HAL_CAN_DISABLE_IT(&hcan, CAN_IT_TX_MAILBOX_EMPTY);
     /* 把仍然空着的邮箱一次发完 */

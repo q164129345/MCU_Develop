@@ -285,6 +285,11 @@ static bool CAN_TxOnceFromRB(void)
  */
 void CAN_Get_CANMsg_From_RB_To_TXMailBox(void)
 {
+     // 在主循环也要更新发送邮箱的数量
+     txmail_free = ((hcan.Instance->TSR & CAN_TSR_TME0) ? 1 : 0) +
+             ((hcan.Instance->TSR & CAN_TSR_TME1) ? 1 : 0) +
+             ((hcan.Instance->TSR & CAN_TSR_TME2) ? 1 : 0);
+    
     /* ----------- 早退出：无数据 或 无空闲邮箱 ----------- */
     if (txmail_free == 0) {
         return; // 邮箱全满
