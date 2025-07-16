@@ -3,7 +3,7 @@
 <title>Static Call Graph - [stm32f103zet6\stm32f103zet6.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image stm32f103zet6\stm32f103zet6.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6160001: Last Updated: Sat Apr 19 18:38:02 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Wed Jul 16 15:51:56 2025
 <BR><P>
 <H3>Maximum Stack Usage =        104 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -313,7 +313,7 @@ Global Symbols
 
 <P><STRONG><a name="[66]"></a>__aeabi_memcpy8</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memcpya.o(.text), UNUSED)
 
-<P><STRONG><a name="[4a]"></a>__scatterload</STRONG> (Thumb, 28 bytes, Stack size 0 bytes, init.o(.text))
+<P><STRONG><a name="[4a]"></a>__scatterload</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, init.o(.text))
 <BR><BR>[Calls]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__main_after_scatterload
 </UL>
 <BR>[Called By]<UL><LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_main_scatterload
@@ -328,12 +328,12 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
-<P><STRONG><a name="[1f]"></a>CAN1_RX1_IRQHandler</STRONG> (Thumb, 288 bytes, Stack size 72 bytes, mycandrive_reg.o(.text.CAN1_RX1_IRQHandler))
+<P><STRONG><a name="[1f]"></a>CAN1_RX1_IRQHandler</STRONG> (Thumb, 424 bytes, Stack size 72 bytes, mycandrive_reg.o(.text.CAN1_RX1_IRQHandler))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = CAN1_RX1_IRQHandler &rArr; lwrb_write
 </UL>
-<BR>[Calls]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_write
-<LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_reset
+<BR>[Calls]<UL><LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_reset
 <LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_get_free
+<LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_write
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f103xe.o(RESET)
 </UL>
@@ -345,21 +345,21 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[5e]"></a>CAN_Check_Error</STRONG> (Thumb, 110 bytes, Stack size 0 bytes, mycandrive_reg.o(.text.CAN_Check_Error))
+<P><STRONG><a name="[5e]"></a>CAN_Check_Error</STRONG> (Thumb, 102 bytes, Stack size 0 bytes, mycandrive_reg.o(.text.CAN_Check_Error))
 <BR><BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[50]"></a>CAN_Config</STRONG> (Thumb, 498 bytes, Stack size 16 bytes, mycandrive_reg.o(.text.CAN_Config))
+<P><STRONG><a name="[50]"></a>CAN_Config</STRONG> (Thumb, 496 bytes, Stack size 16 bytes, mycandrive_reg.o(.text.CAN_Config))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = CAN_Config
 </UL>
 <BR>[Calls]<UL><LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lwrb_init
 </UL>
-<BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_BusOff_Recover
+<BR>[Called By]<UL><LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_BusOff_Recover
+<LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[52]"></a>CAN_SendMessage_NonBlocking</STRONG> (Thumb, 240 bytes, Stack size 24 bytes, mycandrive_reg.o(.text.CAN_SendMessage_NonBlocking))
-<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = CAN_SendMessage_NonBlocking
+<P><STRONG><a name="[52]"></a>CAN_SendMessage_NonBlocking</STRONG> (Thumb, 390 bytes, Stack size 32 bytes, mycandrive_reg.o(.text.CAN_SendMessage_NonBlocking))
+<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = CAN_SendMessage_NonBlocking
 </UL>
 <BR>[Calls]<UL><LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
 </UL>
@@ -404,7 +404,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 </UL>
 
-<P><STRONG><a name="[5d]"></a>LL_mDelay</STRONG> (Thumb, 74 bytes, Stack size 4 bytes, stm32f1xx_ll_utils.o(.text.LL_mDelay))
+<P><STRONG><a name="[5d]"></a>LL_mDelay</STRONG> (Thumb, 70 bytes, Stack size 4 bytes, stm32f1xx_ll_utils.o(.text.LL_mDelay))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = LL_mDelay
 </UL>
 <BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -471,11 +471,11 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Send_CANMsg_FromRingBuffer
 </UL>
 
-<P><STRONG><a name="[51]"></a>lwrb_init</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_init))
+<P><STRONG><a name="[51]"></a>lwrb_init</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, lwrb.o(.text.lwrb_init))
 <BR><BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Config
 </UL>
 
-<P><STRONG><a name="[56]"></a>lwrb_read</STRONG> (Thumb, 160 bytes, Stack size 32 bytes, lwrb.o(.text.lwrb_read))
+<P><STRONG><a name="[56]"></a>lwrb_read</STRONG> (Thumb, 170 bytes, Stack size 32 bytes, lwrb.o(.text.lwrb_read))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = lwrb_read
 </UL>
 <BR>[Calls]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy
@@ -487,7 +487,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[1f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN1_RX1_IRQHandler
 </UL>
 
-<P><STRONG><a name="[4c]"></a>lwrb_write</STRONG> (Thumb, 168 bytes, Stack size 32 bytes, lwrb.o(.text.lwrb_write))
+<P><STRONG><a name="[4c]"></a>lwrb_write</STRONG> (Thumb, 170 bytes, Stack size 32 bytes, lwrb.o(.text.lwrb_write))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = lwrb_write
 </UL>
 <BR>[Calls]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy
@@ -495,16 +495,16 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[1f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN1_RX1_IRQHandler
 </UL>
 
-<P><STRONG><a name="[46]"></a>main</STRONG> (Thumb, 214 bytes, Stack size 8 bytes, main.o(.text.main))
+<P><STRONG><a name="[46]"></a>main</STRONG> (Thumb, 206 bytes, Stack size 8 bytes, main.o(.text.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = main &rArr; CAN_Send_CANMsg_FromRingBuffer &rArr; lwrb_read
 </UL>
-<BR>[Calls]<UL><LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
-<LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
+<BR>[Calls]<UL><LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_BusOff_Recover
+<LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Check_Error
 <LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LL_mDelay
 <LI><a href="#[54]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Send_CANMsg_FromRingBuffer
 <LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Config
-<LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_Check_Error
-<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_BusOff_Recover
+<LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_GPIO_Init
+<LI><a href="#[59]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
 </UL>

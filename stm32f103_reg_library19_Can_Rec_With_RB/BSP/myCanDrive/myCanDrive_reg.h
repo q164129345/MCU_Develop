@@ -26,14 +26,14 @@ extern "C" {
 #include "main.h"
 
 /**
- * @brief CAN¿ØÖÆÆ÷´íÎó×´Ì¬¼Ä´æÆ÷½á¹¹Ìå (CAN Error Status Register)
+ * @brief CANæ§åˆ¶å™¨é”™è¯¯çŠ¶æ€å¯„å­˜å™¨ç»“æ„ä½“ (CAN Error Status Register)
  * 
- * ÓÃÓÚÃèÊöCAN¿ØÖÆÆ÷µÄ´íÎó×´Ì¬ĞÅÏ¢£¬Í¨³£¶ÔÓ¦Ó²¼ş¼Ä´æÆ÷µÄÓ³Éä¡£
+ * ç”¨äºæè¿°CANæ§åˆ¶å™¨çš„é”™è¯¯çŠ¶æ€ä¿¡æ¯ï¼Œé€šå¸¸å¯¹åº”ç¡¬ä»¶å¯„å­˜å™¨çš„æ˜ å°„ã€‚
  */
 typedef struct {
-    volatile uint8_t rec;    ///< Receive Error Counter (½ÓÊÕ´íÎó¼ÆÊıÆ÷), ·¶Î§: 0-255
-    volatile uint8_t tec;    ///< Transmit Error Counter (·¢ËÍ´íÎó¼ÆÊıÆ÷), ·¶Î§: 0-255
-    volatile uint8_t lec;    ///< Last Error Code (×îºóÒ»´Î´íÎó´úÂë), ³£¼ûÖµ:
+    volatile uint8_t rec;    ///< Receive Error Counter (æ¥æ”¶é”™è¯¯è®¡æ•°å™¨), èŒƒå›´: 0-255
+    volatile uint8_t tec;    ///< Transmit Error Counter (å‘é€é”™è¯¯è®¡æ•°å™¨), èŒƒå›´: 0-255
+    volatile uint8_t lec;    ///< Last Error Code (æœ€åä¸€æ¬¡é”™è¯¯ä»£ç ), å¸¸è§å€¼:
                     ///< 0 = No error
                     ///< 1 = Stuff error
                     ///< 2 = Form error
@@ -41,22 +41,22 @@ typedef struct {
                     ///< 4 = Bit recessive error
                     ///< 5 = Bit dominant error
                     ///< 6 = CRC error
-                    ///< 7 = Custom (ÓÉ³§ÉÌ¶¨Òå)
+                    ///< 7 = Custom (ç”±å‚å•†å®šä¹‰)
 
-    volatile uint8_t boff;   ///< Bus-Off Status (×ÜÏß¹Ø±Õ×´Ì¬), ²¼¶ûÖµ:
-                    ///< 0 = Node is in active state (½Úµã´¦ÓÚ»î¶¯×´Ì¬)
-                    ///< 1 = Node is in bus-off state (½ÚµãÒò´íÎó¹ı¶à±»×ÜÏß¹Ø±Õ)
+    volatile uint8_t boff;   ///< Bus-Off Status (æ€»çº¿å…³é—­çŠ¶æ€), å¸ƒå°”å€¼:
+                    ///< 0 = Node is in active state (èŠ‚ç‚¹å¤„äºæ´»åŠ¨çŠ¶æ€)
+                    ///< 1 = Node is in bus-off state (èŠ‚ç‚¹å› é”™è¯¯è¿‡å¤šè¢«æ€»çº¿å…³é—­)
 
-    volatile uint8_t epvf;   ///< Error Passive or Warning Flag (´íÎó±»¶¯/¾¯¸æ±êÖ¾), ²¼¶ûÖµ:
-                    ///< 0 = Error active (´íÎóÖ÷¶¯×´Ì¬)
-                    ///< 1 = Error passive or warning (´íÎó±»¶¯»ò¾¯¸æ×´Ì¬)
+    volatile uint8_t epvf;   ///< Error Passive or Warning Flag (é”™è¯¯è¢«åŠ¨/è­¦å‘Šæ ‡å¿—), å¸ƒå°”å€¼:
+                    ///< 0 = Error active (é”™è¯¯ä¸»åŠ¨çŠ¶æ€)
+                    ///< 1 = Error passive or warning (é”™è¯¯è¢«åŠ¨æˆ–è­¦å‘ŠçŠ¶æ€)
 
-    volatile uint8_t ewgf;   ///< Error Warning Flag (´íÎó¾¯¸æ±êÖ¾), ²¼¶ûÖµ:
-                    ///< 0 = Error count below warning threshold (´íÎó¼ÆÊıµÍÓÚ¾¯¸æãĞÖµ)
-                    ///< 1 = Error count reached warning threshold (´íÎó¼ÆÊı´ïµ½¾¯¸æãĞÖµ)
+    volatile uint8_t ewgf;   ///< Error Warning Flag (é”™è¯¯è­¦å‘Šæ ‡å¿—), å¸ƒå°”å€¼:
+                    ///< 0 = Error count below warning threshold (é”™è¯¯è®¡æ•°ä½äºè­¦å‘Šé˜ˆå€¼)
+                    ///< 1 = Error count reached warning threshold (é”™è¯¯è®¡æ•°è¾¾åˆ°è­¦å‘Šé˜ˆå€¼)
 } CAN_ESR_t;
 
-// ´ÓHAL¿âÑ§Ï°¹ıÀ´µÄ½á¹¹Ìå
+// ä»HALåº“å­¦ä¹ è¿‡æ¥çš„ç»“æ„ä½“
 typedef struct
 {
   uint32_t StdId;    /*!< Specifies the standard identifier.

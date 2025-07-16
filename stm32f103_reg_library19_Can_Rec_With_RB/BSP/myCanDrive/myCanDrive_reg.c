@@ -1,66 +1,66 @@
 #include "myCanDrive_reg.h"
 
-volatile uint8_t txmail_free = 0;        // ¿ÕÏĞÓÊÏäµÄÊıÁ¿
-volatile uint32_t canSendError = 0;      // Í³¼Æ·¢ËÍÊ§°Ü´ÎÊı
-CAN_ESR_t gCanESR = {0,};                // ½âÎö´íÎó
-volatile uint32_t g_RxCount = 0;         // ¼ÇÂ¼½ÓÊÕ±¨ÎÄ×ÜÊı
-volatile uint32_t g_RxOverflowError = 0; // ¼ÇÂ¼½ÓÊÕÒç³ö´íÎó
-volatile uint32_t g_RXRingbufferOverflow = 0; // Í³¼ÆringbufferÒç³ö´ÎÊı
+volatile uint8_t txmail_free = 0;        // ç©ºé—²é‚®ç®±çš„æ•°é‡
+volatile uint32_t canSendError = 0;      // ç»Ÿè®¡å‘é€å¤±è´¥æ¬¡æ•°
+CAN_ESR_t gCanESR = {0,};                // è§£æé”™è¯¯
+volatile uint32_t g_RxCount = 0;         // è®°å½•æ¥æ”¶æŠ¥æ–‡æ€»æ•°
+volatile uint32_t g_RxOverflowError = 0; // è®°å½•æ¥æ”¶æº¢å‡ºé”™è¯¯
+volatile uint32_t g_RXRingbufferOverflow = 0; // ç»Ÿè®¡ringbufferæº¢å‡ºæ¬¡æ•°
 
 /* ringbuffer */
-volatile lwrb_t g_CanRxRBHandler; // ÊµÀı»¯ringbuffer
-volatile CANMsg_t g_CanRxRBDataBuffer[50] = {0,}; // ringbuffer»º´æ£¨×î¶à¿ÉÒÔ´æ50¸öCANÏûÏ¢£©
+volatile lwrb_t g_CanRxRBHandler; // å®ä¾‹åŒ–ringbuffer
+volatile CANMsg_t g_CanRxRBDataBuffer[50] = {0,}; // ringbufferç¼“å­˜ï¼ˆæœ€å¤šå¯ä»¥å­˜50ä¸ªCANæ¶ˆæ¯ï¼‰
 
 /**
-  * @brief  Ê¹ÓÃÖ±½Ó¼Ä´æÆ÷²Ù×÷µÄCAN³õÊ¼»¯ÅäÖÃ
+  * @brief  ä½¿ç”¨ç›´æ¥å¯„å­˜å™¨æ“ä½œçš„CANåˆå§‹åŒ–é…ç½®
   * @retval note
   */
 void CAN_Config(void)
 {
     /* ringbuffer */
-    lwrb_init((lwrb_t*)&g_CanRxRBHandler, (uint8_t*)g_CanRxRBDataBuffer, sizeof(g_CanRxRBDataBuffer) + 1); // ringbuffer³õÊ¼»¯
+    lwrb_init((lwrb_t*)&g_CanRxRBHandler, (uint8_t*)g_CanRxRBDataBuffer, sizeof(g_CanRxRBDataBuffer)); // ringbufferåˆå§‹åŒ–
     
-    /* 1. Ê¹ÄÜ CAN1 ºÍ GPIOA Ê±ÖÓ */
-    RCC->APB1ENR |= (1UL << 25);  // Ê¹ÄÜ CAN1 Ê±ÖÓ
-    RCC->APB2ENR |= (1UL << 2);   // Ê¹ÄÜ GPIOA Ê±ÖÓ
+    /* 1. ä½¿èƒ½ CAN1 å’Œ GPIOA æ—¶é’Ÿ */
+    RCC->APB1ENR |= (1UL << 25);  // ä½¿èƒ½ CAN1 æ—¶é’Ÿ
+    RCC->APB2ENR |= (1UL << 2);   // ä½¿èƒ½ GPIOA æ—¶é’Ÿ
 
-    /* 2. ÅäÖÃ PA11 (CAN_RX) ÎªÉÏÀ­ÊäÈë¡¢PA12 (CAN_TX) Îª¸´ÓÃÍÆÍìÊä³ö */
-    // PA11: CRH[15:12], MODE=00, CNF=10 (ÉÏÀ­ÊäÈë)
+    /* 2. é…ç½® PA11 (CAN_RX) ä¸ºä¸Šæ‹‰è¾“å…¥ã€PA12 (CAN_TX) ä¸ºå¤ç”¨æ¨æŒ½è¾“å‡º */
+    // PA11: CRH[15:12], MODE=00, CNF=10 (ä¸Šæ‹‰è¾“å…¥)
     GPIOA->CRH &= ~(0xF << 12);
     GPIOA->CRH |=  (0x8 << 12);
-    GPIOA->ODR |=  (1UL << 11); // ÉÏÀ­
+    GPIOA->ODR |=  (1UL << 11); // ä¸Šæ‹‰
 
-    // PA12: CRH[19:16], MODE=11(50MHz), CNF=10(¸´ÓÃÍÆÍì)
+    // PA12: CRH[19:16], MODE=11(50MHz), CNF=10(å¤ç”¨æ¨æŒ½)
     GPIOA->CRH &= ~(0xF << 16);
     GPIOA->CRH |=  (0xB << 16);
 
-    /* 3. ÍË³ö SLEEP Ä£Ê½£¨Èô´¦ÓÚË¯Ãß×´Ì¬£© */
-    if (CAN1->MSR & (1UL << 1)) { // ¼ì²é MSR.SLAK ÊÇ·ñÎª 1
-        CAN1->MCR &= ~(1UL << 1);  // Çå³ı SLEEP Î»
-        while (CAN1->MSR & (1UL << 1));  // µÈ´ı MSR.SLAK ±ä 0
+    /* 3. é€€å‡º SLEEP æ¨¡å¼ï¼ˆè‹¥å¤„äºç¡çœ çŠ¶æ€ï¼‰ */
+    if (CAN1->MSR & (1UL << 1)) { // æ£€æŸ¥ MSR.SLAK æ˜¯å¦ä¸º 1
+        CAN1->MCR &= ~(1UL << 1);  // æ¸…é™¤ SLEEP ä½
+        while (CAN1->MSR & (1UL << 1));  // ç­‰å¾… MSR.SLAK å˜ 0
     }
 
-    /* 4. ½øÈë³õÊ¼»¯Ä£Ê½ */
-    CAN1->MCR |= (1UL << 0);          // ÇëÇó½øÈë INIT Ä£Ê½ (MCR.INRQ=1)
-    while (!(CAN1->MSR & (1UL << 0))); // µÈ´ı MSR.INAK ±ä 1
+    /* 4. è¿›å…¥åˆå§‹åŒ–æ¨¡å¼ */
+    CAN1->MCR |= (1UL << 0);          // è¯·æ±‚è¿›å…¥ INIT æ¨¡å¼ (MCR.INRQ=1)
+    while (!(CAN1->MSR & (1UL << 0))); // ç­‰å¾… MSR.INAK å˜ 1
 
-    /* 5. ¹Ø±Õ TTCM/ABOM/AWUM/RFLM/TXFP(¾ùÎª Disable) */
-    CAN1->MCR &= ~(1UL << 7);  // ¹Ø±Õ TTCM£¨Ê±¼ä´¥·¢Ä£Ê½£©
-    CAN1->MCR &= ~(1UL << 6);  // ¹Ø±Õ ABOM£¨×Ô¶¯ÀëÏß¹ÜÀíÄ£Ê½£©
-    CAN1->MCR &= ~(1UL << 5);  // ¹Ø±Õ AWUM£¨Èí¼ş×Ô¶¯»½ĞÑ£©
-    CAN1->MCR &= ~(1UL << 3);  // ¹Ø±Õ RFLM£¨FIFO Òç³öÊ±¸²¸Ç¾É±¨ÎÄ£©
-    CAN1->MCR &= ~(1UL << 2);  // ¹Ø±Õ TXFP£¨·¢ËÍ FIFO ÓÅÏÈ¼¶£©
+    /* 5. å…³é—­ TTCM/ABOM/AWUM/RFLM/TXFP(å‡ä¸º Disable) */
+    CAN1->MCR &= ~(1UL << 7);  // å…³é—­ TTCMï¼ˆæ—¶é—´è§¦å‘æ¨¡å¼ï¼‰
+    CAN1->MCR &= ~(1UL << 6);  // å…³é—­ ABOMï¼ˆè‡ªåŠ¨ç¦»çº¿ç®¡ç†æ¨¡å¼ï¼‰
+    CAN1->MCR &= ~(1UL << 5);  // å…³é—­ AWUMï¼ˆè½¯ä»¶è‡ªåŠ¨å”¤é†’ï¼‰
+    CAN1->MCR &= ~(1UL << 3);  // å…³é—­ RFLMï¼ˆFIFO æº¢å‡ºæ—¶è¦†ç›–æ—§æŠ¥æ–‡ï¼‰
+    CAN1->MCR &= ~(1UL << 2);  // å…³é—­ TXFPï¼ˆå‘é€ FIFO ä¼˜å…ˆçº§ï¼‰
 
-    /* 6. ¹Ø±Õ×Ô¶¯ÖØ´« (NART=1) */
+    /* 6. å…³é—­è‡ªåŠ¨é‡ä¼  (NART=1) */
     CAN1->MCR |= (1UL << 4);
 
     /*
-    7. ÉèÖÃ BTR=0x002D0003, ±£³ÖÓë HAL ÏàÍ¬:
+    7. è®¾ç½® BTR=0x002D0003, ä¿æŒä¸ HAL ç›¸åŒ:
        - SJW=0  => 1Tq
        - TS2=0x02 => 2 => 3Tq
        - TS1=0x0D => 13 => 14Tq
-       - BRP=0x03 => 3 => ·ÖÆµ=4
-       - ×îÖÕ£¬²¨ÌØÂÊ500K
+       - BRP=0x03 => 3 => åˆ†é¢‘=4
+       - æœ€ç»ˆï¼Œæ³¢ç‰¹ç‡500K
     */
     CAN1->BTR = (0x00 << 24) |  // SILM(31) | LBKM(30) = 0
                 (0x00 << 22) |  // SJW(23:22) = 0 (SJW = 1Tq)
@@ -68,84 +68,84 @@ void CAN_Config(void)
                 (0x0D << 16) |  // TS1(19:16) = 13 (TS1 = 14Tq)
                 (0x0003);       // BRP(9:0) = 3 (Prescaler = 4)
 
-    /* 8. ÍË³ö³õÊ¼»¯Ä£Ê½ */
-    CAN1->MCR &= ~(1UL << 0);  // Çå³ı INRQ (½øÈëÕı³£Ä£Ê½)
-    while (CAN1->MSR & (1UL << 0)); // µÈ´ı MSR.INAK ±ä 0
+    /* 8. é€€å‡ºåˆå§‹åŒ–æ¨¡å¼ */
+    CAN1->MCR &= ~(1UL << 0);  // æ¸…é™¤ INRQ (è¿›å…¥æ­£å¸¸æ¨¡å¼)
+    while (CAN1->MSR & (1UL << 0)); // ç­‰å¾… MSR.INAK å˜ 0
 
-    /* ĞÂÔö£ºÇå³ı×ÜÏß¹Ø±Õ±êÖ¾£¨¼ÓÁËÏÔÊ½Çå³ıBOFFÎ»ºó£¬Õâ¸öº¯Êı»Ö¸´Bus-off´íÎó×´Ì¬ */
-    CAN1->ESR &= ~CAN_ESR_BOFF;  // ÏÔÊ½Çå³ıBOFFÎ»
+    /* æ–°å¢ï¼šæ¸…é™¤æ€»çº¿å…³é—­æ ‡å¿—ï¼ˆåŠ äº†æ˜¾å¼æ¸…é™¤BOFFä½åï¼Œè¿™ä¸ªå‡½æ•°æ¢å¤Bus-offé”™è¯¯çŠ¶æ€ */
+    CAN1->ESR &= ~CAN_ESR_BOFF;  // æ˜¾å¼æ¸…é™¤BOFFä½
 
-    /* 9. ÅäÖÃÂË²¨Æ÷0£¬FIFO1 */
-    CAN1->FMR |= (1UL << 0);   // ½øÈëÂË²¨Æ÷³õÊ¼»¯Ä£Ê½
-    CAN1->FM1R  &= ~(1UL << 0); // ÂË²¨Æ÷0Ê¹ÓÃÆÁ±ÎÎ»Ä£Ê½
+    /* 9. é…ç½®æ»¤æ³¢å™¨0ï¼ŒFIFO1 */
+    CAN1->FMR |= (1UL << 0);   // è¿›å…¥æ»¤æ³¢å™¨åˆå§‹åŒ–æ¨¡å¼
+    CAN1->FM1R  &= ~(1UL << 0); // æ»¤æ³¢å™¨0ä½¿ç”¨å±è”½ä½æ¨¡å¼
     CAN1->sFilterRegister[0].FR1 = 0x00000000;
     CAN1->sFilterRegister[0].FR2 = 0x00000000;
-    CAN1->FFA1R |= (1UL << 0);  // ·ÖÅäµ½ FIFO1
-    CAN1->FA1R  |= (1UL << 0);  // ¼¤»îÂË²¨Æ÷0
-    CAN1->FMR   &= ~(1UL << 0); // ÍË³öÂË²¨Æ÷³õÊ¼»¯Ä£Ê½
+    CAN1->FFA1R |= (1UL << 0);  // åˆ†é…åˆ° FIFO1
+    CAN1->FA1R  |= (1UL << 0);  // æ¿€æ´»æ»¤æ³¢å™¨0
+    CAN1->FMR   &= ~(1UL << 0); // é€€å‡ºæ»¤æ³¢å™¨åˆå§‹åŒ–æ¨¡å¼
     
-    /* 10.CAN·¢ËÍÍê³ÉÖĞ¶Ï */
-    // ¿ªÆôCAN·¢ËÍÍê³ÉµÄÈ«¾ÖÖĞ¶Ï£¬²¢ÉèÖÃÖĞ¶ÏÓÅÏÈ¼¶
+    /* 10.CANå‘é€å®Œæˆä¸­æ–­ */
+    // å¼€å¯CANå‘é€å®Œæˆçš„å…¨å±€ä¸­æ–­ï¼Œå¹¶è®¾ç½®ä¸­æ–­ä¼˜å…ˆçº§
     NVIC_SetPriority(USB_HP_CAN1_TX_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),3, 0));
     NVIC_EnableIRQ(USB_HP_CAN1_TX_IRQn);
-    CAN1->IER |= CAN_IER_TMEIE; // Ê¹ÄÜ·¢ËÍÓÊÏä¿ÕÖĞ¶Ï
+    CAN1->IER |= CAN_IER_TMEIE; // ä½¿èƒ½å‘é€é‚®ç®±ç©ºä¸­æ–­
     
-    // ¿ªÆôCANÏûÏ¢¹ÒºÅÖĞ¶Ï£¨½ÓÊÕÖĞ¶Ï£©
+    // å¼€å¯CANæ¶ˆæ¯æŒ‚å·ä¸­æ–­ï¼ˆæ¥æ”¶ä¸­æ–­ï¼‰
     NVIC_SetPriority(CAN1_RX1_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 0, 0));
     NVIC_EnableIRQ(CAN1_RX1_IRQn);
-    CAN1->IER |= CAN_IER_FMPIE1; // Ê¹ÄÜ½ÓÊÕFIFO1ÖĞ¶Ï£¨ÏûÏ¢¹ÒºÅÖĞ¶Ï£©
-    CAN1->IER |= CAN_IER_FOVIE1; // Ê¹ÄÜ½ÓÊÕFIFO1Òç³öÖĞ¶Ï
+    CAN1->IER |= CAN_IER_FMPIE1; // ä½¿èƒ½æ¥æ”¶FIFO1ä¸­æ–­ï¼ˆæ¶ˆæ¯æŒ‚å·ä¸­æ–­ï¼‰
+    CAN1->IER |= CAN_IER_FOVIE1; // ä½¿èƒ½æ¥æ”¶FIFO1æº¢å‡ºä¸­æ–­
     
-    /* 11.»ñÈ¡Ò»´Î·¢ËÍÓÊÏäµÄÊıÁ¿ */
+    /* 11.è·å–ä¸€æ¬¡å‘é€é‚®ç®±çš„æ•°é‡ */
     txmail_free = ((CAN1->TSR & CAN_TSR_TME0) ? 1 : 0) +
              ((CAN1->TSR & CAN_TSR_TME1) ? 1 : 0) +
              ((CAN1->TSR & CAN_TSR_TME2) ? 1 : 0);
 }
 
 /**
-  * @brief  »ñÈ¡¿ÕÏĞÓÊÏäµÄË÷Òı(¼Ä´æÆ÷·½Ê½)
-  * @retval ¿ÕÏĞÓÊÏäµÄË÷Òı(0, 1, 2)£¬ÈôÎŞ¿ÕÏĞÓÊÏäÔò·µ»Ø 0xFF
+  * @brief  è·å–ç©ºé—²é‚®ç®±çš„ç´¢å¼•(å¯„å­˜å™¨æ–¹å¼)
+  * @retval ç©ºé—²é‚®ç®±çš„ç´¢å¼•(0, 1, 2)ï¼Œè‹¥æ— ç©ºé—²é‚®ç®±åˆ™è¿”å› 0xFF
   */
 __STATIC_INLINE uint8_t CAN_Get_Free_Mailbox(void)
 {
     uint8_t mailbox;
     for (mailbox = 0; mailbox < 3; mailbox++) {
-        // ¼ì²éÓÊÏä¶ÔÓ¦µÄ TIR ¼Ä´æÆ÷µÄ TXRQ Î»ÊÇ·ñÎª 0
-        // TXRQ Î»¶¨ÒåÎª (1UL << 0) £¬ÈôÎª 0 ±íÊ¾¸ÃÓÊÏäÃ»ÓĞ´¦ÓÚ·¢ËÍÇëÇóÖĞ
+        // æ£€æŸ¥é‚®ç®±å¯¹åº”çš„ TIR å¯„å­˜å™¨çš„ TXRQ ä½æ˜¯å¦ä¸º 0
+        // TXRQ ä½å®šä¹‰ä¸º (1UL << 0) ï¼Œè‹¥ä¸º 0 è¡¨ç¤ºè¯¥é‚®ç®±æ²¡æœ‰å¤„äºå‘é€è¯·æ±‚ä¸­
         if ((CAN1->sTxMailBox[mailbox].TIR & (1UL << 0)) == 0) {
             return mailbox;
         }
     }
-    return 0xFF; // Ã»ÓĞ¿ÕÏĞÓÊÏä
+    return 0xFF; // æ²¡æœ‰ç©ºé—²é‚®ç®±
 }
 
 /**
-  * @brief  Ö±½Ó²Ù×÷¼Ä´æÆ÷ÊµÏÖCANÏûÏ¢·¢ËÍ(±ê×¼Êı¾İÖ¡)£¬´úÂë»á×èÈû£¬Ö±µ½CANÏûÏ¢±»³É¹¦·¢ËÍ³öÈ¥
-  * @param  stdId: ±ê×¼ID(11Î»)
-  * @param  data: Êı¾İÖ¸Õë
-  * @param  DLC: Êı¾İ³¤¶È(0~8)
-  * @retval 0=·¢ËÍ³É¹¦; 1=ÎŞ¿ÕÏĞÓÊÏä; 2=³¬Ê±/Ê§°Ü
+  * @brief  ç›´æ¥æ“ä½œå¯„å­˜å™¨å®ç°CANæ¶ˆæ¯å‘é€(æ ‡å‡†æ•°æ®å¸§)ï¼Œä»£ç ä¼šé˜»å¡ï¼Œç›´åˆ°CANæ¶ˆæ¯è¢«æˆåŠŸå‘é€å‡ºå»
+  * @param  stdId: æ ‡å‡†ID(11ä½)
+  * @param  data: æ•°æ®æŒ‡é’ˆ
+  * @param  DLC: æ•°æ®é•¿åº¦(0~8)
+  * @retval 0=å‘é€æˆåŠŸ; 1=æ— ç©ºé—²é‚®ç®±; 2=è¶…æ—¶/å¤±è´¥
   */
 uint8_t CAN_SendMessage_Blocking(uint32_t stdId, uint8_t *data, uint8_t DLC)
 {
     uint8_t mailbox;
-    uint32_t timeout = 100; // ×î´óµÈ´ı100ms
+    uint32_t timeout = 100; // æœ€å¤§ç­‰å¾…100ms
     if (DLC > 8) {
-        Error_Handler(); // ¸ù¾İ¾ßÌåĞèÇó£¬¿ÉÑ¡Ôñ½Ø¶Ï»ò½øÈë´íÎó´¦Àí
+        Error_Handler(); // æ ¹æ®å…·ä½“éœ€æ±‚ï¼Œå¯é€‰æ‹©æˆªæ–­æˆ–è¿›å…¥é”™è¯¯å¤„ç†
     }
-    mailbox = CAN_Get_Free_Mailbox(); // Ñ°ÕÒ¿ÕÏĞÓÊÏä
+    mailbox = CAN_Get_Free_Mailbox(); // å¯»æ‰¾ç©ºé—²é‚®ç®±
     if(mailbox == 0xFF)
-        return 1; // ÎŞ¿ÕÏĞÓÊÏä
-    /* Çå¿Õ¸ÃÓÊÏä */
-    CAN1->sTxMailBox[mailbox].TIR  = 0; // Êı¾İÖ¡¡¢±ê×¼Ö¡±êÊ¶·û
+        return 1; // æ— ç©ºé—²é‚®ç®±
+    /* æ¸…ç©ºè¯¥é‚®ç®± */
+    CAN1->sTxMailBox[mailbox].TIR  = 0; // æ•°æ®å¸§ã€æ ‡å‡†å¸§æ ‡è¯†ç¬¦
     CAN1->sTxMailBox[mailbox].TDTR = 0;
     CAN1->sTxMailBox[mailbox].TDLR = 0;
     CAN1->sTxMailBox[mailbox].TDHR = 0;
-    /* ±ê×¼IDĞ´ÈëTIRµÄ[31:21]¡¢±ê×¼Ö¡, RTR=0, IDE=0 */
-    CAN1->sTxMailBox[mailbox].TIR |= (stdId << 21); // ÉèÖÃ±ê×¼Ö¡ID
-    /* ÅäÖÃDLC */
-    CAN1->sTxMailBox[mailbox].TDTR = (DLC & 0x0F);  // ÉèÖÃCAN±¨ÎÄµÄ³¤¶È¡£Ê¹ÓÃ&ÔËËãµÄÄ¿µÄÊÇ±£Ö¤Ö»ÓĞ±äÁ¿DLCµÄµÍËÄÎ»Ğ´ÈëTDTR¼Ä´æÆ÷£¬²»»á¸ÉÉæµ½ÆäËûÎ»¡£
-    /* Ìî³äÊı¾İ */
+    /* æ ‡å‡†IDå†™å…¥TIRçš„[31:21]ã€æ ‡å‡†å¸§, RTR=0, IDE=0 */
+    CAN1->sTxMailBox[mailbox].TIR |= (stdId << 21); // è®¾ç½®æ ‡å‡†å¸§ID
+    /* é…ç½®DLC */
+    CAN1->sTxMailBox[mailbox].TDTR = (DLC & 0x0F);  // è®¾ç½®CANæŠ¥æ–‡çš„é•¿åº¦ã€‚ä½¿ç”¨&è¿ç®—çš„ç›®çš„æ˜¯ä¿è¯åªæœ‰å˜é‡DLCçš„ä½å››ä½å†™å…¥TDTRå¯„å­˜å™¨ï¼Œä¸ä¼šå¹²æ¶‰åˆ°å…¶ä»–ä½ã€‚
+    /* å¡«å……æ•°æ® */
     if(DLC <= 4) {
         for(uint8_t i = 0; i < DLC; i++) {
           CAN1->sTxMailBox[mailbox].TDLR |= ((uint32_t)data[i]) << (8 * i);
@@ -158,45 +158,45 @@ uint8_t CAN_SendMessage_Blocking(uint32_t stdId, uint8_t *data, uint8_t DLC)
           CAN1->sTxMailBox[mailbox].TDHR |= ((uint32_t)data[i]) << (8 * (i-4));
         }
     }
-    CAN1->sTxMailBox[mailbox].TIR |= CAN_TI0R_TXRQ; // ·¢Æğ·¢ËÍÇëÇó
-    /* ÂÖÑ¯µÈ´ıTXRQÇåÁã»ò³¬Ê± */
+    CAN1->sTxMailBox[mailbox].TIR |= CAN_TI0R_TXRQ; // å‘èµ·å‘é€è¯·æ±‚
+    /* è½®è¯¢ç­‰å¾…TXRQæ¸…é›¶æˆ–è¶…æ—¶ */
     while((CAN1->sTxMailBox[mailbox].TIR & CAN_TI0R_TXRQ) && (timeout > 0)) {
         LL_mDelay(1);
         timeout--;
     }
-    /* ×èÈû½áÊø£¬·¢ËÍ³¬Ê±Ê§°Ü */
+    /* é˜»å¡ç»“æŸï¼Œå‘é€è¶…æ—¶å¤±è´¥ */
     if ((CAN1->sTxMailBox[mailbox].TIR & CAN_TI0R_TXRQ) && (timeout == 0)) {
         canSendError++;
         return 2;
     }
     
-    return 0; // ·¢ËÍ³É¹¦
+    return 0; // å‘é€æˆåŠŸ
 }
 
 /**
-  * @brief  Ö±½Ó²Ù×÷¼Ä´æÆ÷ÊµÏÖCANÏûÏ¢·¢ËÍ(±ê×¼Êı¾İÖ¡)£¬´úÂë²»»á×èÈû
-  * @param  stdId: ±ê×¼ID(11Î»)
-  * @param  data: Êı¾İÖ¸Õë
-  * @param  DLC: Êı¾İ³¤¶È(0~8)
-  * @retval 0=·¢ËÍ³É¹¦; 1=ÎŞ¿ÕÏĞÓÊÏä,Ã»ÓĞ·¢ËÍÊı¾İ
+  * @brief  ç›´æ¥æ“ä½œå¯„å­˜å™¨å®ç°CANæ¶ˆæ¯å‘é€(æ ‡å‡†æ•°æ®å¸§)ï¼Œä»£ç ä¸ä¼šé˜»å¡
+  * @param  stdId: æ ‡å‡†ID(11ä½)
+  * @param  data: æ•°æ®æŒ‡é’ˆ
+  * @param  DLC: æ•°æ®é•¿åº¦(0~8)
+  * @retval 0=å‘é€æˆåŠŸ; 1=æ— ç©ºé—²é‚®ç®±,æ²¡æœ‰å‘é€æ•°æ®
   */
 uint8_t CAN_SendMessage_NonBlocking(uint32_t stdId, uint8_t *data, uint8_t DLC)
 {
     uint8_t mailbox;
     if (DLC > 8) {
-        Error_Handler(); // ¸ù¾İ¾ßÌåĞèÇó£¬¿ÉÑ¡Ôñ½Ø¶Ï»ò½øÈë´íÎó´¦Àí
+        Error_Handler(); // æ ¹æ®å…·ä½“éœ€æ±‚ï¼Œå¯é€‰æ‹©æˆªæ–­æˆ–è¿›å…¥é”™è¯¯å¤„ç†
     }
     
     if (txmail_free > 0) {
-        mailbox = CAN_Get_Free_Mailbox(); // ¼ÈÈ»ÓĞ¿ÕÏĞÓÊÏä£¬¿´¿´µ½µ×ÄÄ¸ö¿ÕÏĞ
-        /* Çå¿Õ¸ÃÓÊÏä²¢ÅäÖÃID¡¢DLCºÍÊı¾İ */
-        CAN1->sTxMailBox[mailbox].TIR  = 0; // Êı¾İÖ¡¡¢±ê×¼Ö¡±êÊ¶·û
+        mailbox = CAN_Get_Free_Mailbox(); // æ—¢ç„¶æœ‰ç©ºé—²é‚®ç®±ï¼Œçœ‹çœ‹åˆ°åº•å“ªä¸ªç©ºé—²
+        /* æ¸…ç©ºè¯¥é‚®ç®±å¹¶é…ç½®IDã€DLCå’Œæ•°æ® */
+        CAN1->sTxMailBox[mailbox].TIR  = 0; // æ•°æ®å¸§ã€æ ‡å‡†å¸§æ ‡è¯†ç¬¦
         CAN1->sTxMailBox[mailbox].TDTR = (DLC & 0x0F);
         CAN1->sTxMailBox[mailbox].TDLR = 0;
         CAN1->sTxMailBox[mailbox].TDHR = 0;
-        CAN1->sTxMailBox[mailbox].TIR |= (stdId << 21); // ÉèÖÃ±ê×¼Ö¡ID
+        CAN1->sTxMailBox[mailbox].TIR |= (stdId << 21); // è®¾ç½®æ ‡å‡†å¸§ID
 
-        /* Ìî³äÊı¾İ */
+        /* å¡«å……æ•°æ® */
         for(uint8_t i = 0; i < DLC && i < 8; i++) {
             if(i < 4)
                 CAN1->sTxMailBox[mailbox].TDLR |= ((uint32_t)data[i]) << (8 * i);
@@ -204,90 +204,90 @@ uint8_t CAN_SendMessage_NonBlocking(uint32_t stdId, uint8_t *data, uint8_t DLC)
                 CAN1->sTxMailBox[mailbox].TDHR |= ((uint32_t)data[i]) << (8 * (i-4));
         }
 
-        /* ·¢Æğ·¢ËÍÇëÇó²¢Ö±½Ó·µ»Ø */
+        /* å‘èµ·å‘é€è¯·æ±‚å¹¶ç›´æ¥è¿”å› */
         CAN1->sTxMailBox[mailbox].TIR |= CAN_TI0R_TXRQ;
         txmail_free--;
-        return 0; // ÒÑ·¢Æğ·¢ËÍÇëÇó£¬²»µÈ´ıÍê³É
+        return 0; // å·²å‘èµ·å‘é€è¯·æ±‚ï¼Œä¸ç­‰å¾…å®Œæˆ
     } else {
-        return 1; // ·¢ËÍÊ§°Ü£¬ÒòÎª·¢ËÍÓÊÏäÂúÁË
+        return 1; // å‘é€å¤±è´¥ï¼Œå› ä¸ºå‘é€é‚®ç®±æ»¡äº†
     }
 }
 
 /**
- * @brief  ¼ì²â²¢½âÎöCAN1¿ØÖÆÆ÷´íÎó×´Ì¬
- * @param[out] can_esr  ÓÃÓÚ´æ´¢´íÎóÏêÏ¸ĞÅÏ¢µÄCAN_ESR_t½á¹¹ÌåÖ¸Õë
- * @retval uint8_t       ´íÎó×´Ì¬Âë£º
- *                       - 0: ÎŞ´íÎó
- *                       - 1: Ğ­Òé´íÎó£¨LEC×Ö¶Î£©
- *                       - 2: ´íÎó±»¶¯×´Ì¬£¨EPVF = 1£©
- *                       - 3: ×ÜÏß¹Ø±Õ×´Ì¬£¨BOFF = 1£©
- *                       - 4: ¾¯¸æ×´Ì¬£¨EWGF = 1£©
- * @note   ±¾º¯Êı»áÔÚ¶ÁÈ¡ºó×Ô¶¯Çå³ıLEC´íÎóÂë×Ö¶Î
+ * @brief  æ£€æµ‹å¹¶è§£æCAN1æ§åˆ¶å™¨é”™è¯¯çŠ¶æ€
+ * @param[out] can_esr  ç”¨äºå­˜å‚¨é”™è¯¯è¯¦ç»†ä¿¡æ¯çš„CAN_ESR_tç»“æ„ä½“æŒ‡é’ˆ
+ * @retval uint8_t       é”™è¯¯çŠ¶æ€ç ï¼š
+ *                       - 0: æ— é”™è¯¯
+ *                       - 1: åè®®é”™è¯¯ï¼ˆLECå­—æ®µï¼‰
+ *                       - 2: é”™è¯¯è¢«åŠ¨çŠ¶æ€ï¼ˆEPVF = 1ï¼‰
+ *                       - 3: æ€»çº¿å…³é—­çŠ¶æ€ï¼ˆBOFF = 1ï¼‰
+ *                       - 4: è­¦å‘ŠçŠ¶æ€ï¼ˆEWGF = 1ï¼‰
+ * @note   æœ¬å‡½æ•°ä¼šåœ¨è¯»å–åè‡ªåŠ¨æ¸…é™¤LECé”™è¯¯ç å­—æ®µ
  */
 uint8_t CAN_Check_Error(void) {
-    /* ¶ÁÈ¡CAN´íÎó×´Ì¬¼Ä´æÆ÷£¨ESR£© */
+    /* è¯»å–CANé”™è¯¯çŠ¶æ€å¯„å­˜å™¨ï¼ˆESRï¼‰ */
     uint32_t esr = CAN1->ESR;
     uint8_t result = 0;
 
-    /* ½âÎöËùÓĞ´íÎó×Ö¶Î */
-    gCanESR.lec   = (esr & CAN_ESR_LEC)   >> CAN_ESR_LEC_Pos;   // ×îºó´íÎó´úÂë£¨Last Error Code£©
-    gCanESR.tec   = (esr & CAN_ESR_TEC)   >> CAN_ESR_TEC_Pos;   // ·¢ËÍ´íÎó¼ÆÊıÆ÷£¨Transmit Error Counter£©
-    gCanESR.rec   = (esr & CAN_ESR_REC)   >> CAN_ESR_REC_Pos;   // ½ÓÊÕ´íÎó¼ÆÊıÆ÷£¨Receive Error Counter£©
-    gCanESR.epvf  = (esr & CAN_ESR_EPVF)  >> CAN_ESR_EPVF_Pos;  // ´íÎó±»¶¯±êÖ¾£¨Error Passive Flag£©
-    gCanESR.ewgf  = (esr & CAN_ESR_EWGF)  >> CAN_ESR_EWGF_Pos;  // ´íÎó¾¯¸æ±êÖ¾£¨Error Warning Flag£©
-    gCanESR.boff  = (esr & CAN_ESR_BOFF)  >> CAN_ESR_BOFF_Pos;  // ×ÜÏß¹Ø±Õ±êÖ¾£¨Bus-Off Flag£©
+    /* è§£ææ‰€æœ‰é”™è¯¯å­—æ®µ */
+    gCanESR.lec   = (esr & CAN_ESR_LEC)   >> CAN_ESR_LEC_Pos;   // æœ€åé”™è¯¯ä»£ç ï¼ˆLast Error Codeï¼‰
+    gCanESR.tec   = (esr & CAN_ESR_TEC)   >> CAN_ESR_TEC_Pos;   // å‘é€é”™è¯¯è®¡æ•°å™¨ï¼ˆTransmit Error Counterï¼‰
+    gCanESR.rec   = (esr & CAN_ESR_REC)   >> CAN_ESR_REC_Pos;   // æ¥æ”¶é”™è¯¯è®¡æ•°å™¨ï¼ˆReceive Error Counterï¼‰
+    gCanESR.epvf  = (esr & CAN_ESR_EPVF)  >> CAN_ESR_EPVF_Pos;  // é”™è¯¯è¢«åŠ¨æ ‡å¿—ï¼ˆError Passive Flagï¼‰
+    gCanESR.ewgf  = (esr & CAN_ESR_EWGF)  >> CAN_ESR_EWGF_Pos;  // é”™è¯¯è­¦å‘Šæ ‡å¿—ï¼ˆError Warning Flagï¼‰
+    gCanESR.boff  = (esr & CAN_ESR_BOFF)  >> CAN_ESR_BOFF_Pos;  // æ€»çº¿å…³é—­æ ‡å¿—ï¼ˆBus-Off Flagï¼‰
 
-    /* Çå³ıLEC´íÎóÂë×Ö¶Î£¨Ïò¶ÔÓ¦Î»Ğ´0Çå³ı£© */
+    /* æ¸…é™¤LECé”™è¯¯ç å­—æ®µï¼ˆå‘å¯¹åº”ä½å†™0æ¸…é™¤ï¼‰ */
     CAN1->ESR &= ~CAN_ESR_LEC;
 
-    /* °´´íÎóÑÏÖØ³Ì¶È·Ö¼¶·µ»Ø£¨BOFF > EPVF > LEC > EWGF£©*/
+    /* æŒ‰é”™è¯¯ä¸¥é‡ç¨‹åº¦åˆ†çº§è¿”å›ï¼ˆBOFF > EPVF > LEC > EWGFï¼‰*/
     if (gCanESR.boff == 0x01) {
         return 3;
     } else if (gCanESR.epvf == 0x01) {
-        return 2; // ´íÎó±»¶¯×´Ì¬£¨TEC/REC > 127£©
+        return 2; // é”™è¯¯è¢«åŠ¨çŠ¶æ€ï¼ˆTEC/REC > 127ï¼‰
     } else if (gCanESR.lec == 0x01) {
-        return 1; // Ğ­Òé´íÎó£¨Î»Ìî³ä/¸ñÊ½/ACKµÈ´íÎó£©
+        return 1; // åè®®é”™è¯¯ï¼ˆä½å¡«å……/æ ¼å¼/ACKç­‰é”™è¯¯ï¼‰
     } else if (gCanESR.ewgf == 0x01) {
-        return 4; // ¾¯¸æ×´Ì¬£¨TEC/REC > 96£©
+        return 4; // è­¦å‘ŠçŠ¶æ€ï¼ˆTEC/REC > 96ï¼‰
     } else {
-        return 0; // ÎŞ´íÎó
+        return 0; // æ— é”™è¯¯
     }
 }
 
 /**
- * @brief CAN×ÜÏßBus-Off»Ö¸´º¯Êı
+ * @brief CANæ€»çº¿Bus-Offæ¢å¤å‡½æ•°
  *
- * ¸Ãº¯ÊıÓÃÓÚÔÚCAN×ÜÏß½øÈëBus-Off×´Ì¬ºó£¬»Ö¸´CAN¿ØÖÆÆ÷µÄÕı³£¹¤×÷×´Ì¬¡£
- * ËüÊ×ÏÈÍ¨¹ıÉèÖÃCAN1->MCR¼Ä´æÆ÷ÖĞµÄCAN_MCR_SLEEPÎ»£¬Ê¹CAN½øÈëË¯ÃßÄ£Ê½£¬Í£Ö¹Êı¾İ·¢ËÍºÍ½ÓÊÕ£¬
- * Ëæºóµ÷ÓÃCAN_Configº¯Êı¶ÔCAN½øĞĞÖØĞÂ³õÊ¼»¯£¬ÒÔ±ãÊ¹ÆäÖØĞÂ»Ö¸´Õı³£ÔËĞĞ¡£
+ * è¯¥å‡½æ•°ç”¨äºåœ¨CANæ€»çº¿è¿›å…¥Bus-OffçŠ¶æ€åï¼Œæ¢å¤CANæ§åˆ¶å™¨çš„æ­£å¸¸å·¥ä½œçŠ¶æ€ã€‚
+ * å®ƒé¦–å…ˆé€šè¿‡è®¾ç½®CAN1->MCRå¯„å­˜å™¨ä¸­çš„CAN_MCR_SLEEPä½ï¼Œä½¿CANè¿›å…¥ç¡çœ æ¨¡å¼ï¼Œåœæ­¢æ•°æ®å‘é€å’Œæ¥æ”¶ï¼Œ
+ * éšåè°ƒç”¨CAN_Configå‡½æ•°å¯¹CANè¿›è¡Œé‡æ–°åˆå§‹åŒ–ï¼Œä»¥ä¾¿ä½¿å…¶é‡æ–°æ¢å¤æ­£å¸¸è¿è¡Œã€‚
  *
  * @note 
  */
 void CAN_BusOff_Recover(void)
 {
-    CAN1->MCR |= CAN_MCR_SLEEP;  // ½øÈëË¯ÃßÄ£Ê½£¨Í£Ö¹ÊÕ·¢£©
-    CAN_Config();                // ÖØĞÂ³õÊ¼»¯Ò»´ÎCAN
+    CAN1->MCR |= CAN_MCR_SLEEP;  // è¿›å…¥ç¡çœ æ¨¡å¼ï¼ˆåœæ­¢æ”¶å‘ï¼‰
+    CAN_Config();                // é‡æ–°åˆå§‹åŒ–ä¸€æ¬¡CAN
 }
 
 /**
-  * @brief  ´ÓringbufferÖĞÈ¡³öËùÓĞµÄCANMsg_tÏûÏ¢²¢ÒÀ´Î·¢ËÍµ½CAN×ÜÏßÉÏ
-  * @return 0£ºËùÓĞÏûÏ¢·¢ËÍ³É¹¦  
-  *         1£º·¢ËÍ¹ı³ÌÖĞ³öÏÖ·¢ËÍÓÊÏä²»×ã»ò·¢ËÍ´íÎó  
-  *         2£ºÃ»ÓĞÒ»ÌõÍêÕûµÄCANÏûÏ¢¿É¹©·¢ËÍ
+  * @brief  ä»ringbufferä¸­å–å‡ºæ‰€æœ‰çš„CANMsg_tæ¶ˆæ¯å¹¶ä¾æ¬¡å‘é€åˆ°CANæ€»çº¿ä¸Š
+  * @return 0ï¼šæ‰€æœ‰æ¶ˆæ¯å‘é€æˆåŠŸ  
+  *         1ï¼šå‘é€è¿‡ç¨‹ä¸­å‡ºç°å‘é€é‚®ç®±ä¸è¶³æˆ–å‘é€é”™è¯¯  
+  *         2ï¼šæ²¡æœ‰ä¸€æ¡å®Œæ•´çš„CANæ¶ˆæ¯å¯ä¾›å‘é€
   */
 uint8_t CAN_Send_CANMsg_FromRingBuffer(void)
 {
-    uint8_t ret = 2;  // Ä¬ÈÏ·µ»Ø2±íÊ¾Ã»ÓĞÏûÏ¢¿É·¢
+    uint8_t ret = 2;  // é»˜è®¤è¿”å›2è¡¨ç¤ºæ²¡æœ‰æ¶ˆæ¯å¯å‘
     while(lwrb_get_full((lwrb_t*)&g_CanRxRBHandler) >= sizeof(CANMsg_t)) {
-        ret = 0; // ÒÑÓĞÏûÏ¢¿É·¢ËÍ
+        ret = 0; // å·²æœ‰æ¶ˆæ¯å¯å‘é€
         if(txmail_free == 0) {
-            ret = 1;  // Ã»ÓĞ¿ÉÓÃµÄ·¢ËÍÓÊÏä
+            ret = 1;  // æ²¡æœ‰å¯ç”¨çš„å‘é€é‚®ç®±
             break;
         }
         CANMsg_t canMsg;
-        lwrb_read((lwrb_t*)&g_CanRxRBHandler, &canMsg, sizeof(CANMsg_t)); // ´ÓringbufferÖĞ¶ÁÈ¡Ò»ÌõCANÏûÏ¢
-        if (CAN_SendMessage_NonBlocking(canMsg.RxHeader.StdId, canMsg.RxData, canMsg.RxHeader.DLC)) { // Ê¹ÓÃ·Ç´®ĞĞ·½Ê½·¢ËÍÏûÏ¢
-            ret = 1; // Èç¹û·¢ËÍÊ§°Ü£¨ÀıÈç·¢ËÍÓÊÏä²»×ã»òÆäËû´íÎó£©£¬¼ÇÂ¼´íÎóºóÍË³ö
+        lwrb_read((lwrb_t*)&g_CanRxRBHandler, &canMsg, sizeof(CANMsg_t)); // ä»ringbufferä¸­è¯»å–ä¸€æ¡CANæ¶ˆæ¯
+        if (CAN_SendMessage_NonBlocking(canMsg.RxHeader.StdId, canMsg.RxData, canMsg.RxHeader.DLC)) { // ä½¿ç”¨éä¸²è¡Œæ–¹å¼å‘é€æ¶ˆæ¯
+            ret = 1; // å¦‚æœå‘é€å¤±è´¥ï¼ˆä¾‹å¦‚å‘é€é‚®ç®±ä¸è¶³æˆ–å…¶ä»–é”™è¯¯ï¼‰ï¼Œè®°å½•é”™è¯¯åé€€å‡º
             break;
         }
     }
@@ -295,51 +295,51 @@ uint8_t CAN_Send_CANMsg_FromRingBuffer(void)
 }
 
 /**
- * @brief ´ÓFIFO1ÖĞ»ñÈ¡CAN±¨ÎÄÊı¾İ
+ * @brief ä»FIFO1ä¸­è·å–CANæŠ¥æ–‡æ•°æ®
  *
- * ¸Ãº¯ÊıÖ±½ÓÍ¨¹ı¼Ä´æÆ÷·½Ê½¶ÁÈ¡CAN1µÄFIFO1ÄÚµÄ±¨ÎÄÊı¾İ£¬½âÎö±¨ÎÄÍ·ºÍÊı¾İ£¬²¢ÊÍ·ÅFIFO1ÖĞµÄ±¨ÎÄ¡£
- * ½âÎöºóµÄ±¨ÎÄÍ·ĞÅÏ¢´æ´¢ÔÚrxHeaderÖ¸ÏòµÄ½á¹¹ÌåÖĞ£¬Êı¾İ²¿·Ö´æ´¢ÔÚrxDataËùÖ¸µÄÊı×éÖĞ¡£
+ * è¯¥å‡½æ•°ç›´æ¥é€šè¿‡å¯„å­˜å™¨æ–¹å¼è¯»å–CAN1çš„FIFO1å†…çš„æŠ¥æ–‡æ•°æ®ï¼Œè§£ææŠ¥æ–‡å¤´å’Œæ•°æ®ï¼Œå¹¶é‡Šæ”¾FIFO1ä¸­çš„æŠ¥æ–‡ã€‚
+ * è§£æåçš„æŠ¥æ–‡å¤´ä¿¡æ¯å­˜å‚¨åœ¨rxHeaderæŒ‡å‘çš„ç»“æ„ä½“ä¸­ï¼Œæ•°æ®éƒ¨åˆ†å­˜å‚¨åœ¨rxDataæ‰€æŒ‡çš„æ•°ç»„ä¸­ã€‚
 
- * @param[in,out] rxHeader Ö¸ÏòCAN_RxHeaderTypeDef½á¹¹ÌåµÄÖ¸Õë£¬ÓÃÓÚ´æ´¢½âÎöºóµÄ±¨ÎÄÍ·ĞÅÏ¢£¨°üÀ¨ID¡¢IDE¡¢RTR¡¢DLC¡¢ÂË²¨Æ÷Æ¥ÅäË÷ÒıºÍÊ±¼ä´Á£©¡£
- * @param[out] rxData Ö¸ÏòÓÃÓÚ´æ´¢±¨ÎÄÊı¾İµÄ»º³åÇøÖ¸Õë£¬×î¶à¿É´æ´¢8×Ö½ÚÊı¾İ¡£
+ * @param[in,out] rxHeader æŒ‡å‘CAN_RxHeaderTypeDefç»“æ„ä½“çš„æŒ‡é’ˆï¼Œç”¨äºå­˜å‚¨è§£æåçš„æŠ¥æ–‡å¤´ä¿¡æ¯ï¼ˆåŒ…æ‹¬IDã€IDEã€RTRã€DLCã€æ»¤æ³¢å™¨åŒ¹é…ç´¢å¼•å’Œæ—¶é—´æˆ³ï¼‰ã€‚
+ * @param[out] rxData æŒ‡å‘ç”¨äºå­˜å‚¨æŠ¥æ–‡æ•°æ®çš„ç¼“å†²åŒºæŒ‡é’ˆï¼Œæœ€å¤šå¯å­˜å‚¨8å­—èŠ‚æ•°æ®ã€‚
  *
- * @note ¸Ãº¯Êı¼ÙÉè½ÓÊÕµ½µÄ±¨ÎÄÎ»ÓÚFIFO1¡£
+ * @note è¯¥å‡½æ•°å‡è®¾æ¥æ”¶åˆ°çš„æŠ¥æ–‡ä½äºFIFO1ã€‚
  */
 __STATIC_INLINE void CAN_Get_Message_From_FIFO1(CAN_RxHeaderTypeDef* rxHeader, uint8_t* rxData)
 {
-    // 1. ´ÓFIFO1ÖĞ¶ÁÈ¡½ÓÊÕ±¨ÎÄÏà¹Ø¼Ä´æÆ÷ÄÚÈİ
-    uint32_t rx_rir   = CAN1->sFIFOMailBox[1].RIR;   // ½ÓÊÕ±êÊ¶·û¼Ä´æÆ÷
-    uint32_t rx_rdtr  = CAN1->sFIFOMailBox[1].RDTR;  // ½ÓÊÕÊı¾İ³¤¶ÈºÍÊ±¼ä´Á¼Ä´æÆ÷
-    uint32_t rx_rdlr  = CAN1->sFIFOMailBox[1].RDLR;  // ½ÓÊÕÊı¾İµÍ32Î»¼Ä´æÆ÷
-    uint32_t rx_rdhr  = CAN1->sFIFOMailBox[1].RDHR;  // ½ÓÊÕÊı¾İ¸ß32Î»¼Ä´æÆ÷
+    // 1. ä»FIFO1ä¸­è¯»å–æ¥æ”¶æŠ¥æ–‡ç›¸å…³å¯„å­˜å™¨å†…å®¹
+    uint32_t rx_rir   = CAN1->sFIFOMailBox[1].RIR;   // æ¥æ”¶æ ‡è¯†ç¬¦å¯„å­˜å™¨
+    uint32_t rx_rdtr  = CAN1->sFIFOMailBox[1].RDTR;  // æ¥æ”¶æ•°æ®é•¿åº¦å’Œæ—¶é—´æˆ³å¯„å­˜å™¨
+    uint32_t rx_rdlr  = CAN1->sFIFOMailBox[1].RDLR;  // æ¥æ”¶æ•°æ®ä½32ä½å¯„å­˜å™¨
+    uint32_t rx_rdhr  = CAN1->sFIFOMailBox[1].RDHR;  // æ¥æ”¶æ•°æ®é«˜32ä½å¯„å­˜å™¨
 
-    // 2. ½âÎö±¨ÎÄÍ·
-    // RDTR¼Ä´æÆ÷£º
-    //     - [3:0]  ±íÊ¾Êı¾İ×Ö½ÚÊı£¨DLC£©
-    //     - [7:4]  ±£Áô£¨¸ù¾İÊµ¼ÊÇé¿ö²»Í¬£¬ÕâÀïÎÒÃÇÖ»¹ØĞÄDLCºÍÊ±¼ä´Á£©
-    //     - [15:8] ±íÊ¾ÂË²¨Æ÷Æ¥ÅäË÷Òı(FilterMatchIndex)
-    //     - [31:16] ±íÊ¾½ÓÊÕÊ±¼ä´Á
+    // 2. è§£ææŠ¥æ–‡å¤´
+    // RDTRå¯„å­˜å™¨ï¼š
+    //     - [3:0]  è¡¨ç¤ºæ•°æ®å­—èŠ‚æ•°ï¼ˆDLCï¼‰
+    //     - [7:4]  ä¿ç•™ï¼ˆæ ¹æ®å®é™…æƒ…å†µä¸åŒï¼Œè¿™é‡Œæˆ‘ä»¬åªå…³å¿ƒDLCå’Œæ—¶é—´æˆ³ï¼‰
+    //     - [15:8] è¡¨ç¤ºæ»¤æ³¢å™¨åŒ¹é…ç´¢å¼•(FilterMatchIndex)
+    //     - [31:16] è¡¨ç¤ºæ¥æ”¶æ—¶é—´æˆ³
     rxHeader->DLC               = rx_rdtr & 0x0F;
     rxHeader->FilterMatchIndex  = (rx_rdtr >> 8) & 0xFF;
     rxHeader->Timestamp         = (rx_rdtr >> 16) & 0xFFFF;
 
-    // 3. ÅĞ¶ÏÖ¡ÀàĞÍ²¢ÌáÈ¡IDºÍÔ¶³Ì´«ÊäÇëÇó£¨RTR£©±êÖ¾
-    // IDEÎ»£¨Ò»°ãÔÚRIRµÄµÚ2Î»£©£º0±íÊ¾±ê×¼Ö¡£¬1±íÊ¾À©Õ¹Ö¡
-    if ((rx_rir & (1UL << 2)) == 0) {  // ±ê×¼Ö¡
+    // 3. åˆ¤æ–­å¸§ç±»å‹å¹¶æå–IDå’Œè¿œç¨‹ä¼ è¾“è¯·æ±‚ï¼ˆRTRï¼‰æ ‡å¿—
+    // IDEä½ï¼ˆä¸€èˆ¬åœ¨RIRçš„ç¬¬2ä½ï¼‰ï¼š0è¡¨ç¤ºæ ‡å‡†å¸§ï¼Œ1è¡¨ç¤ºæ‰©å±•å¸§
+    if ((rx_rir & (1UL << 2)) == 0) {  // æ ‡å‡†å¸§
         rxHeader->IDE   = 0;
-        // ±ê×¼IDÎ»ÓÚRIRµÄ[31:21]£¬¹²11Î»
+        // æ ‡å‡†IDä½äºRIRçš„[31:21]ï¼Œå…±11ä½
         rxHeader->StdId = (rx_rir >> 21) & 0x7FF;
         rxHeader->ExtId = 0;
-    } else {  // À©Õ¹Ö¡
+    } else {  // æ‰©å±•å¸§
         rxHeader->IDE   = 1;
-        // À©Õ¹IDÎ»ÓÚRIRµÄ[31:3]£¬¹²29Î»
+        // æ‰©å±•IDä½äºRIRçš„[31:3]ï¼Œå…±29ä½
         rxHeader->ExtId = (rx_rir >> 3) & 0x1FFFFFFF;
         rxHeader->StdId = 0;
     }
-    // RTRÎ»£¨RIRµÄµÚ1Î»£©£º1±íÊ¾Ô¶³ÌÖ¡£¬0±íÊ¾Êı¾İÖ¡
+    // RTRä½ï¼ˆRIRçš„ç¬¬1ä½ï¼‰ï¼š1è¡¨ç¤ºè¿œç¨‹å¸§ï¼Œ0è¡¨ç¤ºæ•°æ®å¸§
     rxHeader->RTR = (rx_rir & (1UL << 1)) ? 1 : 0;
 
-    // 4. ¶ÁÈ¡Êı¾İ²¿·Ö£¬¸ù¾İDLC´ÓRDLRºÍRDHRÖĞÌáÈ¡Êı¾İ×Ö½Ú£¨×î¶à8×Ö½Ú£©
+    // 4. è¯»å–æ•°æ®éƒ¨åˆ†ï¼Œæ ¹æ®DLCä»RDLRå’ŒRDHRä¸­æå–æ•°æ®å­—èŠ‚ï¼ˆæœ€å¤š8å­—èŠ‚ï¼‰
     uint8_t dlc = rxHeader->DLC;
     if (dlc > 8)
         dlc = 8;
@@ -351,63 +351,63 @@ __STATIC_INLINE void CAN_Get_Message_From_FIFO1(CAN_RxHeaderTypeDef* rxHeader, u
         }
     }
 
-    // 5. ÊÍ·ÅFIFO1ÖĞµÄ±¨ÎÄ£ºĞ´1µ½CAN1->RF1RÖĞµÄRFOM1Î»£¬ÊÍ·Å¸Ã±¨ÎÄ£¬Ê¹FIFO1Ö¸ÕëÇ°ÒÆ
+    // 5. é‡Šæ”¾FIFO1ä¸­çš„æŠ¥æ–‡ï¼šå†™1åˆ°CAN1->RF1Rä¸­çš„RFOM1ä½ï¼Œé‡Šæ”¾è¯¥æŠ¥æ–‡ï¼Œä½¿FIFO1æŒ‡é’ˆå‰ç§»
     CAN1->RF1R |= CAN_RF1R_RFOM1;
 }
 
 /**
-  * @brief  CAN½ÓÊÕFIFO1Òç³öÖĞ¶Ï´¦Àí
-  * @note   ¼Ä´æÆ÷·½Ê½ÊµÏÖ
+  * @brief  CANæ¥æ”¶FIFO1æº¢å‡ºä¸­æ–­å¤„ç†
+  * @note   å¯„å­˜å™¨æ–¹å¼å®ç°
   * @retval None
   */
 __STATIC_INLINE void CAN_FIFO1_Overflow_Handler(void)
 {
-    g_RxOverflowError++;          // Òç³ö¼ÆÊı×ÔÔö
-    CAN1->RF1R |= CAN_RF1R_FOVR1; // Çå³ıFIFO1Òç³ö±êÖ¾£¨Ğ´1Çå³ı£©
+    g_RxOverflowError++;          // æº¢å‡ºè®¡æ•°è‡ªå¢
+    CAN1->RF1R |= CAN_RF1R_FOVR1; // æ¸…é™¤FIFO1æº¢å‡ºæ ‡å¿—ï¼ˆå†™1æ¸…é™¤ï¼‰
 }
 
 /**
-  * @brief  CAN½ÓÊÕFIFO1¹ÒºÅÖĞ¶Ï´¦Àí
-  * @note   ¼Ä´æÆ÷·½Ê½ÊµÏÖ
+  * @brief  CANæ¥æ”¶FIFO1æŒ‚å·ä¸­æ–­å¤„ç†
+  * @note   å¯„å­˜å™¨æ–¹å¼å®ç°
   * @retval None
   */
 __STATIC_INLINE void CAN_FIFO1_Message_Pending_Handler(void)
 {
     CANMsg_t canMsg = {0,};
-    while (CAN1->RF1R & CAN_RF1R_FMP1) { // µ±FIFO1ÖĞ»¹ÓĞ´ı´¦ÀíµÄ±¨ÎÄÊ±£¬Ñ­»·¶ÁÈ¡
-        g_RxCount++; // ¸üĞÂÈ«¾Ö½ÓÊÕ±¨ÎÄ¼ÆÊıÆ÷
-        CAN_Get_Message_From_FIFO1(&canMsg.RxHeader, (uint8_t*)canMsg.RxData); // ´ÓFIFO1ÖĞ»ñÈ¡CAN±¨ÎÄµÄÏêÏ¸ÄÚÈİ
-        if(lwrb_get_free((lwrb_t*)&g_CanRxRBHandler) < sizeof(CANMsg_t)) { // ÅĞ¶ÏringbufferÊÇ·ñ±»¼·Âú
-            g_RXRingbufferOverflow++;    // ÀÛ¼ÓringbufferÒç³öÈ«¾Ö¼ÆÊıÆ÷
-            lwrb_reset((lwrb_t*)&g_CanRxRBHandler); // Çå¿Õringbuffer
+    while (CAN1->RF1R & CAN_RF1R_FMP1) { // å½“FIFO1ä¸­è¿˜æœ‰å¾…å¤„ç†çš„æŠ¥æ–‡æ—¶ï¼Œå¾ªç¯è¯»å–
+        g_RxCount++; // æ›´æ–°å…¨å±€æ¥æ”¶æŠ¥æ–‡è®¡æ•°å™¨
+        CAN_Get_Message_From_FIFO1(&canMsg.RxHeader, (uint8_t*)canMsg.RxData); // ä»FIFO1ä¸­è·å–CANæŠ¥æ–‡çš„è¯¦ç»†å†…å®¹
+        if(lwrb_get_free((lwrb_t*)&g_CanRxRBHandler) < sizeof(CANMsg_t)) { // åˆ¤æ–­ringbufferæ˜¯å¦è¢«æŒ¤æ»¡
+            g_RXRingbufferOverflow++;    // ç´¯åŠ ringbufferæº¢å‡ºå…¨å±€è®¡æ•°å™¨
+            lwrb_reset((lwrb_t*)&g_CanRxRBHandler); // æ¸…ç©ºringbuffer
         }
-        lwrb_write((lwrb_t*)&g_CanRxRBHandler, &canMsg, sizeof(CANMsg_t)); // ½«CAN±¨ÎÄ·ÅÈëringbuffer
+        lwrb_write((lwrb_t*)&g_CanRxRBHandler, &canMsg, sizeof(CANMsg_t)); // å°†CANæŠ¥æ–‡æ”¾å…¥ringbuffer
     }
 }
 
 /**
-  * @brief  ÍâÉèCANµÄ·¢ËÍÍê³ÉÈ«¾ÖÖĞ¶Ïº¯Êı
-  * @note   ¼Ä´æÆ÷·½Ê½ÊµÏÖ
+  * @brief  å¤–è®¾CANçš„å‘é€å®Œæˆå…¨å±€ä¸­æ–­å‡½æ•°
+  * @note   å¯„å­˜å™¨æ–¹å¼å®ç°
   * @retval None
   */
 void USB_HP_CAN1_TX_IRQHandler(void)
 {
-    // ¼ì²é·¢ËÍÓÊÏä¿ÕÖĞ¶Ï±êÖ¾£¨Ò»¶¨ÒªÇå³ı±êÖ¾Î»£©
-    if(CAN1->TSR & CAN_TSR_TME0) { // ÓÊÏä0¿Õ
-        // ÄãµÄ´¦Àí´úÂë...
-        CAN1->TSR |= CAN_TSR_TME0; // Çå³ı±êÖ¾£¨Í¨¹ıĞ´1Çå³ı£©
+    // æ£€æŸ¥å‘é€é‚®ç®±ç©ºä¸­æ–­æ ‡å¿—ï¼ˆä¸€å®šè¦æ¸…é™¤æ ‡å¿—ä½ï¼‰
+    if(CAN1->TSR & CAN_TSR_TME0) { // é‚®ç®±0ç©º
+        // ä½ çš„å¤„ç†ä»£ç ...
+        CAN1->TSR |= CAN_TSR_TME0; // æ¸…é™¤æ ‡å¿—ï¼ˆé€šè¿‡å†™1æ¸…é™¤ï¼‰
     }
-    if(CAN1->TSR & CAN_TSR_TME1) { // ÓÊÏä1¿Õ
-        // ÄãµÄ´¦Àí´úÂë...
+    if(CAN1->TSR & CAN_TSR_TME1) { // é‚®ç®±1ç©º
+        // ä½ çš„å¤„ç†ä»£ç ...
         CAN1->TSR |= CAN_TSR_TME1;
     }
-    if(CAN1->TSR & CAN_TSR_TME2) { // ÓÊÏä2¿Õ
-        // ÄãµÄ´¦Àí´úÂë...
+    if(CAN1->TSR & CAN_TSR_TME2) { // é‚®ç®±2ç©º
+        // ä½ çš„å¤„ç†ä»£ç ...
         CAN1->TSR |= CAN_TSR_TME2;
     }
-    // ±£³ÖÁÙ½çÇø£¨´úÂë¸ü½¡×³£©
+    // ä¿æŒä¸´ç•ŒåŒºï¼ˆä»£ç æ›´å¥å£®ï¼‰
     __disable_irq();
-    // Í¨¹ı¼Ä´æÆ÷·½Ê½£¬¸üĞÂ·¢ËÍÓÊÏäµÄ¿ÕÏĞÊıÁ¿
+    // é€šè¿‡å¯„å­˜å™¨æ–¹å¼ï¼Œæ›´æ–°å‘é€é‚®ç®±çš„ç©ºé—²æ•°é‡
     txmail_free = ((CAN1->TSR & CAN_TSR_TME0) ? 1 : 0) +
                  ((CAN1->TSR & CAN_TSR_TME1) ? 1 : 0) +
                  ((CAN1->TSR & CAN_TSR_TME2) ? 1 : 0);
@@ -415,18 +415,18 @@ void USB_HP_CAN1_TX_IRQHandler(void)
 }
 
 /**
-  * @brief  ÍâÉèCANµÄRX_FIFO1È«¾ÖÖĞ¶Ïº¯Êı
-  * @note   ¼Ä´æÆ÷·½Ê½ÊµÏÖ
+  * @brief  å¤–è®¾CANçš„RX_FIFO1å…¨å±€ä¸­æ–­å‡½æ•°
+  * @note   å¯„å­˜å™¨æ–¹å¼å®ç°
   * @retval None
   */
 void CAN1_RX1_IRQHandler(void)
 {
-    /* Ê×ÏÈ¼ì²éFIFO1ÊÇ·ñ·¢ÉúÒç³ö */
-    if (CAN1->RF1R & CAN_RF1R_FOVR1) { // FIFO1½ÓÊÕÒç³öÖĞ¶Ï
-        CAN_FIFO1_Overflow_Handler(); // ½ÓÊÕFIFO1Òç³öÖĞ¶Ï´¦Àí
-    } else if (CAN1->RF1R & CAN_RF1R_FMP1) { // FIFO1¹ÒºÅÖĞ¶Ï
-        CAN_FIFO1_Message_Pending_Handler(); // ½ÓÊÕFIFO1¹ÒºÅÖĞ¶Ï´¦Àí
+    /* é¦–å…ˆæ£€æŸ¥FIFO1æ˜¯å¦å‘ç”Ÿæº¢å‡º */
+    if (CAN1->RF1R & CAN_RF1R_FOVR1) { // FIFO1æ¥æ”¶æº¢å‡ºä¸­æ–­
+        CAN_FIFO1_Overflow_Handler(); // æ¥æ”¶FIFO1æº¢å‡ºä¸­æ–­å¤„ç†
+    } else if (CAN1->RF1R & CAN_RF1R_FMP1) { // FIFO1æŒ‚å·ä¸­æ–­
+        CAN_FIFO1_Message_Pending_Handler(); // æ¥æ”¶FIFO1æŒ‚å·ä¸­æ–­å¤„ç†
     } else {
-        // ÆäËû´íÎó
+        // å…¶ä»–é”™è¯¯
     }
 }

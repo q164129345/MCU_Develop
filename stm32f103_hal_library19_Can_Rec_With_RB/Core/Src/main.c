@@ -86,7 +86,7 @@ int main(void)
   MX_GPIO_Init();
   MX_CAN_Init();
   /* USER CODE BEGIN 2 */
-  CAN_Config(); // ³õÊ¼»¯ÍâÉèCAN
+  CAN_Config(); // åˆå§‹åŒ–å¤–è®¾CAN
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -97,7 +97,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     LL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
-    CAN_Send_CANMsg_FromRingBuffer(); // ½«ringbufferµÄCANÏûÏ¢·¢ËÍ³öÈ¥
+    CAN_Send_CANMsg_FromRingBuffer(); // å°†ringbufferçš„CANæ¶ˆæ¯å‘é€å‡ºå»
     LL_mDelay(50);
   }
   /* USER CODE END 3 */

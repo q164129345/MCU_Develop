@@ -292,8 +292,8 @@ bool CAN_Send_CAN_STD_Message(uint32_t canid, uint8_t* data, uint8_t len)
   */
 void CAN_Config(void)
 {
-    lwrb_init((lwrb_t*)&g_CanRxRBHandler, (uint8_t*)g_CanRxRBDataBuffer, sizeof(g_CanRxRBDataBuffer) + 1); // RX Ringbuffer初始化
-    lwrb_init((lwrb_t*)&g_CanTxRBHandler, (uint8_t*)g_CanTxRBDataBuffer, sizeof(g_CanTxRBDataBuffer) + 1); // TX Ringbuffer初始化
+    lwrb_init((lwrb_t*)&g_CanRxRBHandler, (uint8_t*)g_CanRxRBDataBuffer, sizeof(g_CanRxRBDataBuffer)); // RX Ringbuffer初始化
+    lwrb_init((lwrb_t*)&g_CanTxRBHandler, (uint8_t*)g_CanTxRBDataBuffer, sizeof(g_CanTxRBDataBuffer)); // TX Ringbuffer初始化
     
     txmail_free = HAL_CAN_GetTxMailboxesFreeLevel(&hcan); // 获取发送邮箱的空闲数量，一般都是3个
     HAL_CAN_ActivateNotification(&hcan, CAN_IT_TX_MAILBOX_EMPTY); // 启动发送完成中断

@@ -109,15 +109,15 @@ int main(void)
     /* USER CODE BEGIN 3 */
     LL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
 
-    /* ���CAN���� */
-    if (CAN_Check_Error() == 0x03) { // ��Ϊ����̫���أ���������״̬
-        g_BusOffCount++;      // ÿ����һ��busoff���ش��󣬼�¼һ��
-        CAN_BusOff_Recover(); // ����״̬�ָ�
+    /* 监控CAN错误 */
+    if (CAN_Check_Error() == 0x03) { // 因为错误太严重，进入离线状态
+        g_BusOffCount++;      // 每发生一次busoff严重错误，记录一次
+        CAN_BusOff_Recover(); // 离线状态恢复
     } else {
-        // ����������û�д���
+        // 其他错误与没有错误
     }
     
-    CAN_Send_CANMsg_FromRingBuffer(); // ��ringbuffer���CAN���ķ���ȥ
+    CAN_Send_CANMsg_FromRingBuffer(); // 将ringbuffer里的CAN报文发出去
     
     LL_mDelay(50);
   }

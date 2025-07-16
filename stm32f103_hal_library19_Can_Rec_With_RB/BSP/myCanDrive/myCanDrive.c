@@ -1,160 +1,160 @@
 #include "myCanDrive.h"
 
-volatile uint8_t txmail_free = 0;             // ¿ÕÏĞÓÊÏäµÄÊıÁ¿
-volatile uint32_t canSendError = 0;           // Í³¼Æ·¢ËÍÊ§°Ü´ÎÊı
-volatile uint32_t g_RxCount = 0;              // Í³¼Æ½ÓÊÕµÄCAN±¨ÎÄ×ÜÊı
-volatile uint32_t g_RxOverflowError = 0;      // Í³¼ÆRX FIFO1Òç³öÊıÁ¿
-volatile uint32_t g_RXRingbufferOverflow = 0; // Í³¼ÆringbufferÒç³ö´ÎÊı
+volatile uint8_t txmail_free = 0;             // ç©ºé—²é‚®ç®±çš„æ•°é‡
+volatile uint32_t canSendError = 0;           // ç»Ÿè®¡å‘é€å¤±è´¥æ¬¡æ•°
+volatile uint32_t g_RxCount = 0;              // ç»Ÿè®¡æ¥æ”¶çš„CANæŠ¥æ–‡æ€»æ•°
+volatile uint32_t g_RxOverflowError = 0;      // ç»Ÿè®¡RX FIFO1æº¢å‡ºæ•°é‡
+volatile uint32_t g_RXRingbufferOverflow = 0; // ç»Ÿè®¡ringbufferæº¢å‡ºæ¬¡æ•°
 
 /* ringbuffer */
-volatile lwrb_t g_CanRxRBHandler; // ÊµÀı»¯ringbuffer
-volatile CANMsg_t g_CanRxRBDataBuffer[50] = {0,}; // ringbuffer»º´æ£¨×î¶à¿ÉÒÔ´æ50¸öCANÏûÏ¢£©
+volatile lwrb_t g_CanRxRBHandler; // å®ä¾‹åŒ–ringbuffer
+volatile CANMsg_t g_CanRxRBDataBuffer[50] = {0,}; // ringbufferç¼“å­˜ï¼ˆæœ€å¤šå¯ä»¥å­˜50ä¸ªCANæ¶ˆæ¯ï¼‰
 
 /**
-  * @brief  ·¢ËÍÒ»¸ö±ê×¼Êı¾İÖ¡µÄCANÏûÏ¢£¨´®ĞĞ·½Ê½£©
+  * @brief  å‘é€ä¸€ä¸ªæ ‡å‡†æ•°æ®å¸§çš„CANæ¶ˆæ¯ï¼ˆä¸²è¡Œæ–¹å¼ï¼‰
   * 
-  * ´Ëº¯Êı²ÉÓÃ´®ĞĞ·½Ê½·¢ËÍ±ê×¼CANÊı¾İÖ¡¡£º¯ÊıÄÚ²¿Ê×ÏÈÅäÖÃ·¢ËÍÖ¡µÄÏà¹Ø²ÎÊı£¬
-  * È»ºó¼ì²â·¢ËÍÓÊÏäÊÇ·ñ¿ÕÏĞ¡£Èç¹û·¢ËÍÓÊÏäÒÑ¾­ÓÃÍê£¬ÔòÍ¨¹ı¶ÌÑÓÊ±µÈ´ıºóÔÙ·¢ËÍÊı¾İ¡£
-  * Èç¹û·¢ËÍÊ§°Ü£¬Ôòµ÷ÓÃError_Handler()½øĞĞ´íÎó´¦Àí¡£
+  * æ­¤å‡½æ•°é‡‡ç”¨ä¸²è¡Œæ–¹å¼å‘é€æ ‡å‡†CANæ•°æ®å¸§ã€‚å‡½æ•°å†…éƒ¨é¦–å…ˆé…ç½®å‘é€å¸§çš„ç›¸å…³å‚æ•°ï¼Œ
+  * ç„¶åæ£€æµ‹å‘é€é‚®ç®±æ˜¯å¦ç©ºé—²ã€‚å¦‚æœå‘é€é‚®ç®±å·²ç»ç”¨å®Œï¼Œåˆ™é€šè¿‡çŸ­å»¶æ—¶ç­‰å¾…åå†å‘é€æ•°æ®ã€‚
+  * å¦‚æœå‘é€å¤±è´¥ï¼Œåˆ™è°ƒç”¨Error_Handler()è¿›è¡Œé”™è¯¯å¤„ç†ã€‚
   *
-  * @param  canid  ±ê×¼CAN±êÊ¶·û
-  * @param  data   Ö¸Ïò½«Òª·¢ËÍµÄÊı¾İÊı×éµÄÖ¸Õë£¬Êı¾İ³¤¶ÈÓÉlen²ÎÊıÈ·¶¨£¨0~8×Ö½Ú£©
-  * @param  len    Êı¾İ×Ö½ÚÊı£¨DLC£©£¬Ó¦²»³¬¹ı8
+  * @param  canid  æ ‡å‡†CANæ ‡è¯†ç¬¦
+  * @param  data   æŒ‡å‘å°†è¦å‘é€çš„æ•°æ®æ•°ç»„çš„æŒ‡é’ˆï¼Œæ•°æ®é•¿åº¦ç”±lenå‚æ•°ç¡®å®šï¼ˆ0~8å­—èŠ‚ï¼‰
+  * @param  len    æ•°æ®å­—èŠ‚æ•°ï¼ˆDLCï¼‰ï¼Œåº”ä¸è¶…è¿‡8
   * 
-  * @note   µ±·¢ËÍÓÊÏä²»¿ÉÓÃÊ±£¬º¯Êı»áÍ¨¹ıÑÓÊ±£¨LL_mDelay(1)£©µÈ´ıÒ»¶ÎÊ±¼ä£¬
-  *         Èç¹ûÑÓÊ±ºóÈÔÎŞ·¨»ñµÃÓÊÏä£¬Ôò¼ÌĞøµÈ´ı»ò×îÖÕ·¢ËÍÊ§°Ü¡£
+  * @note   å½“å‘é€é‚®ç®±ä¸å¯ç”¨æ—¶ï¼Œå‡½æ•°ä¼šé€šè¿‡å»¶æ—¶ï¼ˆLL_mDelay(1)ï¼‰ç­‰å¾…ä¸€æ®µæ—¶é—´ï¼Œ
+  *         å¦‚æœå»¶æ—¶åä»æ— æ³•è·å¾—é‚®ç®±ï¼Œåˆ™ç»§ç»­ç­‰å¾…æˆ–æœ€ç»ˆå‘é€å¤±è´¥ã€‚
   * 
   * @retval None
   */
 void CAN_Send_STD_DATA_Msg_Serial(uint32_t canid, uint8_t* data, uint8_t len)
 {
     uint32_t TxMailbox;
-    uint32_t timeout = 100; // ×î´óµÈ´ı100ms
+    uint32_t timeout = 100; // æœ€å¤§ç­‰å¾…100ms
     CAN_TxHeaderTypeDef txHeader;
     
     if (len > 8) {
-        Error_Handler(); // ¸ù¾İ¾ßÌåĞèÇó£¬¿ÉÑ¡Ôñ½Ø¶Ï»ò½øÈë´íÎó´¦Àí
+        Error_Handler(); // æ ¹æ®å…·ä½“éœ€æ±‚ï¼Œå¯é€‰æ‹©æˆªæ–­æˆ–è¿›å…¥é”™è¯¯å¤„ç†
     }
     
-    /* ÅäÖÃCAN·¢ËÍÖ¡²ÎÊı */
-    txHeader.StdId = canid;       // ±ê×¼±êÊ¶·û£¬¿É¸ù¾İÊµ¼ÊĞèÇóĞŞ¸Ä
-    txHeader.ExtId = 0;           // ¶ÔÓÚ±ê×¼Ö¡£¬À©Õ¹±êÊ¶·ûÎŞĞ§
-    txHeader.IDE = CAN_ID_STD;    // ±ê×¼Ö¡
-    txHeader.RTR = CAN_RTR_DATA;  // Êı¾İÖ¡
-    txHeader.DLC = len;           // Êı¾İ³¤¶È
-    txHeader.TransmitGlobalTime = DISABLE; // ²»·¢ËÍÈ«¾ÖÊ±¼ä
-    /* Èç¹ûÃ»ÓĞ·¢ËÍÓÊÏä£¬ÑÓ³ÙµÈ´ı£¨Èç¹ûÓĞÊµÊ±²Ù×÷ÏµÍ³£¬·¢Æğµ÷¶ÈÊÇ¸ü¼ÓºÃµÄ·½°¸£© */
+    /* é…ç½®CANå‘é€å¸§å‚æ•° */
+    txHeader.StdId = canid;       // æ ‡å‡†æ ‡è¯†ç¬¦ï¼Œå¯æ ¹æ®å®é™…éœ€æ±‚ä¿®æ”¹
+    txHeader.ExtId = 0;           // å¯¹äºæ ‡å‡†å¸§ï¼Œæ‰©å±•æ ‡è¯†ç¬¦æ— æ•ˆ
+    txHeader.IDE = CAN_ID_STD;    // æ ‡å‡†å¸§
+    txHeader.RTR = CAN_RTR_DATA;  // æ•°æ®å¸§
+    txHeader.DLC = len;           // æ•°æ®é•¿åº¦
+    txHeader.TransmitGlobalTime = DISABLE; // ä¸å‘é€å…¨å±€æ—¶é—´
+    /* å¦‚æœæ²¡æœ‰å‘é€é‚®ç®±ï¼Œå»¶è¿Ÿç­‰å¾…ï¼ˆå¦‚æœæœ‰å®æ—¶æ“ä½œç³»ç»Ÿï¼Œå‘èµ·è°ƒåº¦æ˜¯æ›´åŠ å¥½çš„æ–¹æ¡ˆï¼‰ */
     while ((HAL_CAN_GetTxMailboxesFreeLevel(&hcan) == 0) && (timeout > 0)) {
         LL_mDelay(1);
         timeout--;
     }
-    /* ÅĞ¶ÏÊÇ·ñ³¬Ê±Î´»ñµÃÓÊÏä */
+    /* åˆ¤æ–­æ˜¯å¦è¶…æ—¶æœªè·å¾—é‚®ç®± */
     if ((timeout == 0) && (HAL_CAN_GetTxMailboxesFreeLevel(&hcan) == 0)) {
-        canSendError++; // ¼ÇÂ¼Ò»´Î·¢ËÍ³¬Ê±´íÎó
+        canSendError++; // è®°å½•ä¸€æ¬¡å‘é€è¶…æ—¶é”™è¯¯
         return;
     }
-    /* ·¢ËÍCANÏûÏ¢ */
+    /* å‘é€CANæ¶ˆæ¯ */
     if (HAL_CAN_AddTxMessage(&hcan, &txHeader, data, &TxMailbox) != HAL_OK) {
-    /* ·¢ËÍÊ§°Ü£¬½øÈë´íÎó´¦Àí */
+    /* å‘é€å¤±è´¥ï¼Œè¿›å…¥é”™è¯¯å¤„ç† */
         Error_Handler();
     }
 }
 
 /**
-  * @brief  ·¢ËÍÒ»¸ö±ê×¼Êı¾İÖ¡µÄCANÏûÏ¢£¨·Ç´®ĞĞ·½Ê½£©
+  * @brief  å‘é€ä¸€ä¸ªæ ‡å‡†æ•°æ®å¸§çš„CANæ¶ˆæ¯ï¼ˆéä¸²è¡Œæ–¹å¼ï¼‰
   * 
-  * ´Ëº¯Êı²ÉÓÃ·Ç´®ĞĞ·½Ê½·¢ËÍ±ê×¼CANÊı¾İÖ¡¡£·¢ËÍÇ°Ê×ÏÈ¼ì²éÈ«¾Ö±äÁ¿txmail_free£¬
-  * ÅĞ¶ÏÊÇ·ñÓĞ¿ÕÏĞµÄ·¢ËÍÓÊÏä¡£Èç¹ûÓĞ£¬ÔòÅäÖÃÖ¡²ÎÊı²¢·¢ËÍÏûÏ¢£¬Í¬Ê±¼õÉÙ¿ÕÏĞÓÊÏä¼ÆÊı£»
-  * ·ñÔò£¬Ôö¼ÓcanSendError¼ÆÊıÒÔ¼ÇÂ¼´íÎó£¬²¢·µ»Ø´íÎó´úÂë¡£
+  * æ­¤å‡½æ•°é‡‡ç”¨éä¸²è¡Œæ–¹å¼å‘é€æ ‡å‡†CANæ•°æ®å¸§ã€‚å‘é€å‰é¦–å…ˆæ£€æŸ¥å…¨å±€å˜é‡txmail_freeï¼Œ
+  * åˆ¤æ–­æ˜¯å¦æœ‰ç©ºé—²çš„å‘é€é‚®ç®±ã€‚å¦‚æœæœ‰ï¼Œåˆ™é…ç½®å¸§å‚æ•°å¹¶å‘é€æ¶ˆæ¯ï¼ŒåŒæ—¶å‡å°‘ç©ºé—²é‚®ç®±è®¡æ•°ï¼›
+  * å¦åˆ™ï¼Œå¢åŠ canSendErrorè®¡æ•°ä»¥è®°å½•é”™è¯¯ï¼Œå¹¶è¿”å›é”™è¯¯ä»£ç ã€‚
   *
-  * @param  canid  ±ê×¼CAN±êÊ¶·û
-  * @param  data   Ö¸Ïò½«Òª·¢ËÍµÄÊı¾İÊı×éµÄÖ¸Õë£¬Êı¾İ³¤¶ÈÓÉlen²ÎÊıÈ·¶¨£¨0~8×Ö½Ú£©
-  * @param  len    Êı¾İ×Ö½ÚÊı£¨DLC£©£¬Ó¦²»³¬¹ı8
+  * @param  canid  æ ‡å‡†CANæ ‡è¯†ç¬¦
+  * @param  data   æŒ‡å‘å°†è¦å‘é€çš„æ•°æ®æ•°ç»„çš„æŒ‡é’ˆï¼Œæ•°æ®é•¿åº¦ç”±lenå‚æ•°ç¡®å®šï¼ˆ0~8å­—èŠ‚ï¼‰
+  * @param  len    æ•°æ®å­—èŠ‚æ•°ï¼ˆDLCï¼‰ï¼Œåº”ä¸è¶…è¿‡8
   *
-  * @note   º¯ÊıÒÀÀµÈ«¾Ö±äÁ¿txmail_freeÀ´¼ì²â·¢ËÍÓÊÏäµÄ¿ÕÏĞ×´Ì¬£¬
-  *         µ±·¢ËÍÓÊÏä²»×ãÊ±£¬»áÔö¼ÓÈ«¾Ö±äÁ¿canSendError¼ÆÊı£¬²¢·µ»Ø´íÎó¡£
+  * @note   å‡½æ•°ä¾èµ–å…¨å±€å˜é‡txmail_freeæ¥æ£€æµ‹å‘é€é‚®ç®±çš„ç©ºé—²çŠ¶æ€ï¼Œ
+  *         å½“å‘é€é‚®ç®±ä¸è¶³æ—¶ï¼Œä¼šå¢åŠ å…¨å±€å˜é‡canSendErrorè®¡æ•°ï¼Œå¹¶è¿”å›é”™è¯¯ã€‚
   * 
-  * @retval uint8_t  ·µ»Ø0±íÊ¾·¢ËÍ³É¹¦£»·µ»Ø1±íÊ¾·¢ËÍÓÊÏäÒÑÂú£¬Î´ÄÜ·¢ËÍCANÏûÏ¢
+  * @retval uint8_t  è¿”å›0è¡¨ç¤ºå‘é€æˆåŠŸï¼›è¿”å›1è¡¨ç¤ºå‘é€é‚®ç®±å·²æ»¡ï¼Œæœªèƒ½å‘é€CANæ¶ˆæ¯
   */
 uint8_t CAN_Send_STD_DATA_Msg_No_Serial(uint32_t canid, uint8_t* data, uint8_t len)
 {
     if (len > 8) {
-        Error_Handler(); // ¸ù¾İ¾ßÌåĞèÇó£¬¿ÉÑ¡Ôñ½Ø¶Ï»ò½øÈë´íÎó´¦Àí
+        Error_Handler(); // æ ¹æ®å…·ä½“éœ€æ±‚ï¼Œå¯é€‰æ‹©æˆªæ–­æˆ–è¿›å…¥é”™è¯¯å¤„ç†
     }
     
     if (txmail_free > 0) {
         uint32_t TxMailbox;
         CAN_TxHeaderTypeDef txHeader;
-        /* ÅäÖÃCAN·¢ËÍÖ¡²ÎÊı */
-        txHeader.StdId = canid;      // ±ê×¼±êÊ¶·û£¬¿É¸ù¾İÊµ¼ÊĞèÇóĞŞ¸Ä
-        txHeader.ExtId = 0;          // ¶ÔÓÚ±ê×¼Ö¡£¬À©Õ¹±êÊ¶·ûÎŞĞ§
-        txHeader.IDE = CAN_ID_STD;   // ±ê×¼Ö¡
-        txHeader.RTR = CAN_RTR_DATA; // Êı¾İÖ¡
-        txHeader.DLC = len;          // Êı¾İ³¤¶È
-        txHeader.TransmitGlobalTime = DISABLE; // ²»·¢ËÍÈ«¾ÖÊ±¼ä
-        /* ·¢ËÍCANÏûÏ¢ */
+        /* é…ç½®CANå‘é€å¸§å‚æ•° */
+        txHeader.StdId = canid;      // æ ‡å‡†æ ‡è¯†ç¬¦ï¼Œå¯æ ¹æ®å®é™…éœ€æ±‚ä¿®æ”¹
+        txHeader.ExtId = 0;          // å¯¹äºæ ‡å‡†å¸§ï¼Œæ‰©å±•æ ‡è¯†ç¬¦æ— æ•ˆ
+        txHeader.IDE = CAN_ID_STD;   // æ ‡å‡†å¸§
+        txHeader.RTR = CAN_RTR_DATA; // æ•°æ®å¸§
+        txHeader.DLC = len;          // æ•°æ®é•¿åº¦
+        txHeader.TransmitGlobalTime = DISABLE; // ä¸å‘é€å…¨å±€æ—¶é—´
+        /* å‘é€CANæ¶ˆæ¯ */
         if (HAL_CAN_AddTxMessage(&hcan, &txHeader, data, &TxMailbox) != HAL_OK) {
-        /* ·¢ËÍÊ§°Ü£¬½øÈë´íÎó´¦Àí */
+        /* å‘é€å¤±è´¥ï¼Œè¿›å…¥é”™è¯¯å¤„ç† */
             Error_Handler();
         }
-        txmail_free--; // ÓÃµôÒ»¸ö·¢ËÍÓÊÏä
+        txmail_free--; // ç”¨æ‰ä¸€ä¸ªå‘é€é‚®ç®±
         return 0;
     } else {
-        canSendError++; // ·¢ËÍÓÊÏäÂúÁË£¬Òç³ö
+        canSendError++; // å‘é€é‚®ç®±æ»¡äº†ï¼Œæº¢å‡º
         return 1;
     }
 }
 
 /**
-  * @brief  ÅäÖÃCANÂË²¨Æ÷£¬ÉèÖÃÎª²»¹ıÂËÈÎºÎÏûÏ¢
-  * @note   ´Ëº¯ÊıÊ¹ÓÃ±êÊ¶·ûÆÁ±ÎÄ£Ê½£¬32Î»ÂË²¨Æ÷£¬ËùÓĞÂË²¨Æ÷IDºÍÆÁ±ÎÖµ¾ùÉèÎª0
+  * @brief  é…ç½®CANæ»¤æ³¢å™¨ï¼Œè®¾ç½®ä¸ºä¸è¿‡æ»¤ä»»ä½•æ¶ˆæ¯
+  * @note   æ­¤å‡½æ•°ä½¿ç”¨æ ‡è¯†ç¬¦å±è”½æ¨¡å¼ï¼Œ32ä½æ»¤æ³¢å™¨ï¼Œæ‰€æœ‰æ»¤æ³¢å™¨IDå’Œå±è”½å€¼å‡è®¾ä¸º0
   * @retval None
   */
 static void CAN_FilterConfig_AllMessages(CAN_HandleTypeDef *hcan)
 {
     CAN_FilterTypeDef filterConfig;
 
-    // Ñ¡ÔñÂË²¨Æ÷ÒøĞĞ£¨¸ù¾İÊµ¼ÊĞèÇó£¬Èç¹ûÖ»ÓĞÒ»¸öCAN£¬Ò»°ã¿ÉÓÃ0ºÅÂË²¨Æ÷ÒøĞĞ£©
+    // é€‰æ‹©æ»¤æ³¢å™¨é“¶è¡Œï¼ˆæ ¹æ®å®é™…éœ€æ±‚ï¼Œå¦‚æœåªæœ‰ä¸€ä¸ªCANï¼Œä¸€èˆ¬å¯ç”¨0å·æ»¤æ³¢å™¨é“¶è¡Œï¼‰
     filterConfig.FilterBank = 0;
-    // ÉèÖÃÎª±êÊ¶·ûÆÁ±ÎÎ»Ä£Ê½
+    // è®¾ç½®ä¸ºæ ‡è¯†ç¬¦å±è”½ä½æ¨¡å¼
     filterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
-    // ÉèÖÃÂË²¨Æ÷Îª32Î»Ä£Ê½
+    // è®¾ç½®æ»¤æ³¢å™¨ä¸º32ä½æ¨¡å¼
     filterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
-    // ÉèÖÃÂË²¨Æ÷±êÊ¶·û¾ùÎª0
+    // è®¾ç½®æ»¤æ³¢å™¨æ ‡è¯†ç¬¦å‡ä¸º0
     filterConfig.FilterIdHigh = 0x0000;
     filterConfig.FilterIdLow  = 0x0000;
-    // ÉèÖÃÆÁ±ÎÖµÎª0£¬¼´²»¶ÔÈÎºÎ±ÈÌØ½øĞĞ¹ıÂË
+    // è®¾ç½®å±è”½å€¼ä¸º0ï¼Œå³ä¸å¯¹ä»»ä½•æ¯”ç‰¹è¿›è¡Œè¿‡æ»¤
     filterConfig.FilterMaskIdHigh = 0x0000;
     filterConfig.FilterMaskIdLow  = 0x0000;
-    // ½«½ÓÊÕµ½µÄÏûÏ¢·ÖÅäµ½FIFO0£¨Ò²¿ÉÒÔÑ¡ÔñFIFO1£¬¸ù¾İÊµ¼ÊÓ¦ÓÃÅäÖÃ£©
+    // å°†æ¥æ”¶åˆ°çš„æ¶ˆæ¯åˆ†é…åˆ°FIFO0ï¼ˆä¹Ÿå¯ä»¥é€‰æ‹©FIFO1ï¼Œæ ¹æ®å®é™…åº”ç”¨é…ç½®ï¼‰
     filterConfig.FilterFIFOAssignment = CAN_RX_FIFO1;
-    // ¼¤»îÂË²¨Æ÷
+    // æ¿€æ´»æ»¤æ³¢å™¨
     filterConfig.FilterActivation = ENABLE;
-    // ÅäÖÃÂË²¨Æ÷£¬ÅäÖÃÊ§°ÜÔò½øÈë´íÎó´¦Àí
+    // é…ç½®æ»¤æ³¢å™¨ï¼Œé…ç½®å¤±è´¥åˆ™è¿›å…¥é”™è¯¯å¤„ç†
     if (HAL_CAN_ConfigFilter(hcan, &filterConfig) != HAL_OK) {
         Error_Handler();
     }
 }
 
 /**
-  * @brief  ´ÓringbufferÖĞÈ¡³öËùÓĞµÄCANMsg_tÏûÏ¢²¢ÒÀ´Î·¢ËÍµ½CAN×ÜÏßÉÏ
-  * @return 0£ºËùÓĞÏûÏ¢·¢ËÍ³É¹¦  
-  *         1£º·¢ËÍ¹ı³ÌÖĞ³öÏÖ·¢ËÍÓÊÏä²»×ã»ò·¢ËÍ´íÎó  
-  *         2£ºÃ»ÓĞÒ»ÌõÍêÕûµÄCANÏûÏ¢¿É¹©·¢ËÍ
+  * @brief  ä»ringbufferä¸­å–å‡ºæ‰€æœ‰çš„CANMsg_tæ¶ˆæ¯å¹¶ä¾æ¬¡å‘é€åˆ°CANæ€»çº¿ä¸Š
+  * @return 0ï¼šæ‰€æœ‰æ¶ˆæ¯å‘é€æˆåŠŸ  
+  *         1ï¼šå‘é€è¿‡ç¨‹ä¸­å‡ºç°å‘é€é‚®ç®±ä¸è¶³æˆ–å‘é€é”™è¯¯  
+  *         2ï¼šæ²¡æœ‰ä¸€æ¡å®Œæ•´çš„CANæ¶ˆæ¯å¯ä¾›å‘é€
   */
 uint8_t CAN_Send_CANMsg_FromRingBuffer(void)
 {
-    uint8_t ret = 2;  // Ä¬ÈÏ·µ»Ø2±íÊ¾Ã»ÓĞÏûÏ¢¿É·¢
+    uint8_t ret = 2;  // é»˜è®¤è¿”å›2è¡¨ç¤ºæ²¡æœ‰æ¶ˆæ¯å¯å‘
     while(lwrb_get_full((lwrb_t*)&g_CanRxRBHandler) >= sizeof(CANMsg_t)) {
-        ret = 0; // ÒÑÓĞÏûÏ¢¿É·¢ËÍ
+        ret = 0; // å·²æœ‰æ¶ˆæ¯å¯å‘é€
         if(txmail_free == 0) {
-            ret = 1;  // Ã»ÓĞ¿ÉÓÃµÄ·¢ËÍÓÊÏä
+            ret = 1;  // æ²¡æœ‰å¯ç”¨çš„å‘é€é‚®ç®±
             break;
         }
         CANMsg_t canMsg;
-        lwrb_read((lwrb_t*)&g_CanRxRBHandler, &canMsg, sizeof(CANMsg_t)); // ´ÓringbufferÖĞ¶ÁÈ¡Ò»ÌõCANÏûÏ¢
-        if (CAN_Send_STD_DATA_Msg_No_Serial(canMsg.RxHeader.StdId, canMsg.RxData, canMsg.RxHeader.DLC)) { // Ê¹ÓÃ·Ç´®ĞĞ·½Ê½·¢ËÍÏûÏ¢
-            ret = 1; // Èç¹û·¢ËÍÊ§°Ü£¨ÀıÈç·¢ËÍÓÊÏä²»×ã»òÆäËû´íÎó£©£¬¼ÇÂ¼´íÎóºóÍË³ö
+        lwrb_read((lwrb_t*)&g_CanRxRBHandler, &canMsg, sizeof(CANMsg_t)); // ä»ringbufferä¸­è¯»å–ä¸€æ¡CANæ¶ˆæ¯
+        if (CAN_Send_STD_DATA_Msg_No_Serial(canMsg.RxHeader.StdId, canMsg.RxData, canMsg.RxHeader.DLC)) { // ä½¿ç”¨éä¸²è¡Œæ–¹å¼å‘é€æ¶ˆæ¯
+            ret = 1; // å¦‚æœå‘é€å¤±è´¥ï¼ˆä¾‹å¦‚å‘é€é‚®ç®±ä¸è¶³æˆ–å…¶ä»–é”™è¯¯ï¼‰ï¼Œè®°å½•é”™è¯¯åé€€å‡º
             break;
         }
     }
@@ -162,56 +162,56 @@ uint8_t CAN_Send_CANMsg_FromRingBuffer(void)
 }
 
 /**
-  * @brief  CAN³õÊ¼»¯
+  * @brief  CANåˆå§‹åŒ–
   */
 void CAN_Config(void)
 {
-    lwrb_init((lwrb_t*)&g_CanRxRBHandler, (uint8_t*)g_CanRxRBDataBuffer, sizeof(g_CanRxRBDataBuffer) + 1); // ringbuffer³õÊ¼»¯
+    lwrb_init((lwrb_t*)&g_CanRxRBHandler, (uint8_t*)g_CanRxRBDataBuffer, sizeof(g_CanRxRBDataBuffer)); // ringbufferåˆå§‹åŒ–
     
-    txmail_free = HAL_CAN_GetTxMailboxesFreeLevel(&hcan); // »ñÈ¡·¢ËÍÓÊÏäµÄ¿ÕÏĞÊıÁ¿£¬Ò»°ã¶¼ÊÇ3¸ö
-    HAL_CAN_ActivateNotification(&hcan, CAN_IT_TX_MAILBOX_EMPTY); // Æô¶¯·¢ËÍÍê³ÉÖĞ¶Ï
-    HAL_CAN_ActivateNotification(&hcan, CAN_IT_RX_FIFO1_MSG_PENDING); // Æô¶¯½ÓÊÕFIFO1ÖĞ¶Ï£¬µ±FIFO1ÖĞÓĞÏûÏ¢µ½´ïÊ±£¬²úÉúÖĞ¶Ï
-    HAL_CAN_ActivateNotification(&hcan, CAN_IT_RX_FIFO1_OVERRUN); // Æô¶¯½ÓÊÕFIFO1Òç³öÖĞ¶Ï
-    CAN_FilterConfig_AllMessages(&hcan); // ÅäÖÃ¹ıÂËÆ÷
+    txmail_free = HAL_CAN_GetTxMailboxesFreeLevel(&hcan); // è·å–å‘é€é‚®ç®±çš„ç©ºé—²æ•°é‡ï¼Œä¸€èˆ¬éƒ½æ˜¯3ä¸ª
+    HAL_CAN_ActivateNotification(&hcan, CAN_IT_TX_MAILBOX_EMPTY); // å¯åŠ¨å‘é€å®Œæˆä¸­æ–­
+    HAL_CAN_ActivateNotification(&hcan, CAN_IT_RX_FIFO1_MSG_PENDING); // å¯åŠ¨æ¥æ”¶FIFO1ä¸­æ–­ï¼Œå½“FIFO1ä¸­æœ‰æ¶ˆæ¯åˆ°è¾¾æ—¶ï¼Œäº§ç”Ÿä¸­æ–­
+    HAL_CAN_ActivateNotification(&hcan, CAN_IT_RX_FIFO1_OVERRUN); // å¯åŠ¨æ¥æ”¶FIFO1æº¢å‡ºä¸­æ–­
+    CAN_FilterConfig_AllMessages(&hcan); // é…ç½®è¿‡æ»¤å™¨
     if (HAL_CAN_Start(&hcan) != HAL_OK) {
-      Error_Handler(); // Æô¶¯Ê§°Ü£¬½øÈë´íÎó´¦Àí
+      Error_Handler(); // å¯åŠ¨å¤±è´¥ï¼Œè¿›å…¥é”™è¯¯å¤„ç†
     }
 }
 
 /**
-  * @brief  CAN½ÓÊÕÖĞ¶Ï»Øµ÷º¯Êı£¬´¦Àí½ÓÊÕµ½µÄCANÏûÏ¢
-  * @param  hcan: CAN¾ä±ú
+  * @brief  CANæ¥æ”¶ä¸­æ–­å›è°ƒå‡½æ•°ï¼Œå¤„ç†æ¥æ”¶åˆ°çš„CANæ¶ˆæ¯
+  * @param  hcan: CANå¥æŸ„
   * @retval None
   */
 void HAL_CAN_RxFifo1MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
     CANMsg_t canMsg = {0,};
-    uint32_t pendingMessages = HAL_CAN_GetRxFifoFillLevel(hcan, CAN_RX_FIFO1); // »ñÈ¡FIFO1Ò»¹²ÓĞ¶àÉÙ¸öCAN±¨ÎÄ
+    uint32_t pendingMessages = HAL_CAN_GetRxFifoFillLevel(hcan, CAN_RX_FIFO1); // è·å–FIFO1ä¸€å…±æœ‰å¤šå°‘ä¸ªCANæŠ¥æ–‡
     
     while(pendingMessages) {
-        /* ´ÓFIFO1ÖĞ¶ÁÈ¡½ÓÊÕÏûÏ¢ */
+        /* ä»FIFO1ä¸­è¯»å–æ¥æ”¶æ¶ˆæ¯ */
         if(HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO1, &canMsg.RxHeader, canMsg.RxData) == HAL_OK) {
-            g_RxCount++; // ÀÛ¼Ó½ÓÊÕµ½µÄCAN±¨ÎÄ×ÜÊı
-            if(lwrb_get_free((lwrb_t*)&g_CanRxRBHandler) < sizeof(CANMsg_t)) { // ÅĞ¶ÏringbufferÊÇ·ñ±»¼·Âú
-                g_RXRingbufferOverflow++;    // ÀÛ¼ÓringbufferÒç³öÈ«¾Ö¼ÆÊıÆ÷
-                lwrb_reset((lwrb_t*)&g_CanRxRBHandler); // Çå¿Õringbuffer
+            g_RxCount++; // ç´¯åŠ æ¥æ”¶åˆ°çš„CANæŠ¥æ–‡æ€»æ•°
+            if(lwrb_get_free((lwrb_t*)&g_CanRxRBHandler) < sizeof(CANMsg_t)) { // åˆ¤æ–­ringbufferæ˜¯å¦è¢«æŒ¤æ»¡
+                g_RXRingbufferOverflow++;    // ç´¯åŠ ringbufferæº¢å‡ºå…¨å±€è®¡æ•°å™¨
+                lwrb_reset((lwrb_t*)&g_CanRxRBHandler); // æ¸…ç©ºringbuffer
             }
-            lwrb_write((lwrb_t*)&g_CanRxRBHandler, &canMsg, sizeof(CANMsg_t)); // ½«CAN±¨ÎÄ·ÅÈëringbuffer
+            lwrb_write((lwrb_t*)&g_CanRxRBHandler, &canMsg, sizeof(CANMsg_t)); // å°†CANæŠ¥æ–‡æ”¾å…¥ringbuffer
         } else {
-            // Èç¹û¶ÁÈ¡ÏûÏ¢Ê§°Ü£¬Ò²¿ÉÒÔÔÚÕâÀï×ö´íÎó´¦Àí
+            // å¦‚æœè¯»å–æ¶ˆæ¯å¤±è´¥ï¼Œä¹Ÿå¯ä»¥åœ¨è¿™é‡Œåšé”™è¯¯å¤„ç†
         }
-        pendingMessages = HAL_CAN_GetRxFifoFillLevel(hcan, CAN_RX_FIFO1); // ¸üĞÂFIFO1ÀïCAN±¨ÎÄµÄÊıÁ¿
+        pendingMessages = HAL_CAN_GetRxFifoFillLevel(hcan, CAN_RX_FIFO1); // æ›´æ–°FIFO1é‡ŒCANæŠ¥æ–‡çš„æ•°é‡
     }
 }
 
 /**
-  * @brief  CANÒç³öÖĞ¶Ï´¦Àíº¯Êı£¬ÔÚÈ«¾ÖÖĞ¶ÏCAN1_RX1_IRQHandler()Àïµ÷ÓÃ
+  * @brief  CANæº¢å‡ºä¸­æ–­å¤„ç†å‡½æ•°ï¼Œåœ¨å…¨å±€ä¸­æ–­CAN1_RX1_IRQHandler()é‡Œè°ƒç”¨
   * @param  Note
   * @retval None
   */
 void CAN_FIFO1_Overflow_Handler(void)
 {
-    if (CAN1->RF1R & CAN_RF1R_FOVR1) { // ¶ÁÈ¡FOVR1Î»£¨FIFO1Òç³öÖĞ¶Ï£©£¬¿´¿´ÊÇ²»ÊÇ±»ÖÃ1
+    if (CAN1->RF1R & CAN_RF1R_FOVR1) { // è¯»å–FOVR1ä½ï¼ˆFIFO1æº¢å‡ºä¸­æ–­ï¼‰ï¼Œçœ‹çœ‹æ˜¯ä¸æ˜¯è¢«ç½®1
         g_RxOverflowError++;
     }
 }

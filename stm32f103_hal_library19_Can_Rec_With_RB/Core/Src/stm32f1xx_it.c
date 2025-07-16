@@ -208,9 +208,9 @@ void USB_HP_CAN1_TX_IRQHandler(void)
   /* USER CODE END USB_HP_CAN1_TX_IRQn 0 */
   HAL_CAN_IRQHandler(&hcan);
   /* USER CODE BEGIN USB_HP_CAN1_TX_IRQn 1 */
-    // 保持临界区（代码更健壮）
+    // 淇濇寔涓寸晫鍖猴紙浠ｇ爜鏇村仴澹級
     __disable_irq();
-    // 通过寄存器方式（更加高效），更新发送邮箱的空闲数量
+    // 閫氳繃瀵勫瓨鍣ㄦ柟寮忥紙鏇村姞楂樻晥锛夛紝鏇存柊鍙戦�侀偖绠辩殑绌洪棽鏁伴噺
     txmail_free = ((hcan.Instance->TSR & CAN_TSR_TME0) ? 1 : 0) +
                  ((hcan.Instance->TSR & CAN_TSR_TME1) ? 1 : 0) +
                  ((hcan.Instance->TSR & CAN_TSR_TME2) ? 1 : 0);
@@ -224,7 +224,7 @@ void USB_HP_CAN1_TX_IRQHandler(void)
 void CAN1_RX1_IRQHandler(void)
 {
   /* USER CODE BEGIN CAN1_RX1_IRQn 0 */
-  CAN_FIFO1_Overflow_Handler(); // 溢出监控
+  CAN_FIFO1_Overflow_Handler(); // 婧㈠嚭鐩戞帶
   /* USER CODE END CAN1_RX1_IRQn 0 */
   HAL_CAN_IRQHandler(&hcan);
   /* USER CODE BEGIN CAN1_RX1_IRQn 1 */
