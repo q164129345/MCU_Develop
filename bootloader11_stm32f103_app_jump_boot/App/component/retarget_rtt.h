@@ -9,19 +9,19 @@ extern "C" {
 #include "main.h"
 
 /**
-  * @brief  格式化打印调试信息（带函数名与行号）
-  * @note   用法与printf一致，输出自动包含当前函数名和行号
+  * @brief  鏍煎紡鍖栨墦鍗拌皟璇曚俊鎭紙甯﹀嚱鏁板悕涓庤鍙凤級
+  * @note   鐢ㄦ硶涓巔rintf涓�鑷达紝杈撳嚭鑷姩鍖呭惈褰撳墠鍑芥暟鍚嶅拰琛屽彿
   */
 #define log_printf(fmt, ...) \
 printf("%s-%s(%d):" fmt, __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__)
 
 /**
-  * @brief  重定向printf输出到RTT通道0
+  * @brief  閲嶅畾鍚憄rintf杈撳嚭鍒癛TT閫氶亾0
   */
 int fputc(int ch, FILE *f);
 
 /**
-  * @brief  初始化SEGGER RTT重定向（上行缓冲区配置）
+  * @brief  鍒濆鍖朣EGGER RTT閲嶅畾鍚戯紙涓婅缂撳啿鍖洪厤缃級
   */
 void Retarget_RTT_Init(void);
 

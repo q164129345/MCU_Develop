@@ -1,13 +1,13 @@
 #include "retarget_rtt.h"
 
-//! RTT»º´æ
+//! RTTç¼“å­˜
 //static uint8_t RTT_BufferUp1[1024] = {0,};
 
 /**
-  * @brief  ÖØ¶¨ÏòprintfÊä³öµ½RTTÍ¨µÀ0
-  * @param  ch  ÐèÒªÊä³öµÄ×Ö·û
-  * @param  f   ÎÄ¼þÖ¸Õë£¬ÎÞÊµ¼ÊÓÃÍ¾
-  * @retval     Êä³öµÄ×Ö·û
+  * @brief  é‡å®šå‘printfè¾“å‡ºåˆ°RTTé€šé“0
+  * @param  ch  éœ€è¦è¾“å‡ºçš„å­—ç¬¦
+  * @param  f   æ–‡ä»¶æŒ‡é’ˆï¼Œæ— å®žé™…ç”¨é€”
+  * @retval     è¾“å‡ºçš„å­—ç¬¦
   */
 int fputc(int ch, FILE *f)
 {
@@ -16,22 +16,22 @@ int fputc(int ch, FILE *f)
 }
 
 /**
-  * @brief  ³õÊ¼»¯SEGGER RTTÖØ¶¨Ïò£¨ÉÏÐÐ»º³åÇøÅäÖÃ£©
-  * @note   ¸Ãº¯ÊýÓ¦ÔÚµ÷ÓÃprintfµÈÖØ¶¨ÏòÊä³öÇ°µ÷ÓÃ£¬È·±£RTT»º³åÇøºÍÍ¨µÀÅäÖÃÕýÈ·¡£
-  *         - ÅäÖÃÍ¨µÀ0ÎªMCUµ½PCµÄÊý¾ÝÉÏ´«»º³åÇø£¨ÉÏÐÐ»º³åÇø£©£¬
-  *           Ê¹ÓÃ×Ô¶¨Òå¾²Ì¬ÄÚ´æ£¬²¢ÉèÖÃÎª·Ç×èÈûÄ£Ê½¡£
-  *         - ÉèÖÃRTTÄ¬ÈÏÖÕ¶ËÎªÍ¨µÀ0£¬±£Ö¤printfµÈÊä³öÍ¨¹ýRTTÍ¨µÀ0·¢ËÍ¡£
-  * @retval ÎÞ
+  * @brief  åˆå§‹åŒ–SEGGER RTTé‡å®šå‘ï¼ˆä¸Šè¡Œç¼“å†²åŒºé…ç½®ï¼‰
+  * @note   è¯¥å‡½æ•°åº”åœ¨è°ƒç”¨printfç­‰é‡å®šå‘è¾“å‡ºå‰è°ƒç”¨ï¼Œç¡®ä¿RTTç¼“å†²åŒºå’Œé€šé“é…ç½®æ­£ç¡®ã€‚
+  *         - é…ç½®é€šé“0ä¸ºMCUåˆ°PCçš„æ•°æ®ä¸Šä¼ ç¼“å†²åŒºï¼ˆä¸Šè¡Œç¼“å†²åŒºï¼‰ï¼Œ
+  *           ä½¿ç”¨è‡ªå®šä¹‰é™æ€å†…å­˜ï¼Œå¹¶è®¾ç½®ä¸ºéžé˜»å¡žæ¨¡å¼ã€‚
+  *         - è®¾ç½®RTTé»˜è®¤ç»ˆç«¯ä¸ºé€šé“0ï¼Œä¿è¯printfç­‰è¾“å‡ºé€šè¿‡RTTé€šé“0å‘é€ã€‚
+  * @retval æ— 
   */
 void Retarget_RTT_Init(void)
 {
-    //! ÅäÖÃMCU -> PC»º³åÇø£¨ÉÏÐÐ»º´æÇø£©
-//    SEGGER_RTT_ConfigUpBuffer(1,                            //! Í¨µÀ0
-//                            "Buffer1Up",                    //! Í¨µÀÃû×Ö
-//                            (uint8_t*)&RTT_BufferUp1[0],    //! »º´æµØÖ·
-//                            sizeof(RTT_BufferUp1),          //! »º´æ´óÐ¡
-//                            SEGGER_RTT_MODE_NO_BLOCK_SKIP); //! ·Ç×èÈû
-    SEGGER_RTT_SetTerminal(0); //! ÉèÖÃÖÕ¶Ë0
+    //! é…ç½®MCU -> PCç¼“å†²åŒºï¼ˆä¸Šè¡Œç¼“å­˜åŒºï¼‰
+//    SEGGER_RTT_ConfigUpBuffer(1,                            //! é€šé“0
+//                            "Buffer1Up",                    //! é€šé“åå­—
+//                            (uint8_t*)&RTT_BufferUp1[0],    //! ç¼“å­˜åœ°å€
+//                            sizeof(RTT_BufferUp1),          //! ç¼“å­˜å¤§å°
+//                            SEGGER_RTT_MODE_NO_BLOCK_SKIP); //! éžé˜»å¡ž
+    SEGGER_RTT_SetTerminal(0); //! è®¾ç½®ç»ˆç«¯0
 }
 
 
