@@ -1,10 +1,10 @@
 #include "bsp_systick/bsp_systick.h"
 
-volatile uint64_t uwTick; //!< È«¾ÖTick¼ÆÊý
+volatile uint64_t uwTick; //!< å…¨å±€Tickè®¡æ•°
 
 /**
-  * @brief  »ñÈ¡ÏµÍ³µ±Ç°Tick£¬µ¥Î»ms
-  * @retval uint64_t µ±Ç°Tick¼ÆÊý
+  * @brief  èŽ·å–ç³»ç»Ÿå½“å‰Tickï¼Œå•ä½ms
+  * @retval uint64_t å½“å‰Tickè®¡æ•°
   */
 uint64_t SysTick_GetTicks(void)
 {
@@ -12,9 +12,9 @@ uint64_t SysTick_GetTicks(void)
 }
 
 /**
-  * @brief  SysTick¶¨Ê±Æ÷ÖÐ¶Ï·þÎñº¯Êý
-  * @note   Ã¿1ms½øÈëÒ»´Î¸ÃÖÐ¶Ï£¬Tick¼ÆÊý×ÔÔö
-  * @retval ÎÞ
+  * @brief  SysTickå®šæ—¶å™¨ä¸­æ–­æœåŠ¡å‡½æ•°
+  * @note   æ¯1msè¿›å…¥ä¸€æ¬¡è¯¥ä¸­æ–­ï¼ŒTickè®¡æ•°è‡ªå¢ž
+  * @retval æ— 
   */
 void SysTick_Interrupt(void)
 {
@@ -22,13 +22,13 @@ void SysTick_Interrupt(void)
 }
 
 /**
-  * @brief  ³õÊ¼»¯SysTick¶¨Ê±Æ÷£¬ÊµÏÖ1msÖÜÆÚÖÐ¶Ï
-  * @note   µ÷ÓÃºóSysTick½«×Ô¶¯Ã¿1ms´¥·¢Ò»´ÎÖÐ¶Ï
-  * @retval ÎÞ
+  * @brief  åˆå§‹åŒ–SysTickå®šæ—¶å™¨ï¼Œå®žçŽ°1mså‘¨æœŸä¸­æ–­
+  * @note   è°ƒç”¨åŽSysTickå°†è‡ªåŠ¨æ¯1msè§¦å‘ä¸€æ¬¡ä¸­æ–­
+  * @retval æ— 
   */
 void SysTick_Init(void)
 {
-    SysTick_Config(SystemCoreClock / 1000); //! ³õÊ¼»¯SysTick,1msÖÐ¶Ï
+    SysTick_Config(SystemCoreClock / 1000); //! åˆå§‹åŒ–SysTick,1msä¸­æ–­
 }
 
 
