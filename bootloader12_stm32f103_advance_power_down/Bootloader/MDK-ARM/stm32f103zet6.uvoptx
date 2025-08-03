@@ -119,6 +119,11 @@
       <TargetDriverDllRegistry>
         <SetRegEntry>
           <Number>0</Number>
+          <Key>DLGUARM</Key>
+          <Name>t裣</Name>
+        </SetRegEntry>
+        <SetRegEntry>
+          <Number>0</Number>
           <Key>ARMRTXEVENTFLAGS</Key>
           <Name>-L70 -Z18 -C0 -M0 -T1</Name>
         </SetRegEntry>
@@ -159,6 +164,11 @@
           <count>1</count>
           <WinNumber>1</WinNumber>
           <ItemText>gYModemHandler,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>2</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>g_params,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow2>
@@ -776,6 +786,18 @@
       <bDave2>0</bDave2>
       <PathWithFileName>..\IAP\ymodem.c</PathWithFileName>
       <FilenameWithoutPath>ymodem.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>9</GroupNumber>
+      <FileNumber>41</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\IAP\param_storage.c</PathWithFileName>
+      <FilenameWithoutPath>param_storage.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

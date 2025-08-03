@@ -143,7 +143,7 @@ OP_FlashStatus_t OP_Flash_Copy(uint32_t src_addr, uint32_t dest_addr, uint32_t l
         return OP_FLASH_ERROR;
     }
 
-    #define FLASH_COPY_BUFSIZE  512  //!< 分块搬运缓冲区大小，单位字节，必须为4的倍数
+    #define FLASH_COPY_BUFSIZE  1024  //!< 分块搬运缓冲区大小，单位字节，必须为4的倍数
     static uint8_t buffer[FLASH_COPY_BUFSIZE];
     
     uint32_t remaining = length; // 待复制的剩余字节数

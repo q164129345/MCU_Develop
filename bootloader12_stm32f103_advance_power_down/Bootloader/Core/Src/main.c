@@ -32,6 +32,7 @@
 #include "fw_verify.h"
 #include "ymodem.h"
 #include "boot_entry.h"
+#include "param_storage.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -141,7 +142,8 @@ int main(void)
   MX_DMA_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  //! 初始化参数区
+  Param_Init();
   //! USART1初始化
   USART_Config(&gUsart1Drv,
                gUsart1RXDMABuffer, gUsart1RXRBBuffer, sizeof(gUsart1RXDMABuffer),
@@ -212,10 +214,19 @@ int main(void)
                 log_printf("Firmware size: %d bytes.\r\n", file_size);
                 if (HAL_OK == FW_Firmware_Verification(FLASH_DL_START_ADDR, file_size)) {
                     log_printf("CRC32 verification was successful\r\n");
+                    
+                    //! 第一步，首先将文件大小写入参数区
+                    log_printf("Updating firmware metadata (intent to copy)...\r\n");
+                    ParameterData_t temp_params = *Param_Get(); // 获取当前参数副本
+                    temp_params.appFWInfo.totalSize = file_size; // 保存固件的长度
+                    temp_params.copyRetryCount = 0; // 关键！每一次固件的更新都要清0。虽然，这个功能暂时不用。
+                    Param_Save(&temp_params); //! 擦写并更新CRC
+                    
+                    //! 第二步，将固件从下载区拷贝到App区
                     if (OP_FLASH_OK == OP_Flash_Copy(FLASH_DL_START_ADDR, FLASH_APP_START_ADDR, FLASH_APP_SIZE)) { //! 将App下载缓存区的固件搬运到App区
                         log_printf("The firmware copy to the app area successfully.\r\n");
                         log_printf("Jump to the application.\r\n");
-                        HAL_Delay(500);
+                        HAL_Delay(20);
                         IAP_Ready_To_Jump_App(); //! 跳转App
                     }
                 } else {
@@ -370,6 +381,7 @@ static void Timeout_Counter_Reset(void)
 static void Timeout_Counter_Enable(void)
 {
     gUpdateFlag = IAP_GetUpdateFlag();
+    const ParameterData_t* params = Param_Get();
     bool app_valid = Is_App_Valid_Enhanced(FLASH_APP_START_ADDR);
     log_printf("=== Bootloader Boot Analysis ===\n");
     log_printf("Boot flag: 0x%08X%08X\n", (uint32_t)(gUpdateFlag >> 32), (uint32_t)gUpdateFlag);
@@ -392,11 +404,27 @@ static void Timeout_Counter_Enable(void)
             log_printf("Will return to App if no communication detected.\n");
             iap_timeout_enabled = true;
         } else {
-            //! App无效，必须等待固件
+            //! App无效，必须等待固件 或 看看下载区是否有完整的App
             log_printf("=== IAP Mode: App Invalid ===\n");
             log_printf("Timeout: DISABLED\n");
-            log_printf("Will wait indefinitely for firmware download.\n");
             iap_timeout_enabled = false;
+            //！检查下载区是否有完整的App
+            if (params->appFWInfo.totalSize > 0 && FW_Firmware_Verification(FLASH_DL_START_ADDR, params->appFWInfo.totalSize) == HAL_OK) {
+                log_printf("There is a complete firmware in the download area.\r\n");
+                //! 将完整的App从下载区搬运到App区
+                if (OP_Flash_Copy(FLASH_DL_START_ADDR, FLASH_APP_START_ADDR, params->appFWInfo.totalSize) == OP_FLASH_OK) {
+                    log_printf("Re-copy successful! System will now reboot.");
+                    Delay_MS_By_NOP(50);
+                    HAL_NVIC_SystemReset(); //! 复位MCU
+                } else {
+                    log_printf("Re-copy not successful! System will now reboot.");
+                    Delay_MS_By_NOP(50);
+                    HAL_NVIC_SystemReset(); //! 复位MCU
+                }
+            } else {
+                log_printf("There is not a complete firmware in the download area.\r\n");
+            }
+            log_printf("Will wait indefinitely for firmware download.\n");
         }
     }
 }

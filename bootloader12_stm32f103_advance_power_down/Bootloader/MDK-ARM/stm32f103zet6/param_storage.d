@@ -1,4 +1,7 @@
-stm32f103zet6/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
+stm32f103zet6/param_storage.o: ..\IAP\param_storage.c \
+  ..\IAP\param_storage.h C:\Keil_v5\ARM\ARMCLANG\include\stdint.h \
+  C:\Keil_v5\ARM\ARMCLANG\include\stdbool.h ..\IAP\flash_map.h \
+  ..\IAP\op_flash.h ..\Core\Inc\main.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal.h \
   ..\Core\Inc\stm32f1xx_hal_conf.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_rcc.h \
@@ -6,7 +9,6 @@ stm32f103zet6/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h \
   ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xe.h \
   ..\Drivers\CMSIS\Include\core_cm3.h \
-  C:\Keil_v5\ARM\ARMCLANG\include\stdint.h \
   D:\Coding\MCU_Develop\bootloader12_stm32f103_advance_power_down\Bootloader\Drivers\CMSIS\Include\cmsis_version.h \
   D:\Coding\MCU_Develop\bootloader12_stm32f103_advance_power_down\Bootloader\Drivers\CMSIS\Include\cmsis_compiler.h \
   D:\Coding\MCU_Develop\bootloader12_stm32f103_advance_power_down\Bootloader\Drivers\CMSIS\Include\cmsis_armclang.h \
@@ -27,15 +29,9 @@ stm32f103zet6/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pwr.h \
   ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdio.h \
-  C:\Keil_v5\ARM\ARMCLANG\include\string.h \
-  C:\Keil_v5\ARM\ARMCLANG\include\stdbool.h ..\BSP\lwrb\lwrb.h \
+  C:\Keil_v5\ARM\ARMCLANG\include\string.h ..\BSP\lwrb\lwrb.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdatomic.h ..\SEGGER_RTT\SEGGER_RTT.h \
   ..\SEGGER_RTT\SEGGER_RTT_Conf.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdarg.h ..\component\retarget_rtt.h \
-  ..\IAP\bootloader_define.h ..\IAP\flash_map.h ..\component\common.h \
-  ..\Core\Inc\dma.h ..\Core\Inc\usart.h ..\Core\Inc\gpio.h \
-  ..\BSP\myCanDrive\myCanDrive_reg.h \
-  ..\BSP\bsp_usart_hal\bsp_usart_hal.h ..\IAP\app_jump.h \
-  ..\IAP\soft_crc32.h ..\IAP\op_flash.h ..\IAP\fw_verify.h \
-  ..\IAP\ymodem.h ..\IAP\boot_entry.h ..\IAP\param_storage.h
+  ..\IAP\bootloader_define.h ..\component\common.h ..\IAP\soft_crc32.h
