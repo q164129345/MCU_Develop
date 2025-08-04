@@ -1,0 +1,19 @@
+{
+    "folders": [
+        {
+            "path": "."
+        },
+        {
+            "path": "../../Bootloader"
+        },
+        {
+            "path": "../../iap_py"
+        }
+    ],
+    "settings": {
+        "files.associations": {
+            "jump_boot.h": "c"
+        }
+    },
+    "extensions": {}
+}

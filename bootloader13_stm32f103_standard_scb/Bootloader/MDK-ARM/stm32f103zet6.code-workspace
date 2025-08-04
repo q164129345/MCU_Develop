@@ -1,0 +1,23 @@
+{
+    "folders": [
+        {
+            "path": "."
+        },
+        {
+            "path": "../../iap_py"
+        },
+        {
+            "path": ".."
+        }
+    ],
+    "settings": {
+        "files.associations": {
+            "ymodem.h": "c",
+            "calculate_crc32.h": "c",
+            "boot_entry.h": "c",
+            "app_jump.h": "c",
+            "retarget_rtt.h": "c"
+        }
+    },
+    "extensions": {}
+}
