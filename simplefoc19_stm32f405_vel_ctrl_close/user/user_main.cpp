@@ -24,8 +24,7 @@ HallSensor sensor(21); // 创建HallSensor对象，电机的极对数是21
 //InlineCurrentSense currentSense(0.001f,50.0f,ADC_CHANNEL_3,ADC_CHANNEL_4,NOT_SET); // 创建电流传感器对象
 
 float targetVel = 12.56f; //! 目标速度
-float sensorAngle = 0.0f; //! 传感器角度
-float g_Velocity; // 便于使用J-LINK Scope观察曲线
+float motorVelocity; // 便于使用J-LINK Scope观察曲线
 
 /**
  * @brief C++环境入口函数
@@ -74,8 +73,8 @@ void main_Cpp(void)
     HAL_Delay(1000);
     while(1) {
         HAL_GPIO_TogglePin(RUN_LED_GPIO_Port,RUN_LED_Pin); // 心跳灯跑起来
-        g_Velocity = motor.shaft_velocity; //! 获取当前速度
-        SEGGER_Printf_Float(g_Velocity); //! 打印电机速度到RTT
+        motorVelocity = motor.shaft_velocity; //! 获取当前速度
+        SEGGER_Printf_Float(motorVelocity); //! 打印电机速度到RTT
         delayMicroseconds(100000U); // 延时100ms
     }
 }
