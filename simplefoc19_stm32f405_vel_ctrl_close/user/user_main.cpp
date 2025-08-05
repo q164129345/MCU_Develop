@@ -14,19 +14,18 @@ typedef struct {
 }J_LINK_Scope_Message;
 
 // 全局变量
-float g_Velocity; // 便于使用J-LINK Scope观察曲线
 volatile uint8_t JS_RTT_BufferUp1[2048] = {0,};
 const uint8_t JS_RTT_Channel = 1;
 J_LINK_Scope_Message JS_Message;
 
 BLDCDriver6PWM motorDriver(&htim1); //! 初始化驱动器(htim1是TIM1定时器)
-BLDCMotor motor(21); // 创建BLDCMotor对象，电机的极对数是21
+BLDCMotor motor(21U, 0.460f); // 创建BLDCMotor对象，电机的极对数是21,相电阻0.46欧
 HallSensor sensor(21); // 创建HallSensor对象，电机的极对数是21
 //InlineCurrentSense currentSense(0.001f,50.0f,ADC_CHANNEL_3,ADC_CHANNEL_4,NOT_SET); // 创建电流传感器对象
 
-float targetVel = 4.0f; //! 目标速度
+float targetVel = 12.56f; //! 目标速度
 float sensorAngle = 0.0f; //! 传感器角度
-float motorVel = 0.0f; //! 电机速度
+float g_Velocity; // 便于使用J-LINK Scope观察曲线
 
 /**
  * @brief C++环境入口函数
@@ -47,8 +46,8 @@ void main_Cpp(void)
     sensor.init(); //! 初始化霍尔传感器
     motor.linkSensor(&sensor); // 将霍尔传感器跟电机连接起来
                             
-    motor.PID_velocity.P = 0.02f; // 设置速度P
-    motor.PID_velocity.I = 1.0f; // 设置速度I
+    motor.PID_velocity.P = 0.05f; // 设置速度P
+    motor.PID_velocity.I = 3.5f; // 设置速度I
     motor.PID_velocity.D = 0; // 设置速度D
     motor.PID_velocity.output_ramp = 0; // 0：不设置斜坡
     motor.LPF_velocity.Tf = 0.05f; // 设置速度低通滤波器
@@ -75,13 +74,9 @@ void main_Cpp(void)
     HAL_Delay(1000);
     while(1) {
         HAL_GPIO_TogglePin(RUN_LED_GPIO_Port,RUN_LED_Pin); // 心跳灯跑起来
-//        sensor.update();
-//        SEGGER_RTT_printf(0,"Dwt_time_us:%u\n",_micros()); //! 打印DWT时间戳
-//        sensorAngle = sensor.getAngle();
-//        SEGGER_Printf_Float(sensorAngle); //! 打印机电机角度
-        motorVel = motor.shaft_velocity; //! 获取当前速度
-        SEGGER_Printf_Float(motorVel); //! 打印电机速度
-        delayMicroseconds(100000U); // 延时200ms
+        g_Velocity = motor.shaft_velocity; //! 获取当前速度
+        SEGGER_Printf_Float(g_Velocity); //! 打印电机速度到RTT
+        delayMicroseconds(100000U); // 延时100ms
     }
 }
 /**
