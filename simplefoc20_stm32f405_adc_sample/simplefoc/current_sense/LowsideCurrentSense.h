@@ -21,7 +21,7 @@ class LowsideCurrentSense: public CurrentSense{
       @param phB B phase adc pin
       @param phC C phase adc pin (optional)
     */
-    LowsideCurrentSense(float shunt_resistor, float gain, int pinA, int pinB, int pinC = NOT_SET);
+    LowsideCurrentSense(ADC_HandleTypeDef* hadc, float shunt_resistor, float gain, int pinA, int pinB, int pinC = NOT_SET);
     /**
       InlineCurrentSense class constructor
       @param mVpA mV per Amp ratio
@@ -29,7 +29,7 @@ class LowsideCurrentSense: public CurrentSense{
       @param phB B phase adc pin
       @param phC C phase adc pin (optional)
     */
-    LowsideCurrentSense(float mVpA, int pinA, int pinB, int pinC = NOT_SET);
+    LowsideCurrentSense(ADC_HandleTypeDef* hadc, float mVpA, int pinA, int pinB, int pinC = NOT_SET);
 
     // CurrentSense interface implementing functions 
     int init() override;
@@ -51,6 +51,8 @@ class LowsideCurrentSense: public CurrentSense{
     float offset_ia; //!< zero current A voltage value (center of the adc reading)
     float offset_ib; //!< zero current B voltage value (center of the adc reading)
     float offset_ic; //!< zero current C voltage value (center of the adc reading)
+    
+    ADC_HandleTypeDef* hadc_x;
     
   private:
   

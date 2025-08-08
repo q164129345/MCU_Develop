@@ -869,11 +869,6 @@
               <FileType>8</FileType>
               <FilePath>..\simplefoc\current_sense\LowsideCurrentSense.cpp</FilePath>
             </File>
-            <File>
-              <FileName>InlineCurrentSense.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\simplefoc\current_sense\InlineCurrentSense.cpp</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>

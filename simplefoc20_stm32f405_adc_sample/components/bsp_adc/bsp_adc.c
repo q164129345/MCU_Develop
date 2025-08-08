@@ -79,15 +79,3 @@ void HAL_ADCEx_InjectedConvCpltCallback(ADC_HandleTypeDef *hadc)
         gADC_IN11 = hadc->Instance->JDR2; // Injected Rank2
     }
 }
-
-/**
- * @brief 初始化ADC
- * @note 初始化ADC，并开启注入采样中断
- * 
- */
-void ADC_Init(void)
-{
-    __HAL_ADC_ENABLE_IT(&hadc1,ADC_IT_JEOC); // 启动注入采样中断
-    HAL_ADCEx_InjectedStart(&hadc1);         // 开启注入采样
-}
-

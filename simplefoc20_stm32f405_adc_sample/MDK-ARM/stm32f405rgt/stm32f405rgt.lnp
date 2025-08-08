@@ -35,7 +35,6 @@
 "stm32f405rgt\hallsensor.o"
 "stm32f405rgt\bldcdriver6pwm.o"
 "stm32f405rgt\lowsidecurrentsense.o"
-"stm32f405rgt\inlinecurrentsense.o"
 "stm32f405rgt\bldcmotor.o"
 "stm32f405rgt\segger_rtt.o"
 "stm32f405rgt\segger_rtt_printf.o"

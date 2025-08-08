@@ -6,7 +6,7 @@
 //  - phA   - A phase adc pin
 //  - phB   - B phase adc pin
 //  - phC   - C phase adc pin (optional)
-LowsideCurrentSense::LowsideCurrentSense(float _shunt_resistor, float _gain, int _pinA, int _pinB, int _pinC){
+LowsideCurrentSense::LowsideCurrentSense(ADC_HandleTypeDef* hadc, float _shunt_resistor, float _gain, int _pinA, int _pinB, int _pinC){
     pinA = _pinA;
     pinB = _pinB;
     pinC = _pinC;
@@ -18,10 +18,12 @@ LowsideCurrentSense::LowsideCurrentSense(float _shunt_resistor, float _gain, int
     gain_a = -volts_to_amps_ratio;
     gain_b = -volts_to_amps_ratio; // 这里从simpleFOC源码改为-的原因是电路板的采样电阻上ADC采样端口（IN+与IN-）是反的。
     gain_c = -volts_to_amps_ratio; // 这里从simpleFOC源码改为-的原因是电路板的采样电阻上ADC采样端口（IN+与IN-）是反的。
+    
+    hadc_x = hadc;
 }
 
 
-LowsideCurrentSense::LowsideCurrentSense(float _mVpA, int _pinA, int _pinB, int _pinC){
+LowsideCurrentSense::LowsideCurrentSense(ADC_HandleTypeDef* hadc, float _mVpA, int _pinA, int _pinB, int _pinC){
     pinA = _pinA;
     pinB = _pinB;
     pinC = _pinC;
@@ -31,7 +33,9 @@ LowsideCurrentSense::LowsideCurrentSense(float _mVpA, int _pinA, int _pinB, int 
     gain_a = -volts_to_amps_ratio;
     gain_b = -volts_to_amps_ratio;
     gain_c = -volts_to_amps_ratio;
-}   
+    
+    hadc_x = hadc;
+}
 
 
 // Lowside sensor init function
@@ -41,6 +45,7 @@ int LowsideCurrentSense::init(){
 //        return 0;
 //    }
 //    // configure ADC variables
+    _configureADCLowSide(hadc_x);
 //    params = _configureADCLowSide(driver->params,pinA,pinB,pinC);
 //    // if init failed return fail
 //    if (params == SIMPLEFOC_CURRENT_SENSE_INIT_FAILED) return 0; 

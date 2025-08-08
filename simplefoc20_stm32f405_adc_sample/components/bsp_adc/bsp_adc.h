@@ -12,7 +12,7 @@ extern "C" {
 // public
 float _readADCVoltageInline(uint32_t CH);
 float _readADCVoltageLowSide(uint32_t CH);
-void ADC_Init(void);
+void _configureADCLowSide(ADC_HandleTypeDef *hadc);
 
 // private
 

@@ -41,7 +41,7 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-#define delayMicroseconds DWT_Delay_us // 替代Arduino的us级延�?
+#define delayMicroseconds DWT_Delay_us // 替代Arduino的us级延时
 #define delay _delay
 
 // 定义�?个宏，将SIMPLEFOC_DEBUG替换为SEGGER_RTT_printf

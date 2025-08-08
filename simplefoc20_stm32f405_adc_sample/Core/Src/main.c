@@ -25,7 +25,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "user_main.h"
-#include "bsp_adc.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -104,7 +103,6 @@ int main(void)
   /* USER CODE BEGIN 2 */
   SEGGER_RTT_SetTerminal(0); //! 设置终端0
   DWT_Timer_Init(); // 初始化DWT定时
-  ADC_Init();       // 初始化ADC
   main_Cpp();       // 跳转C++环境
   /* USER CODE END 2 */
 

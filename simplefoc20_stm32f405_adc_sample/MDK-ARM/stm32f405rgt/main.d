@@ -38,5 +38,4 @@ stm32f405rgt/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdio.h \
   C:\Keil_v5\ARM\ARMCLANG\include\string.h ..\Core\Inc\adc.h \
   ..\Core\Inc\tim.h ..\Core\Inc\gpio.h ..\user\user_main.h \
-  ..\simplefoc\common\time_utils.h ..\simplefoc\common\foc_utils.h \
-  ..\components\bsp_adc\bsp_adc.h
+  ..\simplefoc\common\time_utils.h ..\simplefoc\common\foc_utils.h

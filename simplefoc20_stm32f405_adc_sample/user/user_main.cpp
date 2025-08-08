@@ -25,7 +25,7 @@ J_LINK_Scope_Message JS_Message;
 BLDCDriver6PWM motorDriver(&htim1); //! 初始化驱动器(htim1是TIM1定时器)
 BLDCMotor motor(21U, 0.460f); // 创建BLDCMotor对象，电机的极对数是21,相电阻0.46欧
 HallSensor sensor(21); // 创建HallSensor对象，电机的极对数是21
-LowsideCurrentSense currentSense(0.001f,20.0f,NOT_SET,ADC_CHANNEL_10,ADC_CHANNEL_11); // 创建电流传感器对象
+LowsideCurrentSense currentSense(&hadc1,0.001f,20.0f,NOT_SET,ADC_CHANNEL_10,ADC_CHANNEL_11); // 创建电流传感器对象
 
 float targetVel = 12.56f; //! 目标速度
 float motorVelocity; // 便于使用J-LINK Scope观察曲线
