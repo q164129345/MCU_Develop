@@ -30,6 +30,41 @@ float _readADCVoltageInline(uint32_t CH)
     return adcValue;
 }
 
+/**
+ * @brief function reading an ADC value and returning the read voltage
+ * 
+ * @param CH 通道号
+ * @return float 返回电压值
+ */
+float _readADCVoltageLowSide(uint32_t CH)
+{
+    float adcValue = 0.0f;
+    
+    //! 根据CubeMX设置的INx通道来编写case
+    switch(CH) {
+        case ADC_CHANNEL_10:
+            adcValue = (float)gADC_IN10 * 3.3f / 4096;
+            break;
+        case ADC_CHANNEL_11:
+            adcValue = (float)gADC_IN11 * 3.3f / 4096;;
+            break;
+        default:
+            break;
+    }
+    return adcValue;
+}
+
+
+/**
+ * @brief 配置ADC低侧采样
+ * 
+ * @param hadc ADC句柄
+ */
+void _configureADCLowSide(ADC_HandleTypeDef *hadc)
+{
+    __HAL_ADC_ENABLE_IT(hadc, ADC_IT_JEOC); // 启动注入采样中断
+    HAL_ADCEx_InjectedStart(hadc);          // 开启注入采样
+}
 
 /**
  * @brief 注入式ADC转换完成回调函数
@@ -43,7 +78,6 @@ void HAL_ADCEx_InjectedConvCpltCallback(ADC_HandleTypeDef *hadc)
         gADC_IN10 = hadc->Instance->JDR1; // Injected Rank1
         gADC_IN11 = hadc->Instance->JDR2; // Injected Rank2
     }
-
 }
 
 /**

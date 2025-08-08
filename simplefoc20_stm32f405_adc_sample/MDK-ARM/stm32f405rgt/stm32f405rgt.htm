@@ -3,7 +3,7 @@
 <title>Static Call Graph - [stm32f405rgt\stm32f405rgt.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image stm32f405rgt\stm32f405rgt.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Thu Aug  7 17:09:35 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6210000: Last Updated: Fri Aug  8 11:04:10 2025
 <BR><P>
 <H3>Maximum Stack Usage =        408 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -123,15 +123,15 @@ Function Pointers
  <LI><a href="#[63]">HallSensor::getSensorAngle()</a> from hallsensor.o(.text._ZN10HallSensor14getSensorAngleEv) referenced from hallsensor.o(.rodata._ZTV10HallSensor)
  <LI><a href="#[64]">HallSensor::init()</a> from hallsensor.o(.text._ZN10HallSensor4initEv) referenced from hallsensor.o(.rodata._ZTV10HallSensor)
  <LI><a href="#[61]">HallSensor::update()</a> from hallsensor.o(.text._ZN10HallSensor6updateEv) referenced from hallsensor.o(.rodata._ZTV10HallSensor)
- <LI><a href="#[6d]">CurrentSense::getDCCurrent(float)</a> from currentsense.o(.text._ZN12CurrentSense12getDCCurrentEf) referenced from inlinecurrentsense.o(.rodata._ZTV18InlineCurrentSense)
+ <LI><a href="#[6d]">CurrentSense::getDCCurrent(float)</a> from currentsense.o(.text._ZN12CurrentSense12getDCCurrentEf) referenced from lowsidecurrentsense.o(.rodata._ZTV19LowsideCurrentSense)
  <LI><a href="#[69]">BLDCDriver6PWM::setPhaseState(PhaseState, PhaseState, PhaseState)</a> from bldcdriver6pwm.o(.text._ZN14BLDCDriver6PWM13setPhaseStateE10PhaseStateS0_S0_) referenced from bldcdriver6pwm.o(.rodata._ZTV14BLDCDriver6PWM)
  <LI><a href="#[65]">BLDCDriver6PWM::init()</a> from bldcdriver6pwm.o(.text._ZN14BLDCDriver6PWM4initEv) referenced from bldcdriver6pwm.o(.rodata._ZTV14BLDCDriver6PWM)
  <LI><a href="#[66]">BLDCDriver6PWM::enable()</a> from bldcdriver6pwm.o(.text._ZN14BLDCDriver6PWM6enableEv) referenced from bldcdriver6pwm.o(.rodata._ZTV14BLDCDriver6PWM)
  <LI><a href="#[68]">BLDCDriver6PWM::setPwm(float, float, float)</a> from bldcdriver6pwm.o(.text._ZN14BLDCDriver6PWM6setPwmEfff) referenced from bldcdriver6pwm.o(.rodata._ZTV14BLDCDriver6PWM)
  <LI><a href="#[67]">BLDCDriver6PWM::disable()</a> from bldcdriver6pwm.o(.text._ZN14BLDCDriver6PWM7disableEv) referenced from bldcdriver6pwm.o(.rodata._ZTV14BLDCDriver6PWM)
- <LI><a href="#[6b]">InlineCurrentSense::driverAlign(float)</a> from inlinecurrentsense.o(.text._ZN18InlineCurrentSense11driverAlignEf) referenced from inlinecurrentsense.o(.rodata._ZTV18InlineCurrentSense)
- <LI><a href="#[6c]">InlineCurrentSense::getPhaseCurrents()</a> from inlinecurrentsense.o(.text._ZN18InlineCurrentSense16getPhaseCurrentsEv) referenced from inlinecurrentsense.o(.rodata._ZTV18InlineCurrentSense)
- <LI><a href="#[6a]">InlineCurrentSense::init()</a> from inlinecurrentsense.o(.text._ZN18InlineCurrentSense4initEv) referenced from inlinecurrentsense.o(.rodata._ZTV18InlineCurrentSense)
+ <LI><a href="#[6b]">LowsideCurrentSense::driverAlign(float)</a> from lowsidecurrentsense.o(.text._ZN19LowsideCurrentSense11driverAlignEf) referenced from lowsidecurrentsense.o(.rodata._ZTV19LowsideCurrentSense)
+ <LI><a href="#[6c]">LowsideCurrentSense::getPhaseCurrents()</a> from lowsidecurrentsense.o(.text._ZN19LowsideCurrentSense16getPhaseCurrentsEv) referenced from lowsidecurrentsense.o(.rodata._ZTV19LowsideCurrentSense)
+ <LI><a href="#[6a]">LowsideCurrentSense::init()</a> from lowsidecurrentsense.o(.text._ZN19LowsideCurrentSense4initEv) referenced from lowsidecurrentsense.o(.rodata._ZTV19LowsideCurrentSense)
  <LI><a href="#[62]">Sensor::needsSearch()</a> from sensor.o(.text._ZN6Sensor11needsSearchEv) referenced from hallsensor.o(.rodata._ZTV10HallSensor)
  <LI><a href="#[5e]">Sensor::getPreciseAngle()</a> from sensor.o(.text._ZN6Sensor15getPreciseAngleEv) referenced from hallsensor.o(.rodata._ZTV10HallSensor)
  <LI><a href="#[60]">Sensor::getFullRotations()</a> from sensor.o(.text._ZN6Sensor16getFullRotationsEv) referenced from hallsensor.o(.rodata._ZTV10HallSensor)
@@ -1348,7 +1348,7 @@ Global Symbols
 <LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::initFOC()
 <LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::init()
-<LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::driverAlign(float)
+<LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LowsideCurrentSense::driverAlign(float)
 <LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCDriver6PWM::init()
 </UL>
 
@@ -1451,8 +1451,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::initFOC()
 <LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::init()
-<LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::driverAlign(float)
-<LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::calibrateOffsets()
+<LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LowsideCurrentSense::driverAlign(float)
+<LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LowsideCurrentSense::calibrateOffsets()
 </UL>
 
 <P><STRONG><a name="[d9]"></a>_micros()</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, time_utils.o(.text._Z7_microsv))
@@ -1557,7 +1557,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_sqrtApprox(float)
 <LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_sincos(float, float*, float*)
 </UL>
-<BR>[Address Reference Count : 1]<UL><LI> inlinecurrentsense.o(.rodata._ZTV18InlineCurrentSense)
+<BR>[Address Reference Count : 1]<UL><LI> lowsidecurrentsense.o(.rodata._ZTV19LowsideCurrentSense)
 </UL>
 <P><STRONG><a name="[102]"></a>CurrentSense::getFOCCurrents(float)</STRONG> (Thumb, 208 bytes, Stack size 40 bytes, currentsense.o(.text._ZN12CurrentSense14getFOCCurrentsEf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = CurrentSense::getFOCCurrents(float) &rArr; _sincos(float, float*, float*) &rArr; _cos(float) &rArr; _sin(float) &rArr; __aeabi_dmul
@@ -1653,9 +1653,9 @@ Global Symbols
 
 <P><STRONG><a name="[16d]"></a>BLDCDriver6PWM::BLDCDriver6PWM__sub_object(TIM_HandleTypeDef*)</STRONG> (Thumb, 72 bytes, Stack size 0 bytes, bldcdriver6pwm.o(.text._ZN14BLDCDriver6PWMC2EP17TIM_HandleTypeDef), UNUSED)
 
-<P><STRONG><a name="[6b]"></a>InlineCurrentSense::driverAlign(float)</STRONG> (Thumb, 1840 bytes, Stack size 112 bytes, inlinecurrentsense.o(.text._ZN18InlineCurrentSense11driverAlignEf))
+<P><STRONG><a name="[6b]"></a>LowsideCurrentSense::driverAlign(float)</STRONG> (Thumb, 1840 bytes, Stack size 112 bytes, lowsidecurrentsense.o(.text._ZN19LowsideCurrentSense11driverAlignEf))
 <BR><BR>[Stack]<UL><LI>Max Depth = 384 + Unknown Stack Size
-<LI>Call Chain = InlineCurrentSense::driverAlign(float) &rArr; SEGGER_RTT_printf &rArr; SEGGER_RTT_vprintf &rArr; _PrintUnsigned &rArr; SEGGER_RTT_Write &rArr; SEGGER_RTT_WriteNoLock
+<LI>Call Chain = LowsideCurrentSense::driverAlign(float) &rArr; SEGGER_RTT_printf &rArr; SEGGER_RTT_vprintf &rArr; _PrintUnsigned &rArr; SEGGER_RTT_Write &rArr; SEGGER_RTT_WriteNoLock
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_RTT_printf
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
@@ -1664,38 +1664,38 @@ Global Symbols
 <LI><a href="#[10e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 <LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_delay(unsigned long)
 </UL>
-<BR>[Address Reference Count : 1]<UL><LI> inlinecurrentsense.o(.rodata._ZTV18InlineCurrentSense)
+<BR>[Address Reference Count : 1]<UL><LI> lowsidecurrentsense.o(.rodata._ZTV19LowsideCurrentSense)
 </UL>
-<P><STRONG><a name="[10f]"></a>InlineCurrentSense::calibrateOffsets()</STRONG> (Thumb, 196 bytes, Stack size 16 bytes, inlinecurrentsense.o(.text._ZN18InlineCurrentSense16calibrateOffsetsEv))
-<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = InlineCurrentSense::calibrateOffsets() &rArr; _delay(unsigned long) &rArr; HAL_Delay
+<P><STRONG><a name="[10f]"></a>LowsideCurrentSense::calibrateOffsets()</STRONG> (Thumb, 196 bytes, Stack size 16 bytes, lowsidecurrentsense.o(.text._ZN19LowsideCurrentSense16calibrateOffsetsEv))
+<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = LowsideCurrentSense::calibrateOffsets() &rArr; _delay(unsigned long) &rArr; HAL_Delay
 </UL>
-<BR>[Calls]<UL><LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_readADCVoltageInline
+<BR>[Calls]<UL><LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_readADCVoltageLowSide
 <LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_delay(unsigned long)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::init()
+<BR>[Called By]<UL><LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LowsideCurrentSense::init()
 </UL>
 
-<P><STRONG><a name="[6c]"></a>InlineCurrentSense::getPhaseCurrents()</STRONG> (Thumb, 144 bytes, Stack size 40 bytes, inlinecurrentsense.o(.text._ZN18InlineCurrentSense16getPhaseCurrentsEv))
-<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = InlineCurrentSense::getPhaseCurrents()
+<P><STRONG><a name="[6c]"></a>LowsideCurrentSense::getPhaseCurrents()</STRONG> (Thumb, 144 bytes, Stack size 40 bytes, lowsidecurrentsense.o(.text._ZN19LowsideCurrentSense16getPhaseCurrentsEv))
+<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = LowsideCurrentSense::getPhaseCurrents()
 </UL>
-<BR>[Calls]<UL><LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_readADCVoltageInline
+<BR>[Calls]<UL><LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_readADCVoltageLowSide
 </UL>
-<BR>[Address Reference Count : 1]<UL><LI> inlinecurrentsense.o(.rodata._ZTV18InlineCurrentSense)
+<BR>[Address Reference Count : 1]<UL><LI> lowsidecurrentsense.o(.rodata._ZTV19LowsideCurrentSense)
 </UL>
-<P><STRONG><a name="[6a]"></a>InlineCurrentSense::init()</STRONG> (Thumb, 16 bytes, Stack size 8 bytes, inlinecurrentsense.o(.text._ZN18InlineCurrentSense4initEv))
-<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = InlineCurrentSense::init() &rArr; InlineCurrentSense::calibrateOffsets() &rArr; _delay(unsigned long) &rArr; HAL_Delay
+<P><STRONG><a name="[6a]"></a>LowsideCurrentSense::init()</STRONG> (Thumb, 16 bytes, Stack size 8 bytes, lowsidecurrentsense.o(.text._ZN19LowsideCurrentSense4initEv))
+<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = LowsideCurrentSense::init() &rArr; LowsideCurrentSense::calibrateOffsets() &rArr; _delay(unsigned long) &rArr; HAL_Delay
 </UL>
-<BR>[Calls]<UL><LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::calibrateOffsets()
+<BR>[Calls]<UL><LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LowsideCurrentSense::calibrateOffsets()
 </UL>
 <BR>[Called By]<UL><LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main_Cpp
 </UL>
-<BR>[Address Reference Count : 1]<UL><LI> inlinecurrentsense.o(.rodata._ZTV18InlineCurrentSense)
+<BR>[Address Reference Count : 1]<UL><LI> lowsidecurrentsense.o(.rodata._ZTV19LowsideCurrentSense)
 </UL>
-<P><STRONG><a name="[f6]"></a>InlineCurrentSense::InlineCurrentSense(float, float, int, int, int)</STRONG> (Thumb, 82 bytes, Stack size 0 bytes, inlinecurrentsense.o(.text._ZN18InlineCurrentSenseC2Effiii))
+<P><STRONG><a name="[f6]"></a>LowsideCurrentSense::LowsideCurrentSense(float, float, int, int, int)</STRONG> (Thumb, 82 bytes, Stack size 0 bytes, lowsidecurrentsense.o(.text._ZN19LowsideCurrentSenseC2Effiii))
 <BR><BR>[Called By]<UL><LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_GLOBAL__sub_I_user_main.cpp
 </UL>
 
-<P><STRONG><a name="[16e]"></a>InlineCurrentSense::InlineCurrentSense__sub_object(float, float, int, int, int)</STRONG> (Thumb, 82 bytes, Stack size 0 bytes, inlinecurrentsense.o(.text._ZN18InlineCurrentSenseC2Effiii), UNUSED)
+<P><STRONG><a name="[16e]"></a>LowsideCurrentSense::LowsideCurrentSense__sub_object(float, float, int, int, int)</STRONG> (Thumb, 82 bytes, Stack size 0 bytes, lowsidecurrentsense.o(.text._ZN19LowsideCurrentSenseC2Effiii), UNUSED)
 
 <P><STRONG><a name="[62]"></a>Sensor::needsSearch()</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, sensor.o(.text._ZN6Sensor11needsSearchEv))
 <BR>[Address Reference Count : 1]<UL><LI> hallsensor.o(.rodata._ZTV10HallSensor)
@@ -1896,9 +1896,9 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> focmotor.o(.rodata._ZTV8FOCMotor)
 </UL>
-<P><STRONG><a name="[110]"></a>_readADCVoltageInline</STRONG> (Thumb, 56 bytes, Stack size 0 bytes, bsp_adc.o(.text._readADCVoltageInline))
-<BR><BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::getPhaseCurrents()
-<LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::calibrateOffsets()
+<P><STRONG><a name="[110]"></a>_readADCVoltageLowSide</STRONG> (Thumb, 56 bytes, Stack size 0 bytes, bsp_adc.o(.text._readADCVoltageLowSide))
+<BR><BR>[Called By]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LowsideCurrentSense::getPhaseCurrents()
+<LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LowsideCurrentSense::calibrateOffsets()
 </UL>
 
 <P><STRONG><a name="[10c]"></a>_writeDutyCycle3PWM_6PWM</STRONG> (Thumb, 64 bytes, Stack size 0 bytes, bsp_pwm.o(.text._writeDutyCycle3PWM_6PWM))
@@ -1945,7 +1945,7 @@ Global Symbols
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::initFOC()
 <LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::init()
 <LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::linkDriver(BLDCDriver*)
-<LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::init()
+<LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LowsideCurrentSense::init()
 <LI><a href="#[65]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCDriver6PWM::init()
 <LI><a href="#[67]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCDriver6PWM::disable()
 <LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCDriver6PWM::enable()
@@ -1992,8 +1992,8 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_e2e
 <LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__btod_div_common
 </UL>
-<BR>[Called By]<UL><LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_btod_etento
-<LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
+<BR>[Called By]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
+<LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_btod_etento
 </UL>
 
 <P><STRONG><a name="[9f]"></a>_btod_emul</STRONG> (Thumb, 42 bytes, Stack size 28 bytes, btod.o(CL$$btod_emul))
@@ -2002,8 +2002,8 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__btod_mult_common
 <LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_e2e
 </UL>
-<BR>[Called By]<UL><LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_btod_etento
-<LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
+<BR>[Called By]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_fp_digits
+<LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_btod_etento
 </UL>
 
 <P><STRONG><a name="[124]"></a>__btod_mult_common</STRONG> (Thumb, 580 bytes, Stack size 16 bytes, btod.o(CL$$btod_mult_common))
@@ -2044,7 +2044,7 @@ Global Symbols
 <P><STRONG><a name="[10e]"></a>__aeabi_d2f</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, d2f.o(x$fpl$d2f))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_d2f
 </UL>
-<BR>[Called By]<UL><LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::driverAlign(float)
+<BR>[Called By]<UL><LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LowsideCurrentSense::driverAlign(float)
 </UL>
 
 <P><STRONG><a name="[127]"></a>_d2f</STRONG> (Thumb, 98 bytes, Stack size 32 bytes, d2f.o(x$fpl$d2f), UNUSED)
@@ -2055,7 +2055,7 @@ Global Symbols
 <P><STRONG><a name="[10d]"></a>__aeabi_dadd</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, daddsub_clz.o(x$fpl$dadd))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_dadd
 </UL>
-<BR>[Called By]<UL><LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::driverAlign(float)
+<BR>[Called By]<UL><LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LowsideCurrentSense::driverAlign(float)
 <LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::getPreciseAngle()
 </UL>
 
@@ -2084,7 +2084,7 @@ Global Symbols
 <P><STRONG><a name="[fb]"></a>__aeabi_dmul</STRONG> (Thumb, 0 bytes, Stack size 32 bytes, dmul.o(x$fpl$dmul))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_dmul
 </UL>
-<BR>[Called By]<UL><LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::driverAlign(float)
+<BR>[Called By]<UL><LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LowsideCurrentSense::driverAlign(float)
 <LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::getPreciseAngle()
 <LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_sin(float)
 </UL>
@@ -2120,7 +2120,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SEGGER_Printf_Float
 <LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::alignSensor()
-<LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::driverAlign(float)
+<LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LowsideCurrentSense::driverAlign(float)
 <LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Sensor::getPreciseAngle()
 <LI><a href="#[fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_sin(float)
 </UL>
@@ -2181,7 +2181,7 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = _GLOBAL__sub_I_user_main.cpp &rArr; BLDCMotor::BLDCMotor(int, float, float, float) &rArr; FOCMotor::FOCMotor__sub_object() &rArr; PIDController::PIDController(float, float, float, float, float) &rArr; _micros() &rArr; DWT_Get_Microsecond &rArr; HAL_RCC_GetSysClockFreq &rArr; __aeabi_uldivmod
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCMotor::BLDCMotor(int, float, float, float)
-<LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InlineCurrentSense::InlineCurrentSense(float, float, int, int, int)
+<LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LowsideCurrentSense::LowsideCurrentSense(float, float, int, int, int)
 <LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BLDCDriver6PWM::BLDCDriver6PWM(TIM_HandleTypeDef*)
 <LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HallSensor::HallSensor(int)
 </UL>
@@ -2198,11 +2198,11 @@ Local Symbols
 <P><STRONG><a name="[9b]"></a>_fp_digits</STRONG> (Thumb, 432 bytes, Stack size 96 bytes, _printf_fp_dec.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 220<LI>Call Chain = _fp_digits &rArr; _btod_etento &rArr; _btod_emul &rArr; _e2e
 </UL>
-<BR>[Calls]<UL><LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_btod_etento
-<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_ll_udiv10
+<BR>[Calls]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_ll_udiv10
 <LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_btod_emul
 <LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_btod_ediv
 <LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_btod_d2e
+<LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_btod_etento
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_fp_dec_real
 </UL>
