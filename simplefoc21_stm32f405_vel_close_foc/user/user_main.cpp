@@ -23,7 +23,7 @@ const uint8_t JS_RTT_Channel = 1;
 J_LINK_Scope_Message JS_Message;
 
 BLDCDriver6PWM motorDriver(&htim1); //! 初始化驱动器(htim1是TIM1定时器)
-BLDCMotor motor(21U, 0.46f, NOT_SET, 0.000310f); // 创建BLDCMotor对象，电机的极对数是21,相电阻0.46欧
+BLDCMotor motor(21U, 0.23f, NOT_SET, 0.000155f); // 创建BLDCMotor对象，电机的极对数是21,相电阻0.23欧,相电感115uH
 HallSensor sensor(21); // 创建HallSensor对象，电机的极对数是21
 LowsideCurrentSense currentSense(&hadc1, 0.001f, 20.0f, NOT_SET, ADC_CHANNEL_11, ADC_CHANNEL_10); // 创建电流传感器对象
 
@@ -47,7 +47,8 @@ void main_Cpp(void)
     motorDriver.init();   // 初始化电机驱动
 
     sensor.init(); //! 初始化霍尔传感器
-    currentSense.linkDriver(&motorDriver);
+    currentSense.linkDriver(&motorDriver); //! 记得关联电流传感器与电机驱动器
+    
     //! 这里使能motorDriver的目的是让TIM1触发ADC Injected采样，这样才能检测偏置电压
     motorDriver.enable();
     HAL_Delay(10);
