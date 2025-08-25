@@ -82,7 +82,7 @@ void main_Cpp(void)
     motor.velocity_limit = DEF_POWER_SUPPLY;
                             
     motor.voltage_limit = DEF_POWER_SUPPLY; //! 设置电压限制
-    motor.torque_controller = TorqueControlType::foc_current; // Iq闭环，Id = 0
+    motor.torque_controller = TorqueControlType::foc_current; // Iq、Id闭环
     motor.controller = MotionControlType::velocity; // 设置控制器模式，速度闭环控制模式
     motor.init(); // 初始化电机
     motor.PID_velocity.limit = DEF_POWER_SUPPLY * 2.0f;
