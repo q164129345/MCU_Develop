@@ -9,7 +9,86 @@
   "virtualFolder": {
     "name": "<virtual_root>",
     "files": [],
-    "folders": []
+    "folders": [
+      {
+        "name": "bsp",
+        "files": [
+          {
+            "path": "bsp/bsp_usart_hal/bsp_usart_hal.c"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "component",
+        "files": [
+          {
+            "path": "component/lwrb/lwrb.c"
+          },
+          {
+            "path": "component/lwrb/lwrb_ex.c"
+          },
+          {
+            "path": "component/common/common.c"
+          },
+          {
+            "path": "component/retarget_rtt/retarget_rtt.c"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "iap",
+        "files": [
+          {
+            "path": "iap/app_jump.c"
+          },
+          {
+            "path": "iap/boot_entry.c"
+          },
+          {
+            "path": "iap/bootloader_define.h"
+          },
+          {
+            "path": "iap/flash_map.h"
+          },
+          {
+            "path": "iap/fw_verify.c"
+          },
+          {
+            "path": "iap/op_flash.c"
+          },
+          {
+            "path": "iap/param_storage.c"
+          },
+          {
+            "path": "iap/soft_crc32.c"
+          },
+          {
+            "path": "iap/ymodem.c"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "SEGGER_RTT",
+        "files": [
+          {
+            "path": "SEGGER_RTT/SEGGER_RTT.c"
+          },
+          {
+            "path": "SEGGER_RTT/SEGGER_RTT.h"
+          },
+          {
+            "path": "SEGGER_RTT/SEGGER_RTT_Conf.h"
+          },
+          {
+            "path": "SEGGER_RTT/SEGGER_RTT_printf.c"
+          }
+        ],
+        "folders": []
+      }
+    ]
   },
   "outDir": "build",
   "deviceName": null,
@@ -61,7 +140,14 @@
           "Drivers/STM32F1xx_HAL_Driver/Inc",
           "Drivers/STM32F1xx_HAL_Driver/Inc/Legacy",
           "Drivers/CMSIS/Device/ST/STM32F1xx/Include",
-          "Drivers/CMSIS/Include"
+          "Drivers/CMSIS/Include",
+          "bsp/bsp_usart_hal",
+          "component/common",
+          "component/lwrb",
+          "component/retarget_rtt",
+          "SEGGER_RTT",
+          "iap",
+          "component"
         ],
         "libList": [],
         "defineList": [

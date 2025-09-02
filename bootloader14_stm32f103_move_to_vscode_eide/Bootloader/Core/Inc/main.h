@@ -31,7 +31,15 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "stdio.h"
+#include "string.h"
+#include "stdbool.h"
+#include "lwrb/lwrb.h"
+#include "SEGGER_RTT.h"
+#include "retarget_rtt.h"
+#include "bootloader_define.h"
+#include "flash_map.h"
+#include "common.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
