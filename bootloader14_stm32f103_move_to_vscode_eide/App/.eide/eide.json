@@ -9,7 +9,44 @@
   "virtualFolder": {
     "name": "<virtual_root>",
     "files": [],
-    "folders": []
+    "folders": [
+      {
+        "name": "bsp",
+        "files": [
+          {
+            "path": "bsp/bsp_usart_hal/bsp_usart_hal.c"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "component",
+        "files": [
+          {
+            "path": "component/retarget_printf.c"
+          },
+          {
+            "path": "component/MultiTimer.c"
+          }
+        ],
+        "folders": []
+      },
+      {
+        "name": "iap",
+        "files": [
+          {
+            "path": "iap/bootloader_define.h"
+          },
+          {
+            "path": "iap/flash_map.h"
+          },
+          {
+            "path": "iap/jump_boot.c"
+          }
+        ],
+        "folders": []
+      }
+    ]
   },
   "outDir": "build",
   "deviceName": null,
@@ -61,7 +98,10 @@
           "Drivers/STM32F1xx_HAL_Driver/Inc",
           "Drivers/STM32F1xx_HAL_Driver/Inc/Legacy",
           "Drivers/CMSIS/Device/ST/STM32F1xx/Include",
-          "Drivers/CMSIS/Include"
+          "Drivers/CMSIS/Include",
+          "component",
+          "bsp/bsp_usart_hal",
+          "iap"
         ],
         "libList": [],
         "defineList": [
@@ -74,7 +114,14 @@
         "GCC": {
           "version": 5,
           "beforeBuildTasks": [],
-          "afterBuildTasks": [],
+          "afterBuildTasks": [
+            {
+              "name": "crc_add.bat",
+              "disable": false,
+              "abortAfterFailed": true,
+              "command": "crc_add.bat"
+            }
+          ],
           "global": {
             "$float-abi-type": "hard",
             "output-debug-info": "enable",

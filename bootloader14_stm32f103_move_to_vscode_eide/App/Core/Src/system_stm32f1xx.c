@@ -56,7 +56,7 @@
   */
 
 #include "stm32f1xx.h"
-
+#include "flash_map.h"
 /**
   * @}
   */
@@ -93,7 +93,9 @@
 /*!< Uncomment the following line if you need to relocate the vector table
      anywhere in Flash or Sram, else the vector table is kept at the automatic
      remap of boot address selected */
-/* #define USER_VECT_TAB_ADDRESS */
+#define USER_VECT_TAB_ADDRESS
+/* 2. 自动计算APP的向量表偏移量 */
+#define FLASH_APP_OFFSET (FLASH_APP_START_ADDR - STM32_FLASH_BASE_ADDR)
 
 #if defined(USER_VECT_TAB_ADDRESS)
 /*!< Uncomment the following line if you need to relocate your vector Table
@@ -107,7 +109,7 @@
 #else
 #define VECT_TAB_BASE_ADDRESS   FLASH_BASE      /*!< Vector Table base address field.
                                                      This value must be a multiple of 0x200. */
-#define VECT_TAB_OFFSET         0x00000000U     /*!< Vector Table base offset field.
+#define VECT_TAB_OFFSET         FLASH_APP_OFFSET     /*!< Vector Table base offset field.
                                                      This value must be a multiple of 0x200. */
 #endif /* VECT_TAB_SRAM */
 #endif /* USER_VECT_TAB_ADDRESS */

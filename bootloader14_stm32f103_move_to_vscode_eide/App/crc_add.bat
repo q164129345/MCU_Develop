@@ -5,8 +5,8 @@ rem -------------
 
 setlocal enabledelayedexpansion
 
-set INPUT_FILE=.\Output\App.bin
-set OUTPUT_FILE=.\Output\App_crc.bin
+set INPUT_FILE=.\build\Debug\stm32f103zet6.bin
+set OUTPUT_FILE=.\build\Debug\App_crc.bin
 
 rem ── 1. 计算原始 BIN 长度 ──
 for %%i in ("%INPUT_FILE%") do set BIN_SIZE=%%~zi

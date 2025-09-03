@@ -24,16 +24,41 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "MultiTimer.h"
+#include "retarget_printf.h"
+#include "bsp_usart_hal.h"
+#include "retarget_printf.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+MultiTimer gTimer1;
+MultiTimer gTimer2;
+void Timer1_Callback(MultiTimer *timer, void *userData);
+void Timer2_Callback(MultiTimer *timer, void *userData);
+static uint64_t SysTick_GetTicks(void)
+{
+    return HAL_GetTick();
+}
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+extern DMA_HandleTypeDef hdma_usart1_rx;
+extern DMA_HandleTypeDef hdma_usart1_tx;
+
+//! USART1缓存 RX方向
+uint8_t gUsart1RXDMABuffer[2048];
+uint8_t gUsart1RXRBBuffer[2048];
+//! USART1缓存 TX方向
+uint8_t gUsart1TXDMABuffer[2048];
+uint8_t gUsart1TXRBBuffer[2048];
+//! 实例化Usart1
+USART_Driver_t gUsart1Drv = {
+    .huart = &huart1,
+    .hdma_rx = &hdma_usart1_rx,
+    .hdma_tx = &hdma_usart1_tx,
+};
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -81,7 +106,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
+  __enable_irq(); //! 使能全局中断
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -90,7 +115,10 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  
+  MultiTimerInstall(SysTick_GetTicks); //! 给MultiTimer提供1ms的时间戳
+  MultiTimerStart(&gTimer1, 5, Timer1_Callback, NULL);
+  MultiTimerStart(&gTimer2, 500, Timer2_Callback, NULL);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -100,6 +128,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    MultiTimerYield(); //! MultiTimer模块运行
   }
   /* USER CODE END 3 */
 }
@@ -144,7 +173,40 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+/**
+  * @brief  Timer1定时回调函数
+  * @note   主要用于周期性运行USART1模块处理函数，并重新启动定时器，实现周期性调度
+  * @param  timer    定时器指针，由MultiTimer库自动传递
+  * @param  userData 用户数据指针（本函数未使用，可为NULL）
+  * @retval None
+  */
+void Timer1_Callback(MultiTimer *timer, void *userData)
+{
+    //! USART1模块运行
+    USART_Module_Run(&gUsart1Drv); //! Usart1模块运行
+    
+    //! 重新启动定时器（5ms)
+    MultiTimerStart(timer, 5, Timer1_Callback, NULL);
+}
 
+/**
+  * @brief  Timer2定时回调函数
+  * @note   主要用于测试串口发送与LED心跳灯切换，并重新启动定时器
+  * @param  timer    定时器指针，由MultiTimer库自动传递
+  * @param  userData 用户数据指针（本函数未使用，可为NULL）
+  * @retval None
+  */
+void Timer2_Callback(MultiTimer *timer, void *userData)
+{    
+    //! 心跳LED
+    HAL_GPIO_TogglePin(LED0_GPIO_Port,LED0_Pin);
+    
+    //! 打印RTT log
+    printf("App Running.0123456789_App_Version:2025.09.03\r\n");
+    
+    //! 重新启动定时器(500ms)
+    MultiTimerStart(timer, 500, Timer2_Callback, NULL);
+}
 /* USER CODE END 4 */
 
 /**
