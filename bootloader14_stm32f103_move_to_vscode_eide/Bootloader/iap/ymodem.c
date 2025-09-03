@@ -456,9 +456,11 @@ static YModem_Result_t YModem_Handle_Data_Packet(YModem_Handler_t *handler)
     handler->expected_packet_num++;                    //!< 期望下一个包序号
 
     //! 打印进度（每收到1个包打印一次）
+#if LOG_ENABLE
     uint8_t progress = YModem_Get_Progress(handler);
     log_printf("YModem: progress %d%% (%lu/%lu bytes).\r\n", 
               progress, (unsigned long)handler->received_size, (unsigned long)handler->file_size);
+#endif
 
     //! 发送ACK确认包接收成功
     YModem_Queue_Response(handler, YMODEM_ACK);

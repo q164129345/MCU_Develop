@@ -446,9 +446,11 @@ static void Timeout_Handler_MS(void)
         
         // 每秒打印一次倒计时
         if (iap_timeout_counter % 1000 == 0) {
+#if LOG_ENABLE
             uint32_t remaining_seconds = (IAP_TIMEOUT_MS - iap_timeout_counter) / 1000;
             const char* status = iap_communication_detected ? "Active" : "Waiting";
             log_printf("IAP timeout (%s): %lu seconds remaining...\n", status, (unsigned long)remaining_seconds);
+#endif
         }
         
         // 超时检查
