@@ -60,21 +60,14 @@
           "Core/Inc",
           "Drivers/STM32F1xx_HAL_Driver/Inc",
           "Drivers/CMSIS/Device/ST/STM32F1xx/Include",
-          "Drivers/CMSIS/Include"
+          "Drivers/CMSIS/Include",
+          "Drivers/STM32F1xx_HAL_Driver/Inc/Legacy"
         ],
         "libList": [],
         "defineList": [
           "DEBUG",
-          "USE_FULL_LL_DRIVER",
-          "HSE_VALUE=8000000",
-          "HSE_STARTUP_TIMEOUT=100",
-          "LSE_STARTUP_TIMEOUT=5000",
-          "LSE_VALUE=32768",
-          "HSI_VALUE=8000000",
-          "LSI_VALUE=40000",
-          "VDD_VALUE=3300",
-          "PREFETCH_ENABLE=1",
-          "STM32F103xE"
+          "STM32F103xE",
+          "USE_HAL_DRIVER"
         ]
       },
       "builderOptions": {
@@ -84,24 +77,30 @@
           "afterBuildTasks": [],
           "global": {
             "$float-abi-type": "hard",
-            "output-debug-info": "enable"
+            "output-debug-info": "enable",
+            "misc-control": []
           },
           "c/cpp-compiler": {
             "language-c": "c11",
             "language-cpp": "c++11",
-            "optimization": "level-1",
+            "optimization": "level-debug",
             "warnings": "all-warnings",
             "one-elf-section-per-function": true,
-            "one-elf-section-per-data": true
+            "one-elf-section-per-data": true,
+            "C_FLAGS": "",
+            "CXX_FLAGS": ""
           },
           "asm-compiler": {
             "ASM_FLAGS": "-DDEBUG"
           },
           "linker": {
+            "$outputTaskExcludes": [
+              ".bin"
+            ],
             "output-format": "elf",
             "remove-unused-input-sections": true,
             "LD_FLAGS": "-TSTM32F103ZETX_FLASH.ld",
-            "$toolName": "auto"
+            "LIB_FLAGS": ""
           }
         }
       }
@@ -121,19 +120,26 @@
         },
         "options": "null"
       },
-      "uploader": "JLink",
+      "uploader": "OpenOCD",
       "uploadConfig": {
         "bin": "",
-        "baseAddr": "",
-        "cpuInfo": {
-          "vendor": "null",
-          "cpuName": "null"
-        },
-        "proType": 1,
-        "speed": 8000,
-        "otherCmds": ""
+        "target": "stm32f1x",
+        "interface": "stlink-v2",
+        "baseAddr": "0x08000000"
       },
-      "uploadConfigMap": {},
+      "uploadConfigMap": {
+        "JLink": {
+          "bin": "",
+          "baseAddr": "",
+          "cpuInfo": {
+            "vendor": "null",
+            "cpuName": "null"
+          },
+          "proType": 1,
+          "speed": 8000,
+          "otherCmds": ""
+        }
+      },
       "builderOptions": {
         "GCC": {
           "version": 5,
@@ -174,19 +180,12 @@
           "Core/Inc",
           "Drivers/STM32F1xx_HAL_Driver/Inc",
           "Drivers/CMSIS/Device/ST/STM32F1xx/Include",
-          "Drivers/CMSIS/Include"
+          "Drivers/CMSIS/Include",
+          "Drivers/STM32F1xx_HAL_Driver/Inc/Legacy"
         ],
         "defineList": [
-          "USE_FULL_LL_DRIVER",
-          "HSE_VALUE=8000000",
-          "HSE_STARTUP_TIMEOUT=100",
-          "LSE_STARTUP_TIMEOUT=5000",
-          "LSE_VALUE=32768",
-          "HSI_VALUE=8000000",
-          "LSI_VALUE=40000",
-          "VDD_VALUE=3300",
-          "PREFETCH_ENABLE=1",
-          "STM32F103xE"
+          "STM32F103xE",
+          "USE_HAL_DRIVER"
         ],
         "libList": []
       }

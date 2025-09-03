@@ -38,22 +38,15 @@ ENTRY(Reset_Handler)
 /* Highest address of the user mode stack */
 _estack = ORIGIN(RAM) + LENGTH(RAM); /* end of "RAM" Ram type memory */
 
-_Min_Heap_Size = 0x200; /* required amount of heap */
-_Min_Stack_Size = 0x400; /* required amount of stack */
+_Min_Heap_Size = 0x200 ; /* required amount of heap */
+_Min_Stack_Size = 0x400 ; /* required amount of stack */
 
 /* Memories definition */
 MEMORY
 {
-  RAM    (rw)     : ORIGIN = 0x20000000,   LENGTH = 64K
-  FLASH    (rx)    : ORIGIN = 0x8000000,   LENGTH = 512K
-}
-
-/* Program Headers */
-PHDRS
-{
-  FLASH_CODE PT_LOAD FLAGS(5); /* Read + Execute */
-  FLASH_DATA PT_LOAD FLAGS(4); /* Read only */
-  RAM_DATA   PT_LOAD FLAGS(6); /* Read + Write */
+  RAM         (rw)     : ORIGIN = 0x20000008,  LENGTH = 64K - 8    /* 主RAM区域，留出8字节给noinit变量 */
+  RAM_NOINIT  (rw)     : ORIGIN = 0x20000000,  LENGTH = 8          /* 专门给noinit变量的区域 */
+  FLASH       (rx)     : ORIGIN = 0x08010000,  LENGTH = 192K       /* App区域：0x08010000~0x0803FFFF (192KB) */
 }
 
 /* Sections */
@@ -65,7 +58,7 @@ SECTIONS
     . = ALIGN(4);
     KEEP(*(.isr_vector)) /* Startup code */
     . = ALIGN(4);
-  } >FLASH :FLASH_CODE
+  } >FLASH
 
   /* The program code and other data into "FLASH" Rom type memory */
   .text :
@@ -82,7 +75,7 @@ SECTIONS
 
     . = ALIGN(4);
     _etext = .;        /* define a global symbols at end of code */
-  } >FLASH :FLASH_CODE
+  } >FLASH
 
   /* Constant data into "FLASH" Rom type memory */
   .rodata :
@@ -91,13 +84,13 @@ SECTIONS
     *(.rodata)         /* .rodata sections (constants, strings, etc.) */
     *(.rodata*)        /* .rodata* sections (constants, strings, etc.) */
     . = ALIGN(4);
-  } >FLASH :FLASH_DATA
+  } >FLASH
 
   .ARM.extab   : {
     . = ALIGN(4);
     *(.ARM.extab* .gnu.linkonce.armextab.*)
     . = ALIGN(4);
-  } >FLASH :FLASH_DATA
+  } >FLASH
 
   .ARM : {
     . = ALIGN(4);
@@ -105,7 +98,7 @@ SECTIONS
     *(.ARM.exidx*)
     __exidx_end = .;
     . = ALIGN(4);
-  } >FLASH :FLASH_DATA
+  } >FLASH
 
   .preinit_array     :
   {
@@ -114,7 +107,7 @@ SECTIONS
     KEEP (*(.preinit_array*))
     PROVIDE_HIDDEN (__preinit_array_end = .);
     . = ALIGN(4);
-  } >FLASH :FLASH_DATA
+  } >FLASH
 
   .init_array :
   {
@@ -124,7 +117,7 @@ SECTIONS
     KEEP (*(.init_array*))
     PROVIDE_HIDDEN (__init_array_end = .);
     . = ALIGN(4);
-  } >FLASH :FLASH_DATA
+  } >FLASH
 
   .fini_array :
   {
@@ -134,7 +127,14 @@ SECTIONS
     KEEP (*(.fini_array*))
     PROVIDE_HIDDEN (__fini_array_end = .);
     . = ALIGN(4);
-  } >FLASH :FLASH_DATA
+  } >FLASH
+
+  /* No-init section at fixed RAM address */
+  .noinit (NOLOAD) :
+  {
+    *(.noinit)
+    *(.noinit*)
+  } >RAM_NOINIT
 
   /* Used by the startup to initialize data */
   _sidata = LOADADDR(.data);
@@ -152,7 +152,7 @@ SECTIONS
     . = ALIGN(4);
     _edata = .;        /* define a global symbol at data end */
 
-  } >RAM AT> FLASH :RAM_DATA
+  } >RAM AT> FLASH
 
   /* Uninitialized data section into "RAM" Ram type memory */
   . = ALIGN(4);
@@ -168,7 +168,7 @@ SECTIONS
     . = ALIGN(4);
     _ebss = .;         /* define a global symbol at bss end */
     __bss_end__ = _ebss;
-  } >RAM :RAM_DATA
+  } >RAM
 
   /* User_heap_stack section, used to check that there is enough "RAM" Ram  type memory left */
   ._user_heap_stack (NOLOAD) :
