@@ -151,7 +151,8 @@
           "afterBuildTasks": [],
           "global": {
             "$float-abi-type": "hard",
-            "output-debug-info": "enable"
+            "output-debug-info": "enable",
+            "misc-control": "--specs=nano.specs --specs=nosys.specs"
           },
           "c/cpp-compiler": {
             "language-c": "c11",
@@ -159,7 +160,9 @@
             "optimization": "level-debug",
             "warnings": "all-warnings",
             "one-elf-section-per-function": true,
-            "one-elf-section-per-data": true
+            "one-elf-section-per-data": true,
+            "CXX_FLAGS": "-fno-exceptions",
+            "optimization-lto": true
           },
           "asm-compiler": {
             "ASM_FLAGS": "-DDEBUG"

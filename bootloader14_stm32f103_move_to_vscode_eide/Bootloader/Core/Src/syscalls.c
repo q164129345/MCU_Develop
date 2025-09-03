@@ -45,15 +45,17 @@ void initialise_monitor_handles()
 {
 }
 
-int _getpid(void)
+__attribute__((used, noinline)) int _getpid(void)
 {
-	return 1;
+  return 1;
 }
 
-int _kill(int pid, int sig)
+__attribute__((used, noinline)) int _kill(int pid, int sig)
 {
-	errno = EINVAL;
-	return -1;
+  (void)pid;
+  (void)sig;
+  errno = EINVAL;
+  return -1;
 }
 
 void _exit (int status)
@@ -91,15 +93,17 @@ int _close(int file)
 }
 
 
-int _fstat(int file, struct stat *st)
+__attribute__((used, noinline)) int _fstat(int file, struct stat *st)
 {
-	st->st_mode = S_IFCHR;
-	return 0;
+  (void)file;
+  st->st_mode = S_IFCHR;
+  return 0;
 }
 
-int _isatty(int file)
+__attribute__((used, noinline)) int _isatty(int file)
 {
-	return 1;
+  (void)file;
+  return 1;
 }
 
 int _lseek(int file, int ptr, int dir)
