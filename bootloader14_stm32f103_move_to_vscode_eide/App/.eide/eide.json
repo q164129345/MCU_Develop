@@ -27,6 +27,12 @@
           },
           {
             "path": "component/MultiTimer.c"
+          },
+          {
+            "path": "component/lwrb/lwrb.c"
+          },
+          {
+            "path": "component/lwrb/lwrb_ex.c"
           }
         ],
         "folders": []
