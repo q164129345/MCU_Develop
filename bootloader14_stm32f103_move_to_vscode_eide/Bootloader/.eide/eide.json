@@ -32,7 +32,7 @@
             "path": "component/common/common.c"
           },
           {
-            "path": "component/retarget_rtt/retarget_rtt.c"
+            "path": "component/retarget_printf/retarget_printf.c"
           }
         ],
         "folders": []
@@ -69,24 +69,6 @@
           }
         ],
         "folders": []
-      },
-      {
-        "name": "SEGGER_RTT",
-        "files": [
-          {
-            "path": "SEGGER_RTT/SEGGER_RTT.c"
-          },
-          {
-            "path": "SEGGER_RTT/SEGGER_RTT.h"
-          },
-          {
-            "path": "SEGGER_RTT/SEGGER_RTT_Conf.h"
-          },
-          {
-            "path": "SEGGER_RTT/SEGGER_RTT_printf.c"
-          }
-        ],
-        "folders": []
       }
     ]
   },
@@ -116,7 +98,7 @@
       "uploadConfig": {
         "bin": "",
         "target": "stm32f1x",
-        "interface": "stlink-v2",
+        "interface": "cmsis-dap-v1",
         "baseAddr": "0x08000000"
       },
       "uploadConfigMap": {
@@ -124,12 +106,18 @@
           "bin": "",
           "baseAddr": "",
           "cpuInfo": {
-            "vendor": "null",
-            "cpuName": "null"
+            "vendor": "ST",
+            "cpuName": "STM32F103ZE"
           },
-          "proType": 1,
+          "proType": 0,
           "speed": 8000,
           "otherCmds": ""
+        },
+        "OpenOCD": {
+          "bin": "",
+          "target": "stm32f1x",
+          "interface": "jlink",
+          "baseAddr": "0x08000000"
         }
       },
       "custom_dep": {
@@ -144,10 +132,10 @@
           "bsp/bsp_usart_hal",
           "component/common",
           "component/lwrb",
-          "component/retarget_rtt",
           "SEGGER_RTT",
           "iap",
-          "component"
+          "component",
+          "component/retarget_printf"
         ],
         "libList": [],
         "defineList": [
@@ -168,7 +156,7 @@
           "c/cpp-compiler": {
             "language-c": "c11",
             "language-cpp": "c++11",
-            "optimization": "level-1",
+            "optimization": "level-debug",
             "warnings": "all-warnings",
             "one-elf-section-per-function": true,
             "one-elf-section-per-data": true

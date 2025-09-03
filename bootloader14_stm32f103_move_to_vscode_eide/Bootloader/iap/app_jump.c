@@ -2,7 +2,6 @@
 #include "stm32f1xx.h"      /**< 根据芯片型号修改 */
 #include "flash_map.h"      /**< Flash分区宏定义 */
 #include "usart.h"
-#include "retarget_rtt.h"
 #include "bootloader_define.h"
 
 
@@ -13,6 +12,10 @@ volatile uint64_t update_flag __attribute__((at(FIRMWARE_UPDATE_VAR_ADDR), zero_
     #define __INT_TO_STR(x)     #x
     #define INT_TO_STR(x)       __INT_TO_STR(x)
     volatile uint64_t update_flag __attribute__((section(".bss.ARM.__at_" INT_TO_STR(FIRMWARE_UPDATE_VAR_ADDR))));
+
+#elif defined(__GNUC__)
+    /* GCC 编译器: 直接使用指针访问指定地址 */
+    #define update_flag (*((volatile uint64_t *)FIRMWARE_UPDATE_VAR_ADDR))
 
 #else
     #error "variable placement not supported for this compiler."

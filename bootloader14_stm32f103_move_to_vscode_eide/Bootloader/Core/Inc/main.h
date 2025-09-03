@@ -35,9 +35,8 @@ extern "C" {
 #include "string.h"
 #include "stdbool.h"
 #include "lwrb/lwrb.h"
-#include "SEGGER_RTT.h"
-#include "retarget_rtt.h"
 #include "bootloader_define.h"
+#include "retarget_printf.h"
 #include "flash_map.h"
 #include "common.h"
 /* USER CODE END Includes */

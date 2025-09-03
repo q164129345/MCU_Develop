@@ -25,7 +25,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "bsp_usart_hal.h"
-#include "retarget_rtt.h"
 #include "app_jump.h"
 #include "soft_crc32.h"
 #include "op_flash.h"
@@ -111,10 +110,6 @@ static void Timeout_Counter_Enable(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-#if LOG_ENABLE
-  Retarget_RTT_Init(); //! RTT重定向printf
-#endif
-  log_printf("Entering the main initialization of the bootloader.\n");
   uint32_t fre = 0;
   /* USER CODE END 1 */
 
@@ -138,6 +133,7 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_USART1_UART_Init();
+  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   //! 初始化参数区
   Param_Init();
@@ -207,7 +203,7 @@ int main(void)
             if (iap_complete_delay_counter >= 250) {
                 log_printf("YModem: delay completed, starting firmware verification and copy...\r\n");
                 uint32_t file_size = YMode_Get_File_Size(&gYModemHandler);
-                log_printf("Firmware size: %d bytes.\r\n", file_size);
+                log_printf("Firmware size: %lu bytes.\r\n", (unsigned long)file_size);
                 if (HAL_OK == FW_Firmware_Verification(FLASH_DL_START_ADDR, file_size)) {
                     log_printf("CRC32 verification was successful\r\n");
                     
@@ -380,7 +376,7 @@ static void Timeout_Counter_Enable(void)
     const ParameterData_t* params = Param_Get();
     bool app_valid = Is_App_Valid_Enhanced(FLASH_APP_START_ADDR);
     log_printf("=== Bootloader Boot Analysis ===\n");
-    log_printf("Boot flag: 0x%08X%08X\n", (uint32_t)(gUpdateFlag >> 32), (uint32_t)gUpdateFlag);
+    log_printf("Boot flag: 0x%08lX%08lX\n", (unsigned long)(gUpdateFlag >> 32), (unsigned long)gUpdateFlag);
     log_printf("App valid: %s\n", app_valid ? "YES" : "NO");
     
     if (gUpdateFlag == FIRMWARE_UPDATE_MAGIC_WORD) {
@@ -452,14 +448,14 @@ static void Timeout_Handler_MS(void)
         if (iap_timeout_counter % 1000 == 0) {
             uint32_t remaining_seconds = (IAP_TIMEOUT_MS - iap_timeout_counter) / 1000;
             const char* status = iap_communication_detected ? "Active" : "Waiting";
-            log_printf("IAP timeout (%s): %d seconds remaining...\n", status, remaining_seconds);
+            log_printf("IAP timeout (%s): %lu seconds remaining...\n", status, (unsigned long)remaining_seconds);
         }
         
         // 超时检查
         if (iap_timeout_counter >= IAP_TIMEOUT_MS) {
             log_printf("IAP timeout reached! Handling based on boot reason...\n");
-            log_printf("Original boot flag: 0x%08X%08X\n", 
-                      (uint32_t)(gUpdateFlag >> 32), (uint32_t)gUpdateFlag);
+            log_printf("Original boot flag: 0x%08lX%08lX\n", 
+                      (unsigned long)(gUpdateFlag >> 32), (unsigned long)gUpdateFlag);
             
             // 智能超时处理
             if (gUpdateFlag == FIRMWARE_UPDATE_MAGIC_WORD) {

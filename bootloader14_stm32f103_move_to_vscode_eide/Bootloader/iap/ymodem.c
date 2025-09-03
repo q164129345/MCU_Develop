@@ -19,7 +19,6 @@
  */
 
 #include "ymodem.h"
-#include "retarget_rtt.h"
 #include "op_flash.h"
 #include <string.h>
 #include <stdio.h>
@@ -208,7 +207,7 @@ YModem_Result_t YModem_Run(YModem_Handler_t *handler, uint8_t data)
                     //! 解析结束包
                     YModem_Result_t result = YModem_Parse_Packet(handler);
                     if (result == YMODEM_RESULT_OK) {
-                        log_printf("YModem: transmission completed! total received %u bytes.\r\n", handler->received_size);
+                        log_printf("YModem: transmission completed! total received %lu bytes.\r\n", (unsigned long)handler->received_size);
                         handler->state = YMODEM_STATE_COMPLETE;
                         YModem_Queue_Response(handler, YMODEM_ACK);
                         return YMODEM_RESULT_COMPLETE;
@@ -382,13 +381,13 @@ static YModem_Result_t YModem_Handle_FileInfo_Packet(YModem_Handler_t *handler)
     
     handler->file_size = (uint32_t)atol(size_ptr);  //!< 转换文件大小字符串为数值
     
-    log_printf("YModem: file information - name: %s, size: %u bytes.\r\n", 
-              handler->file_name, handler->file_size);
+    log_printf("YModem: file information - name: %s, size: %lu bytes.\r\n", 
+              handler->file_name, (unsigned long)handler->file_size);
     
     //! 检查文件大小是否超出Flash缓存区容量
     if (handler->file_size > FLASH_DL_SIZE) {
-        log_printf("YModem: error! file size %u exceeds cache size %u.\r\n", 
-                  handler->file_size, (uint32_t)FLASH_DL_SIZE);
+        log_printf("YModem: error! file size %lu exceeds cache size %lu.\r\n", 
+                  (unsigned long)handler->file_size, (unsigned long)FLASH_DL_SIZE);
         YModem_Queue_Response(handler, YMODEM_CAN);
         handler->state = YMODEM_STATE_ERROR;
         return YMODEM_RESULT_ERROR;
@@ -458,8 +457,8 @@ static YModem_Result_t YModem_Handle_Data_Packet(YModem_Handler_t *handler)
 
     //! 打印进度（每收到1个包打印一次）
     uint8_t progress = YModem_Get_Progress(handler);
-    log_printf("YModem: progress %d%% (%u/%u bytes).\r\n", 
-              progress, handler->received_size, handler->file_size);
+    log_printf("YModem: progress %d%% (%lu/%lu bytes).\r\n", 
+              progress, (unsigned long)handler->received_size, (unsigned long)handler->file_size);
 
     //! 发送ACK确认包接收成功
     YModem_Queue_Response(handler, YMODEM_ACK);
@@ -506,7 +505,7 @@ static YModem_Result_t YModem_Write_To_Flash(YModem_Handler_t *handler,
      */
     uint32_t page_start = (handler->flash_write_addr / STM32_FLASH_PAGE_SIZE) * STM32_FLASH_PAGE_SIZE;
     if (handler->flash_write_addr == page_start) {
-        log_printf("YModem: erase Flash page 0x%08X.\r\n", page_start);
+        log_printf("YModem: erase Flash page 0x%08lX.\r\n", (unsigned long)page_start);
         
         //! 使用op_flash模块擦除页面
         OP_FlashStatus_t erase_result = OP_Flash_Erase(page_start, STM32_FLASH_PAGE_SIZE);

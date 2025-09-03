@@ -57,13 +57,11 @@ static void _SystemStart(void)
     if (flag == BOOTLOADER_RESET_MAGIC_WORD) {
         //! --- Case: Bootloader 内部跳转流程 ---
         //! 这是 IAP_Ready_To_Jump_App 的第二步，需要立即跳转，不进入main()
-        log_printf("Bootloader internal jump detected, jumping to app immediately. flag=0x%08X%08X\n", \
-        (uint32_t)(flag >> 32), (uint32_t)flag);
         IAP_Ready_To_Jump_App(); // 此函数不会返回
     } 
     
     //! 所有其他情况（包括App请求IAP、正常启动、App无效等）都交给main()处理
     //! 不清除标志，让main()能够正确判断启动原因
-    log_printf("Proceeding to main() for detailed boot analysis.\n");
+    //log_printf("Proceeding to main() for detailed boot analysis.\n");
 }
 

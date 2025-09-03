@@ -9,10 +9,15 @@
   * @param  f   文件指针，无实际用途
   * @retval     输出的字符
   */
-int fputc(int ch, FILE *f)
+// int fputc(int ch, FILE *f)
+// {
+//     SEGGER_RTT_PutChar(0, ch);
+//     return ch;
+// }
+int _write(int file, char *ptr, int len)
 {
-    SEGGER_RTT_PutChar(0, ch);
-    return ch;
+    SEGGER_RTT_Write(0, ptr, len);
+    return len;
 }
 
 /**

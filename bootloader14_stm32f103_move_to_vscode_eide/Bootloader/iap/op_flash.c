@@ -43,6 +43,7 @@ OP_FlashStatus_t OP_Flash_Erase(uint32_t start_addr, uint32_t length)
     uint32_t pageSize = STM32_FLASH_PAGE_SIZE; //!< 每页大小，通常为2K字节
     //! 2. 计算擦除的首页页号
     uint32_t firstPage = (start_addr - STM32_FLASH_BASE_ADDR) / pageSize;
+    (void)firstPage; // 避免未使用变量警告
     //! 3. 计算要擦除的页数（不足一页时也要整页擦除）
     uint32_t nbPages   = (length + pageSize - 1) / pageSize;
 
