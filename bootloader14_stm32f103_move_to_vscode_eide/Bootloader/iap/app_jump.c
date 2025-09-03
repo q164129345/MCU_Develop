@@ -9,13 +9,13 @@
 volatile uint64_t update_flag __attribute__((at(FIRMWARE_UPDATE_VAR_ADDR), zero_init));
 
 #elif defined(__IS_COMPILER_ARM_COMPILER_6__)
-    #define __INT_TO_STR(x)     #x
-    #define INT_TO_STR(x)       __INT_TO_STR(x)
-    volatile uint64_t update_flag __attribute__((section(".bss.ARM.__at_" INT_TO_STR(FIRMWARE_UPDATE_VAR_ADDR))));
+#define __INT_TO_STR(x)     #x
+#define INT_TO_STR(x)       __INT_TO_STR(x)
+volatile uint64_t update_flag __attribute__((section(".bss.ARM.__at_" INT_TO_STR(FIRMWARE_UPDATE_VAR_ADDR))));
 
 #elif defined(__GNUC__)
-    /* GCC 编译器: 直接使用指针访问指定地址 */
-    #define update_flag (*((volatile uint64_t *)FIRMWARE_UPDATE_VAR_ADDR))
+/* GCC编译器: 使用.noinit段放置在RAM起始地址，程序初始化时不被清零 */
+volatile uint64_t update_flag __attribute__((section(".noinit")));
 
 #else
     #error "variable placement not supported for this compiler."

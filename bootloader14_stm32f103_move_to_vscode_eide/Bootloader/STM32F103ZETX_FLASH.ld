@@ -44,8 +44,9 @@ _Min_Stack_Size = 0x400 ; /* required amount of stack */
 /* Memories definition */
 MEMORY
 {
-  RAM    (rw)     : ORIGIN = 0x20000000,   LENGTH = 64K
-  FLASH    (rx)    : ORIGIN = 0x8000000,   LENGTH = 512K
+  RAM         (rw)     : ORIGIN = 0x20000008,  LENGTH = 64K - 8    /* 主RAM区域，留出8字节给noinit变量 */
+  RAM_NOINIT  (rw)     : ORIGIN = 0x20000000,  LENGTH = 8          /* 专门给noinit变量的区域 */
+  FLASH       (rx)     : ORIGIN = 0x08000000,  LENGTH = 64K        /* Bootloader区域：0x08000000~0x0800FFFF (64KB) */
 }
 
 /* Program Headers */
@@ -135,6 +136,13 @@ SECTIONS
     PROVIDE_HIDDEN (__fini_array_end = .);
     . = ALIGN(4);
   } >FLASH :FLASH_DATA
+
+  /* No-init section at fixed RAM address */
+  .noinit (NOLOAD) :
+  {
+    *(.noinit)
+    *(.noinit*)
+  } >RAM_NOINIT
 
   /* Used by the startup to initialize data */
   _sidata = LOADADDR(.data);
