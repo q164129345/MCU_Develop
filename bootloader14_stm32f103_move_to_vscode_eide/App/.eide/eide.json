@@ -13,7 +13,7 @@
   },
   "outDir": "build",
   "deviceName": null,
-  "packDir": null,
+  "packDir": ".pack/Keil/STM32F1xx_DFP.2.3.0",
   "miscInfo": {
     "uid": "554a5e5cec14416223933d209b89fd8e"
   },
@@ -56,6 +56,7 @@
       "custom_dep": {
         "name": "default",
         "incList": [
+          ".",
           "Core/Inc",
           "Drivers/STM32F1xx_HAL_Driver/Inc",
           "Drivers/STM32F1xx_HAL_Driver/Inc/Legacy",
