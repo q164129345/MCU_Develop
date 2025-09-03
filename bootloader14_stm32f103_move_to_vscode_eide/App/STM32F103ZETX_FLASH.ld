@@ -44,9 +44,9 @@ _Min_Stack_Size = 0x400 ; /* required amount of stack */
 /* Memories definition */
 MEMORY
 {
-  RAM         (rw)     : ORIGIN = 0x20000008,  LENGTH = 64K - 8    /* Ö÷RAMÇøÓò£¬Áô³ö8×Ö½Ú¸ønoinit±äÁ¿ */
-  RAM_NOINIT  (rw)     : ORIGIN = 0x20000000,  LENGTH = 8          /* ×¨ÃÅ¸ønoinit±äÁ¿µÄÇøÓò */
-  FLASH       (rx)     : ORIGIN = 0x08010000,  LENGTH = 192K       /* AppÇøÓò£º0x08010000~0x0803FFFF (192KB) */
+  RAM         (rw)     : ORIGIN = 0x20000008,  LENGTH = 64K - 8    /* ä¸»RAMåŒºåŸŸï¼Œç•™å‡º8å­—èŠ‚ç»™noinitå˜é‡ */
+  RAM_NOINIT  (rw)     : ORIGIN = 0x20000000,  LENGTH = 8          /* ä¸“é—¨ç»™noinitå˜é‡çš„åŒºåŸŸ */
+  FLASH       (rx)     : ORIGIN = 0x08010000,  LENGTH = 192K        /* BootloaderåŒºåŸŸï¼š0x08000000~0x08003FFFF (192KB) */
 }
 
 /* Sections */
