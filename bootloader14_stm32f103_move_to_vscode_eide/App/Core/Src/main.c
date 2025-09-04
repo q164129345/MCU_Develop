@@ -28,6 +28,7 @@
 #include "retarget_printf.h"
 #include "bsp_usart_hal.h"
 #include "retarget_printf.h"
+#include "jump_boot.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -182,9 +183,17 @@ void SystemClock_Config(void)
   */
 void Timer1_Callback(MultiTimer *timer, void *userData)
 {
+    uint8_t byte;
     //! USART1模块运行
     USART_Module_Run(&gUsart1Drv); //! Usart1模块运行
     
+    while(USART_Get_The_Existing_Amount_Of_Data(&gUsart1Drv) > 0) {
+        if (USART_Take_A_Piece_Of_Data(&gUsart1Drv, &byte)) {
+            //! 解析接收到的数据，判断是否需要跳转到Bootloader
+            IAP_Parse_Command(byte);
+        }
+    }
+
     //! 重新启动定时器（5ms)
     MultiTimerStart(timer, 5, Timer1_Callback, NULL);
 }
