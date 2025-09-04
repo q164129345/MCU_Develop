@@ -120,6 +120,10 @@ int main(void)
   MultiTimerInstall(SysTick_GetTicks); //! 给MultiTimer提供1ms的时间戳
   MultiTimerStart(&gTimer1, 5, Timer1_Callback, NULL);
   MultiTimerStart(&gTimer2, 500, Timer2_Callback, NULL);
+
+  USART_Config(&gUsart1Drv,
+               gUsart1RXDMABuffer, gUsart1RXRBBuffer, sizeof(gUsart1RXDMABuffer),
+               gUsart1TXDMABuffer, gUsart1TXRBBuffer, sizeof(gUsart1TXDMABuffer));
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -184,17 +188,17 @@ void SystemClock_Config(void)
 void Timer1_Callback(MultiTimer *timer, void *userData)
 {
     uint8_t byte;
-    //! USART1模块运行
-    USART_Module_Run(&gUsart1Drv); //! Usart1模块运行
+    // USART1消息发送
+    USART_Module_Run(&gUsart1Drv);
     
+    // USART1消息处理
     while(USART_Get_The_Existing_Amount_Of_Data(&gUsart1Drv) > 0) {
         if (USART_Take_A_Piece_Of_Data(&gUsart1Drv, &byte)) {
             //! 解析接收到的数据，判断是否需要跳转到Bootloader
             IAP_Parse_Command(byte);
         }
     }
-
-    //! 重新启动定时器（5ms)
+    // 重新启动定时器（5ms)
     MultiTimerStart(timer, 5, Timer1_Callback, NULL);
 }
 
