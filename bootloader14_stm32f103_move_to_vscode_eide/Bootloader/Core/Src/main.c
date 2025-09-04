@@ -60,7 +60,7 @@ static uint32_t iap_complete_delay_counter = 0;
 static bool iap_complete_pending = false;
 
 //! 添加 IAP 超时机制 - 根据App有效性决定是否启用
-#define IAP_TIMEOUT_SECONDS     10
+#define IAP_TIMEOUT_SECONDS     5
 #define IAP_TIMEOUT_MS          (IAP_TIMEOUT_SECONDS * 1000)
 static uint32_t iap_timeout_counter = 0;
 static bool iap_timeout_enabled = false;  // 默认禁用，根据启动原因决定
