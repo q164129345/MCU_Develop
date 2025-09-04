@@ -87,7 +87,16 @@ void NMI_Handler(void)
 void HardFault_Handler(void)
 {
   /* USER CODE BEGIN HardFault_IRQn 0 */
-
+  // 获取故障信息用于调试
+  volatile uint32_t hfsr  = SCB->HFSR;   // Hard Fault Status Register
+  volatile uint32_t cfsr  = SCB->CFSR;   // Configurable Fault Status Register  
+  volatile uint32_t bfar  = SCB->BFAR;   // Bus Fault Address Register
+  volatile uint32_t mmfar = SCB->MMFAR;  // MemManage Fault Address Register
+  volatile uint32_t vtor  = SCB->VTOR;   // Vector Table Offset Register
+  
+  // 在调试器中观察这些变量的值
+  (void)hfsr; (void)cfsr; (void)bfar; (void)mmfar; (void)vtor;
+  
   /* USER CODE END HardFault_IRQn 0 */
   while (1)
   {
