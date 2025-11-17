@@ -151,7 +151,7 @@ OP_FlashStatus_t OP_Flash_Copy(uint32_t src_addr, uint32_t dest_addr, uint32_t l
 
     while (remaining > 0) {
 
-        // ! 在这里喂狗(这里注释掉，是因为本例程没有使用看门狗)
+        // ! 在这里喂狗。避免因搬运时间过长导致看门狗复位(这里注释掉，是因为本例程没有使用看门狗)
         // HAL_IWDG_Refresh(&hiwdg);
 
         //! 4. 计算本次要搬运的数据块大小
