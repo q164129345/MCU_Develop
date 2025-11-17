@@ -1,0 +1,175 @@
+version: "4.1"
+name: stm32f103zet6
+type: ARM
+deviceName: null
+packDir: .pack/Keil/STM32F1xx_DFP.2.3.0
+srcDirs:
+  - Core
+  - Drivers
+virtualFolder:
+  name: <virtual_root>
+  files: []
+  folders:
+    - name: bsp
+      files:
+        - path: bsp/bsp_usart_hal/bsp_usart_hal.c
+      folders: []
+    - name: component
+      files:
+        - path: component/lwrb/lwrb.c
+        - path: component/lwrb/lwrb_ex.c
+        - path: component/common/common.c
+        - path: component/retarget_printf/retarget_printf.c
+      folders: []
+    - name: iap
+      files:
+        - path: iap/app_jump.c
+        - path: iap/boot_entry.c
+        - path: iap/bootloader_define.h
+        - path: iap/flash_map.h
+        - path: iap/fw_verify.c
+        - path: iap/op_flash.c
+        - path: iap/param_storage.c
+        - path: iap/soft_crc32.c
+        - path: iap/ymodem.c
+      folders: []
+dependenceList: []
+outDir: build
+miscInfo:
+  uid: 342dafd71db4c4dfacd281567094fc0e
+targets:
+  Debug:
+    cppPreprocessAttrs:
+      defineList:
+        - DEBUG
+        - USE_HAL_DRIVER
+        - STM32F103xE
+      incList:
+        - .
+        - Core/Inc
+        - Drivers/STM32F1xx_HAL_Driver/Inc
+        - Drivers/STM32F1xx_HAL_Driver/Inc/Legacy
+        - Drivers/CMSIS/Device/ST/STM32F1xx/Include
+        - Drivers/CMSIS/Include
+        - bsp/bsp_usart_hal
+        - component/common
+        - component/lwrb
+        - SEGGER_RTT
+        - iap
+        - component
+        - component/retarget_printf
+      libList: []
+    excludeList: []
+    toolchain: GCC
+    toolchainConfigMap:
+      GCC:
+        archExtensions: ""
+        cpuType: Cortex-M3
+        floatingPointHardware: none
+        options:
+          version: 5
+          afterBuildTasks: []
+          asm-compiler:
+            ASM_FLAGS: -DDEBUG
+          beforeBuildTasks: []
+          c/cpp-compiler:
+            language-c: c11
+            language-cpp: c++11
+            one-elf-section-per-data: true
+            one-elf-section-per-function: true
+            optimization: level-debug
+            optimization-lto: true
+            warnings: all-warnings
+          global:
+            $float-abi-type: hard
+            misc-control: --specs=nano.specs --specs=nosys.specs
+            output-debug-info: enable
+          linker:
+            $outputTaskExcludes:
+              - ""
+            $toolName: auto
+            LD_FLAGS: -TSTM32F103ZETX_FLASH.ld
+            output-format: elf
+            remove-unused-input-sections: true
+        scatterFilePath: ""
+        storageLayout:
+          RAM: []
+          ROM: []
+        useCustomScatterFile: true
+    uploadConfigMap:
+      JLink:
+        baseAddr: ""
+        bin: ""
+        cpuInfo:
+          cpuName: STM32F103ZE
+          vendor: ST
+        otherCmds: ""
+        proType: 0
+        speed: 8000
+      OpenOCD:
+        baseAddr: "0x08000000"
+        bin: ""
+        interface: cmsis-dap-v1
+        target: stm32f1x
+    uploader: OpenOCD
+  Release:
+    cppPreprocessAttrs:
+      defineList:
+        - USE_HAL_DRIVER
+        - STM32F103xE
+      incList:
+        - Core/Inc
+        - Drivers/STM32F1xx_HAL_Driver/Inc
+        - Drivers/STM32F1xx_HAL_Driver/Inc/Legacy
+        - Drivers/CMSIS/Device/ST/STM32F1xx/Include
+        - Drivers/CMSIS/Include
+      libList: []
+    excludeList: []
+    toolchain: GCC
+    toolchainConfigMap:
+      GCC:
+        archExtensions: ""
+        cpuType: Cortex-M3
+        floatingPointHardware: none
+        options:
+          version: 5
+          afterBuildTasks: []
+          asm-compiler:
+            ASM_FLAGS: ""
+          beforeBuildTasks: []
+          c/cpp-compiler:
+            CXX_FLAGS: ""
+            C_FLAGS: ""
+            language-c: c11
+            language-cpp: c++11
+            one-elf-section-per-data: true
+            one-elf-section-per-function: true
+            optimization: level-debug
+            warnings: all-warnings
+          global:
+            $float-abi-type: hard
+            misc-control: []
+            output-debug-info: enable
+          linker:
+            $outputTaskExcludes:
+              - .bin
+            LD_FLAGS: ""
+            LIB_FLAGS: ""
+            output-format: elf
+            remove-unused-input-sections: true
+        scatterFilePath: ""
+        storageLayout:
+          RAM: []
+          ROM: []
+        useCustomScatterFile: true
+    uploadConfigMap:
+      JLink:
+        baseAddr: ""
+        bin: ""
+        cpuInfo:
+          cpuName: "null"
+          vendor: "null"
+        otherCmds: ""
+        proType: 1
+        speed: 8000
+    uploader: JLink
